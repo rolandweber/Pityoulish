@@ -1,0 +1,24 @@
+<html>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<body>
+Utility classes for implementing command-line tools.
+
+<p>
+There's a bunch of classes to interpret command-line arguments.
+The logic expects a command word at a certain, configurable position.
+It selects a {@link pityoulish.cmdline.CommandHandler} which supports
+the command word and calls its <code>handle</code> method.
+Arguments after the command word are passed to that method.
+Command handlers that support several command words can dispatch to
+command-specific handler methods.
+A certain, configurable number of arguments before the command word is passed
+to a {@link pityoulish.cmdline.BackendHandler}. This is typically used to
+specify hostname and port of a server, if that is needed by all the commands.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="setup" basedir=".">
+<!-- ${basedir} is the root directory for input files (source).
+     ${projectdir} is the root directory for all generated files.
+     To treat ${basedir} as read-only, point ${projectdir} somewhere else.
+-->
+<property name="projectdir" value="${basedir}" />
+
+<property name="dir.target"	value="${projectdir}/target"	/>
+<property name="dir.tmp"	value="${projectdir}/tmp"	/>
+<property name="dir.jdoc"	value="${projectdir}/jdoc"	/>
+
+<!-- Custom settings -->
+<property file="${projectdir}/build.local"/>
+
+
+<!-- Compiler and other tool settings (defaults)
+	jc.*	= javac
+	jdoc.*	= javadoc
+  -->
+<property name="jc.debug" value="true"/><!-- line numbers in stack traces -->
+<property name="jc.optmz" value="true"/>
+<property name="jc.dprct" value="true"/>
+
+<property name="jdoc.visibility" value="package" />
+<property name="jdoc.verbose" value="false" />
+
+
+<macrodef name="jc">
+  <attribute name="destdir" />
+  <element name="jc-elements" implicit="true" />
+  <sequential>
+    <mkdir dir="@{destdir}" />
+    <javac destdir="@{destdir}" includeAntRuntime="false"
+           debug="${jc.debug}" optimize="${jc.optmz}" deprecation="${jc.dprct}"
+           encoding="ISO-8859-15"
+           >
+           <jc-elements />
+    </javac>
+  </sequential>
+</macrodef>
+
+
+<target name="_clean" description="deletes temporary stuff">
+  <delete dir="${dir.tmp}" quiet="true" />
+</target>
+
+<target name="_cleaner" depends="_clean" 
+ description="deletes generated stuff"
+  >
+  <delete dir="${dir.target}" quiet="true" />
+</target>
+
+
+<target name="_tstamps"
+ description="defines timestamp properties"
+ >
+  <tstamp>
+    <format property="build.time" pattern="yyyy-MM-dd_HH.mm.ss" />
+  </tstamp>
+  <property name="build.stamp.dir"
+	    location="${dir.tmp}/stamps" />
+  <property name="build.stamp.name"
+	    value="build_${build.time}" />
+  <property name="build.stamp.file"
+	    location="${build.stamp.dir}/${build.stamp.name}" />
+  <mkdir dir="${build.stamp.dir}" />
+  <echo file="${build.stamp.file}" message="${build.time}" />
+</target>
+
+</project>

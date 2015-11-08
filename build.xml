@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="Pityoulish" default="compile" basedir=".">
+<description>
+A collection of programming exercises to
+support a course on "Distributed Systems"
+</description>
+
+<import file="setup.xml" />
+
+
+
+<!-- for development -->
+<target name="compile"
+	description="compiles all Java sources, without preprocessing">
+  <jc destdir="${dir.tmp}/classes">
+    <src path="src/main/java" />
+  </jc>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<target name="jdoc" description="builds JavaDocs from all Java sources">
+  <mkdir dir="${dir.jdoc}" />
+  <javadoc destdir="${dir.jdoc}"
+    sourcepath="src/main/java"
+    access="protected"
+    windowtitle="Pityoulish: Programming Exercises"
+    nohelp="true"
+    encoding="ISO-8859-1"
+    >
+    <group title="Common">
+      <package name="pityoulish.cmdline" />
+    </group>
+<!--
+    <group title="Sockets">
+      <package name="pityoulish.skt*" />
+    </group>
+-->
+<!--
+    <group title="Java RMI">
+      <package name="pityoulish.rmi*" />
+    </group>
+-->
+  </javadoc>
+</target>
+
+</project>

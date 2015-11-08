@@ -1,0 +1,6 @@
+*~
+
+# Ant build: default locations of output directories
+/target
+/tmp
+/jdoc
