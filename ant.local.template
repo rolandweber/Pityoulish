@@ -1,0 +1,17 @@
+# One way to feed properties into the Ant build is by defining 'ant.local'.
+# This template explains the properties intended to be defined there.
+# The values specified in the template are the defaults.
+
+# The location of the junit4 JAR file. Needed for running Java unit tests.
+junit4.jar = ${basedir}/local/junit4.jar
+
+
+# ${projectdir} is typically not defined in the ant.local file. If you want
+# projectdir to be different from basedir, that's probably because you don't
+# want to modify anything in basedir. Then you don't want to put an ant.local
+# file there either. Rather, define an alias that calls Ant with a property:
+# alias build="ant -Dprojectdir=...wherever... -f ...basedir.../build.xml"
+# See setup.xml for the meaning of projectdir.
+#
+# projectdir = ${basedir}
+

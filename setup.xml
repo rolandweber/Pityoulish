@@ -16,7 +16,14 @@
 <property name="dir.jdoc"	value="${projectdir}/jdoc"	/>
 
 <!-- Custom settings -->
-<property file="${projectdir}/build.local"/>
+<property file="${projectdir}/ant.local"/>
+
+
+<!-- External dependencies.
+     These are expected to be installed on your system.
+     You can use ant.local to specify their location.
+-->
+<property name="junit4.jar" location="local/junit4.jar" />
 
 
 <!-- Compiler and other tool settings (defaults)
