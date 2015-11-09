@@ -11,9 +11,9 @@
 -->
 <property name="projectdir" value="${basedir}" />
 
-<property name="dir.target"	value="${projectdir}/target"	/>
-<property name="dir.tmp"	value="${projectdir}/tmp"	/>
-<property name="dir.jdoc"	value="${projectdir}/jdoc"	/>
+<property name="dir.target"     value="${projectdir}/target"    />
+<property name="dir.tmp"        value="${projectdir}/tmp"       />
+<property name="dir.jdoc"       value="${projectdir}/jdoc"      />
 
 <!-- Custom settings -->
 <property file="${projectdir}/ant.local"/>
@@ -27,8 +27,8 @@
 
 
 <!-- Compiler and other tool settings (defaults)
-	jc.*	= javac
-	jdoc.*	= javadoc
+        jc.*    = javac
+        jdoc.*  = javadoc
   -->
 <property name="jc.debug" value="true"/><!-- line numbers in stack traces -->
 <property name="jc.optmz" value="true"/>
@@ -71,11 +71,11 @@
     <format property="build.time" pattern="yyyy-MM-dd_HH.mm.ss" />
   </tstamp>
   <property name="build.stamp.dir"
-	    location="${dir.tmp}/stamps" />
+            location="${dir.tmp}/stamps" />
   <property name="build.stamp.name"
-	    value="build_${build.time}" />
+            value="build_${build.time}" />
   <property name="build.stamp.file"
-	    location="${build.stamp.dir}/${build.stamp.name}" />
+            location="${build.stamp.dir}/${build.stamp.name}" />
   <mkdir dir="${build.stamp.dir}" />
   <echo file="${build.stamp.file}" message="${build.time}" />
 </target>
