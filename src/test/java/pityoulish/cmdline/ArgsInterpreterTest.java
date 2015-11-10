@@ -28,11 +28,8 @@ public class ArgsInterpreterTest
     public void describeUsage(Appendable app, String eol, String cmd)
       throws java.io.IOException
     {
-      app.append("Backend:");
-      app.append(String.valueOf(numArgs));
-      app.append(' ');
-      app.append(cmd);
-      app.append(eol);
+      app.append("Backend:").append(String.valueOf(numArgs))
+        .append(' ').append(cmd).append(eol);
     }
 
     public int getArgCount()
@@ -77,11 +74,8 @@ public class ArgsInterpreterTest
     public void describeUsage(Appendable app, String eol)
       throws java.io.IOException
     {
-      app.append("Command:");
-      app.append(commandName);
-      app.append('#');
-      app.append(String.valueOf(numArgs));
-      app.append(eol);
+      app.append("Command:").append(commandName)
+        .append('#').append(String.valueOf(numArgs)).append(eol);
     }
 
     public boolean handle(StatusCode status, String name, String... args)

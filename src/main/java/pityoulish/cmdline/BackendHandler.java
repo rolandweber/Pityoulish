@@ -60,8 +60,7 @@ public interface BackendHandler
     public void describeUsage(Appendable app, String eol, String cmd)
       throws IOException
     {
-      app.append(cmd);
-      app.append(eol);
+      app.append(cmd).append(eol);
     }
 
     public int getArgCount()
