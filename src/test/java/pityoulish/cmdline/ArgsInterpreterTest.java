@@ -84,23 +84,20 @@ public class ArgsInterpreterTest
       app.append(eol);
     }
 
-    public boolean supports(String name, String... args)
-    {
-      return commandName.equalsIgnoreCase(name) && (numArgs == args.length);
-    }
-
-
-    public int handle(String name, String... args)
+    public boolean handle(StatusCode status, String name, String... args)
       throws Exception
     {
+      if (!commandName.equalsIgnoreCase(name) || (numArgs != args.length))
+         return false;
+
       receivedArgs = args;
       assertTrue("wrong command", commandName.equalsIgnoreCase(name));
       assertEquals("wrong number of arguments", numArgs, args.length);
 
-      int status = 0;
+      status.code = 0;
       if (args.length > 0)
-         status = Integer.parseInt(args[args.length-1]);
-      return status;
+         status.code = Integer.parseInt(args[args.length-1]);
+      return true;
     }
 
   } // class MockCommandHandler

@@ -76,16 +76,18 @@ public class ArgsInterpreter
      }
 
     final String[] beargs  = Arrays.copyOfRange(args, 0, beargc);
+    backendHandler.setBackend(beargs);
+
     final String   cmdname = args[beargc];
     final String[] cmdargs = Arrays.copyOfRange(args, 3, args.length);
 
+    StatusCode status = new StatusCode();
+    boolean handled = false;
     for(CommandHandler ch : cmdHandlers)
      {
-       if (ch.supports(cmdname, cmdargs))
-        {
-          backendHandler.setBackend(beargs);
-          return ch.handle(cmdname, cmdargs);
-        }
+       handled = ch.handle(status, cmdname, cmdargs);
+       if (handled)
+          return status.code;
      }
 
     System.out.println(getUsage());
