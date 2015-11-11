@@ -114,34 +114,21 @@ public class TutorialCommandHandler
    }
 
 
+  /**
+   * Prints the local IP addresses for all network interfaces.
+   */
   protected int handleLocalCmd()
     throws Exception
    {
-     for(NetworkInterface nwi :
-           Collections.list(NetworkInterface.getNetworkInterfaces()))
+     for (NetworkInterface nwi :
+            Collections.list(NetworkInterface.getNetworkInterfaces()))
       {
         //@@@ Move text to properties files. Yes, the simple ones too.
         System.out.println("Network Interface '"+nwi.getName()+"'");
 
-        for(InetAddress ina : Collections.list(nwi.getInetAddresses()))
+        for (InetAddress ina : Collections.list(nwi.getInetAddresses()))
          {
-           String ipaddr = ina.getHostAddress();
-           String hostname = ina.getHostName();
-           String fqhostname = ina.getCanonicalHostName();
-
-           if (fqhostname.equals(hostname))
-              fqhostname = null;
-           if (hostname.equals(ipaddr))
-              hostname = null;
-
-           StringBuilder sb = new StringBuilder(80);
-           sb.append("   ").append(ipaddr);
-           if (hostname != null)
-              sb.append("   ").append(hostname);
-           if (fqhostname != null)
-              sb.append("   ").append(fqhostname);
-
-           System.out.println(sb);
+           System.out.println(formatInetAddress(ina));
          }
       }
 
@@ -152,14 +139,57 @@ public class TutorialCommandHandler
   protected int handleIsLocalCmd(String hostname)
     throws Exception
    {
+     // Create disconnected socket, try to bind to 'hostname'
      throw new UnsupportedOperationException("@@@ not yet implemented");
    }
 
 
+  /**
+   * Performs a DNS lookup on a hostname and prints the results.
+   *
+   * @param hostname    the hostname or string-encoded IP address
+   *                    for which to perform a DNS lookup
+   */
   protected int handleLookupCmd(String hostname)
     throws Exception
    {
-     throw new UnsupportedOperationException("@@@ not yet implemented");
+     //@@@ Move text to properties files.
+     System.out.println("Looking up '"+hostname+"'...");
+
+     try {
+       for (InetAddress ina : InetAddress.getAllByName(hostname))
+        {
+          System.out.println(formatInetAddress(ina));
+        }
+     } catch (java.net.UnknownHostException uhx) {
+       System.out.println(uhx.getMessage()); // no need for the stack trace
+     }
+
+     return 0;
    }
 
+
+  /**
+   * Formats an {@link InetAddress} into a readable string.
+   */
+  public static String formatInetAddress(InetAddress ina)
+   {
+     String ipaddr = ina.getHostAddress();
+     String hostname = ina.getHostName();
+     String fqhostname = ina.getCanonicalHostName();
+
+     if (fqhostname.equals(hostname))
+        fqhostname = null;
+     if (hostname.equals(ipaddr))
+        hostname = null;
+
+     StringBuilder sb = new StringBuilder(80);
+     sb.append("   ").append(ipaddr);
+     if (hostname != null)
+        sb.append("   ").append(hostname);
+     if (fqhostname != null)
+        sb.append("   ").append(fqhostname);
+
+     return sb.toString();
+   }
 }
