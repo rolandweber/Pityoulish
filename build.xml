@@ -38,6 +38,9 @@ support a course on "Distributed Systems"
     <group title="Common">
       <package name="pityoulish.cmdline" />
     </group>
+    <group title="Tutorial">
+      <package name="pityoulish.tutorial*" />
+    </group>
 <!--
     <group title="Sockets">
       <package name="pityoulish.skt*" />
