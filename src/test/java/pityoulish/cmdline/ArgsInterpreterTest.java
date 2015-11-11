@@ -122,6 +122,30 @@ public class ArgsInterpreterTest
 
 
   /**
+   * Creates an interpreter with another default set of handlers.
+   * <ul>
+   * <li>Backend handler with no arguments</li>
+   * <li>Command handler for "none" without arguments</li>
+   * <li>Command handler for "one" with one argument</li>
+   * <li>Command handler for "two" with two arguments</li>
+   * <li>Command handler for "one" with two arguments</li>
+   * </ul>
+   *
+   * @return the argument interpreter
+   */
+  public static ArgsInterpreter createAltTestSubject()
+  {
+    MockBackendHandler mbh = new MockBackendHandler(0);
+    MockCommandHandler ch0 = new MockCommandHandler("none", 0);
+    MockCommandHandler ch1 = new MockCommandHandler("one", 1);
+    MockCommandHandler ch2 = new MockCommandHandler("two", 2);
+    MockCommandHandler ch12 = new MockCommandHandler("one", 2);
+
+    return new ArgsInterpreter(mbh, ch0, ch1, ch2, ch12);
+  }
+
+
+  /**
    * Asserts that the backend handler has been called with the expected args.
    *
    * @param args   the arguments for the backend, and possibly more
@@ -280,6 +304,20 @@ public class ArgsInterpreterTest
   }
 
 
+  @Test public void handleNone_Alt_OK()
+    throws Exception
+  {
+    ArgsInterpreter ai = createAltTestSubject();
+    String[] args = new String[]{ "none" };
+
+    int status = ai.handle(args);
+
+    assertEquals("unexpected status", 0, status);
+    assertBackendArgs(args, 0, (MockBackendHandler) ai.backendHandler);
+    assertCommandArgs(args, 0, (MockCommandHandler) ai.cmdHandlers.get(0));
+  }
+
+
   @Test public void handleOne_OK()
     throws Exception
   {
@@ -309,6 +347,20 @@ public class ArgsInterpreterTest
   }
 
 
+  @Test public void handleOne_Alt_OK()
+    throws Exception
+  {
+    ArgsInterpreter ai = createAltTestSubject();
+    String[] args = new String[]{ "one", "111" };
+
+    int status = ai.handle(args);
+
+    assertEquals("unexpected status", 111, status);
+    assertBackendArgs(args, 0, (MockBackendHandler) ai.backendHandler);
+    assertCommandArgs(args, 1, (MockCommandHandler) ai.cmdHandlers.get(1));
+  }
+
+
   @Test public void handleTwo_OK()
     throws Exception
   {
@@ -323,6 +375,20 @@ public class ArgsInterpreterTest
   }
 
 
+  @Test public void handleTwo_Alt_OK()
+    throws Exception
+  {
+    ArgsInterpreter ai = createAltTestSubject();
+    String[] args = new String[]{ "two", "111", "222" };
+
+    int status = ai.handle(args);
+
+    assertEquals("unexpected status", 222, status);
+    assertBackendArgs(args, 0, (MockBackendHandler) ai.backendHandler);
+    assertCommandArgs(args, 2, (MockCommandHandler) ai.cmdHandlers.get(2));
+  }
+
+
   @Test public void handleOneTwo_OK()
     throws Exception
   {
@@ -333,6 +399,20 @@ public class ArgsInterpreterTest
 
     assertEquals("unexpected status", 112, status);
     assertBackendArgs(args, 2, (MockBackendHandler) ai.backendHandler);
+    assertCommandArgs(args, 2, (MockCommandHandler) ai.cmdHandlers.get(3));
+  }
+
+
+  @Test public void handleOneTwo_Alt_OK()
+    throws Exception
+  {
+    ArgsInterpreter ai = createAltTestSubject();
+    String[] args = new String[]{ "one", "111", "112" };
+
+    int status = ai.handle(args);
+
+    assertEquals("unexpected status", 112, status);
+    assertBackendArgs(args, 0, (MockBackendHandler) ai.backendHandler);
     assertCommandArgs(args, 2, (MockCommandHandler) ai.cmdHandlers.get(3));
   }
 

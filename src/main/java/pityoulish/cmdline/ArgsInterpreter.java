@@ -79,7 +79,7 @@ public class ArgsInterpreter
     backendHandler.setBackend(beargs);
 
     final String   cmdname = args[beargc];
-    final String[] cmdargs = Arrays.copyOfRange(args, 3, args.length);
+    final String[] cmdargs = Arrays.copyOfRange(args, beargc+1, args.length);
 
     StatusCode status = new StatusCode();
     boolean handled = false;
