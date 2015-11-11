@@ -64,4 +64,32 @@ public abstract class CommandHandlerBase<C extends Enum<C> & Command>
      return ok ? cmd : null;
    }
 
+
+  // non-javadoc, see interface CommandHandler
+  public boolean handle(StatusCode status, String name, String... args)
+    throws Exception
+   {
+     final C cmd = checkCommand(name, args);
+     if (cmd == null)
+        return false;
+
+     status.code = handleCommand(cmd, args);
+     return true;
+   }
+
+
+  /**
+   * Called by {@link #handle} for supported commands.
+   *
+   * @param cmd     the command to handle
+   * @param args    the command-specific arguments
+   *
+   * @return    the status code
+   *
+   * @throws Exception  in case of a problem
+   */
+  protected abstract int handleCommand(C cmd, String... args)
+    throws Exception
+    ;
+
 }
