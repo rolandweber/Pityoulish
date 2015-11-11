@@ -6,9 +6,10 @@
 package pityoulish.tutorial;
 
 import java.util.Collections;
-//import java.util.Enumeration;
 import java.net.NetworkInterface;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.CommandHandlerBase;
@@ -136,11 +137,41 @@ public class TutorialCommandHandler
    }
 
 
+  /**
+   * Checks whether a hostname refers to the local host.
+   *
+   * @param hostname    the hostname or string-encoded IP address to check
+   *
+   * @return    0 if the argument is the local host, -1 if it isn't
+   *
+   * @throws Exception  in case of a problem
+   */
   protected int handleIsLocalCmd(String hostname)
     throws Exception
    {
-     // Create disconnected socket, try to bind to 'hostname'
-     throw new UnsupportedOperationException("@@@ not yet implemented");
+     // this may perform a DNS lookup, with all sorts of resulting problems
+     InetSocketAddress isa = new InetSocketAddress(hostname, 0);
+
+     int result = -1;
+
+     // if the address is local, we can bind a socket to it
+     Socket so = new Socket();
+     try {
+       so.bind(isa);
+       result = 0;
+       //@@@ Move text to properties files.
+       System.out.println("'"+hostname+"' is local");
+       // The ephemereal port chosen by bind() is now allocated and
+       // cannot be used elsewhere for some time, typically minutes.
+
+     } catch (java.io.IOException iox) {
+       System.out.println(iox.toString());
+       result = -1;
+       //@@@ Move text to properties files.
+       System.out.println("'"+hostname+"' is not local");
+     }
+
+     return result;
    }
 
 
