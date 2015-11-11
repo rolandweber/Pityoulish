@@ -5,6 +5,11 @@
  */
 package pityoulish.tutorial;
 
+import java.util.Collections;
+//import java.util.Enumeration;
+import java.net.NetworkInterface;
+import java.net.InetAddress;
+
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.CommandHandlerBase;
 
@@ -112,7 +117,35 @@ public class TutorialCommandHandler
   protected int handleLocalCmd()
     throws Exception
    {
-     throw new UnsupportedOperationException("@@@ not yet implemented");
+     for(NetworkInterface nwi :
+           Collections.list(NetworkInterface.getNetworkInterfaces()))
+      {
+        //@@@ Move text to properties files. Yes, the simple ones too.
+        System.out.println("Network Interface '"+nwi.getName()+"'");
+
+        for(InetAddress ina : Collections.list(nwi.getInetAddresses()))
+         {
+           String ipaddr = ina.getHostAddress();
+           String hostname = ina.getHostName();
+           String fqhostname = ina.getCanonicalHostName();
+
+           if (fqhostname.equals(hostname))
+              fqhostname = null;
+           if (hostname.equals(ipaddr))
+              hostname = null;
+
+           StringBuilder sb = new StringBuilder(80);
+           sb.append("   ").append(ipaddr);
+           if (hostname != null)
+              sb.append("   ").append(hostname);
+           if (fqhostname != null)
+              sb.append("   ").append(fqhostname);
+
+           System.out.println(sb);
+         }
+      }
+
+     return 0;
    }
 
 
