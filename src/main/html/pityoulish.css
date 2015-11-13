@@ -1,0 +1,87 @@
+/*
+ * This work is released into the Public Domain under the
+ * terms of the Creative Commons CC0 1.0 Universal license.
+ * https://creativecommons.org/publicdomain/zero/1.0/
+ */
+/* Looking for color inspiration...
+ * green brown:      http://www.flickr.com/photos/46685575@N06/19956081288
+ * green blue:       https://www.flickr.com/photos/46685575@N06/19911754752
+ * green gray:       https://www.flickr.com/photos/69403533@N07/20231776433
+ * gray:             https://www.flickr.com/photos/67272076@N04/6159360361
+ * gray:             https://www.flickr.com/photos/23818529@N04/5568187791
+ * green beige gray: http://www.dreamstime.com/54565541
+ * blue green gray:  http://www.gettyimages.de/fotos/148583949
+ * black gray:       https://www.flickr.com/photos/43150087@N04/10126372706
+ * blue orange:      http://www.transientlight.co.uk/photo/sunset-loch-pityoulish/
+ * green gray:       http://www.cairngormsgallery.co.uk/loch%20pityoulish/loch%20pityoulish.htm
+ * blue green:       http://www.donaldfordimages.com/gallery/scripts/prodView.asp?idproduct=453055352
+ * Yes, I found the photography by Jodie Mann.
+ * Not the kind of inspiration I was looking for.
+ */
+
+body {
+  font-family: sans-serif;
+}
+
+@media screen {
+  body {
+    color: #000000;
+    background-color: #fffcfb;
+  }
+
+  h1 {
+    color: #473331;
+    background-color: #ccb69c;
+  }
+
+  a {
+    color: #b45216;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0px 1px;
+    border-radius: 8px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    background-color: #e6e3e2;
+  }
+
+  a:visited {
+    color: #762208;
+  }
+} /* @media screen */
+
+
+h1.title {
+  text-align: center;
+}
+h1 {
+  padding: 2px 0.8em;
+  border-radius: 17px;
+}
+
+h2 {
+  padding: 2px 0.8em;
+  border-left: 3px solid;
+  border-bottom: 2px solid;
+  border-bottom-left-radius: 17px;
+  border-top-left-radius: 8px;
+}
+
+@media screen {
+  h2 {
+    color: #473331;
+    border-color: #ccb69c;
+  }
+} /* @media screen */
+
+
+p.abstract {
+  margin: 0 17% 8px;
+  font-style: italic;
+}
+
+p.larger {
+  font-size: 120%;
+}
