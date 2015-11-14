@@ -10,8 +10,8 @@ junit4.jar = ${basedir}/local/junit4.jar
 # projectdir to be different from basedir, that's probably because you don't
 # want to modify anything in basedir. Then you don't want to put an ant.local
 # file there either. Rather, define an alias that calls Ant with a property:
-# alias build="ant -Dprojectdir=...wherever... -f ...basedir.../build.xml"
-# See setup.xml for the meaning of projectdir.
+#    alias build="ant -Dprojectdir=...wherever... -f ...basedir.../build.xml"
+# See ant/setup.xml for the meaning of projectdir.
 #
 # projectdir = ${basedir}
 

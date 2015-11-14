@@ -4,7 +4,7 @@
   terms of the Creative Commons CC0 1.0 Universal license.
   https://creativecommons.org/publicdomain/zero/1.0/
 -->
-<project name="setup" basedir=".">
+<project name="setup" basedir="..">
 <!-- ${basedir} is the root directory for input files (source).
      ${projectdir} is the root directory for all generated files.
      To treat ${basedir} as read-only, point ${projectdir} somewhere else.
