@@ -37,6 +37,7 @@ body > p, body > div, body > dl, body > .main
   h1 {
     color: #473331;
     background-color: #ccb69c;
+    border-radius: 17px;
   }
 
   a {
@@ -57,28 +58,47 @@ body > p, body > div, body > dl, body > .main
   }
 } /* @media screen */
 
+@media print {
+  h1 {
+    border-radius: 0px;
+    border-bottom: 3px solid #cccccc;
+  }
+  a {
+    color: black;
+    text-decoration: none;
+  }
+} /* @media print */
+
 
 h1.title {
   text-align: center;
 }
 h1 {
   padding: 2px 0.8em;
-  border-radius: 17px;
 }
 
 h2 {
   margin-top: 1.2em;
-  padding: 2px 0.8em;
-  border-left: 3px solid;
+  padding: 0px;
   border-bottom: 2px solid;
-  border-bottom-left-radius: 17px;
-  border-top-left-radius: 8px;
+  border-radius: 12px;
+}
+h2 > span {
+  display: inline-block;
+  padding: 2px 0.8em;
+  margin: 0px;
+  margin-bottom: -1px; /* overlap the border with parent <h2> */
+  border-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 @media screen {
   h2 {
-    color: #473331;
     border-color: #ccb69c;
+  }
+  h2 > span {
+    color: #473331;
+    background-color: #ccb69c;
   }
 } /* @media screen */
 
@@ -105,13 +125,25 @@ h3 > span {
 
 
 p.abstract {
-  margin: 0 17% 8px;
   font-style: italic;
 }
+
+@media screen {
+  p.abstract {
+    margin: 0 17% 8px;
+  }
+} /* @media screen */
+
+@media print {
+  p.abstract {
+    margin: 0 8% 8px;
+  }
+} /* @media print */
 
 p.larger {
   font-size: 120%;
 }
+
 
 
 /* list styles */
