@@ -32,6 +32,10 @@ body > p, body > div, body > dl, body > .main
   body {
     color: #000000;
     background-color: #fffcfb;
+
+    border-bottom: 1px dashed #ccb69c;
+    padding-bottom: 2em;
+    margin-bottom: 26em;
   }
 
   h1 {
@@ -60,7 +64,7 @@ body > p, body > div, body > dl, body > .main
 
 @media print {
   h1 {
-    border-radius: 0px;
+    border-radius: 17px;
     border-bottom: 3px solid #cccccc;
   }
   a {
@@ -102,6 +106,12 @@ h2 > span {
   }
 } /* @media screen */
 
+@media print {
+  h2, h2 > span {
+    border-color: #cccccc;
+  }
+} /* @media print */
+
 h3 {
 }
 h3 > span {
@@ -124,19 +134,27 @@ h3 > span {
 } /* @media screen */
 
 
+@media print {
+  h3, h3 > span {
+    border-color: #cccccc;
+  }
+} /* @media print */
+
+
+
 p.abstract {
   font-style: italic;
 }
 
 @media screen {
   p.abstract {
-    margin: 0 17% 8px;
+    margin: 0 17% 1em;
   }
 } /* @media screen */
 
 @media print {
   p.abstract {
-    margin: 0 8% 8px;
+    margin: 0 8% 1em;
   }
 } /* @media print */
 
@@ -154,4 +172,17 @@ dl > dt {
 
 dl > dd {
   margin: 3px 1.7em 8px;
+}
+
+
+ul {
+  margin: 0px;
+}
+
+ul > li {
+  margin-bottom: 0.35em;
+}
+
+ul span.title {
+  font-weight: bold;
 }
