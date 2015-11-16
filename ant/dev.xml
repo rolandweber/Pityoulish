@@ -36,6 +36,7 @@ Targets for development, for working with the (Java) code.
     >
     <group title="Common">
       <package name="pityoulish.cmdline" />
+      <package name="pityoulish.tickets" />
     </group>
     <group title="Tutorial">
       <package name="pityoulish.tutorial*" />

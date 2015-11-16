@@ -1,0 +1,20 @@
+<html>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<body>
+Ticket management on the server.
+
+<p>
+A {@link pityoulish.tickets.Ticket} always resides on the server.
+Only the {@link pityoulish.tickets.Ticket#getToken token},
+a string identifier for the ticket, is passed to a client.
+The {@link pityoulish.tickets.TicketManager}
+keeps track of issued tickets and maps tokens to tickets.
+Authorized operations are counted down by the tickets themselves.
+</p>
+
+</body>
+</html>
