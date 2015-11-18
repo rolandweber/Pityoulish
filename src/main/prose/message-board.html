@@ -64,6 +64,8 @@ Each message on the board comprises...
   Otherwise, the server returns the oldest messages on the board.
   The client specifies a maximum batch size.
   The server returns as many messages as are available and fit in the batch.
+  If the client provides a marker, the server indicates if messages might
+  have dropped off the board since the preceding call.
 </dd>
 
 <dt id="PutMessage">Put Message</dt>
