@@ -10,7 +10,9 @@ import java.net.NetworkInterface;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.io.IOException;
 
+import pityoulish.outtake.Missing;
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.CommandHandlerBase;
 
@@ -59,7 +61,7 @@ public class TutorialCommandHandler
 
   // non-javadoc, see interface Command
   public void describeUsage(Appendable app, String eol)
-    throws java.io.IOException
+    throws IOException
   {
     //@@@ Move help text to properties files. EOL handling is annoying though.
     app.append("latin").append(eol)
@@ -147,24 +149,28 @@ public class TutorialCommandHandler
    * @throws Exception  in case of a problem
    */
   protected int handleIsLocalCmd(String hostname)
-    throws Exception
    {
      // this may perform a DNS lookup, with all sorts of resulting problems
      InetSocketAddress isa = new InetSocketAddress(hostname, 0);
 
      int result = -1;
-
-     // if the address is local, we can bind a socket to it
-     Socket so = new Socket();
      try {
+       // if the address is local, we can bind a socket to it
+       // PYL:keep
+       Missing.here("bind a socket to a hostname");
+       Missing.pretend(IOException.class);
+       // PYL:cut
+       Socket so = new Socket();
        so.bind(isa);
+       // PYL:end
+
        result = 0;
        //@@@ Move text to properties files.
        System.out.println("'"+hostname+"' is local");
        // The ephemereal port chosen by bind() is now allocated and
        // cannot be used elsewhere for some time, typically minutes.
 
-     } catch (java.io.IOException iox) {
+     } catch (IOException iox) {
        System.out.println(iox.toString());
        result = -1;
        //@@@ Move text to properties files.
@@ -182,11 +188,15 @@ public class TutorialCommandHandler
    *                    for which to perform a DNS lookup
    */
   protected int handleLookupCmd(String hostname)
-    throws Exception
    {
      //@@@ Move text to properties files.
      System.out.println("Looking up '"+hostname+"'...");
 
+     // PYL:keep
+     Missing.here("look up the InetAddress(es) of a hostname");
+     // Use formatInetAddress below to print all the addresses.
+     // Also handle the case when the hostname has no address at all.
+     // PYL:cut
      try {
        for (InetAddress ina : InetAddress.getAllByName(hostname))
         {
@@ -195,6 +205,7 @@ public class TutorialCommandHandler
      } catch (java.net.UnknownHostException uhx) {
        System.out.println(uhx.getMessage()); // no need for the stack trace
      }
+     // PYL:end
 
      return 0;
    }

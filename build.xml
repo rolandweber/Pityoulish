@@ -4,7 +4,7 @@
   terms of the Creative Commons CC0 1.0 Universal license.
   https://creativecommons.org/publicdomain/zero/1.0/
 -->
-<project name="Pityoulish" default="compile" basedir=".">
+<project name="Pityoulish" default="default" basedir=".">
 <description>
 A collection of programming exercises to
 support a course on "Distributed Systems"
@@ -12,5 +12,7 @@ support a course on "Distributed Systems"
 
 <import file="ant/setup.xml" />
 <import file="ant/dev.xml" />
+
+<target name="default" depends="compile,compile-pitfill" />
 
 </project>

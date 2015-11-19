@@ -23,6 +23,85 @@ Targets for development, for working with the (Java) code.
   </jc>
 </target>
 
+<target name="compile-pitfill" depends="preprocess"
+        description="compiles all Java sources, after preprocessing">
+  <jc destdir="${dir.tmp}/classes/pitted">
+    <src path="${dir.tmp}/src-pitted" />
+  </jc>
+  <jc destdir="${dir.tmp}/classes/filled">
+    <src path="${dir.tmp}/src-filled" />
+  </jc>
+</target>
+
+
+<!-- Preprocess: cut out parts of the source code. The result is:
+     - pitted: source with some code missing and calls to Missing.here()
+     - filled: source with complete code and no trace of Missing.here()
+     The code contains special comments to indicate what goes where:
+
+  // PYL:keep
+     { stuff here ends up in 'pitted', but not in 'filled' }
+  // PYL:cut
+     { stuff here ends up in 'filled', but not in 'pitted' }
+  // PYL:end
+
+     Lines with the special PYL:* tags are removed from either version.
+     Besides the tag, they may only contain spaces and comment characters
+     slashe (/) and asterisk (*), both before and after the tag.
+     That allows for tricks to keep the un-processed sources compilable.
+-->
+<target name="preprocess">
+  <delete quiet="true">
+    <fileset dir="${dir.tmp}/src-pitted" />
+    <fileset dir="${dir.tmp}/src-filled" />
+  </delete>
+
+  <!-- 'pitted' source code -->
+
+  <copy todir="${dir.tmp}/src-pitted">
+    <fileset dir="src/main/java" />
+  </copy>
+  <!-- remove just the PYL:keep line -->
+  <replaceregexp match="(\r?\n)[ /*]*PYL:keep[ /*]*\r?\n"
+		 replace="\1"
+		 flags="gs">
+    <fileset dir="${dir.tmp}/src-pitted" />
+  </replaceregexp>
+  <!-- remove everything from PYL:cut to PYL:end, reluctant -->
+  <replaceregexp match="(\r?\n)[ /*]*PYL:cut.*?PYL:end[ /*]*\r?\n"
+		 replace="\1"
+		 flags="gs">
+    <fileset dir="${dir.tmp}/src-pitted" />
+  </replaceregexp>
+
+
+  <!-- 'filled' source code -->
+
+  <copy todir="${dir.tmp}/src-filled">
+    <fileset dir="src/main/java">
+      <exclude name="**/outtake/**" />
+    </fileset>
+  </copy>
+  <!-- remove everything from PYL:keep to PYL:cut, reluctant -->
+  <replaceregexp match="(\r?\n)[ /*]*PYL:keep.*?PYL:cut[ /*]*\r?\n"
+		 replace="\1"
+		 flags="gs">
+    <fileset dir="${dir.tmp}/src-filled" />
+  </replaceregexp>
+  <!-- remove just the PYL:end tag line -->
+  <replaceregexp match="(\r?\n)[ /*]*PYL:end[ /*]*\r?\n"
+		 replace="\1"
+		 flags="gs">
+    <fileset dir="${dir.tmp}/src-filled" />
+  </replaceregexp>
+  <!-- remove the import of Missing -->
+  <replaceregexp match="(\r?\n)import .*outtake.Missing;[ ]*\r?\n"
+		 replace="\1"
+		 flags="g">
+    <fileset dir="${dir.tmp}/src-filled" />
+  </replaceregexp>
+</target>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <target name="jdoc" description="builds JavaDocs from all Java sources">
@@ -36,8 +115,9 @@ Targets for development, for working with the (Java) code.
     >
     <group title="Common">
       <package name="pityoulish.cmdline" />
-      <package name="pityoulish.tickets" />
       <package name="pityoulish.msgboard" />
+      <package name="pityoulish.outtake" />
+      <package name="pityoulish.tickets" />
     </group>
     <group title="Tutorial">
       <package name="pityoulish.tutorial*" />
