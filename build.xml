@@ -12,6 +12,7 @@ support a course on "Distributed Systems"
 
 <import file="ant/setup.xml" />
 <import file="ant/dev.xml" />
+<import file="ant/prep-java.xml" />
 
 <target name="default" depends="compile,compile-pitfill" />
 

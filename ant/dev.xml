@@ -12,6 +12,12 @@ Targets for development, for working with the (Java) code.
 <import file="setup.xml" />
 
 
+<property name="src.pitted"     location="${dir.tmp}/src-pitted" />
+<property name="src.filled"     location="${dir.tmp}/src-filled" />
+<property name="classes.pitted" location="${dir.tmp}/classes/pitted" />
+<property name="classes.filled" location="${dir.tmp}/classes/filled" />
+
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Development: compile and javadoc   (see further below for unit tests)
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -25,11 +31,11 @@ Targets for development, for working with the (Java) code.
 
 <target name="compile-pitfill" depends="preprocess"
         description="compiles all Java sources, after preprocessing">
-  <jc destdir="${dir.tmp}/classes/pitted">
-    <src path="${dir.tmp}/src-pitted" />
+  <jc destdir="${classes.pitted}">
+    <src path="${src.pitted}" />
   </jc>
-  <jc destdir="${dir.tmp}/classes/filled">
-    <src path="${dir.tmp}/src-filled" />
+  <jc destdir="${classes.filled}">
+    <src path="${src.filled}" />
   </jc>
 </target>
 
@@ -52,32 +58,32 @@ Targets for development, for working with the (Java) code.
 -->
 <target name="preprocess">
   <delete quiet="true">
-    <fileset dir="${dir.tmp}/src-pitted" />
-    <fileset dir="${dir.tmp}/src-filled" />
+    <fileset dir="${src.pitted}" />
+    <fileset dir="${src.filled}" />
   </delete>
 
   <!-- 'pitted' source code -->
 
-  <copy todir="${dir.tmp}/src-pitted">
+  <copy todir="${src.pitted}">
     <fileset dir="src/main/java" />
   </copy>
   <!-- remove just the PYL:keep line -->
   <replaceregexp match="(\r?\n)[ /*]*PYL:keep[ /*]*\r?\n"
 		 replace="\1"
 		 flags="gs">
-    <fileset dir="${dir.tmp}/src-pitted" />
+    <fileset dir="${src.pitted}" />
   </replaceregexp>
   <!-- remove everything from PYL:cut to PYL:end, reluctant -->
   <replaceregexp match="(\r?\n)[ /*]*PYL:cut.*?PYL:end[ /*]*\r?\n"
 		 replace="\1"
 		 flags="gs">
-    <fileset dir="${dir.tmp}/src-pitted" />
+    <fileset dir="${src.pitted}" />
   </replaceregexp>
 
 
   <!-- 'filled' source code -->
 
-  <copy todir="${dir.tmp}/src-filled">
+  <copy todir="${src.filled}">
     <fileset dir="src/main/java">
       <exclude name="**/outtake/**" />
     </fileset>
@@ -86,19 +92,19 @@ Targets for development, for working with the (Java) code.
   <replaceregexp match="(\r?\n)[ /*]*PYL:keep.*?PYL:cut[ /*]*\r?\n"
 		 replace="\1"
 		 flags="gs">
-    <fileset dir="${dir.tmp}/src-filled" />
+    <fileset dir="${src.filled}" />
   </replaceregexp>
   <!-- remove just the PYL:end tag line -->
   <replaceregexp match="(\r?\n)[ /*]*PYL:end[ /*]*\r?\n"
 		 replace="\1"
 		 flags="gs">
-    <fileset dir="${dir.tmp}/src-filled" />
+    <fileset dir="${src.filled}" />
   </replaceregexp>
   <!-- remove the import of Missing -->
   <replaceregexp match="(\r?\n)import .*outtake.Missing;[ ]*\r?\n"
 		 replace="\1"
 		 flags="g">
-    <fileset dir="${dir.tmp}/src-filled" />
+    <fileset dir="${src.filled}" />
   </replaceregexp>
 </target>
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="common" default="" basedir="..">
+<description>
+Common definitions for the exercise-specific Ant files.
+</description>
+
+<import file="setup.xml" /><!-- directory structure, time stamps -->
+<import file="dev.xml" /><!-- compilation and preprocessing -->
+
+
+<!--
+    Files that should be bundled in the HTML description of all exercises.
+    Files that contain a dash or underscore in their name are not common.
+    Those have to be bundled explicitly where needed.
+-->
+<fileset id="prose.common.files" dir="src/main/prose">
+  <include name="*" />
+  <exclude name="*-*" />
+  <exclude name="*_*" />
+</fileset>
+
+
+</project>

@@ -37,6 +37,9 @@
 <property name="jdoc.visibility" value="package" />
 <property name="jdoc.verbose" value="false" />
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Macros and Tasks
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <macrodef name="jc">
   <attribute name="destdir" />
@@ -53,16 +56,16 @@
 </macrodef>
 
 
-<target name="_clean" description="deletes temporary stuff">
-  <delete dir="${dir.tmp}" quiet="true" />
-</target>
+<presetdef name="jar.pty">
+  <jar filesonly="true">
+    <metainf dir="${build.stamp.dir}" includes="${build.stamp.name}" />
+  </jar>
+</presetdef>
 
-<target name="_cleaner" depends="_clean" 
- description="deletes generated stuff"
-  >
-  <delete dir="${dir.target}" quiet="true" />
-</target>
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Targets: timestamps and cleanup
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <target name="_tstamps"
  description="defines timestamp properties"
@@ -77,7 +80,21 @@
   <property name="build.stamp.file"
             location="${build.stamp.dir}/${build.stamp.name}" />
   <mkdir dir="${build.stamp.dir}" />
-  <echo file="${build.stamp.file}" message="${build.time}" />
+  <echo file="${build.stamp.file}"
+        message="${build.time}  https://github.com/rolandweber/pityoulish" />
+</target>
+
+
+
+<target name="_clean" description="deletes temporary stuff">
+  <delete dir="${dir.tmp}" quiet="true" />
+</target>
+
+<target name="_cleaner" depends="_clean" 
+ description="deletes generated stuff"
+  >
+  <delete dir="${dir.target}" quiet="true" />
+  <delete dir="${dir.jdoc}" quiet="true" />
 </target>
 
 </project>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="prep-java" default="prep-java" basedir="..">
+<description>
+Tutorial: Prepare for Java development.
+</description>
+
+<import file="common.xml" />
+
+<target name="prep-java" depends="tpj-all" />
+
+<!-- prefix of the target filenames -->
+<property name="prep-java.name"  value="tutorial" />
+<property name="prep-java.prose" location="${dir.target}/${prep-java.name}" />
+
+<property name="prep-java.tmp"   location="${dir.tmp}/prep-java" />
+<property name="prep-java.jdoc"  location="${prep-java.tmp}/jdoc" />
+
+
+<target name="tpj-clean">
+  <delete quiet="true">
+    <fileset dir="${prep-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${prep-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="tpj-jar" depends="_tstamps,compile-pitfill">
+
+  <!-- same pattern for sources and classes, pitted and filled -->
+  <patternset id="prep-java.into.jar">
+    <include name="pityoulish/tutorial/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/outtake/*" />
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${prep-java.name}-faulty.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.tutorial.Main" />
+    </manifest>
+    <fileset dir="${src.pitted}">
+      <patternset refid="prep-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.pitted}">
+      <patternset refid="prep-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+  <jar.pty destfile="${dir.target}/${prep-java.name}-good.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.tutorial.Main" />
+    </manifest>
+    <fileset dir="${src.filled}">
+      <patternset refid="prep-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.filled}">
+      <patternset refid="prep-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="tpj-jdoc" depends="preprocess">
+
+  <delete dir="${prep-java.tmp}/jdoc" quiet="true" />
+  <mkdir  dir="${prep-java.tmp}/jdoc" />
+
+  <javadoc destdir="${prep-java.tmp}/jdoc"
+    access="protected"
+    windowtitle="Tutorial: Prepare for Java Exercises"
+    nohelp="true"
+    encoding="ISO-8859-1"
+    >
+    <packageset dir="${src.pitted}">
+      <include name="pityoulish/tutorial" />
+      <include name="pityoulish/cmdline" />
+    </packageset>
+  </javadoc>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="tpj-prose">
+
+  <delete dir="${prep-java.prose}" />
+  <copy todir="${prep-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="tpj-*" />
+      <!-- include name="message-board.html" /-->
+    </fileset>
+  </copy>
+  <move file="${prep-java.prose}/tpj-index.html"
+        tofile="${prep-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="tpj-all" depends="_tstamps,tpj-jar,tpj-jdoc,tpj-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${prep-java.prose}">
+    <file file="${dir.target}/${prep-java.name}-faulty.jar" />
+    <fileset dir="${prep-java.tmp}" includes="jdoc/**" />
+  </copy>
+
+  <property name="prep-java.zip.prefix" value="${prep-java.name}" />
+
+  <zip destfile="${dir.target}/${prep-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${prep-java.name}"
+                prefix="${prep-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${prep-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>
