@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 /* Looking for color inspiration...
- * green brown:      http://www.flickr.com/photos/46685575@N06/19956081288
+ * green brown:      https://www.flickr.com/photos/46685575@N06/19956081288
  * green blue:       https://www.flickr.com/photos/46685575@N06/19911754752
  * green gray:       https://www.flickr.com/photos/69403533@N07/20231776433
  * gray:             https://www.flickr.com/photos/67272076@N04/6159360361
@@ -64,6 +64,7 @@ body > p, body > div, body > dl, body > .main
 
 @media print {
   h1 {
+    font-size: x-large;
     border-radius: 17px;
     border-bottom: 3px solid #cccccc;
   }
@@ -108,6 +109,7 @@ h2 > span {
 
 @media print {
   h2, h2 > span {
+    font-size: x-large;
     border-color: #cccccc;
   }
 } /* @media print */
@@ -164,7 +166,7 @@ p.larger {
 
 
 
-/* list styles */
+/* list styles ---------------------------------------- */
 
 dl > dt {
   font-weight: bold;
@@ -185,4 +187,64 @@ ul > li {
 
 ul span.title {
   font-weight: bold;
+}
+
+
+/* floating boxes with downloads ======================================== */
+
+div.box-right
+{
+ float: right;
+ margin-top: 0px;
+ margin-left: 4px;
+ margin-right: 0px; /* must look good below an <h2> */
+ padding: 4px 12px;
+
+ border: 1px solid;
+ border-radius: 12px;
+}
+
+@media screen {
+  div.box-right {
+    background-color: #cfe0d0;
+    border-color: #38602e;
+    width: 35%;
+    min-width: 26em;
+  }
+
+  div.box-right a {
+    font-weight: normal;
+  }
+
+  div.box-right a:hover {
+    background-color: #f1f3e6;
+  }
+
+  div.box-right a code {
+    font-weight: bold;
+  }
+} /* @media screen */
+
+@media print {
+  div.box-right {
+    border-color: #cccccc;
+    width: 25%;
+    min-width: 19em;
+    font-size: 90%
+  }
+} /* @media print */
+
+
+div.box-right dl
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+div.box-right dt, div.box-right dd
+{
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
