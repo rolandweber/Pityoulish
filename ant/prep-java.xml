@@ -99,7 +99,7 @@ Tutorial: Prepare for Java development.
     <fileset refid="prose.common.files" />
     <fileset dir="src/main/prose">
       <include name="tpj-*" />
-      <!-- include name="message-board.html" /-->
+      <include name="message-board.html" />
     </fileset>
   </copy>
   <move file="${prep-java.prose}/tpj-index.html"

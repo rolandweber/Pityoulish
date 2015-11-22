@@ -10,7 +10,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <title>Tutorial: Prepare for Java Exercises </title>
 </head>
 <body>
-<h1 id="board" class="title">
+<h1 id="tutorial" class="title">
   <span>Tutorial: Prepare for Java Exercises</span>
 </h1>
 <p class="abstract">
@@ -21,6 +21,70 @@ development procedures in your preferred development environment.
 
 <p class="larger">
 <i>Instructions still missing...</i>
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="run-jar"><span>Run the JAR</span></h2>
+
+<ol>
+<li>download the JAR:
+  <a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a>
+</li>
+<li><code>java -jar tutorial-faulty.jar</code> from the command line</li>
+<li>read the usage message</li>
+<li>test the available functions</li>
+<li>note what fails</li>
+</ol>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="study-source"><span>Study the Sources</span></h2>
+
+<ol>
+<li>list JAR contents: classes and source</li>
+<li>extract the JAR, create a project in your preferred IDE</li>
+<li>remove "-faulty" from the project name, you're going to fix things</li>
+<li>consult the <a href="jdoc/index.html">JavaDocs</a></li>
+<li>need to understand the Big Picture, easier with JavaDocs than IDE</li>
+<li>Code walkthrough...</li>
+<li>Entry point, take a guess or check the manifest</li>
+<li><code>Main</code> sets up handler</li>
+<li>ignore <code>pitoulish.cmdline</code> for now</li>
+<li>each command has a corresponding handler method</li>
+</ol>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="fix-problems"><span>Fix the Problems</span></h2>
+
+<ol>
+<li>call the first faulty command, interpret the stack trace,
+  navigate to the missing code</li>
+<li>Analyze:</li>
+<ol>
+  <li>What data is available, what is expected?</li>
+  <li>Search the standard JavaDocs for matching methods.</li>
+  <li>Add the missing code in the sources.</li>
+</ol>
+<li>compile the sources, build a new JAR</li>
+<li>run the new JAR, in command line or from IDE</li>
+<li>make sure <code>java -jar</code> works
+  <br/>
+  ...or else type the full name of the Main class on each invocation</li>
+<li>call the second faulty command
+  <br/>
+  (repeat steps from above, with less details)</li>
+</ol>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h1 id="msgboard"><span>Coming up...</span></h1>
+
+<p>
+  In the classroom exercises, you'll be facing a server which
+  implements the <a href="message-board.html">Message Board</a>.
+  Read the functional description now, so you are prepared.
 </p>
 
 </body>
