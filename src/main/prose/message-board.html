@@ -86,9 +86,8 @@ Tickets are issued to users. A user can hold only one ticket at a time.
 Tickets are valid for a limited timespan, in the range of a few minutes.
 Tickets authorize a limited number of operations, for example three.
 Exhausting the number of operations does not invalidate a ticket,
-but makes it useless. A ticket can be returned before it expires,
+but makes it useless. A ticket can be returned or replaced before it expires,
 even if the number of operations is exhausted.
-The user may then request a new ticket.
 </p>
 
 <ul>
@@ -112,7 +111,7 @@ The user may then request a new ticket.
 <dt id="ObtainTicket">Obtain Ticket</dt>
 <dd>
   Requests a ticket from the server.
-  The client provides the username for which to issue the ticket.
+  The client specifies the username for which to issue the ticket.
   If that user already holds a ticket, the operation fails.
   On success, the server returns a new ticket for the user.
   The server determines the timespan for which the ticket is valid,
@@ -130,6 +129,15 @@ The user may then request a new ticket.
   The client provides the ticket to return.
   On success, the server invalidates the ticket,
   so that the user may request a new one.
+</dd>
+
+<dt id="ReplaceTicket">Replace Ticket</dt>
+<dd>
+  Requests a ticket from the server, in replacement of another.
+  The client provides the ticket to replace.
+  On success, the server returns a new ticket for the user.
+  The effect is similar to calling <a href="#ReturnTicket">Return Ticket</a>,
+  followed by <a href="#ObtainTicket">Obtain Ticket</a>.
 </dd>
 </dl>
 
