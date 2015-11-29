@@ -117,7 +117,7 @@ public class TicketImpl implements Ticket
   public final boolean isExpired()
   {
     final long now = System.currentTimeMillis();
-    return (expiryTime < now);
+    return isExpired(now);
   }
 
   /**
@@ -130,7 +130,7 @@ public class TicketImpl implements Ticket
    */
   public final boolean isExpired(long when)
   {
-    return (expiryTime < when);
+    return (expiryTime <= when);
   }
 
 
