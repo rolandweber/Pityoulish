@@ -38,7 +38,11 @@ This tutorial comprises three phases:
     You fix the source code and build your own, working JAR from it.
   </dd>
 </dl>
-Finally, there is some information about the
+The <a href="#summary">summary</a> outlines the steps you performed
+in order to complete the tutorial. At the same time, it provides
+a recipe to follow when working on a Java classroom exercise.
+
+Last but not least, there is some information about the
 <a href="#msgboard">upcoming</a> exercises.
 Reading it upfront will give you a head start.
 </div>
@@ -70,7 +74,7 @@ Version 1.7 or later is needed. If the <code>java</code> command is not found,
 you have to investigate why. Most likely it is just missing from the
 search path. Locate an installed JVM or JDK and add its <code>bin</code>
 directory to the <code>PATH</code> environment variable,
-or use full paths to invoke its commands.
+or use the full path to run <code>java</code> and related utilities.
 If there is neither JVM nor JDK, install a JDK. You'll need it later anyway.
 How to do that depends on your operating system and the JDK you want to use.
 <!-- @@@ TODO: warn about the adware installed by Oracle on Windows? -->
@@ -117,7 +121,7 @@ or figure out how to
 <h3 id="test-commands"><span>Test the Commands</span></h3>
 
 <p>
-The downloaded JAR supports three more commands.
+The downloaded JAR supports three more commands besides <code>latin</code>.
 They cover the technical contents of this tutorial: IP addresses and hostnames.
 Let's try them one after another, starting with <code>local</code>.
 </p>
@@ -142,7 +146,7 @@ Does yours?
 </p>
 
 <p>
-The remaining two commands expect an argument. That can be a hostname or
+The remaining two commands expect an argument, which can be a hostname or
 an IP address. The usage instructions only mention hostnames, but all
 operating systems are smart enough to handle IP addresses as well.
 Let's try both commands with 'localhost' as the argument.
@@ -164,8 +168,8 @@ Dang! Both commands are broken. Well, there had to be a reason why the JAR
 is called 'faulty'. The class of the exception,
 <code>pityoulish.outtake.Missing</code>, indicates that something was
 intentionally left out of the program. And you are expected to fill it in.
-If you see other exceptions, there is an actual problem.
-Check for typos in the command line.
+If you see other exceptions, they indicate actual problems.
+You'll have to interpret the exception messages.
 </p>
 
 
@@ -173,7 +177,7 @@ Check for typos in the command line.
 <h2 id="study-source"><span>Study the Sources</span></h2>
 
 <p>
-Before you proceed, rename the JAR to <code>tutorial.jar</code>
+Before you proceed, rename the downloaded JAR to <code>tutorial.jar</code>
 or some other name without negative connotation.
 While it is faulty now, it won't be when you're done with it.
 Renaming the file helps you to maintain a positive mindset.
@@ -185,7 +189,6 @@ or <code>unzip</code>, or any other archive utility that is compatible with
 the zip format. The example output below shows only a subset of the files.
 </p>
 <div class="terminal">
-  <div class="input"><span>unzip -l tutorial.jar</span></div>
   <div class="input"><span>jar -tf tutorial.jar</span></div>
   <div class="output"
 >META-INF/MANIFEST.MF
@@ -232,8 +235,8 @@ There are many IDEs that support Java development, for example
    title="NetBeans - Java SE"
    >NetBeans</a>.
 
-However, you don't need an IDE to complete this tutorial or the
-upcoming programming exercises.
+However, you don't need an IDE to complete this tutorial,
+or the upcoming programming exercises.
 Just use the archiver from above to extract the files from the JAR, and your
 <a href="https://en.wikipedia.org/wiki/Editor_war" class="covert"
    >favorite editor</a>
@@ -248,7 +251,51 @@ Make sure to maintain the directory structure when extracting though.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="walk-through"><span>Source Code Walk-Through</span></h3>
+<h3 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h3>
+
+<p>
+Before you dive into the source code and get lost in its intricacies,
+you should get a high-level overview. Modern IDEs make it very easy to
+access context-specific information. For example, they can show the JavaDocs
+for a method as hover help, right there where the method is being called.
+At the same time, they beguile users into neglecting the bigger context.
+Why bother with the class- or package-level JavaDocs when the method-level
+is readily available? Never mind that the former might point out
+other classes or methods that would serve your purposes better, or
+provide valuable information that applies to all the methods of a class.
+To avoid this pitfall, don't go into your IDE or editor just yet.
+</p>
+
+<p>
+Open the <a href="jdoc/index.html">JavaDocs</a> in a new browser tab or window,
+so you can easily switch between them and this description.
+Check the list of packages. There are only two,
+<code>pityoulish.cmdline</code> and <code>pityoulish.tutorial</code>.
+In the main content frame, click on the first one. Now you see a list of
+interfaces and classes in that package. Glimpse at the names. They are
+about commands, handling, and arguments. The package description begins
+with "Utility classes". This indicates that the package does not contain
+the main functionality of the program, but supporting features.
+Are you interested in learning how the command-line arguments are interpreted?
+If so, write it down on your to-do list for later.
+Right now, the support functionality is not your concern.
+</p>
+
+<p>
+Next, access the JavaDocs for the <code>pityoulish.tutorial</code> package.
+There is a class <code>Main</code>, described as the main entry point.
+Now you know where to start. There is an enum with four constants,
+named like the four commands which <code>tutorial.jar</code> understands.
+And there is a handler class with methods named like the four commands.
+Could <code>handleLatinCmd</code> be the method which prints the umlauts
+of the 'latin' command? Yes, the description says so.
+Without even looking at the source code, you've learned where the
+important things are happening.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="source-walk-through"><span>Source Code Walk-Through</span></h3>
 
 <!--
 <p>
@@ -257,8 +304,6 @@ Make sure to maintain the directory structure when extracting though.
 
 <p class="larger"><i>Walk-Through still missing...</i></p>
 <ol>
-<li>consult the <a href="jdoc/index.html">JavaDocs</a></li>
-<li>need to understand the Big Picture, easier with JavaDocs than IDE</li>
 <li>Entry point, take a guess or check the manifest</li>
 <li><code>Main</code> sets up handler</li>
 <li>ignore <code>pitoulish.cmdline</code> for now</li>
@@ -302,6 +347,25 @@ apache.org -> two different IPv4 addresses
 fsf.org    -> IPv4 and IPv6 addresses
 -->
 
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h1 id="summary"><span>Summary</span></h1>
+
+<p class="larger"><i>Generic steps for a classroom exercise...</i></p>
+<ol>
+<li>get the JAR and read the usage instructions</li>
+<li>determine the sequence of commands to try out
+  <br/>
+  In the tutorial, the commands are independent. In the programming exercises,
+  a user will execute commands in a specific order to achieve a purpose.
+  Construct a <i>user session</i>, a series of commands to run.
+</li>
+<li>run the command sequence until you find a broken command</li>
+<li>study the JavaDocs, study the sources</li>
+<li>jump to the broken command, identify the context, insert missing code</li>
+<li>create a new JAR and re-run the command sequence</li>
+<li>when you can execute a sequence that covers all commands, you're done</li>
+</ol>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h1 id="msgboard"><span>Coming up...</span></h1>
