@@ -60,6 +60,14 @@ body > p, body > div, body > dl, body > .main
   a:visited {
     color: #762208;
   }
+
+  a.covert {
+    color: #000000;
+    background-color: #fffcfb;
+    padding: 0px;
+    font-weight: normal;
+    /* text-decoration: none; ...give some hint at least ;-) */
+  }
 } /* @media screen */
 
 @media print {
@@ -225,9 +233,18 @@ div.box-right
     color: #4d6251;
   }
 
+  div.box-right a.covert  {
+    color: #000000;
+    background-color: #f1f3e6;
+    padding: 0px;
+    font-weight: normal;
+    text-decoration: none;
+  }
+
   div.box-right a code {
     font-weight: bold;
   }
+
 } /* @media screen */
 
 @media print {
@@ -279,5 +296,19 @@ div.box-right dt, div.box-right dd
 @media screen {
   .terminal div.input::before {
     color: #ccb69c;
+    font-weight: bold;
+  }
+  .terminal div.input span {
+    background-color: #e6e3e2;
+    padding: 1px 3px;
+    border-radius: 3px;
+  }
+  .terminal div.output {
+    padding: 1px 5px;
+    border: 1px solid #e6e3e2;
+    border-radius: 5px;
+  }
+  .terminal .emph {
+    color: #6b3212;
   }
 }

@@ -63,7 +63,7 @@ Java Development Kit (JDK) is available on your computer.
 Open a command line and enter:
 </p>
 <div class="terminal">
-  <div class="input">java -version</div>
+  <div class="input"><span>java -version</span></div>
 </div>
 <p>
 Version 1.7 or later is needed. If the <code>java</code> command is not found,
@@ -83,10 +83,10 @@ Now download the file
 to your machine. Change to the directory where you saved it and enter:
 </p>
 <div class="terminal">
-  <div class="input">java -jar tutorial-faulty.jar</div>
+  <div class="input"><span>java -jar tutorial-faulty.jar</span></div>
 </div>
 <p>
-This tells <code>java</code> to run the program that is stored in the JAR file.
+This tells <code>java</code> to run the program contained in the JAR file.
 Without further arguments, that program just prints usage instructions.
 Take a minute to read those.
 </p>
@@ -100,11 +100,11 @@ Use <code>latin</code> to check whether your environment is ready
 to display characters from the ISO Latin 1 character set.
 </p>
 <div class="terminal">
-  <div class="input">java -jar tutorial-faulty.jar latin</div>
+  <div class="input"><span>java -jar tutorial-faulty.jar latin</span></div>
 </div>
 <p>
-If the output contains umlauts, you're all set.
-If it contains garbage, or question marks in unexpected places, the default
+If the output contains umlauts, you're all set. If it contains garbage, or
+question marks in unexpected places, you need to do something. The default
 character encoding of the JVM does not match that of your command line.
 This is a common problem with <code>cmd.exe</code> on Windows.
 You can use a different command line, for example the PowerShell,
@@ -122,7 +122,7 @@ They cover the technical contents of this tutorial: IP addresses and hostnames.
 Let's try them one after another, starting with <code>local</code>.
 </p>
 <div class="terminal">
-  <div class="input">java -jar tutorial-faulty.jar local</div>
+  <div class="input"><span>java -jar tutorial-faulty.jar local</span></div>
   <div class="output"
 >Network Interface 'wlan0'
    fe80:0:0:0:fc5a:73ee:fe85:733c%3
@@ -148,11 +148,11 @@ operating systems are smart enough to handle IP addresses as well.
 Let's try both commands with 'localhost' as the argument.
 </p>
 <div class="terminal">
-  <div class="input">java -jar tutorial-faulty.jar islocal localhost</div>
+  <div class="input"><span>java -jar tutorial-faulty.jar islocal localhost</span></div>
   <div class="output"
 >Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: bind a socket to a hostname
 	at ...</div>
-  <div class="input">java -jar tutorial-faulty.jar lookup localhost</div>
+  <div class="input"><span>java -jar tutorial-faulty.jar lookup localhost</span></div>
   <div class="output"
 >Looking up 'localhost'...
 Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: look up the InetAddress(es) of a hostname
@@ -165,26 +165,100 @@ is called 'faulty'. The class of the exception,
 <code>pityoulish.outtake.Missing</code>, indicates that something was
 intentionally left out of the program. And you are expected to fill it in.
 If you see other exceptions, there is an actual problem.
-Check the command you typed in.
+Check for typos in the command line.
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="study-source"><span>Study the Sources</span></h2>
 
+<p>
+Before you proceed, rename the JAR to <code>tutorial.jar</code>
+or some other name without negative connotation.
+While it is faulty now, it won't be when you're done with it.
+Renaming the file helps you to maintain a positive mindset.
+</p>
+
+<p>
+List the contents of the JAR file. Use the <code>jar</code> utility of a JDK,
+or <code>unzip</code>, or any other archive utility that is compatible with
+the zip format. The example output below shows only a subset of the files.
+</p>
+<div class="terminal">
+  <div class="input"><span>unzip -l tutorial.jar</span></div>
+  <div class="input"><span>jar -tf tutorial.jar</span></div>
+  <div class="output"
+>META-INF/MANIFEST.MF
+pityoulish/cmdline/ArgsInterpreter.java
+...
+pityoulish/outtake/<span class="emph">Missing.java</span>
+pityoulish/outtake/package.html
+pityoulish/tutorial/Main.java
+pityoulish/tutorial/TutorialCommandHandler.java
+pityoulish/cmdline/ArgsInterpreter.class
+...
+pityoulish/outtake/<span class="emph">Missing.class</span>
+pityoulish/tutorial/Main.class
+...
+pityoulish/tutorial/TutorialCommandHandler.class
+</div>
+</div>
+<p>
+On first glance, it seems as if classes are listed twice. Indeed,
+a closer look reveals that the JAR contains source code (.java)
+along with compiled classes (.class). The presence of 'package.html' files
+even suggests that there might be meaningful JavaDocs.
+It is always possible to generate JavaDocs from source code.
+But if the source code doesn't contain special JavaDoc comments,
+the generated docs are not always useful. Alas, the mere presence of
+JavaDoc comments also doesn't ensure that they contain anything useful.
+Fortunately, this is a tutorial with well-documented source code.
+</p>
+
+<p>
+If you plan to use an Integrated Development Environment (IDE) for coding,
+now is a good time to import <code>tutorial.jar</code> as a new project.
+There are many IDEs that support Java development, for example
+<a href="https://www.jetbrains.com/idea/"
+   title="IntelliJ IDEA - Community Edition"
+   >IntelliJ</a>,
+<a href="https://www.eclipse.org/downloads/"
+   title="Eclipse IDE for Java Developers"
+   >Eclipse</a>,
+<a href="https://code.visualstudio.com/"
+   title="Visual Studio Code"
+   >Visual Studio Code</a>, or
+<a href="https://netbeans.org/downloads/index.html"
+   title="NetBeans - Java SE"
+   >NetBeans</a>.
+
+However, you don't need an IDE to complete this tutorial or the
+upcoming programming exercises.
+Just use the archiver from above to extract the files from the JAR, and your
+<a href="https://en.wikipedia.org/wiki/Editor_war" class="covert"
+   >favorite editor</a>
+to browse them.
+Make sure to maintain the directory structure when extracting though.
+</p>
+<!-- doesn't add much value and looks crappy above the h3
+<div class="terminal">
+  <div class="input"><span>jar -xf tutorial.jar</span></div>
+</div>
+-->
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="walk-through"><span>Source Code Walk-Through</span></h3>
+
 <!--
 <p>
 </p>
 -->
 
-<p class="larger"><i>Instructions still missing...</i></p>
+<p class="larger"><i>Walk-Through still missing...</i></p>
 <ol>
-<li>list JAR contents: classes and source</li>
-<li>extract the JAR, create a project in your preferred IDE</li>
-<li>remove "-faulty" from the project name, you're going to fix things</li>
 <li>consult the <a href="jdoc/index.html">JavaDocs</a></li>
 <li>need to understand the Big Picture, easier with JavaDocs than IDE</li>
-<li>Code walkthrough...</li>
 <li>Entry point, take a guess or check the manifest</li>
 <li><code>Main</code> sets up handler</li>
 <li>ignore <code>pitoulish.cmdline</code> for now</li>
