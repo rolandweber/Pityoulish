@@ -253,3 +253,31 @@ div.box-right dt, div.box-right dd
   padding-left: 0px;
   padding-right: 0px;
 }
+
+
+/* code and terminal formatting ======================================== */
+
+.terminal {
+  font-family: monospace;
+}
+
+.terminal div.input::before {
+  content: "> ";
+}
+
+.terminal div.output {
+  white-space: pre;
+  margin-top: 0.5em;
+  margin-bottom: 1.0em;
+}
+
+.terminal .emph {
+  font-weight: bold;
+}
+
+
+@media screen {
+  .terminal div.input::before {
+    color: #ccb69c;
+  }
+}

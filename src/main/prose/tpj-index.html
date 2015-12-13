@@ -57,19 +57,125 @@ Reading it upfront will give you a head start.
 </dl>
 </div><!-- box-right -->
 
-<p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-<li>download the JAR</li>
-<li>run the JAR without arguments</li>
-<li>read the usage message</li>
-<li>use command 'latin' to test the default character set</li>
-<li>use other commands, to test the available functions</li>
-<li>note what fails</li>
-</ol>
+<p>
+First verify that a Java Virtual Machine (JVM) or
+Java Development Kit (JDK) is available on your computer.
+Open a command line and enter:
+</p>
+<div class="terminal">
+  <div class="input">java -version</div>
+</div>
+<p>
+Version 1.7 or later is needed. If the <code>java</code> command is not found,
+you have to investigate why. Most likely it is just missing from the
+search path. Locate an installed JVM or JDK and add its <code>bin</code>
+directory to the <code>PATH</code> environment variable,
+or use full paths to invoke its commands.
+If there is neither JVM nor JDK, install a JDK. You'll need it later anyway.
+How to do that depends on your operating system and the JDK you want to use.
+<!-- @@@ TODO: warn about the adware installed by Oracle on Windows? -->
+<!-- @@@ TODO: Extra page with instructions for installing a JDK? -->
+</p>
+
+<p>
+Now download the file
+<a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a>
+to your machine. Change to the directory where you saved it and enter:
+</p>
+<div class="terminal">
+  <div class="input">java -jar tutorial-faulty.jar</div>
+</div>
+<p>
+This tells <code>java</code> to run the program that is stored in the JAR file.
+Without further arguments, that program just prints usage instructions.
+Take a minute to read those.
+</p>
+<p>
+Seriously, read them.
+</p>
+
+<p>
+So, the program understands several different commands.
+Use <code>latin</code> to check whether your environment is ready
+to display characters from the ISO Latin 1 character set.
+</p>
+<div class="terminal">
+  <div class="input">java -jar tutorial-faulty.jar latin</div>
+</div>
+<p>
+If the output contains umlauts, you're all set.
+If it contains garbage, or question marks in unexpected places, the default
+character encoding of the JVM does not match that of your command line.
+This is a common problem with <code>cmd.exe</code> on Windows.
+You can use a different command line, for example the PowerShell,
+or figure out how to
+<a href="http://illegalargumentexception.blogspot.co.uk/2009/04/i18n-unicode-at-windows-command-prompt.html"
+   >fix the problem</a>.
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="test-commands"><span>Test the Commands</span></h3>
+
+<p>
+The downloaded JAR supports three more commands.
+They cover the technical contents of this tutorial: IP addresses and hostnames.
+Let's try them one after another, starting with <code>local</code>.
+</p>
+<div class="terminal">
+  <div class="input">java -jar tutorial-faulty.jar local</div>
+  <div class="output"
+>Network Interface 'wlan0'
+   fe80:0:0:0:fc5a:73ee:fe85:733c%3
+   10.223.123.161
+Network Interface 'lo'
+   0:0:0:0:0:0:0:1%1   ip6-localhost
+   127.0.0.1   localhost</div>
+</div>
+<p>
+The output is different on each machine and depends on the available
+network connections. In the example, the machine is connected to a WLAN,
+'wlan0'. The local interface, 'lo', is always present. It enables programs
+that run on the same machine to communicate with eachother, even if
+there is no actual network connection. The machine from the example
+has both an IPv4 and an IPv6 address on either network interface.
+Does yours?
+</p>
+
+<p>
+The remaining two commands expect an argument. That can be a hostname or
+an IP address. The usage instructions only mention hostnames, but all
+operating systems are smart enough to handle IP addresses as well.
+Let's try both commands with 'localhost' as the argument.
+</p>
+<div class="terminal">
+  <div class="input">java -jar tutorial-faulty.jar islocal localhost</div>
+  <div class="output"
+>Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: bind a socket to a hostname
+	at ...</div>
+  <div class="input">java -jar tutorial-faulty.jar lookup localhost</div>
+  <div class="output"
+>Looking up 'localhost'...
+Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: look up the InetAddress(es) of a hostname
+	at ...</div>
+</div>
+
+<p>
+Dang! Both commands are broken. Well, there had to be a reason why the JAR
+is called 'faulty'. The class of the exception,
+<code>pityoulish.outtake.Missing</code>, indicates that something was
+intentionally left out of the program. And you are expected to fill it in.
+If you see other exceptions, there is an actual problem.
+Check the command you typed in.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="study-source"><span>Study the Sources</span></h2>
+
+<!--
+<p>
+</p>
+-->
 
 <p class="larger"><i>Instructions still missing...</i></p>
 <ol>
@@ -104,10 +210,23 @@ Reading it upfront will give you a head start.
 <li>make sure <code>java -jar</code> works
   <br/>
   ...or else type the full name of the Main class on each invocation</li>
+<li>test the fix</li>
+
+<!-- examples for the 'lookup' command, 2015-12-13:
+gnu.org    -> single IPv4 address
+apache.org -> two different IPv4 addresses
+fsf.org    -> IPv4 and IPv6 addresses
+-->
 <li>call the second faulty command
   <br/>
   (repeat steps from above, with less details)</li>
 </ol>
+
+<!-- examples for the 'lookup' command, 2015-12-13:
+gnu.org    -> single IPv4 address
+apache.org -> two different IPv4 addresses
+fsf.org    -> IPv4 and IPv6 addresses
+-->
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
