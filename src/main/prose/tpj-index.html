@@ -297,18 +297,45 @@ important things are happening.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="source-walk-through"><span>Source Code Walk-Through</span></h3>
 
+<p>
+Now it is time to browse the source code. If you didn't know already
+from the JavaDocs where to start, you would have to look into the file
+<code>META-INF/MANIFEST.MF</code>. It defines a property 'Main-Class',
+which tells <code>java -jar</code> about the entry point of the program.
+Unsurprisingly, the value is <code>pityoulish.tutorial.Main</code>.
+Open the file in your IDE or editor and find the method <code>main</code>.
+</p>
+
+<p>
+The <code>main</code> method initializes an arg(ument)s interpreter,
+calls that with the command-line arguments, and is done.
+If you hadn't looked at the JavaDocs first, you now would probably
+follow the program execution and look into the args interpreter.
+However, you already know that it comes from a utility package, and
+that the commands are implemented in <code>TutorialCommandHandler</code>.
+An instance of that class is given to the args interpreter as a
+constructor argument. The other constructor argument is some kind of 'None',
+so probably not relevant here. The natural conclusion is that
+the args interpreter will call the command handler.
+Let's go directly to the latter, without wasting time on the former.
+</p>
+
+<p class="larger">Missing: Word of Advice -
+badly structured modules invalidate such assumptions
+</p>
+
+<p>
+Looking at <code>TutorialCommandHandler</code>, you see the enumeration of
+supported commands, a method that returns usage instructions, and a method
+with a <code>switch</code> statement on the enum. Each case of that statement
+calls a handler method for the respective command. That's it.
+Whatever else the args interpreter does, it calls here to execute a command.
+</p>
+
 <!--
 <p>
 </p>
 -->
-
-<p class="larger"><i>Walk-Through still missing...</i></p>
-<ol>
-<li>Entry point, take a guess or check the manifest</li>
-<li><code>Main</code> sets up handler</li>
-<li>ignore <code>pitoulish.cmdline</code> for now</li>
-<li>each command has a corresponding handler method</li>
-</ol>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
