@@ -30,7 +30,8 @@ This tutorial comprises three phases:
 
   <dt>2. <a href="#study-source">Study the Sources</a></dt>
   <dd>
-    You look at the provided source code to find your way through it.
+    You look at the provided JavaDocs and source files
+    to find your way through the code.
   </dd>
 
   <dt>3. <a href="#fix-problems">Fix the Problems</a></dt>
@@ -184,9 +185,11 @@ Renaming the file helps you to maintain a positive mindset.
 </p>
 
 <p>
-List the contents of the JAR file. Use the <code>jar</code> utility of a JDK,
-or <code>unzip</code>, or any other archive utility that is compatible with
-the zip format. The example output below shows only a subset of the files.
+List the contents of the JAR file.
+Use the <code title="jar -tf">jar</code> utility of a JDK,
+or <code title="unzip -l">unzip</code>,
+or any other archive utility that is compatible with the zip format.
+The example output below shows only a subset of the files.
 </p>
 <div class="terminal">
   <div class="input"><span>jar -tf tutorial.jar</span></div>
@@ -303,16 +306,17 @@ from the JavaDocs where to start, you would have to look into the file
 <code>META-INF/MANIFEST.MF</code>. It defines a property 'Main-Class',
 which tells <code>java -jar</code> about the entry point of the program.
 Unsurprisingly, the value is <code>pityoulish.tutorial.Main</code>.
-Open the file in your IDE or editor and find the method <code>main</code>.
+Open the source file for that class in your IDE or editor
+and find the method <code>main</code>.
 </p>
 
 <p>
 The <code>main</code> method initializes an arg(ument)s interpreter,
-calls that with the command-line arguments, and is done.
-If you hadn't looked at the JavaDocs first, you now would probably
+calls it with the command-line arguments, and is done.
+If you hadn't looked at the JavaDocs first, you would now probably
 follow the program execution and look into the args interpreter.
-However, you already know that it comes from a utility package, and
-that the commands are implemented in <code>TutorialCommandHandler</code>.
+However, you already know that it comes from a utility package, and that
+the commands are implemented in <code>TutorialCommandHandler</code>.
 An instance of that class is given to the args interpreter as a
 constructor argument. The other constructor argument is some kind of 'None',
 so probably not relevant here. The natural conclusion is that
@@ -320,17 +324,51 @@ the args interpreter will call the command handler.
 Let's go directly to the latter, without wasting time on the former.
 </p>
 
-<p class="larger">Missing: Word of Advice -
-badly structured modules invalidate such assumptions
-</p>
-
 <p>
 Looking at <code>TutorialCommandHandler</code>, you see the enumeration of
 supported commands, a method that returns usage instructions, and a method
 with a <code>switch</code> statement on the enum. Each case of that statement
-calls a handler method for the respective command. That's it.
+calls a handler method for the respective command.
 Whatever else the args interpreter does, it calls here to execute a command.
+That's what you needed to know to get started.
 </p>
+
+
+<div class="box-center">
+<span class="header">
+<span class="title">Word of Advice</span>
+<span class="abstract"
+      >Badly structured code invalidates natural conclusions.</span>
+</span><!-- header -->
+<span class="content">
+When you are diving into any codebase of significant size, it is
+impossible to understand every part of it to the very last detail.
+In order to find the code of interest within a reasonable time,
+you absolutely <span class="emph">must</span> make assumptions
+about other parts of the code.
+
+In a well-structured codebase, classes and modules behave roughly as
+you would expect from their names or descriptions. This is called the
+<a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment"
+   >Principle of Least Astonishment (POLA)</a>.
+It greatly simplifies the task of getting to know a codebase
+and reduces the time you need to become productive.
+<br/>
+
+In ill-structured code, such assumptions will not hold.
+Classes or modules do things you wouldn't expect, and
+things you do expect are not done where you expect them.
+You'll spend a lot of time searching for why something is happening,
+until you find the cause hidden away in an inconspicuous module.
+Or you'll read through some code and see that it is doing
+completely unrelated things as well.
+These moments of realization are called WTFs. In fact,
+<a href="http://www.osnews.com/story/19266/WTFs_m">WTFs per minute</a>
+are considered a measurement of code quality.
+For a regular stream of bad examples, see
+<a class="covert" href="http://thedailywtf.com/">The Daily WTF</a>.
+</span>
+</div>
 
 <!--
 <p>

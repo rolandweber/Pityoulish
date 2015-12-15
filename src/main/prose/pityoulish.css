@@ -15,7 +15,7 @@
  * blue orange:      http://www.transientlight.co.uk/photo/sunset-loch-pityoulish/
  * green gray:       http://www.cairngormsgallery.co.uk/loch%20pityoulish/loch%20pityoulish.htm
  * blue green:       http://www.donaldfordimages.com/gallery/scripts/prodView.asp?idproduct=453055352
- * Yes, I found the photograph by Jodie Mann.
+ * Yes, I found the photography by Jodie Mann.
  * Not the kind of inspiration I was looking for.
  */
 
@@ -63,10 +63,10 @@ body > p, body > div, body > dl, body > .main
 
   a.covert {
     color: #000000;
-    background-color: #fffcfb;
+    background-color: transparent;
     padding: 0px;
     font-weight: normal;
-    /* text-decoration: none; ...give some hint at least ;-) */
+    /* text-decoration: none; ...keep the hover-underlining */
   }
 } /* @media screen */
 
@@ -173,6 +173,10 @@ p.larger {
 }
 
 
+.emph {
+  font-style: italic;
+}
+
 
 /* list styles ---------------------------------------- */
 
@@ -272,6 +276,46 @@ div.box-right dt, div.box-right dd
 }
 
 
+/* non-floating boxes ======================================== */
+
+div.box-center {
+  margin: 0.8em 8em;
+  padding: 0.2em 1em;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+div.box-center .header {
+  display: block;
+  align: center;
+  margin: 3px 0px 8px;
+  font-size: large;
+}
+
+div.box-center .title {
+  /*font-style: italic; */
+}
+div.box-center .title::after {
+  content: ": ";
+  padding-right: 0.3em;
+}
+
+@media screen {
+  div.box-center {
+    background-color: #f1f3e6;
+    border-color: #4d6251;
+  }
+  div.box-center .title {
+    color: #6b3212;
+  }
+}
+
+div.box-center .emph {
+  font-style: normal;
+  font-variant: small-caps;
+}
+
+
 /* code and terminal formatting ======================================== */
 
 .terminal {
@@ -289,6 +333,8 @@ div.box-right dt, div.box-right dd
 }
 
 .terminal .emph {
+  font-style: normal;
+  font-variant: normal;
   font-weight: bold;
 }
 
