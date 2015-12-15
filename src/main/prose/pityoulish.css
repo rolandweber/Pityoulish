@@ -296,6 +296,8 @@ div.side-note .content {
 @media screen {
   div.side-note {
     border-color: #4d6251;
+    border-image: linear-gradient(to right, #fffcfb, #4d6251 80%, #4d6251);
+    border-image-slice: 1;
   }
   div.side-note .content {
     background-color: #f1f3e6;

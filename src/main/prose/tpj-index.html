@@ -181,7 +181,7 @@ You'll have to interpret the exception messages.
 Before you proceed, rename the downloaded JAR to <code>tutorial.jar</code>
 or some other name without negative connotation.
 While it is faulty now, it won't be when you're done with it.
-Renaming the file helps you to maintain a positive mindset.
+Renaming the file supports a positive mindset.
 </p>
 
 <p>
@@ -364,7 +364,7 @@ Or you'll read through some code and see that it is doing
 completely unrelated things as well.
 These moments of realization are called WTFs. In fact,
 <a href="http://www.osnews.com/story/19266/WTFs_m">WTFs per minute</a>
-are considered a measurement of code quality.
+are a measurement of code quality.
 For a regular stream of bad examples, see
 <a class="covert" href="http://thedailywtf.com/">The Daily WTF</a>.
 </span>
@@ -380,6 +380,7 @@ The following instructions for the <a href="#fix-islocal">first</a>
 are very detailed.
 Those for the <a href="#fix-lookup">second</a> remain brief,
 so you can start to apply what you learned.
+Finally, you should <a href="#clean-up">clean up</a>.
 </p>
 
 
@@ -413,16 +414,16 @@ because that matches with the source code in your JAR.
 </div></div>
 
 <p>
-The first line reveals the class of the exception, and an exception message.
+The first line reveals the class of the exception and the exception message.
 The class often indicates the type of problem, for example
 a <code>NullPointerException</code> or an <code>IOException</code>.
 In this case, some code is missing; you already know that.
 The message tells you what the missing code is supposed to do.
-We'll get to that later, once you've found where it is missing.
+We'll get to that later, once you've found the place where it is missing.
 </p>
 <p>
 The lines starting with "at" are the call stack.
-The program execution started at <code>main</code>, which is the last line.
+The program execution started at <code>main</code>, which is in the last line.
 <code>main</code> called <code>ArgsInterpreter.handle</code>,
 which called <code>CommandHandlerBase.handle</code>,
 which called something else, and so on,
@@ -454,20 +455,67 @@ especially around the line number from your stack trace.
 
 <!-- ............................................................ -->
 <div class="side-note"><div class="content">
-<span>Analyze <!--and Fix--> the Problem</span>
+<span>Analyze the Problem</span>
 </div></div>
+
+<p>
+Before you can fix anything, you have to understand what is going on
+in that part of the code. The references to class <code>Missing</code>
+are exactly where you have to put in your code. The message,
+'bind a socket to a hostname', tells you what is missing.
+But unless you are familiar with the socket API, this message is unclear.
+The call to <code>Missing.pretend</code> indicates that the missing code
+may throw an <code>IOException</code>.
+</p>
+
+<p>
+When a method is so small as <code>handleIsLocalCmd</code>, you should try
+to understand it fully. There is a description, which you can read directly in
+the source code, or in the generated <a href="jdoc/index.html">JavaDocs</a>.
+The method is expected to return 0 if the argument is the local host,
+or -1 if it is not. In the method body, there is some error handling code.
+If the missing code runs through, the method returns 0.
+If it throws an <code>IOException</code>, the method returns -1.
+Before that, the string argument is converted into an
+<code>InetSocketAddress</code>.
+Let's summarize:
+</p>
+<ol>
+<li>You have a hostname, converted to <code>InetSocketAddress</code>.</li>
+<li>The missing code should run through if the hostname is local.</li>
+<li>The missing code should throw an <code>IOException</code>
+  if the hostname is not local.</li>
+<li>The missing code should 'bind' a 'socket' to the hostname.</li>
+</ol>
+
+<p>
+Now it is time to study the standard Java APIs. There are JavaDocs available:
+online, for download, or maybe already installed with your JDK or IDE.
+The <code>InetSocketAddress</code> is a place to start. Look for the
+import statements at the beginning of 'TutorialCommandHandler.java'.
+From which package is that class?
+What other classes are imported from there?
+Anything related to 'bind' or 'socket'?
+Bingo, there's an import of <code>java.net.Socket</code>.
+<a href="http://lmgtfy.com/?q=javadoc+java.net.Socket" class="covert"
+   >Search</a> and browse the JavaDocs for that class.
+Is there something about 'bind'?
+Can you do that with an <code>InetSocketAddress</code>?
+Does it make a difference whether the hostname is local?
+</p>
+
+<p>
+When you have found and assimilated that information, put in the missing code.
+Delete the calls to class <code>Missing</code>.
+Create an unconnected socket. Bind that socket to the hostname.
+That's it. <span class="emph">Maybe</span>.
+To be sure, you need to test the changes.
+</p>
 
 <!--
 <p>
 </p>
 -->
-
-<p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-  <li>What data is available, what is expected?</li>
-  <li>Search the standard JavaDocs for matching methods.</li>
-  <li>Add the missing code in the sources.</li>
-</ol>
 
 
 <!-- ............................................................ -->
@@ -489,6 +537,7 @@ especially around the line number from your stack trace.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="fix-lookup"><span>Fix the <code>lookup</code> Command</span></h3>
 
+<p class="larger"><i>Instructions still missing...</i></p>
 <ol>
 <li>call the second faulty command
   <br/>
@@ -500,6 +549,14 @@ gnu.org    -> single IPv4 address
 apache.org -> two different IPv4 addresses
 fsf.org    -> IPv4 and IPv6 addresses
 -->
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="clean-up"><span>Clean Up</span></h3>
+
+<p class="larger"><i>Instructions still missing...</i></p>
+<ol>
+<li>Delete class <code>Missing</code> and any remaining imports.</li>
+</ol>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
