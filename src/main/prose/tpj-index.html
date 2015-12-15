@@ -446,6 +446,7 @@ Luckily, the second line of the stack trace tells you exactly that.
 Load the file 'TutorialCommandHandler.java' and
 have a look at method <code>handleIsLocalCmd</code>,
 especially around the line number from your stack trace.
+There you'll see the following statements:
 </p>
 <div class="code">
   Missing.here("bind a socket to a hostname");
@@ -512,30 +513,84 @@ That's it. <span class="emph">Maybe</span>.
 To be sure, you need to test the changes.
 </p>
 
-<!--
-<p>
-</p>
--->
-
 
 <!-- ............................................................ -->
 <div class="side-note"><div class="content">
 <span>Build the JAR</span>
 </div></div>
 
-<p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-<li>compile the sources, build a new JAR</li>
-<li>run the new JAR, in command line or from IDE</li>
-<li>make sure <code>java -jar</code> works
-  <br/>
-  ...or else type the full name of the Main class on each invocation</li>
-<li>test the fix</li>
-</ol>
+<p>
+If you are using an IDE, it compiles modified source files automatically.
+An IDE also provides an option to export your project as a JAR file. But
+you have to check whether that JAR file can be run with <code>java -jar</code>.
+If not, look for options to specify the property 'Main-Class' of the manifest.
+If all else fails, you can still run your modified code by spelling out the
+classname. It's less convenient, but works just as well.
+These two commands are equivalent, both print the usage instructions:
+</p>
+<div class="terminal">
+  <div class="input"
+       ><span>java -jar tutorial.jar</span></div>
+  <div class="input"
+       ><span>java -cp tutorial.jar pityoulish.tutorial.Main</span></div>
+</div>
+
+<p>
+Without an IDE, you have to call the compiler and build the JAR explicitly.
+Assuming that the current directory is where you extracted the JAR,
+use the following commands:
+</p>
+<div class="terminal">
+  <div class="input"
+       ><span>javac pityoulish/tutorial/TutorialCommandHandler.java</span></div>
+  <div class="input"
+       ><span>jar -cfe tutorial.jar pityoulish.tutorial.Main pityoulish/</span></div>
+</div>
+
+<p>
+The first command calls the Java compiler, <code>javac</code>. The argument is
+the source file to compile. You can specify more than one, or use wildcards to
+select all the source files you modified. Without other arguments, the compiler
+puts the compiled .class files into the same directory as the source files.
+The second command, <code>jar</code>, creates ('c') a new
+JAR file ('f') named 'tutorial.jar' and
+sets the entry point ('e') to class <code>pityoulish.tutorial.Main</code>.
+The JAR file contains everything from directory 'pityoulish',
+including all subdirectories.
+</p>
+
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Test the Fix</span>
+</div></div>
+
+<p>
+Finally, you're ready to test the <code>islocal</code> command with your
+changes. Try it with some IP addresses and hostnames that are printed by the
+<code>local</code> command. These should be recognized as local addresses.
+Try some other hostnames, such as 'example.com'. These should be recognized
+as non-local addresses.
+If either one is not the case, your code is buggy. Go back and fix it,
+compile, create a new JAR, and test again until it works as expected.
+</p>
+
+<p>
+When the command is working as expected, play around some more. Can you
+find local hostnames that are not printed by the <code>local</code> command?
+For example, try your computer's name without a domain, or with
+domain '.local'. What about other IP addresses, like '127.0.0.8'?
+It's OK to play for a while, you've earned it!
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="fix-lookup"><span>Fix the <code>lookup</code> Command</span></h3>
+
+<!--
+<p>
+</p>
+-->
 
 <p class="larger"><i>Instructions still missing...</i></p>
 <ol>
