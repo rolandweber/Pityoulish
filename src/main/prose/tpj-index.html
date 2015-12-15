@@ -370,37 +370,126 @@ For a regular stream of bad examples, see
 </span>
 </div>
 
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="fix-problems"><span>Fix the Problems</span></h2>
+
+<p>
+There are two broken commands to fix in this tutorial.
+The following instructions for the <a href="#fix-islocal">first</a>
+are very detailed.
+Those for the <a href="#fix-lookup">second</a> remain brief,
+so you can start to apply what you learned.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="fix-islocal"><span>Fix the <code>islocal</code> Command</span></h3>
+
+<p>
+Call the command again, to have a closer look at the error message
+and the stack trace. Details such as line numbers probably differ
+from the example output. Work with what you see on your screen,
+because that matches with the source code in your JAR.
+</p>
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar islocal localhost</span></div>
+  <div class="output"
+>Exception in thread "main" pityoulish.outtake.Missing: <span class="emph">bind a socket to a hostname</span>
+	at pityoulish.outtake.Missing.here(Missing.java:31)
+	at pityoulish.tutorial.TutorialCommandHandler.<span class="emph">handleIsLocalCmd(TutorialCommandHandler.java:159)</span>
+	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:92)
+	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:26)
+	at pityoulish.cmdline.CommandHandlerBase.handle(CommandHandlerBase.java:76)
+	at pityoulish.cmdline.ArgsInterpreter.handle(ArgsInterpreter.java:88)
+	at pityoulish.tutorial.Main.main(Main.java:27)
+</div>
+</div>
+
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Interpret the Stack Trace</span>
+</div></div>
+
+<p>
+The first line reveals the class of the exception, and an exception message.
+The class often indicates the type of problem, for example
+a <code>NullPointerException</code> or an <code>IOException</code>.
+In this case, some code is missing; you already know that.
+The message tells you what the missing code is supposed to do.
+We'll get to that later, once you've found where it is missing.
+</p>
+<p>
+The lines starting with "at" are the call stack.
+The program execution started at <code>main</code>, which is the last line.
+<code>main</code> called <code>ArgsInterpreter.handle</code>,
+which called <code>CommandHandlerBase.handle</code>,
+which called something else, and so on,
+right up to <code>Missing.here</code> at the top of the stack.
+And there, the exception was thrown. In parenthesis, you see
+the source file name 'Missing.java' and a line number.
+Open the file and find the line number indicated by your stack trace.
+If you executed the command from within an IDE,
+you probably just have to click a link in the output.
+Now what is wrong in <code>here</code>?
+</p>
+
+<p>
+Well, nothing is wrong in <code>Missing.here</code>.
+It is a helper method meant to throw an exception, and so it does.
+The caller must have found that something is wrong
+and raised an exception by invoking the helper.
+You need to find the place from which it is being called.
+Luckily, the second line of the stack trace tells you exactly that.
+Load the file 'TutorialCommandHandler.java' and
+have a look at method <code>handleIsLocalCmd</code>,
+especially around the line number from your stack trace.
+</p>
+<div class="code">
+  Missing.here("bind a socket to a hostname");
+  Missing.pretend(IOException.class);
+</div>
+
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Analyze <!--and Fix--> the Problem</span>
+</div></div>
+
 <!--
 <p>
 </p>
 -->
 
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="fix-problems"><span>Fix the Problems</span></h2>
-
 <p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-<li>call the first faulty command, interpret the stack trace,
-  navigate to the missing code</li>
-<li>Analyze:</li>
 <ol>
   <li>What data is available, what is expected?</li>
   <li>Search the standard JavaDocs for matching methods.</li>
   <li>Add the missing code in the sources.</li>
 </ol>
+
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Build the JAR</span>
+</div></div>
+
+<p class="larger"><i>Instructions still missing...</i></p>
+<ol>
 <li>compile the sources, build a new JAR</li>
 <li>run the new JAR, in command line or from IDE</li>
 <li>make sure <code>java -jar</code> works
   <br/>
   ...or else type the full name of the Main class on each invocation</li>
 <li>test the fix</li>
+</ol>
 
-<!-- examples for the 'lookup' command, 2015-12-13:
-gnu.org    -> single IPv4 address
-apache.org -> two different IPv4 addresses
-fsf.org    -> IPv4 and IPv6 addresses
--->
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="fix-lookup"><span>Fix the <code>lookup</code> Command</span></h3>
+
+<ol>
 <li>call the second faulty command
   <br/>
   (repeat steps from above, with less details)</li>

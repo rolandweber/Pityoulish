@@ -202,7 +202,7 @@ ul span.title {
 }
 
 
-/* floating boxes with downloads ======================================== */
+/* floating boxes, for downloads ======================================== */
 
 div.box-right
 {
@@ -276,6 +276,33 @@ div.box-right dt, div.box-right dd
 }
 
 
+/* side notes ======================================== */
+
+div.side-note {
+  border-top: 1px dashed;
+}
+
+div.side-note .content {
+  float: right;
+  margin-top: -1px;
+  border: 1px solid;
+  border-bottom-left-radius:  12px;
+  border-bottom-right-radius: 12px;
+
+  padding: 0.2em 0.5em;
+  font-size: large;
+}
+
+@media screen {
+  div.side-note {
+    border-color: #4d6251;
+  }
+  div.side-note .content {
+    background-color: #f1f3e6;
+    border-color: #4d6251;
+  }
+}
+
 /* non-floating boxes ======================================== */
 
 div.box-center {
@@ -318,7 +345,7 @@ div.box-center .emph {
 
 /* code and terminal formatting ======================================== */
 
-.terminal {
+.terminal, .code {
   font-family: monospace;
 }
 
@@ -332,7 +359,13 @@ div.box-center .emph {
   margin-bottom: 1.0em;
 }
 
-.terminal .emph {
+div.code {
+  white-space: pre;
+  margin-top: -1em; /* get rid of the first newline */
+  margin-bottom: 1em;
+}
+
+.terminal .emph, .code .emph {
   font-style: normal;
   font-variant: normal;
   font-weight: bold;
