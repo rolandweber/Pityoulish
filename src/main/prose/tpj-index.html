@@ -39,13 +39,14 @@ This tutorial comprises three phases:
     You fix the source code and build your own, working JAR from it.
   </dd>
 </dl>
-The <a href="#summary">summary</a> outlines the steps you performed
-in order to complete the tutorial. At the same time, it provides
-a recipe to follow when working on a Java classroom exercise.
+
+The <a href="#recipe">recipe</a> outlines the steps to follow
+when working on a Java classroom exercise.
+You practice most of these steps in the tutorial.
 
 Last but not least, there is some information about the
 <a href="#msgboard">upcoming</a> exercises.
-Reading it upfront will give you a head start.
+Reading it before the first classroom exercise gives you a head start.
 </div>
 
 
@@ -96,7 +97,7 @@ Without further arguments, that program just prints usage instructions.
 Take a minute to read those.
 </p>
 <p>
-Seriously, read them.
+Seriously, read them. <!-- Now! -->
 </p>
 
 <p>
@@ -123,7 +124,7 @@ or figure out how to
 
 <p>
 The downloaded JAR supports three more commands besides <code>latin</code>.
-They cover the technical contents of this tutorial: IP addresses and hostnames.
+They cover the technical content of this tutorial: IP addresses and hostnames.
 Let's try them one after another, starting with <code>local</code>.
 </p>
 <div class="terminal">
@@ -137,9 +138,9 @@ Network Interface 'lo'
    127.0.0.1   localhost</div>
 </div>
 <p>
-The output is different on each machine and depends on the available
-network connections. In the example, the machine is connected to a WLAN,
-'wlan0'. The local interface, 'lo', is always present. It enables programs
+The output depends on the network configuration and available connections.
+In the example, the machine is connected to a WLAN, 'wlan0'.
+The local interface, 'lo', is always present. It enables programs
 that run on the same machine to communicate with eachother, even if
 there is no actual network connection. The machine from the example
 has both an IPv4 and an IPv6 address on either network interface.
@@ -169,8 +170,8 @@ Dang! Both commands are broken. Well, there had to be a reason why the JAR
 is called 'faulty'. The class of the exception,
 <code>pityoulish.outtake.Missing</code>, indicates that something was
 intentionally left out of the program. And you are expected to fill it in.
-If you see other exceptions, they indicate actual problems.
-You'll have to interpret the exception messages.
+If you see a different exception, there is a problem.
+Read the exception message. At best, it's just a typo in the command line.
 </p>
 
 
@@ -181,7 +182,7 @@ You'll have to interpret the exception messages.
 Before you proceed, rename the downloaded JAR to <code>tutorial.jar</code>
 or some other name without negative connotation.
 While it is faulty now, it won't be when you're done with it.
-Renaming the file supports a positive mindset.
+Renaming the file supports a positive mindset right from the beginning.
 </p>
 
 <p>
@@ -213,10 +214,10 @@ pityoulish/tutorial/TutorialCommandHandler.class
 On first glance, it seems as if classes are listed twice. Indeed,
 a closer look reveals that the JAR contains source code (.java)
 along with compiled classes (.class). The presence of 'package.html' files
-even suggests that there might be meaningful JavaDocs.
+suggests that there might even be meaningful JavaDocs.
 It is always possible to generate JavaDocs from source code.
 But if the source code doesn't contain special JavaDoc comments,
-the generated docs are not always useful. Alas, the mere presence of
+the generated docs are not necessarily useful. Alas, the mere presence of
 JavaDoc comments also doesn't ensure that they contain anything useful.
 Fortunately, this is a tutorial with well-documented source code.
 </p>
@@ -291,7 +292,7 @@ Now you know where to start. There is an enum with four constants,
 named like the four commands which <code>tutorial.jar</code> understands.
 And there is a handler class with methods named like the four commands.
 Could <code>handleLatinCmd</code> be the method which prints the umlauts
-of the 'latin' command? Yes, the description says so.
+for the 'latin' command? Yes, the description says so.
 Without even looking at the source code, you've learned where the
 important things are happening.
 </p>
@@ -330,7 +331,7 @@ supported commands, a method that returns usage instructions, and a method
 with a <code>switch</code> statement on the enum. Each case of that statement
 calls a handler method for the respective command.
 Whatever else the args interpreter does, it calls here to execute a command.
-That's what you needed to know to get started.
+That's all you need to know about it to get started.
 </p>
 
 
@@ -379,7 +380,7 @@ There are two broken commands to fix in this tutorial.
 The following instructions for the <a href="#fix-islocal">first</a>
 are very detailed.
 Those for the <a href="#fix-lookup">second</a> remain brief,
-so you can start to apply what you learned.
+so you can apply what you learned.
 Finally, you should <a href="#clean-up">clean up</a>.
 </p>
 
@@ -390,7 +391,7 @@ Finally, you should <a href="#clean-up">clean up</a>.
 <p>
 Call the command again, to have a closer look at the error message
 and the stack trace. Details such as line numbers probably differ
-from the example output. Work with what you see on your screen,
+from the example output. Work with what you see in your command-line terminal,
 because that matches with the source code in your JAR.
 </p>
 <div class="terminal">
@@ -462,7 +463,7 @@ There you'll see the following statements:
 <p>
 Before you can fix anything, you have to understand what is going on
 in that part of the code. The references to class <code>Missing</code>
-are exactly where you have to put in your code. The message,
+are exactly where you'll have to put in your own code. The message,
 'bind a socket to a hostname', tells you what is missing.
 But unless you are familiar with the socket API, this message is unclear.
 The call to <code>Missing.pretend</code> indicates that the missing code
@@ -471,8 +472,8 @@ may throw an <code>IOException</code>.
 
 <p>
 When a method is so small as <code>handleIsLocalCmd</code>, you should try
-to understand it fully. There is a description, which you can read directly in
-the source code, or in the generated <a href="jdoc/index.html">JavaDocs</a>.
+to understand it fully. There is a description, which you can read in the
+source code as well as in the <a href="jdoc/index.html">JavaDocs</a>.
 The method is expected to return 0 if the argument is the local host,
 or -1 if it is not. In the method body, there is some error handling code.
 If the missing code runs through, the method returns 0.
@@ -482,7 +483,8 @@ Before that, the string argument is converted into an
 Let's summarize:
 </p>
 <ol>
-<li>You have a hostname, converted to <code>InetSocketAddress</code>.</li>
+<li>You have a hostname,
+  already converted to <code>InetSocketAddress</code>.</li>
 <li>The missing code should run through if the hostname is local.</li>
 <li>The missing code should throw an <code>IOException</code>
   if the hostname is not local.</li>
@@ -492,6 +494,7 @@ Let's summarize:
 <p>
 Now it is time to study the standard Java APIs. There are JavaDocs available:
 online, for download, or maybe already installed with your JDK or IDE.
+Pick whichever is most convenient for you.
 The <code>InetSocketAddress</code> is a place to start. Look for the
 import statements at the beginning of 'TutorialCommandHandler.java'.
 From which package is that class?
@@ -525,8 +528,8 @@ If you are using an IDE, it compiles modified source files automatically.
 IDEs also provide an option to export your project as a JAR file. But
 you have to check whether that JAR file can be run with <code>java -jar</code>.
 If not, look for options to specify the property 'Main-Class' of the manifest.
-If all else fails, you can still run your modified code by spelling out the
-classname. It's less convenient, but works just as well.
+If all else fails, you can still run your code by spelling out the classname.
+It's less convenient, but works just as well.
 These two commands are equivalent, both print the usage instructions:
 </p>
 <div class="terminal">
@@ -609,7 +612,7 @@ to see how it is done there.
 <p>
 The helper expects objects of class <code>InetAddress</code>.
 From what package is that class? Browse its JavaDocs.
-Any hints on how to get objects?
+Any hints on how to obtain such objects?
 From a hostname, which is the only input you have?
 There are different methods you could call, which is the right one?
 If you're not sure, go back to where the code is missing,
@@ -660,6 +663,11 @@ In the latter case, consider rewriting your code
 so that it can be understood without comments.
 </p>
 
+<p>
+Congratulations, you fixed the <code>lookup</code> command all by yourself.
+Good job!
+</p>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="clean-up"><span>Clean Up</span></h3>
@@ -680,32 +688,88 @@ in package <code>pityoulish.tutorial</code> and create a new JAR.
 There might be an unused import statement that you have to remove.
 </p>
 
+<p>
+Splendid! You have successfully completed this tutorial.
+</p>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h1 id="summary"><span>Summary</span></h1>
+<h1 id="recipe"><span>Recipe</span></h1>
 
-<!--
 <p>
+The Java classroom exercises adhere to a common pattern. The following recipe
+for solving them comprises the development procedures established above.
+After completing this tutorial, you are well prepared for the classroom.
 </p>
--->
 
-<p class="larger"><i>Generic steps for a classroom exercise...</i></p>
-<ol>
-<li>get the JAR and read the usage instructions</li>
-<li>determine the sequence of commands to try out
-  <br/>
-  In the tutorial, the commands are independent. In the programming exercises,
-  a user will execute commands in a specific order to achieve a purpose.
-  Construct a <i>user session</i>, a series of commands to run.
-</li>
-<li>run the command sequence until you find a broken command</li>
-<li>study the JavaDocs, study the sources</li>
-<li>jump to the broken command, identify the context, insert missing code</li>
-<li>create a new JAR and re-run the command sequence</li>
-<li>when you can execute a sequence that covers all commands,
-  you're almost done</li>
-<li>clean up the code you've written and delete class <code>Missing</code></li>
-</ol>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Understand &amp; Plan</span>
+</div></div>
+
+<p>
+Read the exercise description.
+Download the JAR and read the usage instructions.
+There is a set of commands with a common topic.
+Unlike in the tutorial, those commands are not independent.
+Some of them require the output of an other as input.
+Prepare a sequence in which you can execute the commands.
+Think of it as a user session, a typical scenario for using the JAR.
+If necessary, prepare different sequences for different groups of commands.
+The exercise description might help you with that.
+</p>
+
+<p>
+Study the JavaDocs provided with the exercise.
+Can you spot the classes which implement the commands?
+Which packages and classes contain the 'real' functionality?
+Which contain only utility stuff and supporting functions?
+Don't dive into the source code yet, just get an overview.
+</p>
+
+<p>
+Give the JAR a decent name.
+Create a project in your IDE or simply extract the JAR.
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Test &amp; Fix</span>
+</div></div>
+
+<p>
+Execute your command sequence until you encounter a <code>Missing</code>
+exception. Interpret the stack trace and find where the code is missing.
+Take in the surroundings. What should the missing code do?
+Should it print something, initialize attributes, perform IO?
+What input data do you have available, from arguments or stored in attributes?
+</p>
+
+<p>
+What APIs can you use to solve the problem?
+What APIs are already in use? Read their JavaDocs.
+Does the standard Java API provide what you need?
+Are there helpers in the code of the programming exercise?
+Are there other commands that do something similar?
+Can you re-use ideas or code snippets from those?
+</p>
+
+<p>
+Insert the missing code. Compile it and create a new JAR.
+Test the changes. Does the command now work as expected?
+Consider error cases, too.
+If the command works, clean up your code before you move on.
+The instructor might come around and ask to see it.
+</p>
+
+<p>
+Continue with the command sequence until you can execute it
+all the way through. When you're done with all the command sequences,
+delete class <code>Missing</code>.
+This is the ultimate check that you didn't overlook something.
+</p>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h1 id="msgboard"><span>Coming up...</span></h1>
