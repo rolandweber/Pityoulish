@@ -664,19 +664,30 @@ so that it can be understood without comments.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="clean-up"><span>Clean Up</span></h3>
 
-<!--
 <p>
+The class <code>Missing</code> is just an artifice to mark the places
+where you have to insert code. That's why it does not appear in the
+generated <a href="jdoc/index.html">JavaDocs</a> for this tutorial.
+Now that you have fixed both of the broken commands,
+<code>Missing</code> is no longer needed.
 </p>
--->
 
-<p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-<li>Delete class <code>Missing</code> and any remaining imports.</li>
-</ol>
+<p>
+Delete both the source file and the compiled class from your project.
+If you are using an editor rather than an IDE, delete the directory
+'pityoulish/outtake/' and everything within. Then re-compile the classes
+in package <code>pityoulish.tutorial</code> and create a new JAR.
+There might be an unused import statement that you have to remove.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h1 id="summary"><span>Summary</span></h1>
+
+<!--
+<p>
+</p>
+-->
 
 <p class="larger"><i>Generic steps for a classroom exercise...</i></p>
 <ol>
@@ -691,7 +702,9 @@ so that it can be understood without comments.
 <li>study the JavaDocs, study the sources</li>
 <li>jump to the broken command, identify the context, insert missing code</li>
 <li>create a new JAR and re-run the command sequence</li>
-<li>when you can execute a sequence that covers all commands, you're done</li>
+<li>when you can execute a sequence that covers all commands,
+  you're almost done</li>
+<li>clean up the code you've written and delete class <code>Missing</code></li>
 </ol>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -700,7 +713,8 @@ so that it can be understood without comments.
 <p>
   In the classroom exercises, you'll be facing a server which
   implements the <a href="message-board.html">Message Board</a>.
-  Better read that description now.
+  Now is a good time to read the description.
+  It will save you time during the first classroom exercise.
 </p>
 
 </body>
