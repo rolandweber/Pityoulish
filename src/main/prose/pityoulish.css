@@ -384,6 +384,11 @@ div.code {
     padding: 1px 3px;
     border-radius: 3px;
   }
+  .terminal div.input {
+    padding-bottom: 0.1em; /* some descenders got cut off without this*/
+    margin-bottom: 3px;    /* separate consecutive inputs */
+  }
+
   .terminal div.output {
     padding: 1px 5px;
     border: 1px solid #e6e3e2;

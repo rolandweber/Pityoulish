@@ -498,8 +498,9 @@ From which package is that class?
 What other classes are imported from there?
 Anything related to 'bind' or 'socket'?
 Bingo, there's an import of <code>java.net.Socket</code>.
-<a href="http://lmgtfy.com/?q=javadoc+java.net.Socket" class="covert"
-   >Search</a> and browse the JavaDocs for that class.
+<a href="http://lmgtfy.com/?q=javadoc+InetSocketAddress+java.net.Socket"
+   class="covert"
+   >Search</a> and browse the JavaDocs for these two classes.
 Is there something about 'bind'?
 Can you do that with an <code>InetSocketAddress</code>?
 Does it make a difference whether the hostname is local?
@@ -510,7 +511,7 @@ When you have found and assimilated that information, put in the missing code.
 Delete the calls to class <code>Missing</code>.
 Create an unconnected socket. Bind that socket to the hostname.
 That's it. <span class="emph">Maybe</span>.
-To be sure, you need to test the changes.
+To be sure, you need to test your changes.
 </p>
 
 
@@ -521,7 +522,7 @@ To be sure, you need to test the changes.
 
 <p>
 If you are using an IDE, it compiles modified source files automatically.
-An IDE also provides an option to export your project as a JAR file. But
+IDEs also provide an option to export your project as a JAR file. But
 you have to check whether that JAR file can be run with <code>java -jar</code>.
 If not, look for options to specify the property 'Main-Class' of the manifest.
 If all else fails, you can still run your modified code by spelling out the
@@ -550,7 +551,7 @@ use the following commands:
 <p>
 The first command calls the Java compiler, <code>javac</code>. The argument is
 the source file to compile. You can specify more than one, or use wildcards to
-select all the source files you modified. Without other arguments, the compiler
+select all the source files you modify. Without other arguments, the compiler
 puts the compiled .class files into the same directory as the source files.
 The second command, <code>jar</code>, creates ('c') a new
 JAR file ('f') named 'tutorial.jar' and
@@ -572,7 +573,7 @@ changes. Try it with some IP addresses and hostnames that are printed by the
 Try some other hostnames, such as 'example.com'. These should be recognized
 as non-local addresses.
 If either one is not the case, your code is buggy. Go back and fix it,
-compile, create a new JAR, and test again until it works as expected.
+compile, create a new JAR, and test again; until it works as expected.
 </p>
 
 <p>
@@ -587,26 +588,86 @@ It's OK to play for a while, you've earned it!
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="fix-lookup"><span>Fix the <code>lookup</code> Command</span></h3>
 
+<p>
+Call the <code>lookup</code> command of your JAR.
+Interpret the stack trace and locate where the code is missing.
+Take in the surroundings. What input data do you have?
+What should the missing code do?
+There are descriptions and hints in the source code.
+What data will you need?
+</p>
+
+<p>
+The comments point to a helper method you can use.
+Read the description of the helper.
+What arguments does it expect? What output does it provide?
+Don't bother with its implementation now, stay focused on the problem.
+Search for places where the helper is already used,
+to see how it is done there.
+</p>
+
+<p>
+The helper expects objects of class <code>InetAddress</code>.
+From what package is that class? Browse its JavaDocs.
+Any hints on how to get objects?
+From a hostname, which is the only input you have?
+There are different methods you could call, which is the right one?
+If you're not sure, go back to where the code is missing,
+read the description and comments again.
+</p>
+
+<p>
+OK, you've got all the pieces of the puzzle now. It is time to write code.
+Remove calls to class <code>Missing</code>.
+Put in code that looks up the internet addresses for the hostname.
+Implement a loop that prints them, using the helper method.
+
+Is there a problem when compiling?
+Handle the exception that might be thrown by the lookup.
+The user should know when that fails.
+</p>
+
+<p>
+Create a JAR and test your brand new implementation of <code>lookup</code>.
+Below are some hostnames to try.
+Most of them require an internet connection for the lookup.
+</p>
+
+<ul>
+<li>localhost &nbsp;-&nbsp;
+  a subset of the output from the <code>local</code> command</li>
+
+<li>nowhere.invalid &nbsp;-&nbsp; no address at all</li>
+
+<!-- lookups performed on 2015-12-17: -->
+
+<li>gnu.org &nbsp;-&nbsp; a single IPv4 address</li>
+
+<li>apache.org &nbsp;-&nbsp; two different IPv4 addresses</li>
+
+<li>fsf.org &nbsp;-&nbsp; both an IPv4 and an IPv6 address</li>
+</ul>
+
+<p>
+Perform some more lookups of your own.
+If everything works, go back to your code once more.
+Read it again. Then clean it up.
+Is the code properly formatted?
+Are there leftover comments from before, which no longer make sense?
+Will somebody else understand what you've written,
+or do you have to add comments of your own?
+In the latter case, consider rewriting your code
+so that it can be understood without comments.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="clean-up"><span>Clean Up</span></h3>
+
 <!--
 <p>
 </p>
 -->
-
-<p class="larger"><i>Instructions still missing...</i></p>
-<ol>
-<li>call the second faulty command
-  <br/>
-  (repeat steps from above, with less details)</li>
-</ol>
-
-<!-- examples for the 'lookup' command, 2015-12-13:
-gnu.org    -> single IPv4 address
-apache.org -> two different IPv4 addresses
-fsf.org    -> IPv4 and IPv6 addresses
--->
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="clean-up"><span>Clean Up</span></h3>
 
 <p class="larger"><i>Instructions still missing...</i></p>
 <ol>
