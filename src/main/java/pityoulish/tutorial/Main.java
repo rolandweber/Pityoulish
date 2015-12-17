@@ -10,7 +10,7 @@ import pityoulish.cmdline.BackendHandler;
 
 
 /**
- * Main entry point to Tutorial program.
+ * Main entry point to the Tutorial program.
  */
 public class Main
 {

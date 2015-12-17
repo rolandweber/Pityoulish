@@ -27,7 +27,7 @@ public class TutorialCommandHandler
   extends CommandHandlerBase<TutorialCommandHandler.TutorialCommand>
 {
   /**
-   * The tutorial commands.
+   * List of the tutorial commands.
    * <ul>
    * <li>latin: print a text with ISO Latin special characters</li>
    * <li>local: determine the local IP addresses</li>
