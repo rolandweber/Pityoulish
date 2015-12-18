@@ -63,20 +63,10 @@ public class TutorialCommandHandler
   public void describeUsage(Appendable app, String eol)
     throws IOException
   {
-    //@@@ Move help text to properties files. EOL handling is annoying though.
-    app.append("latin").append(eol)
-      .append("  print a text with ISO Latin special characters")
-      .append(eol)
-      .append("local").append(eol)
-      .append("  print the local IP addresses")
-      .append(eol)
-      .append("islocal <hostname>").append(eol)
-      .append("  check whether the hostname belongs to the local host")
-      .append(eol)
-      .append("lookup <hostname>").append(eol)
-      .append("  print the IP addresses for the hostname")
-      .append(eol)
-      ;
+    String usage = Catalog.USAGE.lookup();
+    if (!"\n".equals(eol))
+       usage = usage.replace("\n", eol);
+    app.append(usage);
   }
 
 
@@ -108,10 +98,7 @@ public class TutorialCommandHandler
   protected int handleLatinCmd()
     throws Exception
    {
-     //@@@ Move text to properties files.
-     String msg =
-       "H\u00e4ve you h\u00f6rd of the German umlauts, like the '\u00dc'?";
-     System.out.println(msg);
+     System.out.println(Catalog.LATIN_SAMPLE.lookup());
 
      return 0;
    }
@@ -126,8 +113,7 @@ public class TutorialCommandHandler
      for (NetworkInterface nwi :
             Collections.list(NetworkInterface.getNetworkInterfaces()))
       {
-        //@@@ Move text to properties files. Yes, the simple ones too.
-        System.out.println("Network Interface '"+nwi.getName()+"'");
+        System.out.println(Catalog.NW_IFCE_1.format(nwi.getName()));
 
         for (InetAddress ina : Collections.list(nwi.getInetAddresses()))
          {
@@ -165,16 +151,14 @@ public class TutorialCommandHandler
        // PYL:end
 
        result = 0;
-       //@@@ Move text to properties files.
-       System.out.println("'"+hostname+"' is local");
-       // The ephemereal port chosen by bind() is now allocated and
+       System.out.println(Catalog.HOST_IS_LOCAL_1.format(hostname));
+       // The ephemereal port chosen for binding is now allocated and
        // cannot be used elsewhere for some time, typically minutes.
 
      } catch (IOException iox) {
        System.out.println(iox.toString());
        result = -1;
-       //@@@ Move text to properties files.
-       System.out.println("'"+hostname+"' is not local");
+       System.out.println(Catalog.HOST_NOT_LOCAL_1.format(hostname));
      }
 
      return result;
@@ -189,8 +173,7 @@ public class TutorialCommandHandler
    */
   protected int handleLookupCmd(String hostname)
    {
-     //@@@ Move text to properties files.
-     System.out.println("Looking up '"+hostname+"'...");
+     System.out.println(Catalog.LOOKING_UP_1.format(hostname));
 
      // PYL:keep
      Missing.here("look up the InetAddress(es) of a hostname");

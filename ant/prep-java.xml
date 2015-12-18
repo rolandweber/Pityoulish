@@ -39,6 +39,7 @@ Tutorial: Prepare for Java development.
   <patternset id="prep-java.into.jar">
     <include name="pityoulish/tutorial/*" />
     <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
     <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
   </patternset>
 

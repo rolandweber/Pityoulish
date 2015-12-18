@@ -3,27 +3,31 @@
  * terms of the Creative Commons CC0 1.0 Universal license.
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
-package pityoulish.i18n;
+package pityoulish.tutorial;
+
+import pityoulish.i18n.CatalogHelper;
+import pityoulish.i18n.TextEntry;
+
 
 /**
- * Catalog for unit tests.
+ * Catalog of localizable texts and patterns.
  */
-public enum UnitTestCatalog implements TextEntry
+public enum Catalog implements TextEntry
  {
-   UNDEFINED,
-     PATTERN_0,
-     PATTERN_1,
-     PATTERN_2,
-     TEXT_A,
-     TEXT_B,
-     OBJECT;
+   USAGE,
+     LATIN_SAMPLE,
+     NW_IFCE_1,
+     HOST_IS_LOCAL_1,
+     HOST_NOT_LOCAL_1,
+     LOOKING_UP_1;
 
-   private final static String
-     bundleName = UnitTestCatalog.class.getName() + "Data";
+
+   private final static String 
+     bundleName = Catalog.class.getName() + "Data";
 
    private final int numParams;
 
-   private UnitTestCatalog()
+   private Catalog()
     {
       numParams = CatalogHelper.getNumericSuffix(super.name());
     }
