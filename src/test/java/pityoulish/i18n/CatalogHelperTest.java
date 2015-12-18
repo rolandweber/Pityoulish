@@ -130,4 +130,61 @@ public class CatalogHelperTest
   }
 
 
+  @Test public void getNumericSuffix_null()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix(null);
+    assertEquals("wrong suffix", -1, value);
+  }
+
+  @Test public void getNumericSuffix_just1()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("1");
+    assertEquals("wrong suffix", -1, value);
+  }
+
+  @Test public void getNumericSuffix_join1()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("join1");
+    assertEquals("wrong suffix", -1, value);
+  }
+
+  @Test public void getNumericSuffix_at1()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("look_at1");
+    assertEquals("wrong suffix", -1, value);
+  }
+
+  @Test public void getNumericSuffix_0()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("whatever_0");
+    assertEquals("wrong suffix", 0, value);
+  }
+
+  @Test public void getNumericSuffix_1()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("some_thing_1");
+    assertEquals("wrong suffix", 1, value);
+  }
+
+  @Test public void getNumericSuffix_17()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("_17");
+    assertEquals("wrong suffix", 17, value);
+  }
+
+  @Test public void getNumericSuffix_A()
+    throws Exception
+  {
+    int value = CatalogHelper.getNumericSuffix("Text_A");
+    assertEquals("wrong suffix", -1, value);
+  }
+
+
 }

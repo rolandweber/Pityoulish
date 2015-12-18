@@ -10,22 +10,22 @@ package pityoulish.i18n;
  */
 public enum UnitTestCatalog implements TextEntry
  {
-   UNDEFINED  (-1),
-     PATTERN_0 (0),
-     PATTERN_1 (1),
-     PATTERN_2 (2),
-     TEXT_A   (-1),
-     TEXT_B   (-1),
-     OBJECT   (-1);
+   UNDEFINED,
+     PATTERN_0,
+     PATTERN_1,
+     PATTERN_2,
+     TEXT_A,
+     TEXT_B,
+     OBJECT;
 
    private final static String bundleName =
      UnitTestCatalog.class.getName()+"Data";
 
    private final int numParams;
 
-   private UnitTestCatalog(int num)
+   private UnitTestCatalog()
     {
-      numParams = num;
+      numParams = CatalogHelper.getNumericSuffix(super.name());
     }
 
 

@@ -132,4 +132,40 @@ public final class CatalogHelper
     return bundle;
   }
 
+
+  /**
+   * Obtains the numeric suffix of a string.
+   * This supports the naming convention:
+   * <ul>
+   * <li>The lookup key for a pattern that formats <i>n</i> parameters
+   *     ends with '_<i>n</i>'.</li>
+   * <li>The lookup key for text which is not a formatting pattern
+   *     does not end with a numeric suffix.</li>
+   * </ul>
+   *
+   * @param key         a lookup key or other string to interpret
+   *
+   * @return    the value of the numeric suffix after the last underscore,
+   *            or -1 if there is no numeric suffix
+   */
+  public static final int getNumericSuffix(String key)
+  {
+    if ((key == null) || (key.length() < 2))
+       return -1;
+
+    int result = -1;
+    int underscore = key.lastIndexOf("_");
+    if (underscore >= 0)
+     {
+       try {
+         String suffix = key.substring(underscore+1);
+         result = Integer.parseInt(suffix);
+       } catch (NumberFormatException nfx) {
+         // no numeric suffix, result remains -1
+       }
+     }
+
+    return result;
+  }
+
 }
