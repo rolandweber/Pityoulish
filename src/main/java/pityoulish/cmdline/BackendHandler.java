@@ -16,16 +16,15 @@ public interface BackendHandler
 {
   /**
    * Generates a description for the backend arguments.
-   * The description should end with the <code>eol</code> argument.
+   * The description should end with a newline character (\n).
    *
    * @param app   where to append the description
-   * @param eol   the end-of-line character sequence to use
    * @param cmd   what comes after the backend arguments. For example
    *              <pre>&lt;cmd&gt; [&lt;arg&gt; [...]]</pre>
    *
    * @throws IOException        if appending fails
    */
-  public void describeUsage(Appendable app, String eol, String cmd)
+  public void describeUsage(Appendable app, String cmd)
     throws IOException
     ;
 
@@ -57,10 +56,10 @@ public interface BackendHandler
   /** Handler for a non-existing backend. Expects no arguments at all. */
   public final static class None implements BackendHandler
   {
-    public void describeUsage(Appendable app, String eol, String cmd)
+    public void describeUsage(Appendable app, String cmd)
       throws IOException
     {
-      app.append(cmd).append(eol);
+      app.append("  ").append(cmd).append('\n');
     }
 
     public int getArgCount()

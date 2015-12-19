@@ -20,7 +20,7 @@ public class BackendHandlerTest
 
     StringBuilder sb = new StringBuilder(107);
     sb.append(prefix);
-    bh.describeUsage(sb, "\n", cmd);
+    bh.describeUsage(sb, cmd);
 
     String usage = sb.toString();
     assertTrue("usage prefix modified", usage.startsWith(prefix));

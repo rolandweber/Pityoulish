@@ -96,26 +96,30 @@ public class ArgsInterpreter
   } // handle
 
 
-
   /** Generates a usage message. */
   public final String getUsage()
     throws java.io.IOException
   {
-    final String eol = System.getProperty("line.separator", "\n");
     StringBuilder sb = new StringBuilder(1016);
 
-    sb.append(Catalog.USAGE_INTRO.lookup()).append(eol)
-      .append("  ");
-    backendHandler.describeUsage(sb, eol, Catalog.CMD_AND_ARGS.lookup());
-    sb.append(eol)
-      .append(Catalog.CMD_HEADING.lookup()).append(eol);
+    sb.append(Catalog.USAGE_INTRO.lookup()).append('\n');
+    backendHandler.describeUsage(sb, Catalog.CMD_AND_ARGS.lookup());
+    sb.append('\n')
+      .append(Catalog.CMD_HEADING.lookup()).append('\n');
 
     for(CommandHandler ch : cmdHandlers)
      {
-       ch.describeUsage(sb, eol);
+       ch.describeUsage(sb);
      }
 
-    return sb.toString();
+    String usage = sb.toString();
+
+    // adjust EOL to platform conventions
+    String eol = System.getProperty("line.separator", "\n");
+    if (!"\n".equals(eol))
+       usage = usage.replace("\n", eol);
+
+    return usage;
   }
 
 }

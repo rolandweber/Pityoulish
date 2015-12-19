@@ -59,14 +59,11 @@ public class TutorialCommandHandler
   }
 
 
-  // non-javadoc, see interface Command
-  public void describeUsage(Appendable app, String eol)
+  // non-javadoc, see interface CommandHandler
+  public void describeUsage(Appendable app)
     throws IOException
   {
-    String usage = Catalog.USAGE.lookup();
-    if (!"\n".equals(eol))
-       usage = usage.replace("\n", eol);
-    app.append(usage);
+    app.append(Catalog.USAGE.lookup());
   }
 
 

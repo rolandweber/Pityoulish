@@ -25,11 +25,11 @@ public class ArgsInterpreterTest
       numArgs = argc;
     }
 
-    public void describeUsage(Appendable app, String eol, String cmd)
+    public void describeUsage(Appendable app, String cmd)
       throws java.io.IOException
     {
       app.append("Backend:").append(String.valueOf(numArgs))
-        .append(' ').append(cmd).append(eol);
+        .append(' ').append(cmd).append('\n');
     }
 
     public int getArgCount()
@@ -71,11 +71,11 @@ public class ArgsInterpreterTest
       numArgs = argc;
     }
 
-    public void describeUsage(Appendable app, String eol)
+    public void describeUsage(Appendable app)
       throws java.io.IOException
     {
       app.append("Command:").append(commandName)
-        .append('#').append(String.valueOf(numArgs)).append(eol);
+        .append('#').append(String.valueOf(numArgs)).append('\n');
     }
 
     public boolean handle(StatusCode status, String name, String... args)

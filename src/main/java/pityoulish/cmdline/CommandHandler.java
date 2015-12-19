@@ -15,13 +15,13 @@ public interface CommandHandler
 {
   /**
    * Generates a usage description for the supported commands.
+   * The description should end with a newline character (\n).
    *
    * @param app   where to append the description
-   * @param eol   the end-of-line character sequence to use
    *
    * @throws IOException        if appending fails
    */
-  public void describeUsage(Appendable app, String eol)
+  public void describeUsage(Appendable app)
     throws IOException
     ;
 

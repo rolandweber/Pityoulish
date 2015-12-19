@@ -40,7 +40,7 @@ public class CommandHandlerBaseTest
        super(TestCommand.class);
      }
 
-    public void describeUsage(Appendable app, String eol)
+    public void describeUsage(Appendable app)
      {
        // irrelevant
      }
