@@ -104,9 +104,11 @@ public class ArgsInterpreter
     final String eol = System.getProperty("line.separator", "\n");
     StringBuilder sb = new StringBuilder(1016);
 
-    sb.append("command line arguments:").append(eol);
-    backendHandler.describeUsage(sb, eol, "<cmd> [<arg> [...]]");
-    sb.append("supported values for <cmd> are, with arguments:").append(eol);
+    sb.append(Catalog.USAGE_INTRO.lookup()).append(eol)
+      .append("  ");
+    backendHandler.describeUsage(sb, eol, Catalog.CMD_AND_ARGS.lookup());
+    sb.append(eol)
+      .append(Catalog.CMD_HEADING.lookup()).append(eol);
 
     for(CommandHandler ch : cmdHandlers)
      {
