@@ -5,10 +5,118 @@
   https://creativecommons.org/publicdomain/zero/1.0/
 -->
 <body>
-Utility classes for internationalization (i18n).
+Utility classes for
+<a href="http://www.unicode.org/glossary/#internationalization"
+   >internationalization</a>.
 
 <p>
-<i>explanations still missing</i> @@@
+As explained in a <a href="http://www.w3.org/International/questions/qa-i18n"
+    >W3 FAQ</a>,
+internationalization (i18n) is the task of preparing a program for
+localization (l10n). The latter includes translation into different languages.
+Other terms commonly used in this context are globalization (g11n)
+and national language support (NLS).
+</p>
+
+<p>
+The Pityoulish programming exercises employ only a
+<a href="#limitations">limited</a> form of i18n.
+This package provides interfaces and helpers for that.
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="usage">Usage</h2>
+
+<p>
+To facilitate translation, text should not be hard-coded. Instead, each
+software component defines a <i>catalog</i> of user messages and text literals.
+The actual strings for the catalog entries are defined in properties files.
+The code uses the catalog to look up the strings.
+A catalog might look like this:
+</p>
+<pre>
+public enum MyCatalog implements TextEntry {
+  FIRST_MESSAGE_3, SECOND_MESSAGE_0, LITERAL_A, LITERAL_B;
+  ... // see pityoulish.tutorial.Catalog for method implementations
+}
+</pre>
+<p>
+The catalog is accompanied by a properties file with the default content,
+typically in American English.
+The default content can be translated into other languages and locales.
+The translations are stored in additional properties files, one for
+each translation. See the JavaDocs of <code>java.util.ResourceBundle</code>
+for naming conventions and search order.
+The default content for the catalog above might be:
+<p>
+<pre>
+FIRST_MESSAGE_3  = Key "{1}" has value "{2}" in table "{0}".
+SECOND_MESSAGE_0 = A message doesn''t need to have parameters.
+LITERAL_A        = Literal text has no parameters, it doesn't get formatted.
+LITERAL_B        = Therefore, different escaping rules apply.
+</pre>
+<p>
+By convention, catalog entries with a numeric suffix are messages for
+formatting with <code>java.text.MessageFormat</code>.
+See there for the full syntax and escaping rules.
+Most notably, <code>{<i>n</i>}</code> formats the <i>n</i>-th parameter, and
+the single quote is an escape character which must be escaped itself
+to appear in the formatted output.
+The suffix indicates how many parameters the catalog entry formats.
+Catalog entries without a numeric suffix are for literal texts rather than
+format strings. For example, these could be labels for a UI or column headings
+for tabular output.
+Interface {@link pityoulish.i18n.TextEntry TextEntry} defines
+different methods for formatting messages and for looking up literals:
+</p>
+<pre>
+String fm = MyCatalog.FIRST_MESSAGE_3.format("TableABC", "KeyXYZ", "MyValue");
+String sm = MyCatalog.SECOND_MESSAGE_0.format();
+String la = MyCatalog.LITERAL_A.lookup();
+String lb = MyCatalog.LITERAL_B.lookup();
+</pre>
+<p>
+The {@link pityoulish.i18n.CatalogHelper CatalogHelper} provides static
+utility methods for implementing catalogs. They take care of looking up and
+formatting strings, and of evaluating the numeric suffix. See the source code
+of class <code>pityoulish.tutorial.Catalog</code> for their usage.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="limitations">Limitations</h2>
+<p>
+I18n support in the programming exercises covers only the translation of
+strings and message formats. Message formats support some further localization,
+like date and time formatting.
+However, the programming exercises make one significant <b>assumption</b>:
+</p>
+<p style="font-style: italic; font-size: larger; text-align: center;">
+All lookups can be done with the default locale of the JVM.
+<p/>
+<p>
+More often than not, this assumption is <b>wrong</b> in real-life projects.
+You might get away with it in a standalone program.
+But in a client-server environment, this approach falls short.
+A web browser sends the user's preferred locale to the server.
+When the server generates output, it is expected to use the locale
+requested by the client. And worse:
+An error message might have to be sent to the client in the requested locale,
+but also written to a log file in the system locale.
+There isn't a single lookup at the place where the message originates.
+The originator has to return a lookup key,
+like {@link pityoulish.i18n.TextEntry},
+and the parameters to be formatted with it.
+The lookup of locale-specific strings is deferred until the message
+is sent to the client, or written to the server log.
+That way, each formatting of the message can use a different locale.
+</p>
+
+<p>
+Even if you are implementing a standalone program, you might
+work with libraries that are also used for a server.
+On the plus side, doing it right means that you don't have to pass the
+client locale to every part of the server that might generate a message.
 </p>
 
 </body>
