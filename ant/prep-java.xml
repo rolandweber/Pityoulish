@@ -86,6 +86,7 @@ Tutorial: Prepare for Java development.
     <packageset dir="${src.pitted}">
       <include name="pityoulish/tutorial" />
       <include name="pityoulish/cmdline" />
+      <include name="pityoulish/i18n" />
     </packageset>
   </javadoc>
 </target>

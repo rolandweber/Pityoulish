@@ -201,6 +201,7 @@ pityoulish/cmdline/ArgsInterpreter.java
 pityoulish/outtake/<span class="emph">Missing.java</span>
 pityoulish/tutorial/Main.java
 pityoulish/tutorial/TutorialCommandHandler.java
+pityoulish/tutorial/package.html
 pityoulish/cmdline/ArgsInterpreter.class
 ...
 pityoulish/outtake/<span class="emph">Missing.class</span>
@@ -261,19 +262,20 @@ Before you dive into the source code and get lost in its intricacies,
 you should get a high-level overview. Modern IDEs make it very easy to
 access context-specific information. For example, they can show the JavaDocs
 for a method as hover help, right there where the method is being called.
-At the same time, they beguile users into neglecting the bigger context.
-Why bother with the class- or package-level JavaDocs when the method-level
+At the same time, they beguile developers into neglecting the bigger context.
+Why bother with the class- or package-level JavaDocs, when the method-level
 is readily available? Never mind that the former might point out
 other classes or methods that would serve your purposes better, or
 provide valuable information that applies to all the methods of a class.
-To avoid this pitfall, don't go into your IDE or editor just yet.
+To elude this pitfall, don't go into your IDE or editor just yet.
 </p>
 
 <p>
 Open the <a href="jdoc/index.html">JavaDocs</a> in a new browser tab or window,
 so you can easily switch between them and this description.
-Check the list of packages. There are only two,
-<code>pityoulish.cmdline</code> and <code>pityoulish.tutorial</code>.
+Check the list of packages. There are three of them,
+<code>pityoulish.cmdline</code>, <code>pityoulish.i18n</code>,
+and <code>pityoulish.tutorial</code>.
 In the main content frame, click on the first one. Now you see a list of
 interfaces and classes in that package. Glimpse at the names. They are
 about commands, handling, and arguments. The package description begins
@@ -285,7 +287,19 @@ Right now, the support functionality is not your concern.
 </p>
 
 <p>
-Next, access the JavaDocs for the <code>pityoulish.tutorial</code> package.
+Move on to the next package, <code>pityoulish.i18n</code>.
+The funny abbreviation is explained in the JavaDocs. There are even links
+to external websites where you can do some background reading.
+But again, the package description begins with "Utility classes".
+So this is another item for your to-do list and a later time.
+What you should gather from the package description is that
+output strings are not hard-coded in the Java sources.
+Instead, they are looked up from properties files.
+Catalog enums define lookup keys and helper methods.
+</p>
+
+<p>
+Finally, access the JavaDocs for the <code>pityoulish.tutorial</code> package.
 There is a class <code>Main</code>, described as the main entry point.
 Now you know where to start. There is an enum with four constants,
 named like the four commands which <code>tutorial.jar</code> understands.
@@ -429,7 +443,7 @@ which called something else, and so on,
 right up to <code>Missing.here</code> at the top of the stack.
 And there, the exception was thrown. In parenthesis, you see
 the source file name 'Missing.java' and a line number.
-Open the file and find the line number indicated by your stack trace.
+Open the file and find the line indicated by your stack trace.
 If you executed the command from within an IDE,
 you probably just have to click a link in the output.
 Now what is wrong in <code>here</code>?
@@ -440,8 +454,8 @@ Well, nothing is wrong in <code>Missing.here</code>.
 It is a helper method meant to throw an exception, and so it does.
 The caller must have found that something is wrong
 and raised an exception by invoking the helper.
-You need to find the place from which it is being called.
-Luckily, the second line of the stack trace tells you exactly that.
+You need to find the code that called here.
+Luckily, the second line of the stack trace tells you exactly where that is.
 Load the file 'TutorialCommandHandler.java' and
 have a look at method <code>handleIsLocalCmd</code>,
 especially around the line number from your stack trace.
@@ -508,7 +522,8 @@ Does it make a difference whether the hostname is local?
 </p>
 
 <p>
-When you have found and assimilated that information, put in the missing code.
+When you have found and assimilated that information, put in the missing code:
+<br/>
 Delete the calls to class <code>Missing</code>.
 Create an unconnected socket. Bind that socket to the hostname.
 That's it. <span class="emph">Maybe</span>.
@@ -539,7 +554,7 @@ These two commands are equivalent, both print the usage instructions:
 
 <p>
 Without an IDE, you have to call the compiler and build the JAR explicitly.
-Assuming that the current directory is where you extracted the JAR,
+Assuming that you extracted the JAR into the current working directory,
 use the following commands:
 </p>
 <div class="terminal">
