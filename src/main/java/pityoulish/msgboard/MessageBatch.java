@@ -9,11 +9,21 @@ import java.util.List;
 
 
 /**
- * A list of {@link Message messages} with a continuation marker
- * for a {@link MessageBoard board}.
+ * A batch of {@link Message messages} with a continuation marker.
+ * The latter is specific to the {@link MessageBoard board}
+ * from which this batch was obtained.
  */
-public interface MessageList extends List<Message>
+public interface MessageBatch
 {
+  /**
+   * Obtains the messages in this batch.
+   *
+   * @return  the read-only list of messages in this batch
+   */
+  public List<Message> getMessages()
+    ;
+
+
   /**
    * Obtains the continuation marker.
    * The marker can be used to obtain subsequent messages from the

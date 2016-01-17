@@ -16,21 +16,22 @@ public interface MessageBoard
    * Lists messages from this board.
    *
    * @param limit       the maximum number of messages to list
-   * @param marker      the continuation {@link MessageList#getMarker marker}
+   * @param marker      the continuation {@link MessageBatch#getMarker marker}
    *                    from a preceding call, or
    *                    <code>null</code> to fetch the oldest messages
    *                    from this board
    *
    * @return    the oldest available messages that are newer than the
    *            <code>marker</code>.
-   *            The list contains no more than <code>limit</code> messages.
-   *            The continuation marker of the returned list can be used to
+   *            The order of the messages is from older to newer.
+   *            The batch contains no more than <code>limit</code> messages.
+   *            The continuation marker of the returned batch can be used to
    *            fetch only newer messages on subsequent calls.
-   *            The discontinuation flag is set on the returned list if a
+   *            The discontinuation flag is set on the returned batch if a
    *            <code>marker</code> was given, but the board cannot ascertain
    *            that all messages since then have been retained.
    */
-  public MessageList listMessages(int limit, String marker)
+  public MessageBatch listMessages(int limit, String marker)
     ;
 
 
