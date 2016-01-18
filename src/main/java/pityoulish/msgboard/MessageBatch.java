@@ -46,7 +46,7 @@ public interface MessageBatch
    *            <code>false</code> if this list is consecutive to the
    *            preceding one, or if this is a fresh list
    */
-  public boolean isDiscontinuos()
+  public boolean isDiscontinuous()
     ;
 
 }

@@ -7,8 +7,10 @@ package pityoulish.msgboard;
 
 
 /**
- * A message board, with {@link Message messages} on it.
- * Unless it's empty.
+ * A board with {@link Message messages} on it; unless it's empty.
+ * The board maintains a collection of messages with chronological order.
+ * The capacity is limited, so old messages eventually drop off the board
+ * when users keep adding new messages.
  */
 public interface MessageBoard
 {
@@ -27,7 +29,7 @@ public interface MessageBoard
    *            The batch contains no more than <code>limit</code> messages.
    *            The continuation marker of the returned batch can be used to
    *            fetch only newer messages on subsequent calls.
-   *            The discontinuation flag is set on the returned batch if a
+   *            The discontinuation flag of the returned batch is set if a
    *            <code>marker</code> was given, but the board cannot ascertain
    *            that all messages since then have been retained.
    */
