@@ -10,7 +10,8 @@ package pityoulish.msgboard;
  * A board with {@link Message messages} on it; unless it's empty.
  * The board maintains a collection of messages with chronological order.
  * The capacity is limited, so old messages eventually drop off the board
- * when users keep adding new messages.
+ * as new ones are added.
+ * Methods to put messages on the board are defined in derived interfaces.
  */
 public interface MessageBoard
 {
@@ -34,19 +35,6 @@ public interface MessageBoard
    *            that all messages since then have been retained.
    */
   public MessageBatch listMessages(int limit, String marker)
-    ;
-
-
-  /**
-   * Puts a message on this board.
-   * Boards have a limited capacity, so this might drop an old message.
-   *
-   * @param originator  the source of the message, a user or system name
-   * @param text        the content of the message
-   *
-   * @return    the new message on the board, including a timestamp
-   */
-  public Message putMessage(String originator, String text)
     ;
 
 }
