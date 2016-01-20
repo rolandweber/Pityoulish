@@ -61,7 +61,7 @@ public class MessageBatchImpl implements MessageBatch
 
 
   // non-javadoc, see interface
-  public boolean isDiscontinuos()
+  public boolean isDiscontinuous()
   {
     return discontinuous;
   }
