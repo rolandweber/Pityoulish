@@ -26,7 +26,7 @@ public interface MessageBatch
 
   /**
    * Obtains the continuation marker.
-   * The marker can be used to obtain subsequent messages from the
+   * The marker can be used to fetch subsequent messages from the
    * {@link MessageBoard}.
    *
    * @return    an opaque, board-specific marker that indicates where
