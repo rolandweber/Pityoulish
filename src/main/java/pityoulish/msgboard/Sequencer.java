@@ -11,9 +11,73 @@ package pityoulish.msgboard;
  * Such identifiers can be used as {@link MessageBatch#getMarker marker},
  * to represent a position in the message stream.
  * This interface isn't relevant for callers of {@link MessageBoard}.
- * Instead, it encapsulates logic for implementing a board in a specific way.
+ * Instead, it encapsulates logic for implementing boards in a specific way.
  *
- * <p><i>description of requirements missing here</i></p>
+ * <p>
+ * For thousands of messages, and at least four system messages between
+ * two subsequent user messages, the generated identifiers MUST satisfy
+ * the following requirements:
+ * </p>
+ * <ul>
+ * <li>IDs must be unique.</li>
+ * <li>IDs must be generated in ascending alphabetical order.</li>
+ * <li>IDs must be URL-safe and safe for typing in command lines.</li>
+ * <li>IDs must be reasonably short to be typed by a human.
+ *     12 characters are fine, 80 are too long.</li>
+ * <li>{@link #isDiscontinuous isDiscontinuous} yields no false positives.</li>
+ * </ul>
+ *
+ * <p>
+ * In addition, the generated identifiers SHOULD satisfy
+ * the following requirements:
+ * </p>
+ * <ul>
+ * <li>IDs should be hard to guess or manipulate by humans.
+ *     {@link #isSane isSane} should detect such attempts.
+ *     However, cryptographic safety is not expected.
+ * </li>
+ * <li>IDs from other instances of the sequencer should be
+ *     rejected by {@link #isSane isSane}.</li>
+ * </ul>
+ *
+ * <p>
+ * For millions of messages, or more than four system messages between
+ * two subsequent user messages, some or all of the requirements
+ * may be violated. In consequence, some misbehavior of message boards
+ * using the sequencer is expected.
+ * </p>
+ *
+ * <p><b>Rationale:</b>
+ * <ul>
+ * <li>The restriction to thousands of messages allows for short IDs.
+ *     The {@link MessageBoard} is not meant to handle Twitter volumes.
+ * </li>
+ * <li>The restriction on the number of system messages between user messages
+ *     allows for a short, fixed-width extension of user message IDs to
+ *     identify system messages.
+ * </li>
+ * <li>Short and safe IDs improve the usability of command-line programs
+ *     in the programming exercises. Students may have to type in a marker
+ *     that was returned by a previous call.
+ * </li>
+ * <li>{@link #isSane isSane} should detect typos, tinkering,
+ *     and markers from different message boards.
+ *     Some students are bound to try.
+ * </li>
+ * <li>The alphabetical order allows for message boards to
+ *     use string comparison when searching for message IDs
+ *     in a sorted data structure.
+ *     This complects meta data into the ID for convenience.
+ *     More on complecting, and why you shouldn't do it,
+ *     in Rich Hickey's excellent talk
+ *     <a href="http://www.infoq.com/presentations/Simple-Made-Easy"
+ *     >Simple Made Easy</a>.
+ *     <br/>
+ *     Twitter would never use a message ID for chronological sorting.
+ *     They store meta data like timestamps along with the messages.
+ *     But they don't drop messages, like a {@link MessageBoard} does.
+ * </li>
+ * </ul>
  */
 public interface Sequencer
 {
