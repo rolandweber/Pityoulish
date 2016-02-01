@@ -5,6 +5,8 @@
  */
 package pityoulish.msgboard;
 
+import java.util.Comparator;
+
 
 /**
  * A generator for sequential message identifiers.
@@ -14,17 +16,16 @@ package pityoulish.msgboard;
  * Instead, it encapsulates logic for implementing boards in a specific way.
  *
  * <p>
- * For thousands of messages, and at least four system messages between
- * two subsequent user messages, the generated identifiers MUST satisfy
+ * For thousands of messages, the generated identifiers MUST satisfy
  * the following requirements:
  * </p>
  * <ul>
  * <li>IDs must be unique.</li>
- * <li>IDs must be generated in ascending alphabetical order.</li>
  * <li>IDs must be URL-safe and safe for typing in command lines.</li>
  * <li>IDs must be reasonably short to be typed by a human.
  *     12 characters are fine, 80 are too long.</li>
- * <li>{@link #isDiscontinuous isDiscontinuous} yields no false positives.</li>
+ * <li>The comparator returned by {@link #getComparator}
+ *     imposes a chronological ordering on the generated IDs.</li>
  * </ul>
  *
  * <p>
@@ -41,20 +42,17 @@ package pityoulish.msgboard;
  * </ul>
  *
  * <p>
- * For millions of messages, or more than four system messages between
- * two subsequent user messages, some or all of the requirements
- * may be violated. In consequence, some misbehavior of message boards
- * using the sequencer is expected.
+ * For millions of messages, some of the requirements may be violated.
+ * Preferably, the generated IDs get longer, but satisfy all other
+ * requirements. However, wrapping around and re-using IDs
+ * after millions of messages is also acceptable, provided that
+ * the {@link #getComparator comparator} can deal with that.
  * </p>
  *
  * <p><b>Rationale:</b>
  * <ul>
  * <li>The restriction to thousands of messages allows for short IDs.
  *     The {@link MessageBoard} is not meant to handle Twitter volumes.
- * </li>
- * <li>The restriction on the number of system messages between user messages
- *     allows for a short, fixed-width extension of user message IDs to
- *     identify system messages.
  * </li>
  * <li>Short and safe IDs improve the usability of command-line programs
  *     in the programming exercises. Students may have to type in a marker
@@ -64,48 +62,48 @@ package pityoulish.msgboard;
  *     and markers from different message boards.
  *     Some students are bound to try.
  * </li>
- * <li>The alphabetical order allows for message boards to
- *     use string comparison when searching for message IDs
- *     in a sorted data structure.
- *     This complects meta data into the ID for convenience.
- *     More on complecting, and why you shouldn't do it,
- *     in Rich Hickey's excellent talk
- *     <a href="http://www.infoq.com/presentations/Simple-Made-Easy"
- *     >Simple Made Easy</a>.
+ * <li>Using the {@link #getComparator comparator}, IDs can serve as
+ *     a discrete, unique timestamp. Message boards can sort by IDs,
+ *     and compare them to detect discontinuity.
+ *     The downside is that this complects an ordering with the identity.
  *     <br/>
  *     Twitter would never use a message ID for chronological sorting.
  *     They store meta data like timestamps along with the messages.
  *     But they don't drop messages, like a {@link MessageBoard} does.
  * </li>
  * </ul>
+ * <p>
+ * If the timestamps of a {@link MessageBoard} were unique, other message IDs
+ * would not be required. You might be tempted to actually use timestamps,
+ * and distinguish messages within the same second by fake milliseconds.
+ * But that would complect uniqueness into timestamps, and therefore is
+ * no better than the message IDs. Besides, timestamps are easy to tinker with.
+ * </p>
+ * <p>
+ * More on complecting, and why you shouldn't do it,
+ * in Rich Hickey's excellent talk
+ * <a href="http://www.infoq.com/presentations/Simple-Made-Easy"
+ *    style="font-size: larger; font-weight: bold;"
+ *   >Simple Made Easy</a>.
+ * </p>
  */
 public interface Sequencer
 {
   /**
-   * Generates an identifier for a user message.
-   * See {@link UserMessageBoard} for details on user messages.
+   * Generates a message identifier.
    *
-   * @return a new user message ID
+   * @return a new message ID
    */
-  public String createUserMessageID()
-    ;
-
-
-  /**
-   * Generates an identifier for a system message.
-   * See {@link SystemMessageBoard} for details on system messages.
-   *
-   * @return a new system message ID
-   */
-  public String createSystemMessageID()
+  public String createMessageID()
     ;
 
 
   /**
    * Performs a sanity check on a message identifier.
-   * A string is sane if it looks like a message ID that can be generated here.
+   * A candidate string is sane if it looks like a message ID
+   * that was or might be generated here.
    * Passing the check implies that the argument is fit for use
-   * with {@link #isDiscontinuous}.
+   * with the {@link #getComparator comparator} of this sequencer.
    *
    * @param candidate   the message identifier to check
    *
@@ -119,25 +117,14 @@ public interface Sequencer
 
 
   /**
-   * Checks whether a user message would fit between two identifiers.
-   * If consecutive or identical user message IDs are passed as arguments,
-   * the result is <code>false</code>. For non-consecutive user message IDs,
-   * the result is <code>true</code>. If system message IDs are passed,
-   * the method has to deduce nearby user message IDs to make the decision.
+   * Obtains a comparator for IDs generated here.
+   * The returned comparator must only be used to compare IDs that are
+   * {@link #isSane sane}. For other strings, it may throw an exception
+   * or yield unpredictable results.
    *
-   * @param older   the ID of a message, the older one
-   * @param newer   the ID of another message, the newer one
-   *
-   * @return    <code>true</code> if this sequencer could generate a
-   *            user message ID that fits between the two arguments,
-   *            <code>false</code> otherwise
-   *
-   * @throws IllegalArgumentException
-   *    if an argument is not {@link #isSane sane},
-   *    or if the older one is actually newer
+   * @return a comparator that imposes a chronological ordering on
+   *         identifiers generated by this sequencer
    */
-  public boolean isDiscontinuous(String older, String newer)
-    throws IllegalArgumentException
+  public Comparator<String> getComparator()
     ;
-
 }
