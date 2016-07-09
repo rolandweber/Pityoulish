@@ -5,7 +5,12 @@
  */
 package pityoulish.msgboard;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -19,6 +24,16 @@ public abstract class SequencerMustHave
 {
   /** The maximum length of a message ID to be tolerated. */
   public final static int MSGID_MAX_LENGTH = 17;
+
+  /**
+   * A regex to check for safe characters.
+   * ASCII letters and digits are obviously safe.
+   * The selection of other allowed characters is a personal choice, guided by
+   * <a href="https://tools.ietf.org/html/rfc3986#section-2.3">RFC 3986</a>
+   * and <a href="http://tldp.org/LDP/abs/html/special-chars.html">bash</a>.
+   */
+  public final static Pattern MSGID_SAFE_CHARS =
+    Pattern.compile("[-a-zA-Z0-9_@.]+");
 
 
   /**
@@ -38,9 +53,10 @@ public abstract class SequencerMustHave
   public static void _checkMessageID(String msgid)
   {
     assertNotNull("no message ID", msgid);
+    assertTrue("empty message ID", msgid.length() > 0);
     assertTrue("message ID too long", msgid.length() <= MSGID_MAX_LENGTH);
-
-    //@@@ check for URL-safety with a regular expression
+    assertTrue("bad character in "+msgid,
+               MSGID_SAFE_CHARS.matcher(msgid).matches());
   }
 
 
@@ -108,6 +124,34 @@ public abstract class SequencerMustHave
     assertTrue("msgid1  <  msgid2", comp.compare(msgid1, msgid2) <  0);
     assertTrue("msgid2  >  msgid1", comp.compare(msgid2, msgid1) >  0);
     assertTrue("msgid2 === msgid2", comp.compare(msgid2, msgid2) == 0);
+  }
+
+
+  /**
+   * Generates a bunch of IDs and performs comparative tests on them.
+   * <ul>
+   * <li>no duplicates</li>
+   * <li>sort in order of generation</li>
+   * </ul>
+   */
+  @Test public void bunch_of_IDs()
+    throws Exception
+  {
+    final int enough = 152; // number of IDs to generate
+
+    Sequencer         seq = newTestSubject();
+    List<String>     list = new ArrayList<>(enough);
+    SortedSet<String> set = new TreeSet<>(seq.getComparator());
+
+    for (int i=0; i<enough; i++)
+     {
+       String msgid = _createCheckedMessageID(seq);
+       list.add(msgid);
+       assertTrue("duplicate "+msgid, set.add(msgid));
+     }
+
+    List<String> sorted = new ArrayList<>(set);
+    assertEquals("wrong sort order", list, sorted);
   }
 
 }
