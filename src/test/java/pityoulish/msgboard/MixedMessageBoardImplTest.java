@@ -17,7 +17,7 @@ public class MixedMessageBoardImplTest
   }
 
 
-  @Test public void constructor_bad()
+  @Test public void constructor_args()
   {
     try {
       MixedMessageBoardImpl board = new MixedMessageBoardImpl(0);
@@ -31,5 +31,69 @@ public class MixedMessageBoardImplTest
     } catch (Exception expected) {
     }
   }
+
+
+  @Test public void putMessage_args()
+  {
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    try {
+      Message msg = board.putMessage(null, "nonsense");
+      fail("missing originator not detected");
+    } catch (Exception expected) {
+    }
+
+    try {
+      Message msg = board.putMessage("originator", null);
+      fail("missing text not detected");
+    } catch (Exception expected) {
+    }
+
+  }
+
+
+  @Test public void putMessage_OK()
+  {
+    String originator = "myself";
+    String text = "total nonsense";
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    Message msg = board.putMessage(originator, text);
+
+    assertNotNull("no message", msg);
+    assertNotNull("missing timestamp", msg.getTimestamp());
+    assertEquals("wrong originator", originator, msg.getOriginator());
+    assertEquals("wrong text", text, msg.getText());
+  }
+
+
+  @Test public void putSystemMessage_args()
+  {
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    try {
+      Message msg = board.putSystemMessage(null, null);
+      fail("missing text not detected");
+    } catch (Exception expected) {
+    }
+
+    //@@@ check with non-null slot as well? currently not supported
+  }
+
+
+  @Test public void putSystemMessage_NoSlot()
+  {
+    String slot = null;
+    String text = "system info";
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    Message msg = board.putSystemMessage(slot, text);
+
+    assertNotNull("no message", msg);
+    assertNotNull("missing originator", msg.getOriginator());
+    assertNotNull("missing timestamp", msg.getTimestamp());
+    assertEquals("wrong text", text, msg.getText());
+  }
+
 
 }
