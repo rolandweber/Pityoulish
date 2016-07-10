@@ -96,4 +96,19 @@ public class MixedMessageBoardImplTest
   }
 
 
+  @Test public void testCapacity()
+  {
+    String originator = "myself";
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    board.putMessage(originator, "nonsense");
+    board.putMessage(originator, "more nonsense");
+    board.putMessage(originator, "even more nonsense");
+    board.putMessage(originator, "bupkis");
+
+    //@@@ get batch, verify that only the last three are available
+    //@@@ currently not implemented
+  }
+
+
 }

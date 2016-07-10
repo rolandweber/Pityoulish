@@ -5,6 +5,7 @@
  */
 package pityoulish.msgboard;
 
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -162,15 +163,16 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
     String key = boardSequencer.createMessageID();
     boardMessages.put(key, msg);
 
-    if (boardMessages.size() > boardCapacity)
+    // if the capacity remains constant, at most one message will be dropped
+    while (boardMessages.size() > boardCapacity)
      {
-       //@@@ drop message(s), update lastDroppedUserMessage
-       throw new UnsupportedOperationException("@@@ capacity not yet supported");
+       Map.Entry<String,MTMsg> entry = boardMessages.pollFirstEntry();
+       if (entry.getValue().getType() == MT.USER)
+          lastDroppedUserMessageID = entry.getKey();
      }
 
     return key;
   }
-
 
 }
 
