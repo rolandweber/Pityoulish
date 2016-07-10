@@ -5,6 +5,10 @@
  */
 package pityoulish.msgboard;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -99,20 +103,40 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface MessageBoard
   public MessageBatch listMessages(int limit, String marker)
   {
-    if (limit < boardMessages.size())
-       throw new UnsupportedOperationException("@@@ limit not yet supported");
+    if (limit < 1)
+       throw new IllegalArgumentException("limit "+limit);
+
+    //@@@ current logic lists only the oldest messages
     if (marker != null)
        throw new UnsupportedOperationException("@@@ marker not yet supported");
 
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    int count = Math.min(boardMessages.size(), limit);
+    List<MTMsg> messages = new ArrayList<>(count);
+    String lastID = null; // becomes the marker in the result
+    boolean discontinuous = false;
+
+    Iterator<Map.Entry<String,MTMsg>> it = boardMessages.entrySet().iterator();
+    while ((count > 0) && it.hasNext())
+     {
+       Map.Entry<String,MTMsg> entry = it.next();
+       messages.add(entry.getValue());
+       lastID = entry.getKey();
+     }
+
+    if (lastID == null) // board still empty
+       lastID = lastDroppedUserMessageID;
+
+    return new MessageBatchImpl
+      (Collections.<Message> unmodifiableList(messages),
+       lastID, discontinuous);
   }
 
 
   // non-javadoc, see interface UserMessageBoard
   public Message putMessage(String originator, String text)
   {
-    MTMsg msg = new
-      MTMsg(originator, boardTimer.getTimestamp(), text, MT.USER);
+    MTMsg msg = new MTMsg
+      (originator, boardTimer.getTimestamp(), text, MT.USER);
 
     addMessageToBoard(msg);
 
@@ -131,8 +155,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
        throw new UnsupportedOperationException("@@@ slot not yet supported");
      }
 
-    MTMsg msg = new
-      MTMsg(originator, boardTimer.getTimestamp(), text, MT.SYSTEM);
+    MTMsg msg = new MTMsg
+      (originator, boardTimer.getTimestamp(), text, MT.SYSTEM);
 
     addMessageToBoard(msg);
 

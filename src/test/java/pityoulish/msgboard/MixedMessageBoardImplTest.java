@@ -96,18 +96,61 @@ public class MixedMessageBoardImplTest
   }
 
 
+  @Test public void listMessages_args()
+  {
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    try {
+      MessageBatch mb = board.listMessages(0, null);
+      fail("limit 0 not detected");
+    } catch (Exception expected) {
+    }
+
+    try {
+      MessageBatch mb = board.listMessages(-8, null);
+      fail("negative limit not detected");
+    } catch (Exception expected) {
+    }
+
+    //@@@ check with invalid marker as well? currently not supported
+  }
+
+
+  @Test public void listMessages_emptyBoard()
+  {
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+
+    MessageBatch mb = board.listMessages(8, null);
+
+    assertNotNull("no message batch", mb);
+    assertNotNull("no message list", mb.getMessages());
+    assertEquals("unexpected messages", 0, mb.getMessages().size());
+    assertNotNull("no marker", mb.getMarker());
+    assertEquals("discontinuous", false, mb.isDiscontinuous());
+  }
+
+  //@@@ listMessages with non-empty board, all or subset
+  //@@@ listMessages with marker
+
+
   @Test public void testCapacity()
   {
     String originator = "myself";
+    String[] texts = new String[]{
+      "nonsense",
+      "more nonsense",
+      "even more nonsense",
+      "bupkis"
+    };
+
     MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+    for (String text: texts)
+       board.putMessage(originator, text);
 
-    board.putMessage(originator, "nonsense");
-    board.putMessage(originator, "more nonsense");
-    board.putMessage(originator, "even more nonsense");
-    board.putMessage(originator, "bupkis");
-
-    //@@@ get batch, verify that only the last three are available
-    //@@@ currently not implemented
+    MessageBatch mb = board.listMessages(8, null);
+    assertEquals("unexpected message count", 3, mb.getMessages().size());
+    assertEquals("unexpected oldest message",
+                 texts[1], mb.getMessages().get(0).getText());
   }
 
 
