@@ -50,7 +50,8 @@
            debug="${jc.debug}" optimize="${jc.optmz}" deprecation="${jc.dprct}"
            encoding="ISO-8859-15"
            >
-           <jc-elements />
+      <compilerarg value="-Xlint:unchecked"/>
+      <jc-elements />
     </javac>
   </sequential>
 </macrodef>
