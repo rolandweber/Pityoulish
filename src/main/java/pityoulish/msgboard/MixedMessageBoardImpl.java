@@ -105,31 +105,47 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   {
     if (limit < 1)
        throw new IllegalArgumentException("limit "+limit);
+    if ((marker != null) && !boardSequencer.isSane(marker))
+       throw new IllegalArgumentException("invalid marker '"+marker+"'");
 
-    //@@@ current logic lists only the oldest messages
-    if (marker != null)
-       throw new UnsupportedOperationException("@@@ marker not yet supported");
-
-    int count = Math.min(boardMessages.size(), limit);
-    List<MTMsg> messages = new ArrayList<>(count);
-    String lastID = null; // becomes the marker in the result
+    Iterator<Map.Entry<String,MTMsg>> iter = null;
+    int     count = 0;
     boolean discontinuous = false;
 
-    Iterator<Map.Entry<String,MTMsg>> it = boardMessages.entrySet().iterator();
-    while ((count > 0) && it.hasNext())
+    if (marker == null)
      {
-       Map.Entry<String,MTMsg> entry = it.next();
+       // list oldest messages
+       iter  = boardMessages.entrySet().iterator();
+       count = Math.min(boardMessages.size(), limit);
+     }
+    else
+     {
+       // list messages newer than marker
+       NavigableMap<String,MTMsg>
+         newerMessages = boardMessages.tailMap(marker, false);
+       count = Math.min(newerMessages.size(), limit);
+       iter = newerMessages.entrySet().iterator();
+       discontinuous = (boardSequencer.getComparator().
+                        compare(lastDroppedUserMessageID, marker) > 0);
+     }
+
+    List<MTMsg> messages = new ArrayList<>(count);
+    String    tailMarker = null; // becomes the marker in the result
+
+    while ((count > 0) && iter.hasNext())
+     {
+       Map.Entry<String,MTMsg> entry = iter.next();
        messages.add(entry.getValue());
-       lastID = entry.getKey();
+       tailMarker = entry.getKey();
        count--;
      }
 
-    if (lastID == null) // board still empty
-       lastID = lastDroppedUserMessageID;
+    if (tailMarker == null) // board still empty
+       tailMarker = lastDroppedUserMessageID;
 
     return new MessageBatchImpl
       (Collections.<Message> unmodifiableList(messages),
-       lastID, discontinuous);
+       tailMarker, discontinuous);
   }
 
 

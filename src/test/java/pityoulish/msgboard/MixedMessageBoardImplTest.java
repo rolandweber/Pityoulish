@@ -112,7 +112,18 @@ public class MixedMessageBoardImplTest
     } catch (Exception expected) {
     }
 
-    //@@@ check with invalid marker as well? currently not supported
+    try {
+      MessageBatch mb = board.listMessages(8, "");
+      fail("empty marker not detected");
+    } catch (Exception expected) {
+    }
+
+    try {
+      MessageBatch mb = board.listMessages(8, "_:");
+      fail("invalid marker not detected");
+    } catch (Exception expected) {
+    }
+
   }
 
 
@@ -134,7 +145,7 @@ public class MixedMessageBoardImplTest
   {
     final int capacity = 8;
     final int limit = 8;
-    String originator = "myself";
+    String originator = "junit";
     String[] texts = new String[]{
       "nonsense",
       "hogwash",
@@ -157,8 +168,12 @@ public class MixedMessageBoardImplTest
     assertEquals("discontinuous", false, mb.isDiscontinuous());
 
     for (int i=0; i<texts.length; i++)
+     {
        assertEquals("wrong message #"+i, texts[i],
                     mb.getMessages().get(i).getText());
+       assertEquals("wrong originator #"+i, originator,
+                    mb.getMessages().get(i).getOriginator());
+     }
   }
 
 
@@ -166,6 +181,43 @@ public class MixedMessageBoardImplTest
   {
     final int capacity = 8;
     final int limit = 3;
+    String slot = null;
+    String[] texts = new String[]{
+      "nonsense",
+      "rubbish",
+      "gibberish",
+      "balderdash",
+      "malarkey"
+    };
+
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
+    for (String text: texts)
+       board.putSystemMessage(slot, text);
+
+    MessageBatch mb = board.listMessages(limit, null);
+
+    assertNotNull("no message batch", mb);
+    assertNotNull("no message list", mb.getMessages());
+    assertEquals("wrong number of messages",
+                 limit, mb.getMessages().size());
+    assertNotNull("no marker", mb.getMarker());
+    assertEquals("discontinuous", false, mb.isDiscontinuous());
+
+    for (int i=0; i<limit; i++)
+     {
+       assertEquals("wrong message #"+i, texts[i],
+                    mb.getMessages().get(i).getText());
+       assertNotNull("missing originator #"+i,
+                     mb.getMessages().get(i).getOriginator());
+     }
+  }
+
+
+  @Test public void listMessages_continuous()
+  {
+    final int capacity = 8;
+    final int skip  = 3;
+    final int limit = 4;
     String originator = "myself";
     String[] texts = new String[]{
       "nonsense",
@@ -179,26 +231,30 @@ public class MixedMessageBoardImplTest
     for (String text: texts)
        board.putMessage(originator, text);
 
-    MessageBatch mb = board.listMessages(limit, null);
+    MessageBatch mb1 = board.listMessages(skip, null);
+    MessageBatch mb2 = board.listMessages(limit, mb1.getMarker());
 
-    assertNotNull("no message batch", mb);
-    assertNotNull("no message list", mb.getMessages());
+    final int expected = texts.length - skip;
+    assertNotNull("no message batch", mb2);
+    assertNotNull("no message list", mb2.getMessages());
     assertEquals("wrong number of messages",
-                 limit, mb.getMessages().size());
-    assertNotNull("no marker", mb.getMarker());
-    assertEquals("discontinuous", false, mb.isDiscontinuous());
+                 expected, mb2.getMessages().size());
+    assertNotNull("no marker", mb2.getMarker());
+    assertEquals("discontinuous", false, mb2.isDiscontinuous());
 
-    for (int i=0; i<limit; i++)
-       assertEquals("wrong message #"+i, texts[i],
-                    mb.getMessages().get(i).getText());
+    for (int i=0; i<expected; i++)
+     {
+       assertEquals("wrong message #"+i, texts[i + skip],
+                    mb2.getMessages().get(i).getText());
+       assertEquals("wrong originator #"+i, originator,
+                    mb2.getMessages().get(i).getOriginator());
+     }
   }
 
 
-  //@@@ listMessages with marker
-
-
-  @Test public void testCapacity()
+  @Test public void testCapacity_userMessages()
   {
+    final int capacity = 3;
     String originator = "myself";
     String[] texts = new String[]{
       "rigmarole",
@@ -207,15 +263,66 @@ public class MixedMessageBoardImplTest
       "folderol"
     };
 
-    MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
     for (String text: texts)
        board.putMessage(originator, text);
 
     MessageBatch mb = board.listMessages(8, null);
-    assertEquals("unexpected message count", 3, mb.getMessages().size());
-    assertEquals("unexpected oldest message",
-                 texts[1], mb.getMessages().get(0).getText());
+    assertEquals("unexpected message count",
+                 capacity, mb.getMessages().size());
+    assertEquals("discontinuous", false, mb.isDiscontinuous());
+
+    for (int i=0; i<capacity; i++)
+       assertEquals("wrong message #"+i, texts[i + texts.length - capacity],
+                    mb.getMessages().get(i).getText());
   }
 
+  //@@@ capacity with system messages
+  //@@@ capacity with mixed user and system messages
+
+
+  @Test public void listMessages_droppedUserMessage()
+  {
+    final int capacity = 3;
+    String originator = "rumour";
+    String[] texts = new String[]{ // need more than twice the capacity!
+      "nonsense",
+      "rigmarole",
+      "verbiage",
+      "gibberish",
+      "balderdash",
+      "flubdub",
+      "folderol",
+      "malarkey"
+    };
+
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
+    for (int i=0; i<capacity; i++)
+       board.putMessage(originator, texts[i]);
+
+    MessageBatch mb1 = board.listMessages(capacity, null);
+    for (int i=capacity; i<texts.length; i++)
+       board.putMessage(originator, texts[i]);
+    // some unread message is dropped by now
+
+    MessageBatch mb2 = board.listMessages(capacity+1, mb1.getMarker());
+
+    assertNotNull("no message batch", mb2);
+    assertNotNull("no message list", mb2.getMessages());
+    assertEquals("wrong number of messages",
+                 capacity, mb2.getMessages().size());
+    assertNotNull("no marker", mb2.getMarker());
+    assertEquals("wrong discontinuous", true, mb2.isDiscontinuous());
+
+    for (int i=0; i<capacity; i++)
+     {
+       assertEquals("wrong message #"+i, texts[i + texts.length - capacity],
+                    mb2.getMessages().get(i).getText());
+       assertEquals("wrong originator #"+i, originator,
+                    mb2.getMessages().get(i).getOriginator());
+     }
+  }
+
+  //@@@ dropped system message, but still continuous
 
 }
