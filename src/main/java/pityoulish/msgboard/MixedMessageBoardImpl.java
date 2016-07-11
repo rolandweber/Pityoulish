@@ -121,6 +121,7 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
        Map.Entry<String,MTMsg> entry = it.next();
        messages.add(entry.getValue());
        lastID = entry.getKey();
+       count--;
      }
 
     if (lastID == null) // board still empty

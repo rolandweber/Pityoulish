@@ -129,7 +129,71 @@ public class MixedMessageBoardImplTest
     assertEquals("discontinuous", false, mb.isDiscontinuous());
   }
 
-  //@@@ listMessages with non-empty board, all or subset
+
+  @Test public void listMessages_all()
+  {
+    final int capacity = 8;
+    final int limit = 8;
+    String originator = "myself";
+    String[] texts = new String[]{
+      "nonsense",
+      "hogwash",
+      "poppycock",
+      "tommyrot",
+      "bupkis"
+    };
+
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
+    for (String text: texts)
+       board.putMessage(originator, text);
+
+    MessageBatch mb = board.listMessages(limit, null);
+
+    assertNotNull("no message batch", mb);
+    assertNotNull("no message list", mb.getMessages());
+    assertEquals("wrong number of messages",
+                 texts.length, mb.getMessages().size());
+    assertNotNull("no marker", mb.getMarker());
+    assertEquals("discontinuous", false, mb.isDiscontinuous());
+
+    for (int i=0; i<texts.length; i++)
+       assertEquals("wrong message #"+i, texts[i],
+                    mb.getMessages().get(i).getText());
+  }
+
+
+  @Test public void listMessages_some()
+  {
+    final int capacity = 8;
+    final int limit = 3;
+    String originator = "myself";
+    String[] texts = new String[]{
+      "nonsense",
+      "rubbish",
+      "gibberish",
+      "balderdash",
+      "malarkey"
+    };
+
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
+    for (String text: texts)
+       board.putMessage(originator, text);
+
+    MessageBatch mb = board.listMessages(limit, null);
+
+    assertNotNull("no message batch", mb);
+    assertNotNull("no message list", mb.getMessages());
+    assertEquals("wrong number of messages",
+                 limit, mb.getMessages().size());
+    assertNotNull("no marker", mb.getMarker());
+    assertEquals("discontinuous", false, mb.isDiscontinuous());
+
+    for (int i=0; i<limit; i++)
+       assertEquals("wrong message #"+i, texts[i],
+                    mb.getMessages().get(i).getText());
+  }
+
+
   //@@@ listMessages with marker
 
 
@@ -137,10 +201,10 @@ public class MixedMessageBoardImplTest
   {
     String originator = "myself";
     String[] texts = new String[]{
-      "nonsense",
-      "more nonsense",
-      "even more nonsense",
-      "bupkis"
+      "rigmarole",
+      "verbiage",
+      "flubdub",
+      "folderol"
     };
 
     MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
