@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="client-sockets-java" default="client-sockets-java" basedir="..">
+<description>
+Exercise: Message Board Client with Sockets, in Java
+</description>
+
+<import file="common.xml" />
+
+<target name="client-sockets-java" depends="xjs-all" />
+
+<!-- prefix of the target filenames -->
+<property name="client-sockets-java.name"  value="mbclient-sockets" />
+<property name="client-sockets-java.prose"
+          location="${dir.target}/${client-sockets-java.name}" />
+
+<property name="client-sockets-java.tmp"
+          location="${dir.tmp}/client-sockets-java" />
+<property name="client-sockets-java.jdoc"
+          location="${client-sockets-java.tmp}/jdoc" />
+
+
+<target name="xjs-clean">
+  <delete quiet="true">
+    <fileset dir="${client-sockets-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${client-sockets-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjs-jar" depends="_tstamps,compile-pitfill">
+
+  <!-- same pattern for sources and classes, pitted and filled -->
+  <patternset id="client-sockets-java.into.jar">
+    <include name="pityoulish/sockets/client/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${client-sockets-java.name}-faulty.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.sockets.client.Main" />
+    </manifest>
+    <fileset dir="${src.pitted}">
+      <patternset refid="client-sockets-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.pitted}">
+      <patternset refid="client-sockets-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+  <jar.pty destfile="${dir.target}/${client-sockets-java.name}-good.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.sockets.client.Main" />
+    </manifest>
+    <fileset dir="${src.filled}">
+      <patternset refid="client-sockets-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.filled}">
+      <patternset refid="client-sockets-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjs-jdoc" depends="preprocess">
+
+  <delete dir="${client-sockets-java.tmp}/jdoc" quiet="true" />
+  <mkdir  dir="${client-sockets-java.tmp}/jdoc" />
+
+  <javadoc destdir="${client-sockets-java.tmp}/jdoc"
+    access="protected"
+    windowtitle="Exercise: Message Board Client with Sockets"
+    nohelp="true"
+    encoding="ISO-8859-1"
+    >
+    <packageset dir="${src.pitted}">
+      <include name="pityoulish/sockets/client" />
+      <include name="pityoulish/cmdline" />
+      <include name="pityoulish/i18n" />
+    </packageset>
+  </javadoc>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjs-prose">
+
+  <delete dir="${client-sockets-java.prose}" />
+  <copy todir="${client-sockets-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="xjs-*" />
+      <include name="message-board.html" />
+    </fileset>
+  </copy>
+  <move file="${client-sockets-java.prose}/xjs-index.html"
+        tofile="${client-sockets-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjs-all" depends="_tstamps,xjs-jar,xjs-jdoc,xjs-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${client-sockets-java.prose}">
+    <file file="${dir.target}/${client-sockets-java.name}-faulty.jar" />
+    <fileset dir="${client-sockets-java.tmp}" includes="jdoc/**" />
+  </copy>
+
+  <property name="client-sockets-java.zip.prefix"
+            value="${client-sockets-java.name}" />
+
+  <zip destfile="${dir.target}/${client-sockets-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${client-sockets-java.name}"
+                prefix="${client-sockets-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${client-sockets-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>
