@@ -201,6 +201,18 @@ ul span.title {
   font-weight: bold;
 }
 
+.tlv-type.request::after
+{
+  content: " (\21d2) ";
+  font-weight: normal;
+}
+
+.tlv-type.response::after
+{
+  content: " (\21d0) ";
+  font-weight: normal;
+}
+
 
 /* floating boxes, for downloads ======================================== */
 

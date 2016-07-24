@@ -1,0 +1,172 @@
+<html>
+<!-- 
+This work is released into the Public Domain under the
+terms of the Creative Commons CC0 1.0 Universal license.
+https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="pityoulish.css" />
+<title>Message Board - Binary Protocol</title>
+</head>
+<body>
+<h1 class="title"><span>Binary Protocol</span></h1>
+<p class="abstract">
+A protocol for implementing the Message Board with
+TLV-encoded binary messages exchanged over socket connections.
+</p>
+
+<p class="larger todo">
+Overview...
+<ul>
+<li><a href="message-board.html">Message Board</a></li>
+<li>client and server</li>
+<li>TLV</li>
+</ul>
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="connections"><span>Connections</span></h2>
+
+<p class="todo">...</p>
+<ul>
+<li>Server listens, clients connect.</li>
+<li>Client sends request, receives response.</li>
+<li>Server may close connection after response, or keep it open.</li>
+<li>If kept open, client may send another request, or close.</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="tlv"><span>TLV</span></h2>
+
+<p class="todo">...</p>
+<ul>
+<li>Type - Length - Value</li>
+<li>primitive or constructed (nested TLVs)</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="primitive-tlv"><span>Primitive TLV</span></h3>
+
+<dl>
+
+<dt><code id="0xText">0xC0</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Text</span></dt>
+<dd class="todo">free-form text for consumption by humans
+</dd>
+
+<dt><code id="0xOrig">0xC1</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Originator</span></dt>
+<dd class="todo">username or system 
+</dd>
+
+<dt><code id="0xTime">0xC2</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Timestamp</span></dt>
+<dd class="todo">timestamp in ISO format
+</dd>
+
+<dt><code id="0xMarker">0xC3</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Marker</span></dt>
+<dd class="todo">position marker in the message stream
+</dd>
+
+<dt><code id="0xLimit">0xC4</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Limit</span></dt>
+<dd class="todo">maximum batch size
+</dd>
+
+<dt><code id="0xMissed">0xC5</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Missed</span></dt>
+<dd class="todo">indicator for missed messages;
+  <i>present/absent or value T/F?</i>
+</dd>
+
+</dl><!-- primitive TLV -->
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="constructed-tlv"><span>Constructed TLV</span></h3>
+
+<dl>
+
+<dt><code id="0xMsg">0xE0</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Message</span></dt>
+<dd class="todo">
+  Originator,
+  Timestamp,
+  Text;
+  <i>order of elements?</i>
+</dd>
+
+<dt><code id="0xInfoRsp">0xE1</code> &nbsp;-&nbsp; 
+  <span class="tlv-type response">Info Response</span></dt>
+<dd class="todo">
+  Text
+</dd>
+
+<dt><code id="0xErrRsp">0xE2</code> &nbsp;-&nbsp; 
+  <span class="tlv-type response">Error Response</span></dt>
+<dd class="todo">
+  Text
+</dd>
+
+
+<dt><code id="0xListMsgs">0xE3</code> &nbsp;-&nbsp; 
+  <span class="tlv-type request">List Messages</span></dt>
+<dd class="todo">
+  Limit,
+  optional Marker
+</dd>
+
+<dt><code id="0xMsgList">0xE4</code> &nbsp;-&nbsp; 
+  <span class="tlv-type response">Message Batch</span></dt>
+<dd class="todo">
+  Marker,
+  optional Missed,
+  optional list of Message;
+  <i>order of elements?</i>
+</dd>
+
+
+<dt><code id="0xPutMsg">0xE5</code> &nbsp;-&nbsp; 
+  <span class="tlv-type request">Put Message</span></dt>
+<dd class="todo">
+  Ticket,
+  Text
+</dd>
+
+
+<dt><code id="0xObTkt">0xE6</code> &nbsp;-&nbsp; 
+  <span class="tlv-type request">Obtain Ticket</span></dt>
+<dd class="todo">
+  Originator (username)
+</dd>
+
+<dt><code id="0xTktGr">0xE7</code> &nbsp;-&nbsp; 
+  <span class="tlv-type response">Ticket Grant</span></dt>
+<dd class="todo">
+  Ticket
+</dd>
+
+
+<dt><code id="0xRetTkt">0xE8</code> &nbsp;-&nbsp; 
+  <span class="tlv-type request">Return Ticket</span></dt>
+<dd class="todo">
+  Ticket
+</dd>
+
+
+<dt><code id="0xRplTkt">0xE9</code> &nbsp;-&nbsp; 
+  <span class="tlv-type request">Replace Ticket</span></dt>
+<dd class="todo">
+  Ticket
+</dd>
+
+
+</dl><!-- constructed TLV -->
+
+
+</body>

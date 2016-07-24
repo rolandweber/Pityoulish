@@ -105,6 +105,7 @@ Exercise: Message Board Client with Sockets, in Java
     <fileset dir="src/main/prose">
       <include name="xjs-*" />
       <include name="message-board.html" />
+      <include name="protocol-tlv.html" />
     </fileset>
   </copy>
   <move file="${client-sockets-java.prose}/xjs-index.html"
