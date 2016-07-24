@@ -55,33 +55,54 @@ Overview...
 
 <dt><code id="0xText">0xC0</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Text</span></dt>
-<dd class="todo">free-form text for consumption by humans
+<dd>
+  Contains a string of unicode characters in UTF-8 encoding.
+  Used for the texts on the message board, but also
+  for info and error responses from the server.
 </dd>
 
 <dt><code id="0xOrig">0xC1</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Originator</span></dt>
-<dd class="todo">username or system 
+<dd>
+  Contains a string of printable US-ASCII characters.
+  Holds a username or other message originator.
 </dd>
 
 <dt><code id="0xTime">0xC2</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Timestamp</span></dt>
-<dd class="todo">timestamp in ISO format
+<dd>
+  Contains a string of printable US-ASCII characters.
+  Holds a combined
+  <a class="covert" href="https://xkcd.com/1179/">date</a>
+  and time representation in
+  <a href="https://en.wikipedia.org/wiki/ISO_8601"
+     >ISO 8601</a><!-- ISO standards are not free, hence secondary source -->
+  format.
+  For example "2016-07-24T19:45:23Z".
 </dd>
 
 <dt><code id="0xMarker">0xC3</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Marker</span></dt>
-<dd class="todo">position marker in the message stream
+<dd>
+  Contains a string of printable US-ASCII characters.
+  Used for marking positions in the stream of messages on a board.
 </dd>
 
 <dt><code id="0xLimit">0xC4</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Limit</span></dt>
-<dd class="todo">maximum batch size
+<dd>
+  Contains a byte value in the range from 1 to 127, inclusive.
+  Used for the maximum batch size when requesting messages.
 </dd>
 
 <dt><code id="0xMissed">0xC5</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Missed</span></dt>
-<dd class="todo">indicator for missed messages;
-  <i>present/absent or value T/F?</i>
+<dd>
+  Presence of this TLV indicates that messages may have been missed.
+  The value is empty.
+  <!-- Could as well define a single-byte value T/F or 0/1 and
+       make this field mandatory in the Message Batch response.
+       But I like to introduce an empty-valued TLV, just for fun. -->
 </dd>
 
 </dl><!-- primitive TLV -->
@@ -94,11 +115,13 @@ Overview...
 
 <dt><code id="0xMsg">0xE0</code> &nbsp;-&nbsp; 
   <span class="tlv-type">Message</span></dt>
-<dd class="todo">
-  Originator,
-  Timestamp,
-  Text;
-  <i>order of elements?</i>
+<dd>
+  Represents a message on the message board.
+  The value is composed of the three TLVs
+  <a href="#0xOrig">Originator</a>,
+  <a href="#0xTime">Timestamp</a>, and
+  <a href="#0xText">Text</a>.
+  They may occur in any order, but each exactly once.
 </dd>
 
 <dt><code id="0xInfoRsp">0xE1</code> &nbsp;-&nbsp; 
