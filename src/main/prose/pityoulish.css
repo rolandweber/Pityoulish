@@ -398,3 +398,25 @@ div.code {
     color: #6b3212;
   }
 }
+
+
+/* other ============================================================ */
+
+
+.todo {
+  font-style: italic;
+  padding: 2px 6px;
+}
+
+@media screen {
+  .todo {
+    background-color: #ff8080;
+    border-radius: 0px;
+  }
+} /* @media screen */
+
+@media print {
+  .todo {
+    border: 1px dashed red;
+  }
+} /* @media print */
