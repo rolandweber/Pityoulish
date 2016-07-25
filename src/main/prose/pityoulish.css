@@ -415,6 +415,19 @@ div.code {
 /* other ============================================================ */
 
 
+@media screen {
+.bg1
+{
+    background-color:#e6e3e2; /* ccccff */
+}
+
+.bg2
+{
+    background-color:#ccb69c; /* aaaaff */
+}
+} /* @media screen */
+
+
 .todo {
   font-style: italic;
   padding: 2px 6px;
