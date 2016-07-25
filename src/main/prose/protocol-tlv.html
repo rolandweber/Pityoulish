@@ -105,6 +105,13 @@ Overview...
        But I like to introduce an empty-valued TLV, just for fun. -->
 </dd>
 
+<dt><code id="0xTkt">0xC6</code> &nbsp;-&nbsp; 
+  <span class="tlv-type">Ticket</span></dt>
+<dd>
+  Contains a string of printable US-ASCII characters.
+  Represents a ticket that authorizes certain requests.
+</dd>
+
 </dl><!-- primitive TLV -->
 
 
@@ -126,66 +133,92 @@ Overview...
 
 <dt><code id="0xInfoRsp">0xE1</code> &nbsp;-&nbsp; 
   <span class="tlv-type response">Info Response</span></dt>
-<dd class="todo">
-  Text
+<dd>
+  Indicates successful processing of a request.
+  The value is exactly one <a href="#0xText">Text</a>.
+  This response is used for requests that do not return other data.
 </dd>
 
 <dt><code id="0xErrRsp">0xE2</code> &nbsp;-&nbsp; 
   <span class="tlv-type response">Error Response</span></dt>
-<dd class="todo">
-  Text
+<dd>
+  Indicates an error when processing a request.
+  The value is exactly one <a href="#0xText">Text</a>
+  which describes the problem.
+  This response is used for any failing request.
 </dd>
 
 
 <dt><code id="0xListMsgs">0xE3</code> &nbsp;-&nbsp; 
   <span class="tlv-type request">List Messages</span></dt>
-<dd class="todo">
-  Limit,
-  optional Marker
+<dd>
+  Request to <a href="message-board.html#ListMessages">list messages</a>
+  from the board.
+  The value must contain a <a href="#0xLimit">Limit</a>,
+  and may contain a <a href="#0xMarker">Marker</a>, in any order.
+  If successful, the response is a <a href="#0xMsgBtch">Message Batch</a>.
 </dd>
 
-<dt><code id="0xMsgList">0xE4</code> &nbsp;-&nbsp; 
+<dt><code id="0xMsgBtch">0xE4</code> &nbsp;-&nbsp; 
   <span class="tlv-type response">Message Batch</span></dt>
-<dd class="todo">
-  Marker,
-  optional Missed,
-  optional list of Message;
-  <i>order of elements?</i>
+<dd>
+  Response to a <a href="#0xListMsgs">List Messages</a> request.
+  The value contains a <a href="#0xMarker">Marker</a>,
+  followed by an optional <a href="#0xMissed">Missed</a> indicator,
+  and a sequence of <a href="#0xMsg">Message</a> TLVs.
+  Messages appear in chronological order, from oldest to newest.
+  The sequence may be empty.
 </dd>
 
 
 <dt><code id="0xPutMsg">0xE5</code> &nbsp;-&nbsp; 
   <span class="tlv-type request">Put Message</span></dt>
-<dd class="todo">
-  Ticket,
-  Text
+<dd>
+  Request to <a href="message-board.html#PutMessage">put a message</a>
+  on the board.
+  The value must contain a valid <a href="#0xTkt">Ticket</a>
+  and a <a href="#0xText">Text</a>, in any order.
+  If successful, an <a href="#0xInfoRsp">Info Response</a> is sent back.
+  <!-- Return something more useful, like the timestamp?
+       Must be embedded in a constructed TLV though. -->
 </dd>
 
 
 <dt><code id="0xObTkt">0xE6</code> &nbsp;-&nbsp; 
   <span class="tlv-type request">Obtain Ticket</span></dt>
-<dd class="todo">
-  Originator (username)
+<dd>
+  Request to <a href="message-board.html#ObtainTicket">obtain a ticket</a>
+  for the board.
+  The value contains an <a href="#0xOrig">Originator</a> with the username.
+  If successful, the response is a <a href="#0xTktGr">Ticket Grant</a>.
 </dd>
 
 <dt><code id="0xTktGr">0xE7</code> &nbsp;-&nbsp; 
   <span class="tlv-type response">Ticket Grant</span></dt>
-<dd class="todo">
-  Ticket
+<dd>
+  Response to requests that return a <a href="#0xTkt">Ticket</a>.
+  That is the only element of the value.
 </dd>
 
 
 <dt><code id="0xRetTkt">0xE8</code> &nbsp;-&nbsp; 
   <span class="tlv-type request">Return Ticket</span></dt>
-<dd class="todo">
-  Ticket
+<dd>
+  Request to <a href="message-board.html#ReturnTicket">return a ticket</a>.
+  The value must contain the <a href="#0xTkt">Ticket</a> to invalidate,
+  and nothing else.
+  If successful, an <a href="#0xInfoRsp">Info Response</a> is sent back.
 </dd>
 
 
 <dt><code id="0xRplTkt">0xE9</code> &nbsp;-&nbsp; 
   <span class="tlv-type request">Replace Ticket</span></dt>
-<dd class="todo">
-  Ticket
+<dd>
+  Request to <a href="message-board.html#ReplaceTicket">replace a ticket</a>
+  for the board.
+  The value must contain the <a href="#0xTkt">Ticket</a> to replace,
+  and nothing else.
+  If successful, the response is a <a href="#0xTktGr">Ticket Grant</a>.
 </dd>
 
 
