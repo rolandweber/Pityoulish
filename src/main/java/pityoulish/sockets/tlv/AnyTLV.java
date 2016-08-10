@@ -14,7 +14,7 @@ import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
  * Use derived classes to interpret existing TLVs, or to build new ones.
  * This class supports only the restricted BER format of the example protocol.
  */
-public class AnyTLV
+public class AnyTLV implements TLV<TLVType>
 {
   protected byte[] tlvData;
 
