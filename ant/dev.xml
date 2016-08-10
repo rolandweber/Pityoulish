@@ -129,17 +129,19 @@ Targets for development, for working with the (Java) code.
     <group title="Tutorial">
       <package name="pityoulish.tutorial*" />
     </group>
-<!--
-    <group title="Sockets">
-      <package name="pityoulish.skt*" />
+    <group title="Message Board with Sockets">
+      <package name="pityoulish.sockets.*" />
     </group>
--->
 <!--
     <group title="Java RMI">
       <package name="pityoulish.rmi*" />
     </group>
 -->
   </javadoc>
+  <copy todir="${dir.jdoc}">
+    <fileset dir="src/main/java" includes="**/HowTo*.java" />
+    <globmapper from="*" to="*.txt"/>
+  </copy>
 </target>
 
 
