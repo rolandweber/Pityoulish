@@ -7,7 +7,7 @@ package pityoulish.sockets.tlv;
 
 
 /**
- * Shows how to use the {@link BuildTLV} class.
+ * Shows how to use the {@link BuildTLV} interface.
  * Look at the comments in the
  * <a href="HowToBuildTLV.java.txt">source code</a>
  * for explanations.

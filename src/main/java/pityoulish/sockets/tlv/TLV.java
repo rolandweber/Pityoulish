@@ -5,8 +5,6 @@
  */
 package pityoulish.sockets.tlv;
 
-import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
-
 
 /**
  * Represents a TLV structure referring to a byte array.

@@ -5,8 +5,6 @@
  */
 package pityoulish.sockets.tlv;
 
-import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
-
 
 /**
  * Base class for implementing {@link TLV}.

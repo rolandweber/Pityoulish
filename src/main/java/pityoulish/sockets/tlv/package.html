@@ -5,15 +5,20 @@ Utility classes for implementing the binary TLV protocol.
 The protocol defines messages with TLV structures according to the
 <a href="http://en.wikipedia.org/wiki/Basic_Encoding_Rules"
  >Basic Encoding Rules (BER)</a>.
-All TLV types (aka <i>tags</i>) used in the protocol are defined in the
-{@link pityoulish.sockets.tlv.ProtocolConstants.TLVType TLVType} enum.
-The {@link pityoulish.sockets.tlv.AnyTLV} class
-represents a TLV structure in memory.
-Use the derived class {@link pityoulish.sockets.tlv.BuildTLV}
-to create a new TLV, or {@link pityoulish.sockets.tlv.ParseTLV}
-to interpret an obtained TLV.
+The interface {@link pityoulish.sockets.tlv.TLV TLV}
+represents a TLV structure in memory, stored in a byte array.
+There are two derived interfaces,
+{@link pityoulish.sockets.tlv.BuildTLV} to construct new TLVs and
+{@link pityoulish.sockets.tlv.ParseTLV} for parsing received TLVs.
 Have a look at <a href="HowToBuildTLV.java.txt">HowToBuildTLV.java</a>
 and <a href="HowToParseTLV.java.txt">HowToParseTLV.java</a>,
-respectively, to learn how to use these classes.
+respectively, to learn how to use them.
+
+All TLV types (aka <i>tags</i>) used in the binary protocol are defined
+in the {@link pityoulish.sockets.tlv.MsgBoardType MsgBoardType} enum.
+The {@link pityoulish.sockets.tlv.MsgBoardTLV} class
+implements the interfaces mentioned above, with the specific restrictions
+imposed by the binary protocol. Actually, those restrictions are designed
+to simplify the TLV implementation.
 </body>
 </html>
