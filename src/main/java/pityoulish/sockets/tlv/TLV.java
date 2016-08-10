@@ -11,18 +11,23 @@ import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
 /**
  * Represents a TLV structure referring to a byte array.
  * The TLV does not necessarily begin at the first byte in the array.
- * Types are enumerated.
+ * Types are represented by a class, typically <!-- pun intended -->
+ * an enumeration.
  * <br/>
  * Implementations of this interface may cache information about
  * the type and length of the TLV.
- * If the TLV is changed through API methods of an implementation,
+ * If the TLV is changed through API methods of derived interfaces or classes,
  * the cached data is updated automatically.
  * However, if you manipulate the underlying byte array directly,
  * call {@link #update} explicitly to invalidate cached data.
  */
-public interface TLV<T extends Enum>
+public interface TLV<T>
 {
-  /** Obtains the <i>type</i>, as an enum constant. */
+  /**
+   * Obtains the <i>type</i>.
+   *
+   * @return    a constant object representing the type of this TLV
+   */
   public T getType()
     ;
 
