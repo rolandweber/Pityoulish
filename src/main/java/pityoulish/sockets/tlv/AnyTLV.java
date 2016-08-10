@@ -14,17 +14,8 @@ import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
  * Use derived classes to interpret existing TLVs, or to build new ones.
  * This class supports only the restricted BER format of the example protocol.
  */
-public class AnyTLV implements TLV<TLVType>
+public class AnyTLV extends AbstractTLV<TLVType>
 {
-  protected byte[] tlvData;
-
-  protected int tlvStart;
-
-  protected TLVType tlvType;
-
-  protected int valLength;
-
-
   /**
    * Creates a new TLV pointing to the provided data.
    * This does <i>not</i> initialize the cached type and length,
@@ -35,26 +26,14 @@ public class AnyTLV implements TLV<TLVType>
    */
   protected AnyTLV(byte[] data, int pos)
   {
-    if (data == null)
-       throw new NullPointerException("data");
-    if ((pos < 0) || (pos >= data.length))
-       throw new IllegalArgumentException
-         ("pos "+pos+" out of range "+data.length);
-
-    tlvData = data;
-    tlvStart = pos;
+    super(data, pos);
   }
 
 
-  /**
-   * Updates the cached type and length from the underlying data.
-   * Typically called by a constructor, if needed.
-   * Can also be called explicitly when the underlying data has changed.
-   */
-  public void update()
+  protected TLVType determineType()
   {
-    final byte tb = getTypeByte(); // type byte
-    TLVType    te = null;          // type enum
+    final byte tb = tlvData[tlvStart]; // type byte
+    TLVType    te = null;              // type enum
 
     for (TLVType candidate : TLVType.values())
      {
@@ -64,8 +43,17 @@ public class AnyTLV implements TLV<TLVType>
           break;
         }
      }
-    tlvType = te; // might still be null
 
+    if (te == null)
+       throw new IllegalStateException("unknown type "+tb);
+
+    return te;
+  }
+
+
+  protected int determineLength()
+  {
+    // only single-byte types are supported
     // only the encoding with length-of-length 2 is supported
     if (tlvData[tlvStart+1] != ProtocolConstants.LENGTH_OF_LENGTH_2)
        throw new IllegalStateException("unsupported length encoding");
@@ -73,145 +61,17 @@ public class AnyTLV implements TLV<TLVType>
     int hi = tlvData[tlvStart+2] & 0xff;
     int lo = tlvData[tlvStart+3] & 0xff;
 
-    valLength = (hi << 8) + lo;
+    int length = (hi << 8) + lo;
 
-  } // update
-
-
-  /** Obtains the <i>type</i> byte. */
-  public final byte getTypeByte()
-  {
-    return tlvData[tlvStart];
+    return length;
   }
 
 
-  /**
-   * Obtains the <i>type</i> enum constant.
-   * This is a cached type, call {@link #update} to refresh.
-   *
-   * @return    the <i>type</i> constant, or
-   *            <code>null</code> if none of the defined constants
-   *            match the type byte
-   */
-  public final TLVType getType()
+  protected int getValueOffset()
   {
-    return tlvType;
-  }
-
-
-  /**
-   * Obtains the size of the TLV structure, in bytes.
-   * This relies on a cached length, call {@link #update} to refresh.
-   *
-   * @return    the size of this TLV, in bytes.
-   *            This is the overall size, including type and length bytes.
-   */
-  public final int getSize()
-  {
-    return 4+valLength;
-  }
-
-
-  /**
-   * Obtains the <i>length</i> of the value of the TLV structure, in bytes.
-   * This is a cached length, call {@link #update} to refresh.
-   *
-   * @return    the <i>length</i> of the value of this TLV, in bytes.
-   *            This is a net length, excluding type and length bytes.
-   */
-  public final int getLength()
-  {
-    return valLength;
-  }
-
-
-  /** Obtains the underlying data array. */
-  public final byte[] getData()
-  {
-    return tlvData;
-  }
-
-
-  /** Obtains the index of the first byte of this TLV. */
-  public final int getStart()
-  {
-    return tlvStart;
-  }
-
-
-  /** Obtains the index of the first byte of the value. */
-  public final int getValueStart()
-  {
-    return tlvStart+4;
-  }
-
-
-  /**
-   * Obtains the index after the last byte of this TLV.
-   * This relies on the cached length, call {@link #update} to refresh.
-   */
-  public final int getEnd()
-  {
-    return getValueStart() + valLength;
-  }
-
-
-  /**
-   * Copies the value of this TLV into a new byte array.
-   * This relies on the cached length, call {@link #update} to refresh.
-   */
-  public final byte[] copyValue()
-  {
-    byte[] result = new byte[valLength];
-    System.arraycopy(tlvData, getValueStart(), result, 0, valLength);
-    return result;
-  }
-
-
-  /**
-   * Generates an extended string representation of this TLV, including data.
-   * This relies on the cached length, call {@link #update} to refresh.
-   */
-  public final String toFullString()
-  {
-    StringBuilder sb = new StringBuilder(30+3*valLength);
-
-    sb.append("TLV(");
-    if (tlvType != null)
-       sb.append(tlvType);
-    else
-       appendHex(sb, tlvData[tlvStart]);
-    sb.append(':').append(valLength);
-
-    int end = getEnd();
-    if (end > tlvData.length)
-     {
-       end = tlvData.length;
-       sb.append('?');
-     }
-    sb.append(':');
-
-    for (int pos=getValueStart(); pos < end; pos++)
-     {
-       sb.append(' ');
-       appendHex(sb, tlvData[pos]);
-     }
-
-    sb.append(')');
-
-    return sb.toString();
-  }
-
-
-  public final static String HEX = "0123456789abcedf";
-  /**
-   * Appends the hex dump of a byte to a string builder.
-   * This has nothing to do with TLVs.
-   */
-  public final static void appendHex(StringBuilder sb, byte b)
-  {
-    sb.append(HEX.charAt( (b>>4) & 0x0f));
-    sb.append(HEX.charAt(  b     & 0x0f));
+    // 1 byte for the type
+    // 3 byte for the length
+    return 4;
   }
 
 }

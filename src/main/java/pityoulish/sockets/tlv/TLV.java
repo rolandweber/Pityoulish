@@ -26,7 +26,8 @@ public interface TLV<T>
   /**
    * Obtains the <i>type</i>.
    *
-   * @return    a constant object representing the type of this TLV
+   * @return    a constant object representing the type of this TLV.
+   *            Never <code>null</code>.
    */
   public T getType()
     ;

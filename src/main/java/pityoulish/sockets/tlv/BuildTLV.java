@@ -53,7 +53,7 @@ public class BuildTLV extends AnyTLV
     byte lo = (byte) ( len       & 0xff);
     byte hi = (byte) ((len >> 8) & 0xff);
 
-    valLength = len;
+    valueLength = len;
     tlvData[tlvStart+2] = hi;
     tlvData[tlvStart+3] = lo;
   }
@@ -71,7 +71,7 @@ public class BuildTLV extends AnyTLV
    */
   public final void addToLength(int delta)
   {
-    setLength(valLength+delta);
+    setLength(valueLength+delta);
   }
 
 
