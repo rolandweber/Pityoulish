@@ -140,4 +140,11 @@ public enum MsgBoardType
    /** Obtains the <code>type</code> byte for this TLV type. */
    public final byte getTypeByte() { return typeByte; }
 
+
+   /** Indicates whether this is a primitive TLV type. */
+   public final boolean isPrimitive()
+   {
+     return (typeByte & 0xE0) == 0xC0;
+   }
+
 }

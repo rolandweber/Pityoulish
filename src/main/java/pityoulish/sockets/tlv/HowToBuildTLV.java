@@ -5,8 +5,6 @@
  */
 package pityoulish.sockets.tlv;
 
-import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
-
 
 /**
  * Shows how to use the {@link BuildTLV} class.
@@ -44,14 +42,16 @@ public class HowToBuildTLV
 
     // create an array and build the main TLV with length 0
     byte[] data = new byte[needed];
-    BuildTLV main = new BuildTLV(TLVType.MESSAGE_LIST, data, 0);
+    //@@@ example from pre-OSS code not yet adapted to the binary protocol!
+    //@@@ choose a different example anyway... LIST_MESSAGES maybe?
+    BuildTLV main = new MsgBoardTLV(MsgBoardType.MESSAGE_BATCH, data, 0);
     System.out.println("main TLV before adding messages:");
     System.out.println(main.toFullString());
 
     // now add the nested TLVs one by one
     for (String msg : msgs)
      {
-       BuildTLV next = new BuildTLV(TLVType.MESSAGE, data, main.getEnd());
+       BuildTLV next = new MsgBoardTLV(MsgBoardType.TEXT, data, main.getEnd());
        next.setTextValue(msg, "UTF-8");
        // For non-text data, encode it yourself into the 'data' array,
        // starting at position next.getValueStart() or next.getEnd().

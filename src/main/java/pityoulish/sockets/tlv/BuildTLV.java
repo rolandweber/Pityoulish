@@ -5,74 +5,50 @@
  */
 package pityoulish.sockets.tlv;
 
-import java.io.UnsupportedEncodingException;
-
-import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
+import java.io.UnsupportedEncodingException; // for JavaDoc
 
 
 /**
  * Represents a TLV structure to be constructed.
  */
-public class BuildTLV extends AnyTLV
+public interface BuildTLV<T> extends TLV<T>
 {
   /**
-   * Creates a new TLV to be stored in the given array.
-   * The type and a length of 0 are written to the data immediately.
-   * The length can be updated later.
+   * Updates the length of this TLV.
+   * Call this after constructing a new value in the underlying array,
+   * to specify the length of the complete value.
+   * <br/>
+   * <b>Warning:</b> Actually, this is not as simple as it may seem.
+   * In general, the length field of a TLV is of variable size.
+   * Therefore, setting the length may require relocation of the value
+   * in the array. The binary protocol for Message Boards specifies
+   * a fixed-size encoding for the length to avoid that.
+   * <br/>
+   * For a general-purpose TLV implementation, it would also make sense
+   * to determine and specify the length of the value <i>before</i>
+   * actually constructing it. To support both use cases, the method would
+   * require a parameter that indicates whether the value is already present
+   * and has to be relocated.
    *
-   * @param ty          the type for the new TLV structure
-   * @param data        the byte array in which to store the structure
-   * @param pos         index of the type byte in the array
-   */
-  public BuildTLV(TLVType ty, byte[] data, int pos)
-  {
-    super(data, pos);
-    if (ty == null)
-       throw new NullPointerException("TLVType");
-
-    tlvType = ty;
-
-    data[pos]   = ty.getTypeByte();
-    data[pos+1] = ProtocolConstants.LENGTH_OF_LENGTH_2;
-    setLength(0);
-  }
-
-
-  /**
-   * Updates the length of the value.
-   * This modifies the {@link #getData data} array
-   * and updates the cached length.
-   *
-   * @param len         the new length, between 0 and 65535
+   * @param len         the new length
    */
   public void setLength(int len)
-  {
-    if ((len < 0) || (len > 0xffff))
-       throw new IllegalArgumentException("invalid length "+len);
-
-    byte lo = (byte) ( len       & 0xff);
-    byte hi = (byte) ((len >> 8) & 0xff);
-
-    valueLength = len;
-    tlvData[tlvStart+2] = hi;
-    tlvData[tlvStart+3] = lo;
-  }
+    ;
 
 
   /**
    * Changes the length of the value.
    * The argument delta is added to the cached length.
-   * This modifies the {@link #getData data} array
-   * and updates the cached length.
+   * Call this after appending a TLV to the value in the underlying array,
+   * to add the length of that TLV.
+   * <br/>
+   * See {@link #setLength} for a word about variable-size length encodings.
    *
    * @param delta       the change of length, typically positive
-   *                    because data is added to the value.
-   *                    The resulting length must be between 0 and 65535.
+   *                    because data is added to the value
    */
-  public final void addToLength(int delta)
-  {
-    setLength(valueLength+delta);
-  }
+  public void addToLength(int delta)
+    ;
 
 
   /**
@@ -87,15 +63,6 @@ public class BuildTLV extends AnyTLV
    * @param enc         the encoding to use, typically "UTF-8" or "US-ASCII"
    */
   public void setTextValue(String text, String enc)
-  {
-    try {
-      byte[] tb = text.getBytes(enc);
-      System.arraycopy(tb, 0, tlvData, getValueStart(), tb.length);
-      setLength(tb.length);
-    } catch (UnsupportedEncodingException uex) {
-      throw new RuntimeException(uex);
-    }
-  }
-
+    ;
 
 }
