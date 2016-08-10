@@ -13,6 +13,7 @@ package pityoulish.sockets.tlv;
  * and the length with exactly three bytes.
  */
 public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
+  implements ParseTLV<MsgBoardType>
 {
   /**
    * A <i>length of length</i> value indicating 2 bytes for the length.
@@ -25,16 +26,16 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
 
 
   /**
-   * Creates a new TLV pointing to the provided data.
-   * This does <i>not</i> initialize the cached type and length,
-   * call {@link #update} if necessary.
+   * Creates a new TLV for parsing the provided data.
+   * This initializes the cached type and length.
    *
    * @param data        the byte array in which the structure is stored
    * @param pos         index of the type byte in the array
    */
-  protected MsgBoardTLV(byte[] data, int pos)
+  public MsgBoardTLV(byte[] data, int pos)
   {
     super(data, pos);
+    update();
   }
 
 

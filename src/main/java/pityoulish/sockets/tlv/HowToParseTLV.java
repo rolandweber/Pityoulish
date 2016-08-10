@@ -5,11 +5,9 @@
  */
 package pityoulish.sockets.tlv;
 
-import pityoulish.sockets.tlv.ProtocolConstants.TLVType;
-
 
 /**
- * Shows how to use the {@link ParseTLV} class.
+ * Shows how to use the {@link ParseTLV} interface.
  * Look at the comments in the
  * <a href="HowToParseTLV.java.txt">source code</a>
  * for explanations.
@@ -39,7 +37,7 @@ public class HowToParseTLV
     System.out.println("parsing from array of length "+data.length);
 
     // parsing a TLV interprets the tag and length
-    ParseTLV main = new ParseTLV(data, 0);
+    ParseTLV main = new MsgBoardTLV(data, 0);
     System.out.println(main.getType()+" at position "+main.getStart()+
                        ", value from "+main.getValueStart()+
                        " to "+(main.getEnd()-1));
@@ -49,7 +47,7 @@ public class HowToParseTLV
     int pos = main.getValueStart();
     while (pos < main.getEnd())
      {
-       ParseTLV next = new ParseTLV(data, pos);
+       ParseTLV next = new MsgBoardTLV(data, pos);
        System.out.println(next.getType()+" at position "+next.getStart()+
                           ", value from "+next.getValueStart()+
                           " to "+(next.getEnd()-1));

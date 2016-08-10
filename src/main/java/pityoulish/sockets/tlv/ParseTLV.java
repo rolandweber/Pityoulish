@@ -9,19 +9,10 @@ package pityoulish.sockets.tlv;
 /**
  * Represents a TLV structure to be parsed.
  */
-public class ParseTLV extends AnyTLV
+public interface ParseTLV<T> extends TLV<T>
 {
-  /**
-   * Creates a new TLV pointing to the provided data.
-   * The type and length are determined immediately.
-   *
-   * @param data        the byte array in which the structure is stored
-   * @param pos         index of the type byte in the array
-   */
-  public ParseTLV(byte[] data, int pos)
-  {
-    super(data, pos);
-    update();
-  }
-
+  // anything useful that could be added here?
+  // public ParseTLV getContainedTLV() for the value?
+  // public ParseTLV getFollowingTLV() for the next TLV?
+  // How to determine if there is a next TLV? pass end position?
 }
