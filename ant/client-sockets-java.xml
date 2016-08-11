@@ -87,11 +87,17 @@ Exercise: Message Board Client with Sockets, in Java
     encoding="ISO-8859-1"
     >
     <packageset dir="${src.pitted}">
-      <include name="pityoulish/sockets/client" />
+      <include name="pityoulish/sockets/*" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
     </packageset>
   </javadoc>
+
+  <copy todir="${client-sockets-java.tmp}/jdoc">
+    <fileset dir="${src.pitted}"
+             includes="pityoulish/sockets/**/HowTo*.java" />
+    <globmapper from="*" to="*.txt"/>
+  </copy>
 </target>
 
 
