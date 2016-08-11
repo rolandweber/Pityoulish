@@ -54,7 +54,8 @@ public class HowToBuildTLV
 
     // create an array and build the main TLV with length 0
     byte[] data = new byte[needed];
-    BuildTLV main = new MsgBoardTLV(MsgBoardType.MESSAGE, data, 0);
+    BuildTLV<MsgBoardType> main =
+      new MsgBoardTLV(MsgBoardType.MESSAGE, data, 0);
     System.out.println("main TLV before adding nested TLVs:");
     System.out.println(main.toFullString());
 
@@ -62,7 +63,7 @@ public class HowToBuildTLV
     // - construct the TLV at the end of main TLV
     // - update the length of the main TLV to include the nested one
 
-    BuildTLV next = new MsgBoardTLV(MsgBoardType.TEXT, data, main.getEnd());
+    BuildTLV<MsgBoardType> next = main.appendTLV(MsgBoardType.TEXT);
     next.setTextValue(text, "UTF-8");
     // There is a convenience method for text values.
     // For non-text data, encode it yourself into the 'data' array,
@@ -77,13 +78,13 @@ public class HowToBuildTLV
     System.out.println("added "+next.toFullString());
 
     // again for the originator
-    next = new MsgBoardTLV(MsgBoardType.ORIGINATOR, data, main.getEnd());
+    next = main.appendTLV(MsgBoardType.ORIGINATOR);
     next.setTextValue(originator, "UTF-8");
     main.addToLength(next.getSize());
     System.out.println("added "+next.toFullString());
 
     // and again for the timestamp
-    next = new MsgBoardTLV(MsgBoardType.TIMESTAMP, data, main.getEnd());
+    next = main.appendTLV(MsgBoardType.TIMESTAMP);
     next.setTextValue(timestamp, "UTF-8");
     main.addToLength(next.getSize());
     System.out.println("added "+next.toFullString());

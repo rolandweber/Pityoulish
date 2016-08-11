@@ -38,7 +38,7 @@ public interface BuildTLV<T> extends TLV<T>
 
   /**
    * Changes the length of the value.
-   * The argument delta is added to the cached length.
+   * The argument delta is added to the current length.
    * Call this after appending a TLV to the value in the underlying array,
    * to add the length of that TLV.
    * <br/>
@@ -63,6 +63,24 @@ public interface BuildTLV<T> extends TLV<T>
    * @param enc         the encoding to use, typically "UTF-8" or "US-ASCII"
    */
   public void setTextValue(String text, String enc)
+    ;
+
+
+  /**
+   * Creates a new TLV immediately after this one.
+   * Its position in the underlying array depends on the current length
+   * of this TLV. The new TLV is initially empty.
+   * <br/>
+   * The length of <code>this</code> TLV remains unchanged.
+   * You can create sequences of TLVs this way.
+   * If you want to add the new TLV to the value of this TLV,
+   * call {@link #addToLength} after building the value of the nested TLV.
+   *
+   * @param tlvT  the type of the TLV to create
+   *
+   * @return    a new TLV that resides immediately after this TLV.
+   */
+  public BuildTLV<T> appendTLV(T tlvT)
     ;
 
 }

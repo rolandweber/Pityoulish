@@ -64,6 +64,7 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
   }
 
 
+  // non-javadoc, see base class
   protected MsgBoardType determineType()
   {
     final byte   tb = tlvData[tlvStart]; // type byte
@@ -87,6 +88,7 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
   }
 
 
+  // non-javadoc, see base class
   protected int determineLength()
   {
     // only single-byte types are supported
@@ -103,6 +105,7 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
   }
 
 
+  // non-javadoc, see base class
   protected int getValueOffset()
   {
     // 1 byte for the type
@@ -132,33 +135,14 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
   }
 
 
-  /**
-   * Changes the length of the value.
-   * The argument delta is added to the cached length.
-   * This modifies the {@link #getData data} array
-   * and updates the cached length.
-   *
-   * @param delta       the change of length, typically positive
-   *                    because data is added to the value.
-   *                    The resulting length must be between 0 and 65535.
-   */
+  // non-javadoc, see interface BuildTLV
   public final void addToLength(int delta)
   {
     setLength(valueLength+delta);
   }
 
 
-  /**
-   * Sets the value to a string and updates the length.
-   * This is expected to be used only with encodings that are guaranteed
-   * to be available. Therefore, an {@link UnsupportedEncodingException}
-   * is mapped to a {@link RuntimeException}.
-   * The underlying array needs to be large enough to hold the value.
-   * Otherwise, an exception is thrown, but the array is partially modified.
-   *
-   * @param text        the string to set the value to
-   * @param enc         the encoding to use, typically "UTF-8" or "US-ASCII"
-   */
+  // non-javadoc, see interface BuildTLV
   public void setTextValue(String text, String enc)
   {
     if (!tlvType.isPrimitive())
@@ -171,6 +155,13 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
     } catch (UnsupportedEncodingException uex) {
       throw new RuntimeException(uex);
     }
+  }
+
+
+  // non-javadoc, see interface BuildTLV
+  public MsgBoardTLV appendTLV(MsgBoardType mbt)
+  {
+    return new MsgBoardTLV(mbt, tlvData, this.getEnd());
   }
 
 }
