@@ -81,7 +81,7 @@ public abstract class AbstractTLV<T> implements TLV<T>
 
 
   /**
-   * Determines the <i>length</i> constant for this TLV.
+   * Determines the <i>length</i> of this TLV.
    * Called by {@link #update}.
    *
    * @return    the length of this TLV, as determined from the underlying array
