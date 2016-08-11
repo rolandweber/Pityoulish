@@ -41,7 +41,6 @@ public class AbstractTLVTest
 
 
   @Test public void construct_plain()
-    throws Exception
   {
     final byte TAG = (byte) 0xC0;
     byte[] data = new byte[] {
@@ -63,7 +62,6 @@ public class AbstractTLVTest
 
 
   @Test public void construct_within()
-    throws Exception
   {
     final byte TAG = (byte) 0xC1;
     byte[] data = new byte[] {
@@ -87,7 +85,6 @@ public class AbstractTLVTest
 
 
   @Test public void construct_invalid()
-    throws Exception
   {
     final byte TAG = (byte) 0xBD;
     byte[] data = new byte[] {
@@ -120,7 +117,6 @@ public class AbstractTLVTest
 
 
   @Test public void update()
-    throws Exception
   {
     final byte TAG1 = (byte) 0xC2;
     final byte TAG2 = (byte) 0xCD;
@@ -147,7 +143,6 @@ public class AbstractTLVTest
 
 
   @Test public void copyValue()
-    throws Exception
   {
     final byte TAG = (byte) 0xC3;
     byte[] data = new byte[] {

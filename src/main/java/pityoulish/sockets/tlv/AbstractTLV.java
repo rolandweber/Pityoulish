@@ -194,7 +194,7 @@ public abstract class AbstractTLV<T> implements TLV<T>
   }
 
 
-  public final static String HEX = "0123456789abcedf";
+  public final static String HEX = "0123456789abcdef";
   /**
    * Appends the hex dump of a byte to a string builder.
    * This has nothing to do with TLVs.
