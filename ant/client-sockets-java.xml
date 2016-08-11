@@ -11,7 +11,8 @@ Exercise: Message Board Client with Sockets, in Java
 
 <import file="common.xml" />
 
-<target name="client-sockets-java" depends="xjs-all" />
+<target name="client-sockets-java" depends="xjs-all"
+        description="Exercise: Java Sockets (xjs)" />
 
 <!-- prefix of the target filenames -->
 <property name="client-sockets-java.name"  value="mbclient-sockets" />

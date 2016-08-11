@@ -11,7 +11,8 @@ Tutorial: Prepare for Java development.
 
 <import file="common.xml" />
 
-<target name="prep-java" depends="tpj-all" />
+<target name="prep-java" depends="tpj-all"
+        description="Tutorial: Prepare for Java (tpj)"  />
 
 <!-- prefix of the target filenames -->
 <property name="prep-java.name"  value="tutorial" />
