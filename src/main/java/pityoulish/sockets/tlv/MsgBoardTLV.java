@@ -164,4 +164,27 @@ public class MsgBoardTLV extends AbstractTLV<MsgBoardType>
     return new MsgBoardTLV(mbt, tlvData, this.getEnd());
   }
 
+
+  // non-javadoc, see interface ParseTLV
+  public MsgBoardTLV getNestedTLV()
+  {
+    if (tlvType.isPrimitive() || (valueLength == 0))
+       return null;
+
+    return new MsgBoardTLV(tlvData, this.getValueStart());
+  }
+
+
+  // non-javadoc, see interface ParseTLV
+  public MsgBoardTLV getNextTLV(int eod)
+  {
+    MsgBoardTLV result = null;
+
+    int pos = this.getEnd();
+    if (pos < eod)
+       result = new MsgBoardTLV(tlvData, pos);
+
+    return result;
+  }
+
 }

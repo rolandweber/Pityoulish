@@ -37,26 +37,25 @@ public class HowToParseTLV
     System.out.println("parsing from array of length "+data.length);
 
     // parsing a TLV interprets the tag and length
-    ParseTLV main = new MsgBoardTLV(data, 0);
+    ParseTLV<MsgBoardType> main = new MsgBoardTLV(data, 0);
     System.out.println(main.getType()+" at position "+main.getStart()+
                        ", value from "+main.getValueStart()+
                        " to "+(main.getEnd()-1));
     // getEnd() points to the position *after* the value
 
     // now loop over the nested TLVs that comprise the value of 'main'
-    int pos = main.getValueStart();
-    while (pos < main.getEnd())
+    for (ParseTLV<MsgBoardType> nested = main.getNestedTLV();
+         nested != null;
+         nested = nested.getNextTLV(main.getEnd())
+         )
      {
-       ParseTLV next = new MsgBoardTLV(data, pos);
-       System.out.println(next.getType()+" at position "+next.getStart()+
-                          ", value from "+next.getValueStart()+
-                          " to "+(next.getEnd()-1));
-
-       pos += next.getSize();
+       System.out.println(nested.getType()+" at position "+nested.getStart()+
+                          ", value from "+nested.getValueStart()+
+                          " to "+(nested.getEnd()-1));
      }
 
-    if (pos < data.length)
-       System.out.println("ignoring data at position "+pos+" and beyond");
+    if (main.getEnd() < data.length)
+       System.out.println("ignoring position "+main.getEnd()+" and beyond");
   }
 
 }
