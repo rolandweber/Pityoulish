@@ -16,26 +16,53 @@ A protocol for implementing the Message Board with
 TLV-encoded binary messages exchanged over socket connections.
 </p>
 
-<p class="larger todo">
-Overview...
-<ul>
-<li><a href="message-board.html">Message Board</a></li>
-<li>client and server</li>
-<li>TLV</li>
-</ul>
+<p class="larger">
+This page assumes that you are familiar with the functionality of a
+<a href="message-board.html">Message Board</a>.
+A server maintains a message board, various clients connect and
+send requests to read messages and put up new ones.
+This specification details the binary format of requests and responses,
+and how connections are used.
+The format makes use of TLV structures, as defined by
+<a title="Overview of X.690 on Wikipedia"
+   href="https://en.wikipedia.org/wiki/X.690"
+   >X.690</a>
+(<a title="X.690 Specification"
+    href="http://www.itu.int/ITU-T/studygroups/com17/languages/X.690-0207.pdf"
+    >PDF</a>).
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="connections"><span>Connections</span></h2>
 
-<p class="todo">...</p>
-<ul>
-<li>Server listens, clients connect.</li>
-<li>Client sends request, receives response.</li>
-<li>Server may close connection after response, or keep it open.</li>
-<li>If kept open, client may send another request, or close.</li>
-</ul>
+<p>
+Clients and servers exchange protocol data units over TCP/IP connections.
+A server listens for incoming connections.
+Clients connect to the server, send one request,
+and receive one response to that request over the same connection.
+The server may keep the connection open after sending the response.
+In that case, the client may send another request over the same connection,
+and receive the respective response. A client which does not intend to
+send another request must close the connection.
+A server may close the connection after sending a response.
+</p>
+
+<div class="box-center">
+<span class="header">
+<span class="title">Terminology</span>
+<span class="abstract"
+      >The meaning of MAY, MUST, and the like.</span>
+</span><!-- header -->
+<span class="content">
+Specifications often use terms like MAY, MUST, or SHOULD as keywords.
+<!-- along with their negations. -->
+<a href="https://tools.ietf.org/html/rfc2119">RFC 2119</a>
+describes what is meant by that.
+Although the specification of the binary protocol does not employ them
+as uppercase keywords, the terms are used here in the spirit of the RFC.
+</span>
+</div>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
