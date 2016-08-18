@@ -103,6 +103,10 @@ public class RequestParserImpl implements RequestParser
        //@@@ implement NLS light
        throw new ProtocolException("Invalid length of top-level TLV.");
 
+    if (result.getEnd() > data.length)
+       //@@@ implement NLS light
+       throw new ProtocolException("Incomplete data for top-level TLV.");
+
     // We could check for a valid type here. But the caller is going to
     // switch on the type anyway, so it's simpler to check it there.
 

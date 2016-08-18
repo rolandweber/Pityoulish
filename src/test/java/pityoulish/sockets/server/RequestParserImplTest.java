@@ -6,9 +6,12 @@
 package pityoulish.sockets.server;
 
 //import pityoulish.sockets.server.MsgBoardRequest.ReqType;
+import pityoulish.sockets.tlv.MsgBoardTLV;
+import pityoulish.sockets.tlv.MsgBoardType;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
 
 public class RequestParserImplTest
 {
@@ -89,6 +92,105 @@ public class RequestParserImplTest
       // expected.printStackTrace(System.err);
     }
 
+  } // parse_invalid_args
+
+
+  @Test public void parse_invalid_header_Type()
+    throws ProtocolException
+  {
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.INFO_RESPONSE.typeByte, // not a request type
+      MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0,
+      (byte) 0
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("invalid header not detected: "+mbr);
+    } catch (Exception expected) {
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+      // expected.printStackTrace(System.err);
+    }
   }
+
+
+  @Test public void parse_invalid_header_LoL()
+    throws ProtocolException
+  {
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      (byte) (MsgBoardTLV.LENGTH_OF_LENGTH_2+1), // only one LoL supported
+      (byte) 0,
+      (byte) 0,
+      (byte) 0
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("invalid header not detected: "+mbr);
+    } catch (Exception expected) {
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+      // expected.printStackTrace(System.err);
+    }
+  }
+
+
+  @Test public void parse_invalid_header_Length_end()
+    throws ProtocolException
+  {
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0,
+      (byte) 4,
+      (byte) 0, (byte) 0, (byte) 0 // data too short, expect 4 byte
+    };
+
+    try {
+      // end points to actual end of data
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("invalid header not detected: "+mbr);
+    } catch (Exception expected) {
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+      // expected.printStackTrace(System.err);
+    }
+  }
+
+
+  @Test public void parse_invalid_header_Length_data()
+    throws ProtocolException
+  {
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0,
+      (byte) 4,
+      (byte) 0, (byte) 0, (byte) 0 // data too short, expect 4 byte
+    };
+
+    try {
+      // end matches the TLV size, but is beyond the available data
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+      fail("invalid header not detected: "+mbr);
+    } catch (Exception expected) {
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+      // expected.printStackTrace(System.err);
+    }
+  }
+
+
 
 }
