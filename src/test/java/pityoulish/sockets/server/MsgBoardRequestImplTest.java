@@ -16,7 +16,7 @@ public class MsgBoardRequestImplTest
   @Test public void construct_all()
   {
     final ReqType rtype = ReqType.RETURN_TICKET;
-    final Integer limit  = new Integer(8);
+    final Integer limit  = Integer.valueOf(8);
     final String  marker  = "Denmark";
     final String  ticket   = "poison";
     final String  text      = "The rest is silence.";
@@ -79,7 +79,7 @@ public class MsgBoardRequestImplTest
 
   @Test public void newListMessages()
   {
-    final Integer limit  = new Integer(35);
+    final Integer limit  = Integer.valueOf(35);
     final String  marker = "wherever";
 
     MsgBoardRequest mbr =
@@ -173,7 +173,7 @@ public class MsgBoardRequestImplTest
   @Test public void to_String()
   {
     final ReqType rtype = ReqType.RETURN_TICKET;
-    final Integer limit  = new Integer(666);
+    final Integer limit  = Integer.valueOf(666);
     final String  marker  = "Denmark";
     final String  ticket   = "poison";
     final String  text      = "The rest is silence.";

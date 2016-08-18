@@ -6,6 +6,7 @@
 package pityoulish.sockets.server;
 
 import pityoulish.sockets.tlv.MsgBoardTLV;
+import pityoulish.sockets.tlv.MsgBoardType;
 
 
 /**
@@ -117,8 +118,44 @@ public class RequestParserImpl implements RequestParser
   protected MsgBoardRequest parseListMessages(MsgBoardTLV reqtlv)
     throws ProtocolException
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    Integer limit = null;
+    String  marker = null;
+
+    for (MsgBoardTLV nested = reqtlv.getNestedTLV();
+         nested != null;
+         nested = nested.getNextTLV(reqtlv.getEnd())
+         )
+     {
+       if (nested.getEnd() > reqtlv.getEnd())
+          throw failOverlongTLV(nested);
+
+       switch (nested.getType())
+        {
+         case LIMIT:
+           if (limit != null)
+              throw failDuplicateTLV(nested);
+           limit = new Integer(parseLimit(nested));
+           break;
+
+         case MARKER:
+           if (marker != null)
+              throw failDuplicateTLV(nested);
+           marker = parseStringValue(nested, "US-ASCII");
+           // protocol specifies printable characters, could check that too
+           break;
+
+         default:
+           throw failUnexpectedTLV(nested);
+        }
+     }
+
+    if (limit == null)
+       throw new ProtocolException("missing "+MsgBoardType.LIMIT+
+                                   " in TLV "+reqtlv.getType());
+
+    return MsgBoardRequestImpl.newListMessages(limit, marker);
   }
+
 
   protected MsgBoardRequest parsePutMessage(MsgBoardTLV reqtlv)
     throws ProtocolException
@@ -142,6 +179,127 @@ public class RequestParserImpl implements RequestParser
     throws ProtocolException
   {
     throw new UnsupportedOperationException("@@@ not yet implemented");
+  }
+
+
+  //@@@ Implement a generic parsing method for requests with all-mandatory
+  //@@@ arguments. Pass EnumSet of mandatory arguments.
+  //@@@ Means I cannot use some of the helpers in MsgBoardRequestImpl. Too bad.
+
+
+  /**
+   * Parses the value of a {@link MsgBoardType#LIMIT LIMIT} TLV.
+   *
+   * @param tlv   the TLV to parse
+   *
+   * @return the limit
+   *
+   * @throws ProtocolException if the value is invalid
+   */
+  protected int parseLimit(MsgBoardTLV tlv)
+    throws ProtocolException
+  {
+    if (tlv.getLength() != 1)
+       //@@@ implement NLS light
+       throw new ProtocolException("invalid length of TLV "+tlv.getType()+
+                                   " at position "+tlv.getStart());
+
+    int limit = tlv.getData()[tlv.getValueStart()] & 0xff;
+    if ((limit < 1) || (limit > 127))
+       //@@@ implement NLS light
+       throw new ProtocolException("invalid value "+limit+
+                                   " of TLV "+tlv.getType()+
+                                   " at position "+tlv.getStart());
+
+    return limit;
+  }
+
+
+  /**
+   * Parses the string value of a TLV.
+   *
+   * @param tlv   the TLV with expected string value
+   * @param enc   the expected encoding, for example "US-ASCII",
+   *              or <code>null</code> for "UTF-8"
+   *
+   * @return the string value, or an empty string if the value is empty
+   *
+   * @throws ProtocolException if the value is invalid
+   */
+  //@@@ support an optional Regex pattern, for additional validation?
+  protected String parseStringValue(MsgBoardTLV tlv, String enc)
+    throws ProtocolException
+  {
+    if (tlv.getLength() < 1)
+       return "";
+
+    if (enc == null)
+       enc = "UTF-8";
+
+    String result = null;
+    try {
+      result = new String(tlv.getData(), tlv.getValueStart(),
+                          tlv.getLength(), enc);
+    } catch (Exception x) {
+      // UnsupportedEncodingException is not expected here
+      // just assume that the value is wrong, rather than the encoding
+      //@@@ implement NLS light
+      throw new ProtocolException("invalid string value of TLV "+tlv.getType()+
+                                  " at position "+tlv.getStart()+
+                                  ", expected encoding "+enc,
+                                  x);
+    }
+    return result;
+  }
+
+
+
+  /**
+   * Creates an exception about an unexpected TLV.
+   * The exception is returned, so it can be thrown by the caller.
+   *
+   * @param tlv   the unexpected TLV
+   *
+   * @return an exception describing the problem
+   */
+  protected ProtocolException failUnexpectedTLV(MsgBoardTLV tlv)
+  {
+    //@@@ implement NLS light
+    return new ProtocolException("unexpected TLV "+tlv.getType()+
+                                 " at position "+tlv.getStart());
+  }
+
+
+  /**
+   * Creates an exception about a TLV too long for the containing value.
+   * The exception is returned, so it can be thrown by the caller.
+   *
+   * @param tlv   the overlong TLV
+   *
+   * @return an exception describing the problem
+   */
+  protected ProtocolException failOverlongTLV(MsgBoardTLV tlv)
+  {
+    //@@@ implement NLS light
+    return new ProtocolException("TLV "+tlv.getType()+
+                                 " at position "+tlv.getStart()+
+                                 " too long for containing value");
+  }
+
+
+  /**
+   * Creates an exception about a duplicate TLV in a value.
+   * The exception is returned, so it can be thrown by the caller.
+   *
+   * @param tlv   the duplicate TLV
+   *
+   * @return an exception describing the problem
+   */
+  protected ProtocolException failDuplicateTLV(MsgBoardTLV tlv)
+  {
+    //@@@ implement NLS light
+    return new ProtocolException("duplicate TLV "+tlv.getType()+
+                                 " at position "+tlv.getStart());
   }
 
 

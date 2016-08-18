@@ -5,7 +5,7 @@
  */
 package pityoulish.sockets.server;
 
-//import pityoulish.sockets.server.MsgBoardRequest.ReqType;
+import pityoulish.sockets.server.MsgBoardRequest.ReqType;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
 
@@ -192,5 +192,219 @@ public class RequestParserImplTest
   }
 
 
+
+  @Test public void parseListMessages_LM()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 3,
+      (byte) 'a', (byte) 'b', (byte) 'c'
+    };
+
+    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
+    assertEquals("wrong limit", limit,  mbr.getLimit());
+    assertEquals("wrong marker", "abc", mbr.getMarker());
+
+    assertNull("unexpected ticket",     mbr.getTicket());
+    assertNull("unexpected text",       mbr.getText());
+    assertNull("unexpected originator", mbr.getOriginator());
+  }
+
+
+  @Test public void parseListMessages_ML()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 3,
+      (byte) 'a', (byte) 'b', (byte) 'c',
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue()
+    };
+
+    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
+    assertEquals("wrong limit", limit,  mbr.getLimit());
+    assertEquals("wrong marker", "abc", mbr.getMarker());
+
+    assertNull("unexpected ticket",     mbr.getTicket());
+    assertNull("unexpected text",       mbr.getText());
+    assertNull("unexpected originator", mbr.getOriginator());
+  }
+
+
+  @Test public void parseListMessages_L()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue()
+    };
+
+    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
+    assertEquals("wrong limit", limit,  mbr.getLimit());
+
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected ticket",     mbr.getTicket());
+    assertNull("unexpected text",       mbr.getText());
+    assertNull("unexpected originator", mbr.getOriginator());
+  }
+
+
+  @Test public void parseListMessages_M_only()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 7,
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 3,
+      (byte) 'a', (byte) 'b', (byte) 'c'
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("missing limit not detected: "+mbr);
+    } catch (Exception expected) {
+      //expected.printStackTrace(System.err);
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+
+      String why = String.valueOf(MsgBoardType.LIMIT);
+      assertTrue("wrong reason for exception",
+                 expected.getMessage().indexOf(why) >= 0);
+    }
+  }
+
+
+  @Test public void parseListMessages_L_none()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 0
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("missing limit not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+
+      String why = String.valueOf(MsgBoardType.LIMIT);
+      assertTrue("wrong reason for exception",
+                 expected.getMessage().indexOf(why) >= 0);
+    }
+  }
+
+
+  @Test public void parseListMessages_L_low()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(0);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue()
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad limit not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+
+      String why = String.valueOf(MsgBoardType.LIMIT);
+      assertTrue("wrong reason for exception",
+                 expected.getMessage().indexOf(why) >= 0);
+    }
+  }
+
+
+  @Test public void parseListMessages_L_high()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(128);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue()
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad limit not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+
+      String why = String.valueOf(MsgBoardType.LIMIT);
+      assertTrue("wrong reason for exception",
+                 expected.getMessage().indexOf(why) >= 0);
+    }
+  }
+
+
+  //@@@ check for bad cases: bad length of nested TLVs, non-ASCII in marker
 
 }
