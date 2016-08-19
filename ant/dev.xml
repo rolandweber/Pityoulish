@@ -184,6 +184,7 @@ Targets for development, for working with the (Java) code.
          printsummary="on"
          >
     <classpath>
+      <pathelement location="src/main/java" /><!-- for properties files -->
       <pathelement location="${dir.tmp}/classes/main" />
       <pathelement location="${dir.tmp}/classes/test" />
       <pathelement location="${junit4.jar}" />

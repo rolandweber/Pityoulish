@@ -60,9 +60,7 @@ public class RequestParserImpl implements RequestParser
         break;
 
       default:
-       //@@@ implement NLS light
-        throw new ProtocolException
-          ("Invalid type of top-level TLV: "+reqtlv.getType());
+        throw Catalog.INVALID_TOP_TLV_TYPE_1.asPX(reqtlv.getType());
      }
 
     if (result == null)
@@ -96,17 +94,14 @@ public class RequestParserImpl implements RequestParser
       result = new MsgBoardTLV(data, start);
 
     } catch (RuntimeException rtx) {
-      //@@@ implement NLS light
-      throw new ProtocolException("Invalid top-level TLV header.", rtx);
+      throw Catalog.INVALID_TOP_TLV_HEADER_0.asPXwithCause(rtx);
     }
 
     if (result.getEnd() > end)
-       //@@@ implement NLS light
-       throw new ProtocolException("Invalid length of top-level TLV.");
+       throw Catalog.INVALID_TOP_TLV_LENGTH_0.asPX();
 
     if (result.getEnd() > data.length)
-       //@@@ implement NLS light
-       throw new ProtocolException("Incomplete data for top-level TLV.");
+       throw Catalog.INCOMPLETE_TOP_TLV_DATA_0.asPX();
 
     // We could check for a valid type here. But the caller is going to
     // switch on the type anyway, so it's simpler to check it there.
@@ -150,8 +145,8 @@ public class RequestParserImpl implements RequestParser
      }
 
     if (limit == null)
-       throw new ProtocolException("missing "+MsgBoardType.LIMIT+
-                                   " in TLV "+reqtlv.getType());
+       throw Catalog.MISSING_NESTED_TLV_3.asPX
+         (reqtlv.getType(), reqtlv.getStart(), MsgBoardType.LIMIT);
 
     return MsgBoardRequestImpl.newListMessages(limit, marker);
   }
@@ -200,16 +195,12 @@ public class RequestParserImpl implements RequestParser
     throws ProtocolException
   {
     if (tlv.getLength() != 1)
-       //@@@ implement NLS light
-       throw new ProtocolException("invalid length of TLV "+tlv.getType()+
-                                   " at position "+tlv.getStart());
+       throw Catalog.INVALID_TLV_LENGTH_2.asPX(tlv.getType(), tlv.getStart());
 
     int limit = tlv.getData()[tlv.getValueStart()] & 0xff;
     if ((limit < 1) || (limit > 127))
-       //@@@ implement NLS light
-       throw new ProtocolException("invalid value "+limit+
-                                   " of TLV "+tlv.getType()+
-                                   " at position "+tlv.getStart());
+       throw Catalog.INVALID_TLV_VALUE_3.asPX
+         (tlv.getType(), tlv.getStart(), limit);
 
     return limit;
   }
@@ -246,11 +237,9 @@ public class RequestParserImpl implements RequestParser
     } catch (Exception x) {
       // UnsupportedEncodingException is not expected here
       // just assume that the value is wrong, rather than the encoding
-      //@@@ implement NLS light
-      throw new ProtocolException("invalid string value of TLV "+tlv.getType()+
-                                  " at position "+tlv.getStart()+
-                                  ", expected encoding "+enc,
-                                  x);
+
+      throw Catalog.INVALID_TLV_STRING_ENC_3.asPXwithCause
+        (x, tlv.getType(), tlv.getStart(), enc);
     }
     return result;
   }
@@ -267,26 +256,7 @@ public class RequestParserImpl implements RequestParser
    */
   protected ProtocolException failUnexpectedTLV(MsgBoardTLV tlv)
   {
-    //@@@ implement NLS light
-    return new ProtocolException("unexpected TLV "+tlv.getType()+
-                                 " at position "+tlv.getStart());
-  }
-
-
-  /**
-   * Creates an exception about a TLV too long for the containing value.
-   * The exception is returned, so it can be thrown by the caller.
-   *
-   * @param tlv   the overlong TLV
-   *
-   * @return an exception describing the problem
-   */
-  protected ProtocolException failOverlongTLV(MsgBoardTLV tlv)
-  {
-    //@@@ implement NLS light
-    return new ProtocolException("TLV "+tlv.getType()+
-                                 " at position "+tlv.getStart()+
-                                 " too long for containing value");
+    return Catalog.UNEXPECTED_TLV_2.asPX(tlv.getType(), tlv.getStart());
   }
 
 
@@ -300,9 +270,25 @@ public class RequestParserImpl implements RequestParser
    */
   protected ProtocolException failDuplicateTLV(MsgBoardTLV tlv)
   {
+    return Catalog.DUPLICATE_TLV_2.asPX(tlv.getType(), tlv.getStart());
+  }
+
+
+  /**
+   * Creates an exception about a TLV too long for the containing value.
+   * The exception is returned, so it can be thrown by the caller.
+   *
+   * @param tlv   the overlong TLV
+   *
+   * @return an exception describing the problem
+   */
+  protected ProtocolException failOverlongTLV(MsgBoardTLV tlv)
+  {
+    return Catalog.OVERLONG_TLV_2.asPX(tlv.getType(), tlv.getStart());
     //@@@ implement NLS light
-    return new ProtocolException("duplicate TLV "+tlv.getType()+
-                                 " at position "+tlv.getStart());
+    //return new ProtocolException("TLV "+tlv.getType()+
+    //                             " at position "+tlv.getStart()+
+    //                             " too long for containing value");
   }
 
 

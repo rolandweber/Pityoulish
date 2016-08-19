@@ -15,6 +15,39 @@ import static org.junit.Assert.*;
 
 public class RequestParserImplTest
 {
+  public final static String MSGCODE_PREFIX = "MBSS";
+
+  /**
+   * Checks for {@link ProtocolException} and certain elements of the message.
+   * The message is expected to contain a message code.
+   * If a <code>reason</code> is given, it must appear in the message too.
+   *
+   * @param cause    the exception to check
+   * @param reason   a string expected in the message,
+   *                 or <code>null</code> to skip this check.
+   *                 Non-string arguments are converted to String first.
+   */
+  protected static void assertPX(Throwable cause, Object reason)
+  {
+    assertNotNull("no exception", cause);
+    assertEquals("wrong exception",
+                 ProtocolException.class,
+                 cause.getClass());
+
+    String msg = cause.getMessage();
+    assertNotNull("no exception message", msg);
+    assertNotEquals("empty exception message", "", msg);
+    assertTrue("missing NLS code", msg.indexOf(MSGCODE_PREFIX) >= 0);
+
+    if (reason != null)
+     {
+       String why = reason.toString();
+       assertTrue("wrong reason for exception",
+                  cause.getMessage().indexOf(why) >= 0);
+     }
+  }
+
+
 
   @Test public void parse_invalid_args()
     throws ProtocolException
@@ -86,10 +119,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
       fail("invalid data not detected: "+mbr);
     } catch (Exception expected) {
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
       // expected.printStackTrace(System.err);
+      assertPX(expected, null);
     }
 
   } // parse_invalid_args
@@ -110,10 +141,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
       // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.INFO_RESPONSE);
     }
   }
 
@@ -134,10 +163,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
       // expected.printStackTrace(System.err);
+      assertPX(expected, null);
     }
   }
 
@@ -159,10 +186,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
       // expected.printStackTrace(System.err);
+      assertPX(expected, null);
     }
   }
 
@@ -184,10 +209,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
       // expected.printStackTrace(System.err);
+      assertPX(expected, null);
     }
   }
 
@@ -304,14 +327,8 @@ public class RequestParserImplTest
       MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
-      //expected.printStackTrace(System.err);
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
-
-      String why = String.valueOf(MsgBoardType.LIMIT);
-      assertTrue("wrong reason for exception",
-                 expected.getMessage().indexOf(why) >= 0);
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.LIMIT);
     }
   }
 
@@ -332,13 +349,7 @@ public class RequestParserImplTest
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
-
-      String why = String.valueOf(MsgBoardType.LIMIT);
-      assertTrue("wrong reason for exception",
-                 expected.getMessage().indexOf(why) >= 0);
+      assertPX(expected, MsgBoardType.LIMIT);
     }
   }
 
@@ -363,13 +374,7 @@ public class RequestParserImplTest
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
-
-      String why = String.valueOf(MsgBoardType.LIMIT);
-      assertTrue("wrong reason for exception",
-                 expected.getMessage().indexOf(why) >= 0);
+      assertPX(expected, MsgBoardType.LIMIT);
     }
   }
 
@@ -394,13 +399,32 @@ public class RequestParserImplTest
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
+      assertPX(expected, MsgBoardType.LIMIT);
+    }
+  }
 
-      String why = String.valueOf(MsgBoardType.LIMIT);
-      assertTrue("wrong reason for exception",
-                 expected.getMessage().indexOf(why) >= 0);
+
+  @Test public void parseListMessages_L_wide()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(80);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 6,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 2, // length must be 1
+      (byte) 0, limit.byteValue()
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad limit not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.LIMIT);
     }
   }
 
@@ -430,14 +454,104 @@ public class RequestParserImplTest
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
-      assertEquals("wrong exception",
-                   ProtocolException.class,
-                   expected.getClass());
-
-      String why = String.valueOf(MsgBoardType.MARKER);
-      assertTrue("wrong reason for exception",
-                 expected.getMessage().indexOf(why) >= 0);
+      assertPX(expected, MsgBoardType.MARKER);
     }
   }
+
+
+  @Test public void parseListMessages_LT()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 10,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+
+      MsgBoardType.TICKET.typeByte, // doesn't belong here
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      (byte) 'X'
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad marker not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.TICKET);
+    }
+  }
+
+
+  @Test public void parseListMessages_LL()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 10,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+
+      MsgBoardType.LIMIT.typeByte, // duplicate
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad marker not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.LIMIT);
+    }
+  }
+
+
+  @Test public void parseListMessages_MLM()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(26);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 19,
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 3,
+      (byte) 'a', (byte) 'b', (byte) 'c',
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 3,
+      (byte) 'd', (byte) 'e', (byte) 'f',
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad marker not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.MARKER);
+    }
+  }
+
+
+
+  //@@@ is it possible to generate string decoding error with UTF-8 encoding?
+  //@@@ otherwise impossible to test for Catalog.INVALID_TLV_STRING_ENC_3
 
 }
