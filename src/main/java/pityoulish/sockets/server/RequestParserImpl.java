@@ -226,7 +226,7 @@ public class RequestParserImpl implements RequestParser
    *
    * @throws ProtocolException if the value is invalid
    */
-  //@@@ support an optional Regex pattern, for additional validation?
+  //@@@ support an optional Regex pattern for validation?
   protected String parseStringValue(MsgBoardTLV tlv, String enc)
     throws ProtocolException
   {
@@ -238,6 +238,9 @@ public class RequestParserImpl implements RequestParser
 
     String result = null;
     try {
+      // The constructors of the String class replace invalid characters
+      // with a special marker. Therefore, we won't get an exception here
+      // if for example non-ASCII characters are parsed as US-ASCII.
       result = new String(tlv.getData(), tlv.getValueStart(),
                           tlv.getLength(), enc);
     } catch (Exception x) {

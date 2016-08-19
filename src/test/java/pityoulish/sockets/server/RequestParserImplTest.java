@@ -405,6 +405,39 @@ public class RequestParserImplTest
   }
 
 
-  //@@@ check for bad cases: bad length of nested TLVs, non-ASCII in marker
+  @Test public void parseListMessages_M_excessive()
+    throws ProtocolException
+  {
+    final Integer limit = Integer.valueOf(17);
+
+    RequestParserImpl rpi = new RequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.LIST_MESSAGES.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
+
+      MsgBoardType.LIMIT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 1,
+      limit.byteValue(),
+
+      MsgBoardType.MARKER.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 8, // too long
+      (byte) 'a', (byte) 'b', (byte) 'c',
+      (byte) 'x', (byte) 'x', (byte) 'x', (byte) 'x', (byte) 'x'
+    };
+
+    try {
+      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      fail("bad marker not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertEquals("wrong exception",
+                   ProtocolException.class,
+                   expected.getClass());
+
+      String why = String.valueOf(MsgBoardType.MARKER);
+      assertTrue("wrong reason for exception",
+                 expected.getMessage().indexOf(why) >= 0);
+    }
+  }
 
 }
