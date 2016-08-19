@@ -285,10 +285,6 @@ public class RequestParserImpl implements RequestParser
   protected ProtocolException failOverlongTLV(MsgBoardTLV tlv)
   {
     return Catalog.OVERLONG_TLV_2.asPX(tlv.getType(), tlv.getStart());
-    //@@@ implement NLS light
-    //return new ProtocolException("TLV "+tlv.getType()+
-    //                             " at position "+tlv.getStart()+
-    //                             " too long for containing value");
   }
 
 
