@@ -13,7 +13,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 
-public class RequestParserImplTest
+public class TLVRequestParserImplTest
 {
   public final static String MSGCODE_PREFIX = "MBSS";
 
@@ -52,10 +52,10 @@ public class RequestParserImplTest
   @Test public void parse_invalid_args()
     throws ProtocolException
   {
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
 
     try {
-      MsgBoardRequest mbr = rpi.parse(null, 0, 8);
+      MsgBoardRequest mbr = rp.parse(null, 0, 8);
       fail("null data not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -65,7 +65,7 @@ public class RequestParserImplTest
 
     byte[] data = new byte[2];
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, 8);
+      MsgBoardRequest mbr = rp.parse(data, 0, 8);
       fail("short data not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -77,7 +77,7 @@ public class RequestParserImplTest
     data = new byte[8];
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, -1, 8);
+      MsgBoardRequest mbr = rp.parse(data, -1, 8);
       fail("negative start not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -86,7 +86,7 @@ public class RequestParserImplTest
     }
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, data.length-3, 8);
+      MsgBoardRequest mbr = rp.parse(data, data.length-3, 8);
       fail("excessive start not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -95,7 +95,7 @@ public class RequestParserImplTest
     }
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 3, 2);
+      MsgBoardRequest mbr = rp.parse(data, 3, 2);
       fail("end before start not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -104,7 +104,7 @@ public class RequestParserImplTest
     }
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 3, 6);
+      MsgBoardRequest mbr = rp.parse(data, 3, 6);
       fail("end shortly after start not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
@@ -116,7 +116,7 @@ public class RequestParserImplTest
     // about invalid data rather than illegal arguments
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("invalid data not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -129,7 +129,7 @@ public class RequestParserImplTest
   @Test public void parse_invalid_header_Type()
     throws ProtocolException
   {
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.INFO_RESPONSE.typeByte, // not a request type
       MsgBoardTLV.LENGTH_OF_LENGTH_2,
@@ -138,7 +138,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -150,7 +150,7 @@ public class RequestParserImplTest
   @Test public void parse_invalid_header_LoL()
     throws ProtocolException
   {
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       (byte) (MsgBoardTLV.LENGTH_OF_LENGTH_2+1), // only one LoL supported
@@ -160,7 +160,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -172,7 +172,7 @@ public class RequestParserImplTest
   @Test public void parse_invalid_header_Length_end()
     throws ProtocolException
   {
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2,
@@ -183,7 +183,7 @@ public class RequestParserImplTest
 
     try {
       // end points to actual end of data
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -195,7 +195,7 @@ public class RequestParserImplTest
   @Test public void parse_invalid_header_Length_data()
     throws ProtocolException
   {
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2,
@@ -206,7 +206,7 @@ public class RequestParserImplTest
 
     try {
       // end matches the TLV size, but is beyond the available data
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -221,7 +221,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
@@ -235,7 +235,7 @@ public class RequestParserImplTest
       (byte) 'a', (byte) 'b', (byte) 'c'
     };
 
-    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -253,7 +253,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
@@ -267,7 +267,7 @@ public class RequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -285,7 +285,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
@@ -295,7 +295,7 @@ public class RequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rpi.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -313,7 +313,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 7,
@@ -324,7 +324,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -338,14 +338,14 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 0
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -359,7 +359,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(0);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
@@ -370,7 +370,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -384,7 +384,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(128);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 5,
@@ -395,7 +395,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -409,7 +409,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(80);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 6,
@@ -420,7 +420,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -434,7 +434,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 12,
@@ -450,7 +450,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -464,7 +464,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 10,
@@ -479,7 +479,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -493,7 +493,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(17);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 10,
@@ -508,7 +508,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -522,7 +522,7 @@ public class RequestParserImplTest
   {
     final Integer limit = Integer.valueOf(26);
 
-    RequestParserImpl rpi = new RequestParserImpl();
+    RequestParser rp = new TLVRequestParserImpl();
     byte[] data = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
       MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) 19,
@@ -541,7 +541,7 @@ public class RequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rpi.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);

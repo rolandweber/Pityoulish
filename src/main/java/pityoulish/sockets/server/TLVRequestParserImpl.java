@@ -12,8 +12,11 @@ import pityoulish.sockets.tlv.MsgBoardType;
 /**
  * Implementation of {@link RequestParser} for the Binary Protocol.
  */
-public class RequestParserImpl implements RequestParser
+public class TLVRequestParserImpl implements RequestParser
 {
+  // public default constructor
+
+
   // non-javadoc, see interface
   public MsgBoardRequest parse(byte[] data, int start, int end)
     throws ProtocolException
