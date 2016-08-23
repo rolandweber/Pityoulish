@@ -17,31 +17,45 @@ public abstract class SocketHandlerBase
   /** The name of this handler. */
   protected final String handler_name;
 
+  /** The request handler. */
+  protected final RequestHandler request_handler;
+
   /** The socket. */
   protected ServerSocket server_socket;
 
 
   /**
-   * Creates a new handler with the given name.
+   * Creates a new socket handler.
    *
    * @param name        the name of this handler
+   * @param reqh        the request handler
    */
-  protected SocketHandlerBase(String name)
+  protected SocketHandlerBase(String name, RequestHandler reqh)
   {
     if (name == null)
        throw new NullPointerException("name");
+    if (reqh == null)
+       throw new NullPointerException("RequestHandler");
+
     handler_name = name;
+    request_handler = reqh;
   }
 
 
   /**
    * Creates a new handler with a default name.
    * The name is generated from the classname.
+   *
+   * @param reqh        the request handler
    */
-  protected SocketHandlerBase()
+  protected SocketHandlerBase(RequestHandler reqh)
   {
+    if (reqh == null)
+       throw new NullPointerException("RequestHandler");
+
     String cn = getClass().getName();
     handler_name = cn.substring(cn.lastIndexOf('.')+1);
+    request_handler = reqh;
   }
 
 
@@ -50,6 +64,13 @@ public abstract class SocketHandlerBase
   public final String getName()
   {
     return handler_name;
+  }
+
+
+  // non-javadoc, see interface SocketHandler
+  public final RequestHandler getRequestHandler()
+  {
+    return request_handler;
   }
 
 

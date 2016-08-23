@@ -22,6 +22,15 @@ public interface SocketHandler
 
 
   /**
+   * Obtains the underlying request handler.
+   *
+   * @return    the request handler
+   */
+  public RequestHandler getRequestHandler()
+    ;
+
+
+  /**
    * Obtains the socket being serviced by this handler.
    *
    * @return    the socket, or
