@@ -25,7 +25,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   implements Runnable
 {
   /** The thread executing this handler. */
-  protected volatile Thread handler_thread;
+  protected volatile Thread handlerThread;
 
   public final static int  MAX_REQUEST_SIZE = 1024; // bytes
   public final static int  RCV_SO_TIMEOUT   =  666; // milliseconds
@@ -56,14 +56,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   public synchronized void startup(int port, int backlog)
     throws Exception
   {
-    if (handler_thread != null)
+    if (handlerThread != null)
        throw new IllegalStateException("already started");
 
     initServerSocket(port, backlog);
 
-    handler_thread = new Thread(this);
-    handler_thread.setDaemon(true);
-    handler_thread.start();
+    handlerThread = new Thread(this);
+    handlerThread.setDaemon(true);
+    handlerThread.start();
   }
 
 
@@ -75,13 +75,13 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   public synchronized void shutdown()
     throws Exception
   {
-    Thread t = handler_thread;
-    handler_thread = null; // tell thread to die
+    Thread t = handlerThread;
+    handlerThread = null; // tell thread to die
     if (t != null)
        t.interrupt();
 
-    if (server_socket != null)
-       server_socket.close();
+    if (srvSocket != null)
+       srvSocket.close();
   }
 
 
@@ -92,8 +92,8 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   {
     final Thread runner = Thread.currentThread();
 
-    // access to handler_thread not synchronized, the attribute is volatile
-    while (handler_thread == runner)
+    // access to handlerThread not synchronized, the attribute is volatile
+    while (handlerThread == runner)
      {
        try
         {
@@ -117,7 +117,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   protected void serveRequest()
     throws Exception
   {
-    Socket sock = server_socket.accept();
+    Socket sock = srvSocket.accept();
 
     try {
       // Of course it makes no sense to work without a send buffer. And
@@ -131,7 +131,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     }
 
     StringBuilder sb = new StringBuilder(120);
-    sb.append(handler_name);
+    sb.append(handlerName);
     sb.append(": connection from ")
       .append(sock.getRemoteSocketAddress());
     System.out.println(sb);
@@ -144,11 +144,11 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // The port number there most likely changes for every request.
       InetAddress address = sock.getInetAddress();
 
-      byte[] response = request_handler.handle(request, 0, request.length);
+      byte[] response = reqHandler.handle(request, 0, request.length);
       sendResponse(sock, response);
 
     } catch (ProtocolException px) {
-      byte[] response = request_handler.buildErrorResponse(px);
+      byte[] response = reqHandler.buildErrorResponse(px);
       sendResponse(sock, response);
       throw px;
 
@@ -191,7 +191,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (sock != null)
      {
        try {
-         byte[] response = request_handler.buildErrorResponse(result);
+         byte[] response = reqHandler.buildErrorResponse(result);
          sendResponse(sock, response);
        } catch (Exception ignore) {
          // result.addSuppressed(ignore); // requires Java 7

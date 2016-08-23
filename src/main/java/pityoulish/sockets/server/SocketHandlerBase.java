@@ -15,13 +15,13 @@ public abstract class SocketHandlerBase
   implements SocketHandler
 {
   /** The name of this handler. */
-  protected final String handler_name;
+  protected final String handlerName;
 
   /** The request handler. */
-  protected final RequestHandler request_handler;
+  protected final RequestHandler reqHandler;
 
   /** The socket. */
-  protected ServerSocket server_socket;
+  protected ServerSocket srvSocket;
 
 
   /**
@@ -37,8 +37,8 @@ public abstract class SocketHandlerBase
     if (reqh == null)
        throw new NullPointerException("RequestHandler");
 
-    handler_name = name;
-    request_handler = reqh;
+    handlerName = name;
+    reqHandler  = reqh;
   }
 
 
@@ -53,9 +53,9 @@ public abstract class SocketHandlerBase
     if (reqh == null)
        throw new NullPointerException("RequestHandler");
 
-    String cn = getClass().getName();
-    handler_name = cn.substring(cn.lastIndexOf('.')+1);
-    request_handler = reqh;
+    String cn   = getClass().getName();
+    handlerName = cn.substring(cn.lastIndexOf('.')+1);
+    reqHandler  = reqh;
   }
 
 
@@ -63,26 +63,26 @@ public abstract class SocketHandlerBase
   // non-javadoc, see interface SocketHandler
   public final String getName()
   {
-    return handler_name;
+    return handlerName;
   }
 
 
   // non-javadoc, see interface SocketHandler
   public final RequestHandler getRequestHandler()
   {
-    return request_handler;
+    return reqHandler;
   }
 
 
   // non-javadoc, see interface SocketHandler
   public final ServerSocket getServerSocket()
   {
-    return server_socket;
+    return srvSocket;
   }
 
 
   /**
-   * Initializes {@link #server_socket}.
+   * Initializes {@link #srvSocket}.
    * Derived classes may as well initialize that variable themselves,
    * without calling this method here.
    *
@@ -95,8 +95,8 @@ public abstract class SocketHandlerBase
   protected void initServerSocket(int port, int backlog)
     throws IOException
   {
-    server_socket = new ServerSocket(port, backlog);
-    server_socket.setReuseAddress(true);
+    srvSocket = new ServerSocket(port, backlog);
+    srvSocket.setReuseAddress(true);
   }
 
 
@@ -111,9 +111,9 @@ public abstract class SocketHandlerBase
   {
     StringBuilder sb = new StringBuilder(80);
 
-    sb.append(handler_name);
-    if (server_socket != null)
-       sb.append('@').append(server_socket.getLocalPort());
+    sb.append(handlerName);
+    if (srvSocket != null)
+       sb.append('@').append(srvSocket.getLocalPort());
 
     sb.append(':').append(getClass().getName());
 
