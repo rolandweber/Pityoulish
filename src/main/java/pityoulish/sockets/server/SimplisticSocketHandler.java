@@ -97,7 +97,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
      {
        try
         {
-          serveRequest();
+          acceptAndServeRequest();
         }
        catch (Exception x)
         {
@@ -111,10 +111,11 @@ public class SimplisticSocketHandler extends SocketHandlerBase
    * Accepts the next connection, reads a request and serves it.
    * Repeatedly called by {@link #run}.
    * Blocks until there is a connection or a problem.
+   * Delegates to {@link #readAndServeRequest}.
    *
    * @throws Exception        in case of a problem
    */
-  protected void serveRequest()
+  protected void acceptAndServeRequest()
     throws Exception
   {
     Socket sock = srvSocket.accept();
@@ -136,30 +137,13 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       .append(sock.getRemoteSocketAddress());
     System.out.println(sb);
 
-    byte[] request = readRequest(sock);
-    // readRequest closes the socket on error, let exceptions pass
+    readAndServeRequest(sock);
+    // readAndServeRequest closes the socket on error, let exceptions pass
 
-    try {
-      // The client machine is (more or less) identified by the host address.
-      // The port number there most likely changes for every request.
-      InetAddress address = sock.getInetAddress();
+    // single thread + blocking IO means no keep-alive
+    sock.close();
 
-      byte[] response = reqHandler.handle(request, 0, request.length);
-      sendResponse(sock, response);
-
-    } catch (ProtocolException px) {
-      byte[] response = reqHandler.buildErrorResponse(px);
-      sendResponse(sock, response);
-      throw px;
-
-    } finally {
-      sock.close();
-    }
-
-    //@@@ perform random act of weirdness occasionally, based on elapsed time,
-    //@@@ number of requests, random decision, or a combination thereof
-
-  } // serveRequest
+  } // acceptAndServeRequest
 
 
   /**
@@ -169,23 +153,30 @@ public class SimplisticSocketHandler extends SocketHandlerBase
    * method may try to send an error response back to the client before
    * closing the socket.
    *
-   * @param reason      the reason for cancelling this request
+   * @param reason      the reason for cancelling this request, or
+   *                    <code>null</code> if given by <code>cause</code>
    * @param cause       an exception that causes cancelling of this request,
    *                    or <code>null</code>
    * @param sock        the socket from which the cancelled request
    *                    was received, or <code>null</code>
-   * @param reply       <code>true</code> to send an error response,
-   *                    <code>false</code> to just close the socket
    *
    * @return    an exception with the given <code>reason</code> and
-   *            <code>cause</code>, to be thrown by the caller
+   *            <code>cause</code>, to be thrown by the caller.
+   *            If <code>reason</code> is <code>null</code> and
+   *            <code>cause</code> is a {@link ProtocolException},
+   *            the return value is <code>cause</code>.
    */
   public ProtocolException cancelRequest(String reason,
                                          Throwable cause,
-                                         Socket sock,
-                                         boolean reply)
+                                         Socket sock)
   {
-    ProtocolException result = new ProtocolException(reason, cause);
+    ProtocolException result = null;
+
+    if ((reason == null) && (cause instanceof ProtocolException))
+       result = (ProtocolException) cause;
+    else
+       result = new ProtocolException(reason, cause);
+
     System.out.println(result.toString());
 
     if (sock != null)
@@ -208,15 +199,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
 
 
   /**
-   * Reads a request from a socket.
+   * Reads a request from a socket and serves it.
+   * Calls the {@link RequestHandler}, followed by {@link #sendResponse}.
    *
    * @param sock        the socket to read the request from
    *
-   * @return    the request data
-   *
    * @throws Exception  in case of a problem
    */
-  public byte[] readRequest(Socket sock)
+  public void readAndServeRequest(Socket sock)
     throws Exception
   {
     // to avoid permanent blocking by misbehaving clients:
@@ -241,7 +231,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (pos < 4)
      {
        throw cancelRequest
-         ("did not receive minimum data in first block", null, sock, false);
+         ("did not receive minimum data in first block", null, sock);
      }
 
     // Requests are in TLV format, see ASN.1 BER
@@ -253,13 +243,13 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if ((data[0] & 0xe0) != 0xe0) // expect bits: 111xxxx
      {
        throw cancelRequest
-         ("unexpected type "+data[0], null, sock, false);
+         ("unexpected type "+data[0], null, sock);
      }
 
     if (data[1] != MsgBoardTLV.LENGTH_OF_LENGTH_2)
      {
        throw cancelRequest
-         ("unexpected length of length "+data[1], null, sock, false);
+         ("unexpected length of length "+data[1], null, sock);
      }
 
     int length = ((data[2] & 0xff)<<8) + (data[3] & 0xff);
@@ -267,7 +257,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (size > MAX_REQUEST_SIZE)
      {
        throw cancelRequest
-         ("request too long: "+length, null, sock, false);
+         ("request too long: "+length, null, sock);
      }
 
     while (pos < size)
@@ -275,14 +265,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
        if (System.currentTimeMillis() > deadline)
         {
           throw cancelRequest
-            ("deadline for receiving expired", null, sock, false);
+            ("deadline for receiving expired", null, sock);
         }
 
        int count = is.read(data, pos, data.length-pos);
        if (count < 0)
         {
           throw cancelRequest
-            ("unexpected end of data", null, sock, false);
+            ("unexpected end of data", null, sock);
         }
        pos += count;
      }
@@ -291,18 +281,43 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     //System.out.println("received request of "+(length+4)+
     //                    " bytes in "+(ended-started)+" ms");
 
-    //@@@ refactor this method or class to avoid copying of the request!
-    //@@@ can only return one object, not array and end position at same time
-    if (data.length > size)
-     {
-       byte[] shrink = new byte[size];
-       System.arraycopy(data, 0, shrink, 0, size);
-       data = shrink;
-     }
+    //@@@ Instead of calling serveRequest, return a java.nio.ByteBuffer
+    //@@@ and let the caller invoke the subsequent method to process it?
 
-    return data;
+    serveRequest(sock, data, size);
 
-  } // readRequest
+  } // readAndServeRequest
+
+
+  /**
+   * Serves a request that has been read from a socket.
+   * Calls the {@link RequestHandler}, then delegates to {@link #sendResponse}.
+   *
+   * @param sock        the socket from which the request was read
+   * @param request     an array holding the request, starting at index 0
+   * @param length      the length of the request, in bytes.
+   *                    That's the same as the index after the last byte.
+   *
+   * @throws Exception  in case of a problem
+   */
+  public void serveRequest(Socket sock, byte[] request, int length)
+    throws Exception
+  {
+    try {
+      // The client machine is (more or less) identified by the host address.
+      // The port number there most likely changes for every request.
+      InetAddress address = sock.getInetAddress();
+
+      byte[] response = reqHandler.handle(request, 0, length);
+      sendResponse(sock, response);
+
+    } catch (ProtocolException px) {
+      throw cancelRequest(null, px, sock);
+    }
+
+    // in case of success, the socket remains open
+
+  } // serveRequest
 
 
   /**
