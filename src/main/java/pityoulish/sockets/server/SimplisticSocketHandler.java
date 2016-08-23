@@ -233,6 +233,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
 
     //@@@ This logic is specific to TLVs... move it into RequestHandler!
     //@@@ NLS light
+    //@@@ Send error TLV though request is bogus, or just drop the connection?
 
     // Read the first 4 bytes of data, expected in first block of data.
     // Clients that try to send data byte for byte will be kicked out.
