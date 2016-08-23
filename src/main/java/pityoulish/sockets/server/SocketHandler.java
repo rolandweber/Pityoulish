@@ -7,8 +7,9 @@ package pityoulish.sockets.server;
 
 import java.net.ServerSocket;
 
+
 /**
- * Handlers are servicing sockets using blocking IO.
+ * Handler for servicing requests received through socket connections.
  */
 public interface SocketHandler
 {

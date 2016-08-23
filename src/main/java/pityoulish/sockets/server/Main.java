@@ -45,7 +45,7 @@ public final class Main
     ResponseBuilder rspb = new TLVResponseBuilderImpl();
     RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
 
-    SocketHandler  shandler  = null; //new SingleThreadHandler(rh);
+    SocketHandler  shandler  = new SimplisticSocketHandler(rh);
     //@@@ get port number and/or network interface from command line arguments
     shandler.startup(0, 0);
 

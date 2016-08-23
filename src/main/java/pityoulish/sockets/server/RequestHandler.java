@@ -31,4 +31,28 @@ public interface RequestHandler
   // intentionally no exception declared here
     ;
 
+
+  /**
+   * Builds a response with an error message.
+   * See also {@link ResponseBuilder#buildErrorResponse(String)}.
+   *
+   * @param msg   the error message
+   *
+   * @return the response data
+   */
+  public byte[] buildErrorResponse(String msg)
+    ;
+
+
+  /**
+   * Builds a response with an error message, from an exception.
+   * See also {@link ResponseBuilder#buildErrorResponse(Throwable)}.
+   *
+   * @param cause   the exception
+   *
+   * @return the response data
+   */
+  public byte[] buildErrorResponse(Throwable cause)
+    ;
+
 }

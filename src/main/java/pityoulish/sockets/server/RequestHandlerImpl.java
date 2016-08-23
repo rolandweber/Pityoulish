@@ -122,4 +122,18 @@ public class RequestHandlerImpl implements RequestHandler
      return result;
    }
 
+
+  // non-javadoc, see interface
+  public byte[] buildErrorResponse(String msg)
+  {
+    return rspBuilder.buildErrorResponse(msg);
+  }
+
+
+  // non-javadoc, see interface
+  public byte[] buildErrorResponse(Throwable cause)
+  {
+    return rspBuilder.buildErrorResponse(cause);
+  }
+
 }
