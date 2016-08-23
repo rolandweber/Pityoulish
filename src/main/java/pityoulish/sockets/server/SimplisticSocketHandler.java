@@ -8,6 +8,7 @@ package pityoulish.sockets.server;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -111,7 +112,6 @@ public class SimplisticSocketHandler extends SocketHandlerBase
    * Accepts the next connection, reads a request and serves it.
    * Repeatedly called by {@link #run}.
    * Blocks until there is a connection or a problem.
-   * Delegates to {@link #readAndServeRequest}.
    *
    * @throws Exception        in case of a problem
    */
@@ -137,8 +137,10 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       .append(sock.getRemoteSocketAddress());
     System.out.println(sb);
 
-    readAndServeRequest(sock);
-    // readAndServeRequest closes the socket on error, let exceptions pass
+    // the following calls close the socket on error, so let exceptions pass
+    ByteBuffer request  = readRequest(sock);
+    ByteBuffer response = handleRequest(sock, request);
+    sendResponse(sock, response);
 
     // single thread + blocking IO means no keep-alive
     sock.close();
@@ -153,60 +155,67 @@ public class SimplisticSocketHandler extends SocketHandlerBase
    * method may try to send an error response back to the client before
    * closing the socket.
    *
-   * @param reason      the reason for cancelling this request, or
-   *                    <code>null</code> if given by <code>cause</code>
+   * @param reason      the reason for cancelling this request
    * @param cause       an exception that causes cancelling of this request,
    *                    or <code>null</code>
    * @param sock        the socket from which the cancelled request
    *                    was received, or <code>null</code>
    *
    * @return    an exception with the given <code>reason</code> and
-   *            <code>cause</code>, to be thrown by the caller.
-   *            If <code>reason</code> is <code>null</code> and
-   *            <code>cause</code> is a {@link ProtocolException},
-   *            the return value is <code>cause</code>.
+   *            <code>cause</code>, to be thrown by the caller
    */
   public ProtocolException cancelRequest(String reason,
                                          Throwable cause,
                                          Socket sock)
   {
-    ProtocolException result = null;
-
-    if ((reason == null) && (cause instanceof ProtocolException))
-       result = (ProtocolException) cause;
-    else
-       result = new ProtocolException(reason, cause);
-
+    ProtocolException result = new ProtocolException(reason, cause);
     System.out.println(result.toString());
 
+    sendErrorAndClose(result, sock);
+
+    return result;
+  }
+
+
+  /**
+   * Sends an error response and closes the socket.
+   * Does nothing if <code>sock</code> is <code>null</code>.
+   *
+   * @param cause       an exception indicating the cause of the problem
+   * @param sock        the socket on which to respond, or <code>null</code>
+   */
+  public void sendErrorAndClose(Throwable cause, Socket sock)
+  {
     if (sock != null)
      {
        try {
-         byte[] response = reqHandler.buildErrorResponse(result);
-         sendResponse(sock, response);
+         byte[] response = reqHandler.buildErrorResponse(cause);
+         sendResponse(sock, ByteBuffer.wrap(response));
        } catch (Exception ignore) {
-         // result.addSuppressed(ignore); // requires Java 7
+         cause.addSuppressed(ignore);
        }
        try {
          sock.close();
        } catch (Exception ignore) {
-         // result.addSuppressed(ignore); // requires Java 7
+         cause.addSuppressed(ignore);
        }
      }
-    return result;
-
-  } // cancelRequest
+  } // sendErrorAndClose
 
 
   /**
-   * Reads a request from a socket and serves it.
-   * Calls the {@link RequestHandler}, followed by {@link #sendResponse}.
+   * Reads a request from a socket and returns it.
    *
    * @param sock        the socket to read the request from
    *
+   * @return a byte buffer holding the request, backed by an array.
+   *         The request begins at the current position and
+   *         extends to the limit of the buffer.
+   *         This value is a suitable parameter for {@link #handleRequest}.
+   *
    * @throws Exception  in case of a problem
    */
-  public void readAndServeRequest(Socket sock)
+  public ByteBuffer readRequest(Socket sock)
     throws Exception
   {
     // to avoid permanent blocking by misbehaving clients:
@@ -281,26 +290,29 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     //System.out.println("received request of "+(length+4)+
     //                    " bytes in "+(ended-started)+" ms");
 
-    //@@@ Instead of calling serveRequest, return a java.nio.ByteBuffer
-    //@@@ and let the caller invoke the subsequent method to process it?
+    ByteBuffer request = ByteBuffer.wrap(data, 0, size);
+    return request;
 
-    serveRequest(sock, data, size);
-
-  } // readAndServeRequest
+  } // readRequest
 
 
   /**
-   * Serves a request that has been read from a socket.
-   * Calls the {@link RequestHandler}, then delegates to {@link #sendResponse}.
+   * Handles a request that has been read from a socket.
+   * Calls the {@link RequestHandler} and returns the response.
    *
    * @param sock        the socket from which the request was read
-   * @param request     an array holding the request, starting at index 0
-   * @param length      the length of the request, in bytes.
-   *                    That's the same as the index after the last byte.
+   * @param request     a byte buffer holding the request, backed by an array.
+   *                    The request begins at the current position and
+   *                    extends to the limit of the buffer.
+   *
+   * @return a byte buffer holding the response, backed by an array.
+   *         The response begins at the current position and
+   *         extends to the limit of the buffer.
+   *         This value is a suitable parameter for {@link #sendResponse}.
    *
    * @throws Exception  in case of a problem
    */
-  public void serveRequest(Socket sock, byte[] request, int length)
+  public ByteBuffer handleRequest(Socket sock, ByteBuffer request)
     throws Exception
   {
     try {
@@ -308,45 +320,64 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // The port number there most likely changes for every request.
       InetAddress address = sock.getInetAddress();
 
-      byte[] response = reqHandler.handle(request, 0, length);
-      sendResponse(sock, response);
+      byte[] rspdata = reqHandler.handle(request.array(),
+                                         request.position(),
+                                         request.limit());
+      ByteBuffer response = ByteBuffer.wrap(rspdata);
+      return response;
 
-    } catch (ProtocolException px) {
-      throw cancelRequest(null, px, sock);
+    } catch (Exception x) {
+      System.out.println(x.toString());
+      sendErrorAndClose(x, sock);
+      throw x;
     }
 
     // in case of success, the socket remains open
 
-  } // serveRequest
+  } // handleRequest
 
 
   /**
    * Sends a response over a socket.
-   * This flushes the output, but does not close the socket.
+   * This flushes the output, but does not close the socket on success.
    *
    * @param sock        the socket over which to send
-   * @param response    the response data to be sent
+   * @param response    a byte buffer holding the response, backed by an array.
+   *                    The response begins at the current position and
+   *                    extends to the limit of the buffer.
    *
    * @throws Exception  in case of a problem
    */
-  public final void sendResponse(Socket sock, byte[] response)
+  public final void sendResponse(Socket sock, ByteBuffer response)
     throws Exception
   {
     // To make it a bit harder for the clients, don't send everything in a
     // single packet. But at least provide the first tag and length (4 bytes)
     // in the first package. Just to be nice.
 
-    int split = 4 + (int)(Math.random() * (double)(response.length-3));
-    //System.out.println("response length "+response.length+", splitting at "+split);
+    int split = 4 + (int)(Math.random() * (double)(response.remaining()-3));
 
-    OutputStream os = sock.getOutputStream();
-    os.write(response, 0, split);
-    os.flush();
-    if (split < response.length)
-     {
-       os.write(response, split, response.length-split);
-       os.flush();
-     }
+    try {
+      OutputStream os = sock.getOutputStream();
+      os.write(response.array(), response.position(), split);
+      os.flush();
+      if (split < response.remaining())
+       {
+         os.write(response.array(),
+                  response.position()+split,
+                  response.remaining()-split);
+         os.flush();
+       }
+    } catch (Exception x) {
+      System.out.println(x.toString());
+      try {
+        sock.close();
+      } catch (Exception ignore) {
+        x.addSuppressed(ignore);
+      }
+      throw x;
+    }
+
   } // sendResponse
 
 }
