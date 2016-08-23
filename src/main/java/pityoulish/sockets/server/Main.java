@@ -16,12 +16,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-/*
-import net.dubioso.dhbw.rotox.server.MessageStore;
-import net.dubioso.dhbw.rotox.server.DefaultMessageStore;
-import net.dubioso.dhbw.rotox.server.TicketManager;
-import net.dubioso.dhbw.rotox.server.DefaultTicketManager;
-*/
+import pityoulish.msgboard.MessageBoard;
+import pityoulish.msgboard.MixedMessageBoardImpl;
+import pityoulish.tickets.TicketManager;
+import pityoulish.tickets.DefaultTicketManager;
 
 
 /**
@@ -38,11 +36,16 @@ public final class Main
   public static void main(String[] args)
     throws Exception
   {
-    /*    //@@@ get store capacity from command line arguments
-    MessageStore   msgstore  = new DefaultMessageStore(35);
-    TicketManager  ticketmgr = new DefaultTicketManager();
-    RequestHandler rhandler  = new RequestHandler(msgstore, ticketmgr); */
-    SocketHandler  shandler  = null; //new SingleThreadHandler(rhandler);
+    //@@@ get board capacity from command line arguments
+    MessageBoard  mb = new MixedMessageBoardImpl(8);
+    TicketManager tm = new DefaultTicketManager();
+    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mb, tm);
+
+    RequestParser   reqp = new TLVRequestParserImpl();
+    ResponseBuilder rspb = new TLVResponseBuilderImpl();
+    RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
+
+    SocketHandler  shandler  = null; //new SingleThreadHandler(rh);
     //@@@ get port number and/or network interface from command line arguments
     shandler.startup(0, 0);
 
