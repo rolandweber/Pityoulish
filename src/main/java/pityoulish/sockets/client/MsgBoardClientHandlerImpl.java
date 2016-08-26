@@ -28,10 +28,15 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
    *
    * @param sbh   the backend handler
    * @param rb    the request builder
+   * @param rp    the response parser
+   * @param rv    the response visitor
    */
-  public MsgBoardClientHandlerImpl(SocketBackendHandler sbh, RequestBuilder rb)
+  public MsgBoardClientHandlerImpl(SocketBackendHandler sbh,
+                                   RequestBuilder rb,
+                                   ResponseParser rp,
+                                   ResponseParser.Visitor rv)
   {
-    super(sbh, rb);
+    super(sbh, rb, rp, rv);
   }
 
 
@@ -56,11 +61,7 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
       sock.close();
     }
 
-    System.out.println("@@@ "+response); //@@@
-    MsgBoardTLV tlvrsp = new MsgBoardTLV
-      (response.array(), response.position()+response.arrayOffset());
-    System.out.println(tlvrsp.toFullString()); //@@@
-    throw new UnsupportedOperationException("@@@ should process response now");
+    rspParser.parse(response, rspVisitor);
   }
 
 

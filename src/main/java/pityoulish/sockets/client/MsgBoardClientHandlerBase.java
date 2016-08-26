@@ -18,7 +18,9 @@ public abstract class MsgBoardClientHandlerBase
 
   protected final RequestBuilder reqBuilder;
 
-  //@@@ will need some kind of ResponseProcessor (which calls a Visitor?)
+  protected final ResponseParser rspParser;
+
+  protected final ResponseParser.Visitor rspVisitor;
 
 
   /**
@@ -26,16 +28,27 @@ public abstract class MsgBoardClientHandlerBase
    *
    * @param sbh   the backend handler
    * @param rb    the request builder
+   * @param rp    the response parser
+   * @param rv    the response visitor
    */
-  public MsgBoardClientHandlerBase(SocketBackendHandler sbh, RequestBuilder rb)
+  public MsgBoardClientHandlerBase(SocketBackendHandler sbh,
+                                   RequestBuilder rb,
+                                   ResponseParser rp,
+                                   ResponseParser.Visitor rv)
   {
     if (sbh == null)
        throw new NullPointerException("SocketBackendHandler");
     if (rb == null)
        throw new NullPointerException("RequestBuilder");
+    if (rp == null)
+       throw new NullPointerException("ResponseParser");
+    if (rv == null)
+       throw new NullPointerException("ResponseParser.Visitor");
 
     socketBackend = sbh;
     reqBuilder = rb;
+    rspParser = rp;
+    rspVisitor = rv;
   }
 
 
