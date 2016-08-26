@@ -321,9 +321,10 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // The port number there most likely changes for every request.
       InetAddress address = sock.getInetAddress();
 
-      byte[] rspdata = reqHandler.handle(request.array(),
-                                         request.position(),
-                                         request.limit());
+      byte[] rspdata =
+        reqHandler.handle(request.array(),
+                          request.position()+request.arrayOffset(),
+                          request.limit());
       ByteBuffer response = ByteBuffer.wrap(rspdata);
       return response;
 
@@ -360,12 +361,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
 
     try {
       OutputStream os = sock.getOutputStream();
-      os.write(response.array(), response.position(), split);
+      os.write(response.array(),
+               response.position()+response.arrayOffset(),
+               split);
       os.flush();
       if (split < response.remaining())
        {
          os.write(response.array(),
-                  response.position()+split,
+                  response.position()+response.arrayOffset()+split,
                   response.remaining()-split);
          os.flush();
        }
