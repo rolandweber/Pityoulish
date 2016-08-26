@@ -22,8 +22,12 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
-    ArgsInterpreter ai = new ArgsInterpreter(new BackendHandler.None(),
-                                             null /*new XxxCommandHandler()*/);
+    SocketBackendHandler sbh = new SocketBackendHandlerImpl();
+    MsgBoardClientHandler mbch = null; //@@@
+
+    MsgBoardCommandDispatcher mbcd = new MsgBoardCommandDispatcher(mbch);
+    ArgsInterpreter ai = new ArgsInterpreter(sbh, mbcd);
+
     int status = ai.handle(args);
     System.exit(status);
   }
