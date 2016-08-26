@@ -5,13 +5,15 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.msgboard.MessageBatch;
 
 
 /**
  * Builds binary response PDUs.
- * Each protocol data unit (PDU) is returned as a byte array.
- * The PDU starts at index 0 and extends to the end of the array.
+ * Each protocol data unit (PDU) is returned as a ByteBuffer.
+ * The remaining content of that buffer is the PDU.
  */
 public interface ResponseBuilder
 {
@@ -21,9 +23,9 @@ public interface ResponseBuilder
    *
    * @param msg   the info message
    *
-   * @return the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  public byte[] buildInfoResponse(String msg)
+  public ByteBuffer buildInfoResponse(String msg)
     ;
 
 
@@ -32,9 +34,9 @@ public interface ResponseBuilder
    *
    * @param msg   the error message
    *
-   * @return the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  public byte[] buildErrorResponse(String msg)
+  public ByteBuffer buildErrorResponse(String msg)
     ;
 
 
@@ -43,9 +45,9 @@ public interface ResponseBuilder
    *
    * @param cause   the exception
    *
-   * @return the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  public byte[] buildErrorResponse(Throwable cause)
+  public ByteBuffer buildErrorResponse(Throwable cause)
     ;
 
 
@@ -54,9 +56,9 @@ public interface ResponseBuilder
    *
    * @param msgbatch   the message batch
    *
-   * @return the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  public byte[] buildMessageBatch(MessageBatch msgbatch)
+  public ByteBuffer buildMessageBatch(MessageBatch msgbatch)
     ;
 
 
@@ -65,9 +67,9 @@ public interface ResponseBuilder
    *
    * @param tictok  the ticket {@link pityoulish.tickets.Ticket#getToken token}
    *
-   * @return the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  public byte[] buildTicketGrant(String tictok)
+  public ByteBuffer buildTicketGrant(String tictok)
     ;
 
 

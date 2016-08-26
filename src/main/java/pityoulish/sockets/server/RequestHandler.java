@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Handles requests, on the protocol level.
@@ -25,9 +27,9 @@ public interface RequestHandler
    * @param start     index of the first byte of the request data
    * @param end       index after the last byte of the request data
    *
-   * @return          the response data
+   * @return a buffer containing the response data, backed by an array
    */
-  public byte[] handle(byte[] reqdata, int start, int end)
+  public ByteBuffer handle(byte[] reqdata, int start, int end)
   // intentionally no exception declared here
     ;
 
@@ -38,9 +40,9 @@ public interface RequestHandler
    *
    * @param msg   the error message
    *
-   * @return the response data
+   * @return a buffer containing the response data, backed by an array
    */
-  public byte[] buildErrorResponse(String msg)
+  public ByteBuffer buildErrorResponse(String msg)
     ;
 
 
@@ -50,9 +52,9 @@ public interface RequestHandler
    *
    * @param cause   the exception
    *
-   * @return the response data
+   * @return a buffer containing the response data, backed by an array
    */
-  public byte[] buildErrorResponse(Throwable cause)
+  public ByteBuffer buildErrorResponse(Throwable cause)
     ;
 
 }

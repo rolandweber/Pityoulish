@@ -5,9 +5,12 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
+
 
 /**
  * Implementation of {@link ResponseBuilder} for the Binary Protocol.
@@ -52,12 +55,12 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
    * @param utf8        <code>true</code> for UTF-8 encoding,
    *                    <code>false</code> for US-ASCII
    *
-   * @return the data of the response PDU
+   * @return a buffer containing the response PDU, backed by an array
    */
-  protected byte[] buildSimpleResponsePDU(MsgBoardType rsptype,
-                                          MsgBoardType txttype,
-                                          String text,
-                                          boolean utf8)
+  protected ByteBuffer buildSimpleResponsePDU(MsgBoardType rsptype,
+                                              MsgBoardType txttype,
+                                              String text,
+                                              boolean utf8)
   {
     if (rsptype == null)
        throw new NullPointerException("rsptype");
@@ -74,13 +77,12 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
     //System.out.println("@@@ "+response.toFullString());
 
-    //@@@ return ByteBuffer to avoid copying the response data
-    return response.copyTLV();
+    return response.toBuffer();
   }
 
 
   // non-javadoc, see interface
-  public byte[] buildInfoResponse(String msg)
+  public ByteBuffer buildInfoResponse(String msg)
   {
     return buildSimpleResponsePDU(MsgBoardType.INFO_RESPONSE,
                                   MsgBoardType.TEXT,
@@ -89,7 +91,7 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public byte[] buildErrorResponse(String msg)
+  public ByteBuffer buildErrorResponse(String msg)
   {
     return buildSimpleResponsePDU(MsgBoardType.ERROR_RESPONSE,
                                   MsgBoardType.TEXT,
@@ -98,7 +100,7 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public byte[] buildErrorResponse(Throwable cause)
+  public ByteBuffer buildErrorResponse(Throwable cause)
   {
     //@@@ lame implementation, but see issue #9
     return buildSimpleResponsePDU(MsgBoardType.ERROR_RESPONSE,
@@ -108,7 +110,7 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public byte[] buildMessageBatch(MessageBatch msgbatch)
+  public ByteBuffer buildMessageBatch(MessageBatch msgbatch)
   {
     //@@@ estimating the size will be complicated
 
@@ -117,7 +119,7 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public byte[] buildTicketGrant(String tictok)
+  public ByteBuffer buildTicketGrant(String tictok)
   {
     return buildSimpleResponsePDU(MsgBoardType.TICKET_GRANT,
                                   MsgBoardType.TICKET,

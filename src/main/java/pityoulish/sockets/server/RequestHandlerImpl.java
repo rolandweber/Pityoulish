@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.msgboard.MessageBatch;
 
 
@@ -55,7 +57,7 @@ public class RequestHandlerImpl implements RequestHandler
 
 
   // non-javadoc, see interface
-  public byte[] handle(byte[] reqdata, int start, int end)
+  public ByteBuffer handle(byte[] reqdata, int start, int end)
    {
      // A missing argument is not a "processing problem" that should be
      // reported as an error response. It's stupidity by the caller.
@@ -63,7 +65,7 @@ public class RequestHandlerImpl implements RequestHandler
         throw new NullPointerException("reqdata");
 
      // no exceptions may pass through beyond this point!
-     byte[] response = null;
+     ByteBuffer response = null;
      try {
        MsgBoardRequest mbreq = reqParser.parse(reqdata, start, end);
        response = dispatch(mbreq);
@@ -81,14 +83,14 @@ public class RequestHandlerImpl implements RequestHandler
    *
    * @param mbreq       the request to process
    *
-   * @return    the binary response
+   * @return a buffer containing the response data, backed by an array
    *
    * @throws ProtocolException  in case of a problem
    */
-  protected byte[] dispatch(MsgBoardRequest mbreq)
+  protected ByteBuffer dispatch(MsgBoardRequest mbreq)
     throws ProtocolException
    {
-     byte[] result = null;
+     ByteBuffer result = null;
      switch (mbreq.getReqType())
       {
        case LIST_MESSAGES: {
@@ -124,14 +126,14 @@ public class RequestHandlerImpl implements RequestHandler
 
 
   // non-javadoc, see interface
-  public byte[] buildErrorResponse(String msg)
+  public ByteBuffer buildErrorResponse(String msg)
   {
     return rspBuilder.buildErrorResponse(msg);
   }
 
 
   // non-javadoc, see interface
-  public byte[] buildErrorResponse(Throwable cause)
+  public ByteBuffer buildErrorResponse(Throwable cause)
   {
     return rspBuilder.buildErrorResponse(cause);
   }

@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.msgboard.MixedMessageBoardImpl; //@@@ use JMockit instead
 import pityoulish.tickets.DefaultTicketManager; //@@@ use JMockit instead
 import pityoulish.sockets.server.MsgBoardRequest.ReqType;
@@ -31,11 +33,11 @@ public class RequestHandlerImplTest
       // missing mandatory LIMIT
     };
 
-    byte[] rsppdu = handler.handle(reqpdu, 0, reqpdu.length);
+    ByteBuffer rspbuf = handler.handle(reqpdu, 0, reqpdu.length);
 
-    assertNotNull("no response PDU");
+    assertNotNull("no response buffer");
     assertEquals("unexpected response type",
-                 MsgBoardType.ERROR_RESPONSE.typeByte, rsppdu[0]);
+                 MsgBoardType.ERROR_RESPONSE.typeByte, rspbuf.get());
     //@@@ check for contained text, occurrence of LIMIT?
   }
 

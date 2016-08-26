@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.sockets.server.MsgBoardRequest.ReqType;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
@@ -15,12 +17,34 @@ import static org.junit.Assert.*;
 
 public class TLVResponseBuilderImplTest
 {
+  /**
+   * Obtains the data from a ByteBuffer as an array.
+   * This modifies the position of the buffer.
+   *
+   * @param buffer   the buffer to read from
+   *
+   * @return the data read from the buffer
+   */
+  public static byte[] toBytes(ByteBuffer buffer)
+  {
+    assertNotNull("no ByteBuffer", buffer);
+
+    int length = buffer.remaining();
+    byte[] data = new byte[length];
+    buffer.get(data);
+
+    return data;
+  }
+
+
+
   @Test public void buildInfoResponse_text()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String msg = "H\u00e4ppy!"; // a-umlaut
 
-    byte[] pdu = rb.buildInfoResponse(msg);
+    ByteBuffer buf = rb.buildInfoResponse(msg);
+    byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
       MsgBoardType.INFO_RESPONSE.getTypeByte(),
@@ -39,7 +63,8 @@ public class TLVResponseBuilderImplTest
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String msg = "b\u00e4d"; // a-umlaut
 
-    byte[] pdu = rb.buildErrorResponse(msg);
+    ByteBuffer buf = rb.buildErrorResponse(msg);
+    byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
       MsgBoardType.ERROR_RESPONSE.getTypeByte(),
@@ -59,7 +84,8 @@ public class TLVResponseBuilderImplTest
     String why = "zero";
     Exception cause = new NullPointerException(why);
 
-    byte[] pdu = rb.buildErrorResponse(cause);
+    ByteBuffer buf = rb.buildErrorResponse(cause);
+    byte[]     pdu = toBytes(buf);
 
     // Cannot check for exact PDU without making assumptions about
     // the implementation of buildErrorResponse(Throwable). Instead:
@@ -88,7 +114,8 @@ public class TLVResponseBuilderImplTest
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String tictok = "tIckEt35";
 
-    byte[] pdu = rb.buildTicketGrant(tictok);
+    ByteBuffer buf = rb.buildTicketGrant(tictok);
+    byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
       MsgBoardType.TICKET_GRANT.getTypeByte(),

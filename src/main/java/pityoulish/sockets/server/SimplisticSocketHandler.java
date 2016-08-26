@@ -189,8 +189,8 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (sock != null)
      {
        try {
-         byte[] response = reqHandler.buildErrorResponse(cause);
-         sendResponse(sock, ByteBuffer.wrap(response));
+         ByteBuffer response = reqHandler.buildErrorResponse(cause);
+         sendResponse(sock, response);
        } catch (Exception ignore) {
          cause.addSuppressed(ignore);
        }
@@ -321,12 +321,9 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // The port number there most likely changes for every request.
       InetAddress address = sock.getInetAddress();
 
-      byte[] rspdata =
-        reqHandler.handle(request.array(),
-                          request.position()+request.arrayOffset(),
-                          request.limit());
-      ByteBuffer response = ByteBuffer.wrap(rspdata);
-      return response;
+      return reqHandler.handle(request.array(),
+                               request.position()+request.arrayOffset(),
+                               request.limit());
 
     } catch (Exception x) {
       System.out.println(x.toString());

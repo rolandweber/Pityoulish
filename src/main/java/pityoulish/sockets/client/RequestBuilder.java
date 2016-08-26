@@ -10,8 +10,8 @@ import java.nio.ByteBuffer;
 
 /**
  * Builds binary request PDUs.
- * Each protocol data unit (PDU) is returned as a byte array.
- * The PDU starts at index 0 and extends to the end of the array.
+ * Each protocol data unit (PDU) is returned as a ByteBuffer.
+ * The remaining content of that buffer is the PDU.
  */
 public interface RequestBuilder
 {
