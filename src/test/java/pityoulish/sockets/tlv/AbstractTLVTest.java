@@ -5,8 +5,11 @@
  */
 package pityoulish.sockets.tlv;
 
+import java.nio.ByteBuffer;
+
 import org.junit.*;
 import static org.junit.Assert.*;
+
 
 public class AbstractTLVTest
 {
@@ -158,6 +161,52 @@ public class AbstractTLVTest
     assertArrayEquals("wrong value",
                       new byte[]{ (byte) 'g', (byte) 'h', (byte) 'i' },
                       value);
+  }
+
+
+  @Test public void copyTLV()
+  {
+    final byte TAG = (byte) 0xC3;
+    byte[] data = new byte[] {
+      (byte) 0x88, // trash data
+      TAG, (byte) 3, (byte) 'g', (byte) 'h', (byte) 'i',
+      (byte) 0x88, (byte) 0x88 // more trash data
+    };
+
+    JUnitTLV tlv = new JUnitTLV(data, 1);
+    byte[] tlvdata = tlv.copyTLV();
+
+    assertNotNull("no data", tlvdata);
+    assertArrayEquals("wrong data",
+                      new byte[]{ TAG, (byte) 3,
+                                  (byte) 'g', (byte) 'h', (byte) 'i' },
+                      tlvdata);
+  }
+
+
+  @Test public void toBuffer()
+  {
+    final byte TAG = (byte) 0xC3;
+    byte[] data = new byte[] {
+      (byte) 0x88, // trash data
+      TAG, (byte) 3, (byte) 'g', (byte) 'h', (byte) 'i',
+      (byte) 0x88, (byte) 0x88 // more trash data
+    };
+
+    JUnitTLV   tlv = new JUnitTLV(data, 1);
+    ByteBuffer buf = tlv.toBuffer();
+    assertNotNull("no buffer", buf);
+
+    assertEquals("wrong data size", 5, buf.remaining());
+    assertSame("wrong backing array", data, buf.array());
+
+    byte[] tlvdata = new byte[buf.remaining()];
+    buf.get(tlvdata);
+
+    assertArrayEquals("wrong value",
+                      new byte[]{ TAG, (byte) 3,
+                                  (byte) 'g', (byte) 'h', (byte) 'i' },
+                      tlvdata);
   }
 
 }

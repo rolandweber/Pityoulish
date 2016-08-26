@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.tlv;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Base class for implementing {@link TLV}.
@@ -156,6 +158,22 @@ public abstract class AbstractTLV<T> implements TLV<T>
     byte[] result = new byte[valueLength];
     System.arraycopy(tlvData, getValueStart(), result, 0, valueLength);
     return result;
+  }
+
+
+  // non-javadoc, see interface
+  public final byte[] copyTLV()
+  {
+    byte[] result = new byte[getSize()];
+    System.arraycopy(tlvData, tlvStart, result, 0, result.length);
+    return result;
+  }
+
+
+  // non-javadoc, see interface
+  public final ByteBuffer toBuffer()
+  {
+    return ByteBuffer.wrap(tlvData, tlvStart, getSize());
   }
 
 

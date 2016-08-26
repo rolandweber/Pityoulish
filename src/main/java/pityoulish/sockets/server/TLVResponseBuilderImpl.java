@@ -72,23 +72,10 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
     content.setTextValue(text, utf8 ? "UTF-8" : "US-ASCII");
     response.addToLength(content.getSize());
 
-    //@@@ provide a method for truncating the byte array in class BuildTLV,
-    //@@@ or for getting a copy of the full TLV data
-
-    byte[] result = null;
-    if (data.length == response.getSize())
-     {
-       result = data;
-     }
-    else
-     {
-       result = new byte[response.getSize()];
-       System.arraycopy(data, 0, result, 0, result.length);
-     }
-
     //System.out.println("@@@ "+response.toFullString());
 
-    return result;
+    //@@@ return ByteBuffer to avoid copying the response data
+    return response.copyTLV();
   }
 
 

@@ -63,11 +63,9 @@ public class TLVRequestBuilderImpl implements RequestBuilder
        request.addToLength(param.getSize());
      }
 
-    //@@@ provide a method to get the ByteBuffer in class BuildTLV
+    //System.out.println("@@@ "+request.toFullString());
 
-    System.out.println("@@@ "+request.toFullString());
-
-    return ByteBuffer.wrap(data, 0, request.getSize());
+    return request.toBuffer();
   }
 
 

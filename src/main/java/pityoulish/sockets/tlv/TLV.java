@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.tlv;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Represents a TLV structure referring to a byte array.
@@ -80,6 +82,25 @@ public interface TLV<T>
    * Copies the value of this TLV into a new byte array.
    */
   public byte[] copyValue()
+    ;
+
+
+  /**
+   * Copies this TLV into a new byte array.
+   */
+  public byte[] copyTLV()
+    ;
+
+
+  /**
+   * Obtains a byte buffer with this TLV.
+   * The buffer is backed by the same {@link #getData data} as this TLV.
+   * The position is at the {@link #getStart start} of this TLV,
+   * the limit at the {@link #getEnd end} of the value.
+   *
+   * @return    a byte buffer containing this TLV
+   */
+  public ByteBuffer toBuffer()
     ;
 
 
