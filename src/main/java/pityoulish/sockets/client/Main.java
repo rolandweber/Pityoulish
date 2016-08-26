@@ -22,8 +22,10 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+
     SocketBackendHandler sbh = new SocketBackendHandlerImpl();
-    MsgBoardClientHandler mbch = null; //@@@
+    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(sbh, rb);
 
     MsgBoardCommandDispatcher mbcd = new MsgBoardCommandDispatcher(mbch);
     ArgsInterpreter ai = new ArgsInterpreter(sbh, mbcd);
