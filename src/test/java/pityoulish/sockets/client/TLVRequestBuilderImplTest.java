@@ -117,7 +117,32 @@ public class TLVRequestBuilderImplTest
   }
 
 
-  //@@@ @Test public void buildPutMessage_UTF8() // non-ASCII char in text
+  @Test public void buildPutMessage_UTF8() // non-ASCII char in text
+  {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+    String ticket = "Free!";
+    String text   = "\u00a4hem"; // A-umlaut
+
+    ByteBuffer buffer = rb.buildPutMessage(ticket, text);
+    byte[] pdu = toBytes(buffer);
+
+    // The protocol allows for the arguments to occur in any order.
+    // This test case is overspecified, because it assumes a fixed order.
+    byte[] expected = new byte[]{
+      MsgBoardType.PUT_MESSAGE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(8 + ticket.length() + text.length()+1),
+
+      // TLV order is different from method argument order.
+      MsgBoardType.TEXT.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(text.length()+1),
+      (byte)0xc2, (byte)0xa4, (byte)'h', (byte)'e', (byte)'m',
+
+      MsgBoardType.TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)ticket.length(),
+      (byte)'F', (byte)'r', (byte)'e', (byte)'e', (byte)'!'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
 
 
   @Test public void buildObtainTicket()

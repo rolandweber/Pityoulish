@@ -75,7 +75,7 @@ public class TLVRequestBuilderImpl implements RequestBuilder
     MsgBoardTLV request = buildSingleStringRequest(estimate,
                                                    MsgBoardType.PUT_MESSAGE,
                                                    MsgBoardType.TEXT,
-                                                   text, false);
+                                                   text, true);
     // now add the ticket
     MsgBoardTLV param = request.appendTLV(MsgBoardType.TICKET);
     param.setTextValue(ticket, "US-ASCII");
