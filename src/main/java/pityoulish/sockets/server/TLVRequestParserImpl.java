@@ -5,6 +5,9 @@
  */
 package pityoulish.sockets.server;
 
+import java.util.EnumSet;
+import java.util.EnumMap;
+
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
 
@@ -158,31 +161,109 @@ public class TLVRequestParserImpl implements RequestParser
   protected MsgBoardRequest parsePutMessage(MsgBoardTLV reqtlv)
     throws ProtocolException
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return parseGeneric(MsgBoardRequest.ReqType.PUT_MESSAGE, reqtlv,
+                        EnumSet.of(MsgBoardType.TICKET, MsgBoardType.TEXT));
   }
 
   protected MsgBoardRequest parseObtainTicket(MsgBoardTLV reqtlv)
     throws ProtocolException
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return parseGeneric(MsgBoardRequest.ReqType.OBTAIN_TICKET, reqtlv,
+                        EnumSet.of(MsgBoardType.ORIGINATOR));
   }
 
   protected MsgBoardRequest parseReturnTicket(MsgBoardTLV reqtlv)
     throws ProtocolException
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return parseGeneric(MsgBoardRequest.ReqType.RETURN_TICKET, reqtlv,
+                        EnumSet.of(MsgBoardType.TICKET));
   }
 
   protected MsgBoardRequest parseReplaceTicket(MsgBoardTLV reqtlv)
     throws ProtocolException
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return parseGeneric(MsgBoardRequest.ReqType.REPLACE_TICKET, reqtlv,
+                        EnumSet.of(MsgBoardType.TICKET));
   }
 
 
-  //@@@ Implement a generic parsing method for requests with all-mandatory
-  //@@@ arguments. Pass EnumSet of mandatory arguments.
-  //@@@ Means I cannot use some of the helpers in MsgBoardRequestImpl. Too bad.
+  /**
+   * Parses any request with all-mandatory, all-string parameters.
+   * Does not support non-string parameters.
+   * Does not support optional parameters.
+   *
+   * @param retype      the type for the object to return
+   * @param reqtlv      the request to parse
+   * @param expected    the mandatory string parameters.
+   *                    Only primitive TLV types that contain a string value
+   *                    are supported in this set.
+   *
+   * @return the parsed request
+   *
+   * @throws ProtocolException  in case of a problem
+   */
+      protected MsgBoardRequest parseGeneric(MsgBoardRequest.ReqType retype,
+                                             MsgBoardTLV reqtlv,
+                                             EnumSet<MsgBoardType> expected)
+    throws ProtocolException
+  {
+    EnumMap<MsgBoardType,String> params = new EnumMap<>(MsgBoardType.class);
+
+    for (MsgBoardTLV nested = reqtlv.getNestedTLV();
+         nested != null;
+         nested = nested.getNextTLV(reqtlv.getEnd())
+         )
+     {
+       if (nested.getEnd() > reqtlv.getEnd())
+          throw failOverlongTLV(nested);
+       if (!expected.contains(nested.getType()))
+          throw failUnexpectedTLV(nested);
+       if (params.containsKey(nested.getType()))
+          throw failDuplicateTLV(nested);
+
+       String value = null;
+       switch (nested.getType())
+        {
+         case TEXT:
+           value = parseStringValue(nested, "US-ASCII");
+           break;
+
+         case ORIGINATOR:
+         case MARKER:
+         case TICKET:
+           value = parseStringValue(nested, "UTF-8");
+           break;
+
+           // LIMIT is not a string value
+           // TIMESTAMP and MISSED do not appear in requests
+
+         default:
+           // can only happen if 'expected' contains an unsupported element
+           throw new IllegalArgumentException
+             ("EnumSet<MsgBoardType>::"+nested.getType());
+        }
+
+       params.put(nested.getType(), value);
+     }
+
+    // check for absence of a mandatory parameter
+    EnumSet<MsgBoardType> missing = EnumSet.copyOf(expected);
+    missing.removeAll(params.keySet());
+    if (!missing.isEmpty())
+     {
+       // several could be missing, just pick one to report...
+       throw Catalog.MISSING_NESTED_TLV_3.asPX
+         (reqtlv.getType(), reqtlv.getStart(), missing.iterator().next());
+     }
+
+    return new MsgBoardRequestImpl
+      (retype, null,
+       params.get(MsgBoardType.MARKER),
+       params.get(MsgBoardType.TICKET),
+       params.get(MsgBoardType.TEXT),
+       params.get(MsgBoardType.ORIGINATOR)
+       );
+  }
 
 
   /**

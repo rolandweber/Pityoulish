@@ -550,6 +550,347 @@ public class TLVRequestParserImplTest
   }
 
 
+  @Test public void parsePutMessage_TicTxt()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    final String text   = "whatever";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (8 + ticket.length() + text.length()),
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s',
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r'
+    };
+
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
+    assertEquals("wrong ticket", ticket, mbr.getTicket());
+    assertEquals("wrong text",   text,   mbr.getText());
+
+    assertNull("unexpected limit",      mbr.getLimit());
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected originator", mbr.getOriginator());
+  }
+
+
+  @Test public void parsePutMessage_TxtTic()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    final String text   = "whatever";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (8 + ticket.length() + text.length()),
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r',
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
+    assertEquals("wrong ticket", ticket, mbr.getTicket());
+    assertEquals("wrong text",   text,   mbr.getText());
+
+    assertNull("unexpected limit",      mbr.getLimit());
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected originator", mbr.getOriginator());
+  }
+
+
+  @Test public void parsePutMessage_Tic()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    // final String text   = "whatever"; // missing
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (4 + ticket.length()),
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("missing text not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.TEXT);
+    }
+  }
+
+
+  @Test public void parsePutMessage_Txt()
+    throws ProtocolException
+  {
+    // final String ticket = "pass"; // missing
+    final String text   = "whatever";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (4 + text.length()),
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r'
+    };
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("missing ticket not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.TICKET);
+    }
+  }
+
+
+  @Test public void parsePutMessage_none()
+    throws ProtocolException
+  {
+    // final String ticket = "pass"; // missing
+    // final String text   = "whatever"; // missing
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (0)
+    };
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("missing ticket and text not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+
+      // not specified whether exception reports one or the other or both
+      assertPX(expected, null);
+    }
+  }
+
+
+  @Test public void parsePutMessage_TxtTicTxt()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    final String text   = "whatever";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (12 + ticket.length() + text.length() + text.length()),
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r',
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s',
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r'
+    };
+
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("duplicate text not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.TEXT);
+    }
+  }
+
+
+  @Test public void parsePutMessage_TxtTicO()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    final String text   = "whatever";
+    final String orig   = "me"; // doesn't belong here
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (12 + ticket.length() + text.length() + orig.length()),
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) text.length(),
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r',
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s',
+
+      MsgBoardType.ORIGINATOR.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) orig.length(),
+      (byte)'m', (byte)'e'
+    };
+
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("unexpected originator not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.ORIGINATOR);
+    }
+  }
+
+
+  @Test public void parsePutMessage_TxtTic_excessive()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+    final String text   = "whatever";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.PUT_MESSAGE.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (8 + ticket.length() + text.length()),
+
+      MsgBoardType.TEXT.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0,
+      (byte) (text.length() + 200), // excessive, points beyond end
+      (byte)'w', (byte)'h', (byte)'a', (byte)'t',
+      (byte)'e', (byte)'v', (byte)'e', (byte)'r',
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+
+
+    try {
+      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      fail("excessive nested TLV not detected: "+mbr);
+    } catch (Exception expected) {
+      // expected.printStackTrace(System.err);
+      assertPX(expected, MsgBoardType.TEXT);
+    }
+  }
+
+
+
+  @Test public void parseObtainTicket_O()
+    throws ProtocolException
+  {
+    final String username = "me";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.OBTAIN_TICKET.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (4 + username.length()),
+
+      MsgBoardType.ORIGINATOR.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) username.length(),
+      (byte)'m', (byte)'e'
+    };
+
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.OBTAIN_TICKET, mbr.getReqType());
+    assertEquals("wrong originator", username, mbr.getOriginator());
+
+    assertNull("unexpected limit",      mbr.getLimit());
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected ticket",     mbr.getTicket());
+    assertNull("unexpected text",       mbr.getText());
+  }
+
+
+  @Test public void parseReturnTicket_Tic()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.RETURN_TICKET.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (4 + ticket.length()),
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.RETURN_TICKET, mbr.getReqType());
+    assertEquals("wrong ticket", ticket, mbr.getTicket());
+
+    assertNull("unexpected limit",      mbr.getLimit());
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected originator", mbr.getOriginator());
+    assertNull("unexpected text",       mbr.getText());
+  }
+
+
+  @Test public void parseReplaceTicket_Tic()
+    throws ProtocolException
+  {
+    final String ticket = "pass";
+
+    RequestParser rp = new TLVRequestParserImpl();
+    byte[] data = new byte[]{
+      MsgBoardType.REPLACE_TICKET.typeByte, MsgBoardTLV.LENGTH_OF_LENGTH_2,
+      (byte) 0, (byte) (4 + ticket.length()),
+
+      MsgBoardType.TICKET.typeByte,
+      MsgBoardTLV.LENGTH_OF_LENGTH_2, (byte) 0, (byte) ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+
+    assertNotNull("no result", mbr);
+    assertEquals("wrong type", ReqType.REPLACE_TICKET, mbr.getReqType());
+    assertEquals("wrong ticket", ticket, mbr.getTicket());
+
+    assertNull("unexpected limit",      mbr.getLimit());
+    assertNull("unexpected marker",     mbr.getMarker());
+    assertNull("unexpected originator", mbr.getOriginator());
+    assertNull("unexpected text",       mbr.getText());
+  }
+
+
+  //@@@ There's one set of negative tests for PUT_MESSAGE:
+  //@@@     missing TLV, duplicate TLV, unexpected TLV, overlong TLV
+  //@@@ Add negative tests for other request types relying on parseGeneric?
+  //@@@ Full set, just missing TLV, something inbetween?
 
   //@@@ is it possible to generate string decoding error with UTF-8 encoding?
   //@@@ otherwise impossible to test for Catalog.INVALID_TLV_STRING_ENC_3
