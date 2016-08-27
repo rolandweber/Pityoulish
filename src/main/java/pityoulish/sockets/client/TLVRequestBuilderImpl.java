@@ -31,7 +31,7 @@ public class TLVRequestBuilderImpl implements RequestBuilder
    */
   protected int estimateLength(String s, boolean utf8)
   {
-    int estimate = 8; // response TLV and nested TLV header
+    int estimate = 8; // request TLV and nested TLV header
 
     if (s != null)
      {
@@ -63,8 +63,6 @@ public class TLVRequestBuilderImpl implements RequestBuilder
        request.addToLength(param.getSize());
      }
 
-    //System.out.println("@@@ "+request.toFullString());
-
     return request.toBuffer();
   }
 
@@ -72,28 +70,89 @@ public class TLVRequestBuilderImpl implements RequestBuilder
   // non-javadoc, see interface
   public ByteBuffer buildPutMessage(String ticket, String text)
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    // pass UTF-8 text to helpers, deal with ASCII ticket locally
+    int estimate = estimateLength(text, true) + 4 + ticket.length();
+    MsgBoardTLV request = buildSingleStringRequest(estimate,
+                                                   MsgBoardType.PUT_MESSAGE,
+                                                   MsgBoardType.TEXT,
+                                                   text, false);
+    // now add the ticket
+    MsgBoardTLV param = request.appendTLV(MsgBoardType.TICKET);
+    param.setTextValue(ticket, "US-ASCII");
+    request.addToLength(param.getSize());
+
+    return request.toBuffer();
   }
 
 
   // non-javadoc, see interface
   public ByteBuffer buildObtainTicket(String username)
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return buildSingleStringRequest(0,
+                                    MsgBoardType.OBTAIN_TICKET,
+                                    MsgBoardType.ORIGINATOR,
+                                    username, false
+                                    ).toBuffer();
   }
 
 
   // non-javadoc, see interface
   public ByteBuffer buildReturnTicket(String ticket)
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return buildSingleStringRequest(0,
+                                    MsgBoardType.RETURN_TICKET,
+                                    MsgBoardType.TICKET,
+                                    ticket, false
+                                    ).toBuffer();
   }
 
 
   // non-javadoc, see interface
-  public ByteBuffer buildRefreshTicket(String ticket)
+  public ByteBuffer buildReplaceTicket(String ticket)
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    return buildSingleStringRequest(0,
+                                    MsgBoardType.REPLACE_TICKET,
+                                    MsgBoardType.TICKET,
+                                    ticket, false
+                                    ).toBuffer();
+  }
+
+
+  /**
+   * Builds a request with a single string as argument.
+   * The caller may choose to append more arguments afterwards.
+   *
+   * @param estimate    the estimated length; 0 or negative for none.
+   *                    If positive, the value MUST be sufficient to hold
+   *                    the complete TLV.
+   * @param reqtype     the type of the request TLV to build
+   * @param argtype     the type of the argument TLV to include
+   * @param arg         the argument string to include
+   * @param utf8        <code>true</code> for UTF-8 encoding,
+   *                    <code>false</code> for US-ASCII
+   *
+   * @return a TLV constructed from the arguments.
+   *    If <code>estimate</code> was positive, the underlying byte array
+   *    has exactly that size.
+   */
+  protected MsgBoardTLV buildSingleStringRequest(int estimate,
+                                                 MsgBoardType reqtype,
+                                                 MsgBoardType argtype,
+                                                 String arg, boolean utf8)
+  {
+    if (estimate < 1)
+       estimate = estimateLength(arg, utf8);
+
+    byte[] data = new byte[estimate];
+
+    MsgBoardTLV request = new MsgBoardTLV(reqtype, data, 0);
+    MsgBoardTLV param = request.appendTLV(argtype);
+    param.setTextValue(arg, utf8 ? "UTF-8" : "US-ASCII");
+    request.addToLength(param.getSize());
+
+    //System.out.println("@@@ "+request.toFullString());
+
+    return request;
   }
 
 }

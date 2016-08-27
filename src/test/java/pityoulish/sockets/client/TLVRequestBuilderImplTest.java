@@ -87,4 +87,96 @@ public class TLVRequestBuilderImplTest
     assertArrayEquals("wrong PDU", expected, pdu);
   }
 
+
+  @Test public void buildPutMessage_ASCII()
+  {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+    String ticket = "pass";
+    String text   = "Here I am.";
+
+    ByteBuffer buffer = rb.buildPutMessage(ticket, text);
+    byte[] pdu = toBytes(buffer);
+
+    // The protocol allows for the arguments to occur in any order.
+    // This test case is overspecified, because it assumes a fixed order.
+    byte[] expected = new byte[]{
+      MsgBoardType.PUT_MESSAGE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(8 + ticket.length() + text.length()),
+
+      // TLV order is different from method argument order.
+      MsgBoardType.TEXT.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)text.length(),
+      (byte)'H', (byte)'e', (byte)'r', (byte)'e', (byte)' ',
+      (byte)'I', (byte)' ', (byte)'a', (byte)'m', (byte)'.', 
+
+      MsgBoardType.TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)ticket.length(),
+      (byte)'p', (byte)'a', (byte)'s', (byte)'s'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  //@@@ @Test public void buildPutMessage_UTF8() // non-ASCII char in text
+
+
+  @Test public void buildObtainTicket()
+  {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+    String username = "me";
+
+    ByteBuffer buffer = rb.buildObtainTicket(username);
+    byte[] pdu = toBytes(buffer);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.OBTAIN_TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(4 + username.length()),
+
+      MsgBoardType.ORIGINATOR.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)username.length(),
+      (byte)'m', (byte)'e'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildReturnTicket()
+  {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+    String ticket = "eNtEr";
+
+    ByteBuffer buffer = rb.buildReturnTicket(ticket);
+    byte[] pdu = toBytes(buffer);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.RETURN_TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(4 + ticket.length()),
+
+      MsgBoardType.TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)ticket.length(),
+      (byte)'e', (byte)'N', (byte)'t', (byte)'E', (byte)'r'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildReplaceTicket()
+  {
+    RequestBuilder rb = new TLVRequestBuilderImpl();
+    String ticket = "-X-";
+
+    ByteBuffer buffer = rb.buildReplaceTicket(ticket);
+    byte[] pdu = toBytes(buffer);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.REPLACE_TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)(4 + ticket.length()),
+
+      MsgBoardType.TICKET.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)ticket.length(),
+      (byte)'-', (byte)'X', (byte)'-'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
 }

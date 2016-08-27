@@ -94,13 +94,24 @@ public class MsgBoardCommandDispatcher
            status = 2;
       } break;
 
-        //case PUT:     status = handlePutMessage(); break;
-        //case TICKET:  status = handleObtainTicket(); break;
-        //case RETURN:  status = handleReturnTicket(); break;
-        //case REPLACE: status = handleReplaceTicket(); break;
+      case PUT:
+        mbcHandler.putMessage(args[0], args[1]); // args: ticket, text
+        break;
+
+      case TICKET:
+        mbcHandler.obtainTicket(args[0]); // arg: username
+        break;
+
+      case RETURN:
+        mbcHandler.returnTicket(args[0]); // arg: ticket
+        break;
+
+      case REPLACE:
+        mbcHandler.replaceTicket(args[0]); // arg: ticket
+        break;
 
       default:
-        if (true) new UnsupportedOperationException("@@@ not yet implemented");
+        // not reachable unless through programming errors
         throw new UnsupportedOperationException(String.valueOf(cmd));
      }
 
