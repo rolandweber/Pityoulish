@@ -30,12 +30,12 @@ public class MsgBoardCommandDispatcher
    * <li><b>put</b> a message</li>
    * <li>obtain <b>ticket</b></li>
    * <li><b>return</b> ticket</li>
-   * <li><b>refresh</b> ticket</li>
+   * <li><b>replace</b> ticket</li>
    * </ul>
    */
   public enum MsgBoardCommand implements Command
   {
-    LIST(1,2), PUT(2,2), TICKET(1,1), RETURN(1,1), REFRESH(1,1);
+    LIST(1,2), PUT(2,2), TICKET(1,1), RETURN(1,1), REPLACE(1,1);
 
     public final int minArgs;
     public final int maxArgs;
@@ -97,7 +97,7 @@ public class MsgBoardCommandDispatcher
         //case PUT:     status = handlePutMessage(); break;
         //case TICKET:  status = handleObtainTicket(); break;
         //case RETURN:  status = handleReturnTicket(); break;
-        //case REFRESH: status = handleRefreshTicket(); break;
+        //case REPLACE: status = handleReplaceTicket(); break;
 
       default:
         if (true) new UnsupportedOperationException("@@@ not yet implemented");

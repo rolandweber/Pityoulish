@@ -64,13 +64,13 @@ public interface RequestBuilder
 
 
   /**
-   * Builds a request to refresh a ticket for the board.
+   * Builds a request to replace a ticket for the board.
    *
-   * @param ticket      the ticket to refresh
+   * @param ticket      the ticket to replace
    *
    * @return a buffer containing the request PDU, backed by an array
    */
-  public ByteBuffer buildRefreshTicket(String ticket)
+  public ByteBuffer buildReplaceTicket(String ticket)
     ;
 
 }

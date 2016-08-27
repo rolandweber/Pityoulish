@@ -85,10 +85,10 @@ public abstract class MsgBoardClientHandlerBase
   }
 
 
-  public void refreshTicket(String ticket)
+  public void replaceTicket(String ticket)
     throws Exception
   {
-    ByteBuffer request = reqBuilder.buildRefreshTicket(ticket);
+    ByteBuffer request = reqBuilder.buildReplaceTicket(ticket);
     fireRequest(request);
   }
 

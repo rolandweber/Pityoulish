@@ -58,11 +58,11 @@ public interface MsgBoardClientHandler
 
 
   /**
-   * Refreshes a ticket for the board.
+   * Replaces a ticket for the board.
    *
-   * @param ticket      the ticket to refresh
+   * @param ticket      the ticket to replace
    */
-  public void refreshTicket(String ticket)
+  public void replaceTicket(String ticket)
     throws Exception
     ;
 
