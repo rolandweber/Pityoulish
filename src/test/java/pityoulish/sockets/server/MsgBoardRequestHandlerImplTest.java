@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.net.InetAddress;
+
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.MixedMessageBoardImpl; //@@@ use JMockit instead
 import pityoulish.tickets.DefaultTicketManager; //@@@ use JMockit instead
@@ -15,6 +17,15 @@ import static org.junit.Assert.*;
 
 public class MsgBoardRequestHandlerImplTest
 {
+  private final static InetAddress ADDRESS;
+  static {
+    try {
+      ADDRESS = InetAddress.getLocalHost();
+    } catch (Exception x) {
+      throw new ExceptionInInitializerError(x);
+    }
+  }
+
 
   @Test public void listMessages_OK()
     throws Exception
@@ -26,7 +37,7 @@ public class MsgBoardRequestHandlerImplTest
       (new MixedMessageBoardImpl(8), new DefaultTicketManager());
 
 
-    MessageBatch result = mbrh.listMessages(mbreq);
+    MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
 
     assertNotNull("no result", result);
     assertEquals("wrong number of messages", 0, result.getMessages().size());
@@ -48,7 +59,7 @@ public class MsgBoardRequestHandlerImplTest
 
     try {
       MsgBoardRequest mbreq = null;
-      MessageBatch result = mbrh.listMessages(mbreq);
+      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
       fail("missing request not detected: " + result);
     } catch (RuntimeException expected) {
       // expected
@@ -56,7 +67,7 @@ public class MsgBoardRequestHandlerImplTest
 
     try {
       MsgBoardRequest mbreq = MsgBoardRequestImpl.newObtainTicket("un1t");
-      MessageBatch result = mbrh.listMessages(mbreq);
+      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
       fail("wrong request type detected: " + result);
     } catch (RuntimeException expected) {
       // expected
@@ -65,11 +76,12 @@ public class MsgBoardRequestHandlerImplTest
     try {
       MsgBoardRequest mbreq = new MsgBoardRequestImpl
         (ReqType.LIST_MESSAGES, null, null, null, null, null);
-      MessageBatch result = mbrh.listMessages(mbreq);
+      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
       fail("missing mandatory value not detected: " + result);
     } catch (RuntimeException expected) {
       // expected
     }
   }
 
+  //@@@ test other handler methods as well
 }

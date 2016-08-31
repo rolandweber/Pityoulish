@@ -128,7 +128,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // Calling flush() on the OutputStream isn't enough to achieve that.
       sock.setSendBufferSize(4);
     } catch (Exception ignore) {
-      System.out.println("failed to disabled send buffer... "+ignore);
+      System.out.println("failed to disable send buffer... "+ignore);
     }
 
     StringBuilder sb = new StringBuilder(120);
@@ -323,7 +323,8 @@ public class SimplisticSocketHandler extends SocketHandlerBase
 
       return reqHandler.handle(request.array(),
                                request.position()+request.arrayOffset(),
-                               request.limit());
+                               request.limit(),
+                               address);
 
     } catch (Exception x) {
       System.out.println(x.toString());

@@ -5,6 +5,7 @@
  */
 package pityoulish.sockets.server;
 
+import java.net.InetAddress;
 import java.nio.ByteBuffer;
 
 import pityoulish.msgboard.MixedMessageBoardImpl; //@@@ use JMockit instead
@@ -18,6 +19,16 @@ import static org.junit.Assert.*;
 
 public class RequestHandlerImplTest
 {
+  private final static InetAddress ADDRESS;
+  static {
+    try {
+      ADDRESS = InetAddress.getLocalHost();
+    } catch (Exception x) {
+      throw new ExceptionInInitializerError(x);
+    }
+  }
+
+
   @Test public void handle_LM_error()
   {
     //@@@ use JMockit for prereq objects, instead of creating default impls
@@ -33,7 +44,7 @@ public class RequestHandlerImplTest
       // missing mandatory LIMIT
     };
 
-    ByteBuffer rspbuf = handler.handle(reqpdu, 0, reqpdu.length);
+    ByteBuffer rspbuf = handler.handle(reqpdu, 0, reqpdu.length, ADDRESS);
 
     assertNotNull("no response buffer");
     assertEquals("unexpected response type",

@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import pityoulish.msgboard.MessageBoard;
+import pityoulish.msgboard.UserMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
 import pityoulish.tickets.TicketManager;
 import pityoulish.tickets.DefaultTicketManager;
@@ -37,9 +37,9 @@ public final class Main
     throws Exception
   {
     //@@@ get board capacity from command line arguments
-    MessageBoard  mb = new MixedMessageBoardImpl(8);
-    TicketManager tm = new DefaultTicketManager();
-    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mb, tm);
+    UserMessageBoard       umb  = new MixedMessageBoardImpl(8);
+    TicketManager          tm   = new DefaultTicketManager();
+    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(umb, tm);
 
     RequestParser   reqp = new TLVRequestParserImpl();
     ResponseBuilder rspb = new TLVResponseBuilderImpl();

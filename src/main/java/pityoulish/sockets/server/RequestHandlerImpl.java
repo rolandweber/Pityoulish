@@ -5,6 +5,7 @@
  */
 package pityoulish.sockets.server;
 
+import java.net.InetAddress;
 import java.nio.ByteBuffer;
 
 import pityoulish.msgboard.MessageBatch;
@@ -57,7 +58,8 @@ public class RequestHandlerImpl implements RequestHandler
 
 
   // non-javadoc, see interface
-  public ByteBuffer handle(byte[] reqdata, int start, int end)
+  public ByteBuffer handle(byte[] reqdata, int start, int end,
+                           InetAddress address)
    {
      // A missing argument is not a "processing problem" that should be
      // reported as an error response. It's stupidity by the caller.
@@ -68,9 +70,10 @@ public class RequestHandlerImpl implements RequestHandler
      ByteBuffer response = null;
      try {
        MsgBoardRequest mbreq = reqParser.parse(reqdata, start, end);
-       response = dispatch(mbreq);
+       response = dispatch(mbreq, address);
      } catch (Exception x) {
        response = rspBuilder.buildErrorResponse(x);
+       x.printStackTrace(System.out); //@@@ improve reporting?
      }
 
      return response;
@@ -82,39 +85,40 @@ public class RequestHandlerImpl implements RequestHandler
    * Generates the response using the {@link ResponseBuilder rspBuilder}.
    *
    * @param mbreq       the request to process
+   * @param address     the network address of the client
    *
    * @return a buffer containing the response data, backed by an array
    *
    * @throws ProtocolException  in case of a problem
    */
-  protected ByteBuffer dispatch(MsgBoardRequest mbreq)
+  protected ByteBuffer dispatch(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
    {
      ByteBuffer result = null;
      switch (mbreq.getReqType())
       {
        case LIST_MESSAGES: {
-         MessageBatch mb = mbrHandler.listMessages(mbreq);
+         MessageBatch mb = mbrHandler.listMessages(mbreq, address);
          result = rspBuilder.buildMessageBatch(mb);
        } break;
 
        case PUT_MESSAGE: {
-         String info = mbrHandler.putMessage(mbreq);
+         String info = mbrHandler.putMessage(mbreq, address);
          result = rspBuilder.buildInfoResponse(info);
        } break;
 
        case OBTAIN_TICKET: {
-         String tictok = mbrHandler.obtainTicket(mbreq);
+         String tictok = mbrHandler.obtainTicket(mbreq, address);
          result = rspBuilder.buildTicketGrant(tictok);
        } break;
 
        case RETURN_TICKET: {
-         String info = mbrHandler.returnTicket(mbreq);
+         String info = mbrHandler.returnTicket(mbreq, address);
          result = rspBuilder.buildInfoResponse(info);
        } break;
 
        case REPLACE_TICKET: {
-         String tictok = mbrHandler.replaceTicket(mbreq);
+         String tictok = mbrHandler.replaceTicket(mbreq, address);
          result = rspBuilder.buildTicketGrant(tictok);
        } break;
 

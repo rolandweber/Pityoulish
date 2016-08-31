@@ -5,6 +5,7 @@
  */
 package pityoulish.sockets.server;
 
+import java.net.InetAddress;
 import java.nio.ByteBuffer;
 
 
@@ -26,10 +27,12 @@ public interface RequestHandler
    * @param reqdata   the request data
    * @param start     index of the first byte of the request data
    * @param end       index after the last byte of the request data
+   * @param address   the network address of the client
    *
    * @return a buffer containing the response data, backed by an array
    */
-  public ByteBuffer handle(byte[] reqdata, int start, int end)
+  public ByteBuffer handle(byte[] reqdata, int start, int end,
+                           InetAddress address)
   // intentionally no exception declared here
     ;
 
