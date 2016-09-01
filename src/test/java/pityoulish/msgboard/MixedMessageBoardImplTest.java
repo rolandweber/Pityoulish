@@ -231,6 +231,7 @@ public class MixedMessageBoardImplTest
     for (String text: texts)
        board.putMessage(originator, text);
 
+    MessageBatch mb0 = board.listMessages(capacity, null);
     MessageBatch mb1 = board.listMessages(skip, null);
     MessageBatch mb2 = board.listMessages(limit, mb1.getMarker());
 
@@ -242,6 +243,11 @@ public class MixedMessageBoardImplTest
     assertNotNull("no marker", mb2.getMarker());
     assertEquals("discontinuous", false, mb2.isDiscontinuous());
 
+    // mb0 has a marker that points at the end of the messages
+    // mb1 has a marker that points within the messages
+    assertEquals("wrong marker", mb0.getMarker(), mb2.getMarker());
+    assertNotEquals("unexpected marker", mb1.getMarker(), mb2.getMarker());
+
     for (int i=0; i<expected; i++)
      {
        assertEquals("wrong message #"+i, texts[i + skip],
@@ -249,6 +255,39 @@ public class MixedMessageBoardImplTest
        assertEquals("wrong originator #"+i, originator,
                     mb2.getMessages().get(i).getOriginator());
      }
+  }
+
+
+  @Test public void listMessages_no_more()
+  {
+    final int capacity = 8;
+    final int limit = capacity;
+    String originator = "myself";
+    String[] texts = new String[]{
+      "nonsense",
+      "rubbish",
+      "gibberish",
+      "balderdash",
+      "malarkey"
+    };
+
+    MixedMessageBoardImpl board = new MixedMessageBoardImpl(capacity);
+    for (String text: texts)
+       board.putMessage(originator, text);
+
+    // first batch contains all the messages
+    // second batch is empty
+
+    MessageBatch mb1 = board.listMessages(limit, null);
+    MessageBatch mb2 = board.listMessages(limit, mb1.getMarker());
+
+    final int expected = 0;
+    assertNotNull("no message batch", mb2);
+    assertNotNull("no message list", mb2.getMessages());
+    assertEquals("wrong number of messages",
+                 expected, mb2.getMessages().size());
+    assertEquals("wrong marker", mb1.getMarker(), mb2.getMarker());
+    assertEquals("discontinuous", false, mb2.isDiscontinuous());
   }
 
 

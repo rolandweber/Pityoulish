@@ -140,6 +140,9 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
        count--;
      }
 
+    if (tailMarker == null) // no messages since marker
+       tailMarker = marker;
+
     if (tailMarker == null) // board still empty
        tailMarker = lastDroppedUserMessageID;
 
