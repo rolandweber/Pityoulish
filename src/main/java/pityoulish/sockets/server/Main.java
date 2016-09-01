@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import pityoulish.msgboard.UserMessageBoard;
+import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
 import pityoulish.tickets.TicketManager;
 import pityoulish.tickets.DefaultTicketManager;
@@ -36,18 +36,24 @@ public final class Main
   public static void main(String[] args)
     throws Exception
   {
-    //@@@ get board capacity from command line arguments
-    UserMessageBoard       umb  = new MixedMessageBoardImpl(8);
+    //@@@ get network interface from command line arguments
+    int port = 0; //@@@ get port number from command line arguments
+    int capacity = 8; //@@@ get board capacity from command line arguments
+
+    MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager          tm   = new DefaultTicketManager();
-    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(umb, tm);
+    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mmb, tm);
 
     RequestParser   reqp = new TLVRequestParserImpl();
     ResponseBuilder rspb = new TLVResponseBuilderImpl();
     RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
 
-    SocketHandler  shandler  = new SimplisticSocketHandler(rh);
-    //@@@ get port number and/or network interface from command line arguments
-    shandler.startup(0, 0);
+    mmb.putSystemMessage(null, "The message board is open now."); //@@@ NLS
+    mmb.putSystemMessage(null, "Its capacity is "+capacity+"."); //@@@ NLS
+
+    SocketHandler shandler = new SimplisticSocketHandler(rh);
+   
+    shandler.startup(port, 0); // adjusting the backlog is pointless
 
     System.out.println(shandler);
     System.out.println(shandler.getServerSocket());
