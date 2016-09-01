@@ -36,16 +36,43 @@ public interface ResponseParser
       ;
 
     /**
+     * Invoked at the beginning of a message batch response.
+     * It is followed by zero or more calls to {@link #visitMessage},
+     * and one call to {@link #leaveMessageBatch}.
+     *
+     * @param marker    the marker for requesting a subsequent batch
+     * @param missed    <code>true</code> if messages might have been missed
+     *                  since the last batch, <code>false</code> otherwise
+     */
+    public void enterMessageBatch(String marker, boolean missed)
+      ;
+
+    /**
+     * Invoked at the end of a message batch response.
+     * This indicates that there will be no more calls to {@link #visitMessage}
+     * for the current batch. See also {@link #enterMessageBatch}.
+     */
+    public void leaveMessageBatch()
+      ;
+
+    /**
+     * Invoked for each message in a batch.
+     * See also {@link #enterMessageBatch} and {@link #leaveMessageBatch}.
+     *
+     * @param originator        the originator of the message
+     * @param timestamp         the timestamp of the message
+     * @param text              the contents of the message
+     */
+    public void visitMessage(String originator, String timestamp, String text)
+      ;
+
+    /**
      * Invoked for a ticket grant response.
      *
      * @param ticket    the ticket token
      */
     public void visitTicketGrant(String ticket)
       ;
-
-    //@@@ methods for MessageBatch to be defined...
-    //@@@ enterMessageBatch / leaveMessageBatch
-    //@@@ visitMessage / visitMarker / visitMissed
 
   }; // interface Visitor
 

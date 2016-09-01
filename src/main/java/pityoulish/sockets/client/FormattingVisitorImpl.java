@@ -30,6 +30,34 @@ public class FormattingVisitorImpl implements ResponseParser.Visitor
 
 
   // non-javadoc, see interface
+  public void enterMessageBatch(String marker, boolean missed)
+  {
+    //@@@ NLS light
+    System.out.println(">>> MESSAGE BATCH");
+    System.out.println("MARKER: "+marker);
+    if (missed)
+       System.out.println("Messages might have been missed.");
+  }
+
+
+  // non-javadoc, see interface
+  public void leaveMessageBatch()
+  {
+    //@@@ NLS light
+    System.out.println("<<< MESSAGE BATCH");
+  }
+
+
+  // non-javadoc, see interface
+  public void visitMessage(String originator, String timestamp, String text)
+  {
+    //@@@ NLS light
+    System.out.println("--- MESSAGE from '"+originator+"' at "+timestamp+": ");
+    System.out.println(text);
+  }
+
+
+  // non-javadoc, see interface
   public void visitTicketGrant(String ticket)
   {
     //@@@ NLS light
