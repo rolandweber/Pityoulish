@@ -162,6 +162,7 @@ Targets for development, for working with the (Java) code.
     <classpath>
       <pathelement location="${dir.tmp}/classes/main" />
       <pathelement location="${junit4.jar}" />
+      <pathelement location="${hamcrest.jar}" />
     </classpath>
   </jc>
 </target>

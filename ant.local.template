@@ -2,8 +2,11 @@
 # This template explains the properties intended to be defined there.
 # The values specified in the template are the defaults.
 
-# The location of the junit4 JAR file. Needed for running Java unit tests.
+# The location of the Junit4 JAR file. Needed for running Java unit tests.
 junit4.jar = ${basedir}/local/junit4.jar
+
+# The location of the Hamcrest JAR file. Needed for running Java unit tests.
+hamcrest.jar = ${basedir}/local/hamcrest-all.jar
 
 
 # ${projectdir} is typically not defined in the ant.local file. If you want
