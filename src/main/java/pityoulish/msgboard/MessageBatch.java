@@ -20,7 +20,7 @@ public interface MessageBatch
    *
    * @return  the read-only list of messages in this batch
    */
-  public List<Message> getMessages()
+  public List<? extends Message> getMessages()
     ;
 
 

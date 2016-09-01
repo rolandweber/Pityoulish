@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class MessageBatchImpl implements MessageBatch
 {
-  public final List<Message> messages;
-  public final String        marker;
-  public final boolean       discontinuous;
+  public final List<? extends Message> messages;
+  public final String  marker;
+  public final boolean discontinuous;
 
 
   /**
@@ -31,7 +31,7 @@ public class MessageBatchImpl implements MessageBatch
    * @param discontinuous   <code>true</code> if messages were lost since the
    *                        preceding batch, <code>false</code> otherwise.
    */
-  public MessageBatchImpl(List<Message> messages,
+  public MessageBatchImpl(List<? extends Message> messages,
                           String marker,
                           boolean discontinuous)
   {
@@ -47,7 +47,7 @@ public class MessageBatchImpl implements MessageBatch
 
 
   // non-javadoc, see interface
-  public List<Message> getMessages()
+  public List<? extends Message> getMessages()
   {
     return messages;
   }
