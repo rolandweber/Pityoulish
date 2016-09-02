@@ -82,7 +82,9 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
     // get glued together on the receiving side before the server process.
 
     int split = 4 + (int)(Math.random() * (double)(request.remaining()-3));
-    System.out.println("splitting at "+split+ " of "+request.remaining());
+    System.out.println(Catalog.INFO_SPLITTING_AT_2.format(split,
+                                                          request.remaining()
+                                                          ));
 
     OutputStream os = sock.getOutputStream();
     os.write(request.array(),
@@ -118,9 +120,7 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
     byte[] data = new byte[MAX_RESPONSE_SIZE];
     int    pos  = 0;
 
-    //@@@ NLS light
-
-    System.out.println("receiving response");
+    System.out.println(Catalog.INFO_RECEIVING_0.format());
     InputStream is = sock.getInputStream();
 
     //@@@ This logic is specific to TLVs... move it elsewhere.
@@ -132,7 +132,8 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
      {
        int count = is.read(data, pos, data.length-pos);
        if (count < 0)
-          throw new Exception("unexpected end of data");
+          throw new Exception
+            (Catalog.RECEIVE_INITIAL_BLOCK_TOO_SMALL_0.format());
        pos += count;
      }
 
@@ -143,17 +144,24 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
     // byte 4: lower byte of length
 
     if ((data[0] & 0xe0) != 0xe0) // expect bits: 111xxxx
-       throw new Exception("unexpected type "+data[0]);
+       throw new Exception
+         (Catalog.RECEIVE_BAD_TYPE_1.format
+          ("0x"+Integer.toHexString(data[0] & 0xff)));
 
     if (data[1] != MsgBoardTLV.LENGTH_OF_LENGTH_2)
-       throw new Exception("unexpected length of length "+data[1]);
+       throw new Exception
+         (Catalog.RECEIVE_BAD_LEN_OF_LEN_1.format
+          ("0x"+Integer.toHexString(data[1] & 0xff)));
 
     int length = ((data[2] & 0xff)<<8) + (data[3] & 0xff);
     int size = length+4;
     if (size > MAX_RESPONSE_SIZE)
-       throw new Exception("response too long: "+length);
-    // Technically, the TLV response could be up to 65539 bytes long.
-    // But it's not uncommon to define a sanity limit on message sizes.
+     {
+       // Technically, the TLV response could be up to 65539 bytes long.
+       // But it's not uncommon to define a sanity limit on message sizes.
+       throw new Exception
+         (Catalog.RECEIVE_TOO_LONG_2.format(length, MAX_RESPONSE_SIZE));
+     }
 
     if (pos >= size)
      {
@@ -161,11 +169,11 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 
     while (pos < size)
      {
-       System.out.println("still missing "+(size-pos)+" byte");
+       System.out.println(Catalog.INFO_STILL_MISSING_1.format(size-pos));
 
        int count = is.read(data, pos, data.length-pos);
        if (count < 0)
-          throw new Exception("unexpected end of data");
+          throw new Exception(Catalog.RECEIVE_INCOMPLETE_0.format());
        pos += count;
      }
 

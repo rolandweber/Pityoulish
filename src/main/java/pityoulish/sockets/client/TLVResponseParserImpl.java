@@ -57,8 +57,8 @@ public class TLVResponseParserImpl implements ResponseParser
       } break;
 
       default:
-        throw new UnsupportedOperationException("@@@ not yet implemented");
-        //@@@ or unexpected/unsupported/invalid response type
+        throw new UnsupportedOperationException
+          (Catalog.INVALID_TOP_TLV_TYPE_1.format(tlv.getType()));
      }
   } // parse
 
@@ -82,11 +82,15 @@ public class TLVResponseParserImpl implements ResponseParser
   {
     MsgBoardTLV nested = parent.getNestedTLV();
     if (nested == null)
-       throw new Exception("@@@ missing nested type: "+expect); //@@@ NLS
-    else if (nested.getType() != expect)
-       throw new Exception("@@@ unexpected nested type: "
-                           +nested.getType()+"!="+expect); //@@@ NLS
-
+       throw new Exception
+         (Catalog.MISSING_NESTED_TLV_3.format(parent.getType(),
+                                              parent.getStart(),
+                                              expect));
+    if (nested.getType() != expect)
+       throw new Exception
+         (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
+                                          nested.getStart(),
+                                          expect));
     //@@@ check for end of data!
 
     return parseStringValue(nested, enc);
@@ -134,10 +138,15 @@ public class TLVResponseParserImpl implements ResponseParser
 
     MsgBoardTLV nested = mbtlv.getNestedTLV();
     if (nested == null)
-       throw new Exception("@@@ missing nested type: MARKER"); //@@@ NLS
-    else if (nested.getType() != MsgBoardType.MARKER)
-       throw new Exception("@@@ unexpected nested type: "
-                           +nested.getType()+"!=MARKER"); //@@@ NLS
+       throw new Exception
+         (Catalog.MISSING_NESTED_TLV_3.format(mbtlv.getType(),
+                                              mbtlv.getStart(),
+                                              MsgBoardType.MARKER));
+    if (nested.getType() != MsgBoardType.MARKER)
+       throw new Exception
+         (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
+                                          nested.getStart(),
+                                          MsgBoardType.MARKER));
     String marker = parseStringValue(nested, "US-ASCII");
 
     boolean missed = false;
@@ -153,8 +162,10 @@ public class TLVResponseParserImpl implements ResponseParser
     while (nested != null)
      {
        if (nested.getType() != MsgBoardType.MESSAGE)
-          throw new Exception("@@@ unexpected nested type: "
-                              +nested.getType()+"!=MESSAGE"); //@@@ NLS
+          throw new Exception
+            (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
+                                             nested.getStart(),
+                                             MsgBoardType.MESSAGE));
        //@@@ check for end of data!
 
        parseMessage(nested, visitor);
@@ -194,35 +205,51 @@ public class TLVResponseParserImpl implements ResponseParser
         {
          case ORIGINATOR:
            if (originator != null)
-              throw new Exception("@@@ duplicate ORIGINATOR"); //@@@ NLS
+              throw new Exception
+                (Catalog.DUPLICATE_TLV_2.format(nested.getType(),
+                                                nested.getStart()));
            originator = parseStringValue(nested, "US-ASCII");
            break;
 
          case TIMESTAMP:
            if (timestamp != null)
-              throw new Exception("@@@ duplicate TIMESTAMP"); //@@@ NLS
+              throw new Exception
+                (Catalog.DUPLICATE_TLV_2.format(nested.getType(),
+                                                nested.getStart()));
            timestamp = parseStringValue(nested, "US-ASCII");
            break;
 
          case TEXT:
            if (text != null)
-              throw new Exception("@@@ duplicate TEXT"); //@@@ NLS
+              throw new Exception
+                (Catalog.DUPLICATE_TLV_2.format(nested.getType(),
+                                                nested.getStart()));
            text = parseStringValue(nested, "UTF-8");
            break;
 
          default:
-           throw new Exception("@@@ unexpected nested type: "
-                               +nested.getType()); //@@@ NLS
+           throw new Exception
+             (Catalog.UNEXPECTED_TLV_2.format(nested.getType(),
+                                              nested.getStart()));
         }
        nested = nested.getNextTLV(msgtlv.getEnd());
      }
 
     if (originator == null)
-       throw new Exception("@@@ missing ORIGINATOR"); //@@@ NLS
+       throw new Exception
+         (Catalog.MISSING_NESTED_TLV_3.format(msgtlv.getType(),
+                                              msgtlv.getStart(),
+                                              MsgBoardType.ORIGINATOR));
     if (timestamp == null)
-       throw new Exception("@@@ missing TIMESTAMP"); //@@@ NLS
+       throw new Exception
+         (Catalog.MISSING_NESTED_TLV_3.format(msgtlv.getType(),
+                                              msgtlv.getStart(),
+                                              MsgBoardType.TIMESTAMP));
     if (text == null)
-       throw new Exception("@@@ missing TEXT"); //@@@ NLS
+       throw new Exception
+         (Catalog.MISSING_NESTED_TLV_3.format(msgtlv.getType(),
+                                              msgtlv.getStart(),
+                                              MsgBoardType.TEXT));
 
     visitor.visitMessage(originator, timestamp, text);
   }
