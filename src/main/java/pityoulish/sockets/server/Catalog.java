@@ -14,6 +14,8 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
+   USAGE,
+
    INVALID_TOP_TLV_HEADER_0,
    INVALID_TOP_TLV_TYPE_1,
    INVALID_TOP_TLV_LENGTH_0,
@@ -114,5 +116,11 @@ public enum Catalog implements TextEntry
     {
       return numParams;
     }
+
+
+   public final static String fixEOL(String text)
+   {
+     return CatalogHelper.fixEOL(text);
+   }
 
  }

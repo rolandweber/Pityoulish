@@ -36,9 +36,21 @@ public final class Main
   public static void main(String[] args)
     throws Exception
   {
-    //@@@ get network interface from command line arguments
-    int port = 0; //@@@ get port number from command line arguments
-    int capacity = 8; //@@@ get board capacity from command line arguments
+    //@@@ get network interface from command line arguments, too?
+    int port = 0;
+    int capacity = 8;
+
+    try {
+      if (args.length > 0)
+         port = Integer.parseInt(args[0]);
+      if (args.length > 1)
+         capacity = Integer.parseInt(args[1]);
+    } catch (NumberFormatException nfx) {
+      System.out.println(nfx);
+      System.out.println(Catalog.fixEOL(Catalog.USAGE.lookup()));
+      System.exit(1);
+    }
+
 
     MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager          tm   = new DefaultTicketManager();
