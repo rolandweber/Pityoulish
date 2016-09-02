@@ -68,4 +68,10 @@ public enum Catalog implements TextEntry
       return numParams;
     }
 
+
+   public final static String fixEOL(String text)
+   {
+     return CatalogHelper.fixEOL(text);
+   }
+
  }

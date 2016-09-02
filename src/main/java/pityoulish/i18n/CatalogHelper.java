@@ -16,6 +16,13 @@ import java.util.ResourceBundle;
  */
 public final class CatalogHelper
 {
+  /**
+   * The platform-specific EOL sequence.
+   * Looked up when needed, then cached here.
+   */
+  private static String PLATFORM_EOL;
+
+
   /* Disable the default constructor. */
   private CatalogHelper()
   {
@@ -166,6 +173,35 @@ public final class CatalogHelper
      }
 
     return result;
+  }
+
+
+  /**
+   * Converts end-of-line to the platform-specific character sequence.
+   * In catalog messages, end of line should be represented as LF (\n).
+   * If the platform-specific end-of-line sequence is different,
+   * typically CR LF on Windows, this method performs the replacement.
+   *
+   * @param text   the multi-line text in which to replace
+   *
+   * @return the argument text, with platform-specific end-of-line characters
+   */
+  public static final String fixEOL(String text)
+  {
+    if ((text == null) || (text.length() < 1))
+       return text;
+
+    String eol = PLATFORM_EOL;
+    if (eol == null)
+     {
+       eol = System.getProperty("line.separator", "\n");
+       PLATFORM_EOL = eol;
+     }
+
+    if (!"\n".equals(eol))
+       text = text.replace("\n", eol);
+
+    return text;
   }
 
 }

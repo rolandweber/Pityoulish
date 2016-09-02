@@ -112,14 +112,7 @@ public class ArgsInterpreter
        ch.describeUsage(sb);
      }
 
-    String usage = sb.toString();
-
-    // adjust EOL to platform conventions
-    String eol = System.getProperty("line.separator", "\n");
-    if (!"\n".equals(eol))
-       usage = usage.replace("\n", eol);
-
-    return usage;
+    return Catalog.fixEOL(sb.toString());
   }
 
 }
