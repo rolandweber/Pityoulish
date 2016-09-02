@@ -72,8 +72,7 @@ public class MsgBoardCommandDispatcher
   public void describeUsage(Appendable app)
     throws IOException
   {
-    //app.append(Catalog.USAGE.lookup());
-    app.append("@@@ usage description still missing"); //@@@ NLS
+    app.append(Catalog.COMMAND_USAGE.lookup());
   }
 
 

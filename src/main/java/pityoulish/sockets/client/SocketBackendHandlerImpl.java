@@ -28,8 +28,7 @@ public class SocketBackendHandlerImpl implements SocketBackendHandler
   public void describeUsage(Appendable app, String cmd)
     throws IOException
   {
-    app.append("<host> <port> ").append(cmd).append('\n'); //@@@ NLS
-    app.append("@@@ backend argument description still missing\n"); //@@@ NLS
+    app.append(Catalog.BACKEND_ARGS_1.format(new Object[]{ cmd }));
   }
 
 
