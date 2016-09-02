@@ -85,21 +85,26 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
       if (tick.punch())
        {
          msgBoard.putMessage(tick.getUsername(), mbreq.getText());
-         return "OK"; //@@@ NLS light
+         return Catalog.HANDLER_INFO_OK.lookup();
        }
       else
        {
-         //@@@ How to return this as a plain error, without exception class?
+         //@@@ Issue #12: How to return this as plain error, without exception?
          //@@@ Exception classname is automatically added to error response.
          //@@@ Define an extra exception class for "plain error" messages?
          //@@@ Return a status object that indicates Info/Error with msg?
          //@@@ Generalize for all handler methods?
-         throw new ProtocolException("Ticket used up."); //@@@ NLS light
+         throw new ProtocolException
+           (Catalog.HANDLER_TICKET_USED_UP_1.format(new Object[]{
+               tick.getToken()
+             }));
        }
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        ("Bad ticket: '"+mbreq.getTicket()+"'", tx); //@@@ NLS light
+        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
+            mbreq.getTicket()
+          }), tx);
     }
   }
 
@@ -126,7 +131,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        ("Bad ticket: '"+mbreq.getTicket()+"'", tx); //@@@ NLS light
+        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
+            mbreq.getTicket()
+          }), tx);
     }
   }
 
@@ -152,10 +159,12 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        ("Bad ticket: '"+mbreq.getTicket()+"'", tx); //@@@ NLS light
+        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
+            mbreq.getTicket()
+          }), tx);
     }
 
-    return "OK"; //@@@ NLS light
+    return Catalog.HANDLER_INFO_OK.lookup();
   }
 
     
@@ -186,7 +195,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        ("Bad ticket: '"+mbreq.getTicket()+"'", tx); //@@@ NLS light
+        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
+            mbreq.getTicket()
+          }), tx);
     }
   }
     
