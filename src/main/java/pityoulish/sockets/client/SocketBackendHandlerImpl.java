@@ -43,13 +43,21 @@ public class SocketBackendHandlerImpl implements SocketBackendHandler
   public void setBackend(String... args)
   {
     String host = args[0];
-    //@@@ perform sanity checks? No IP lookup yet.
+    //@@@ perform sanity checks? Only superficial, no IP lookup yet.
     hostName = host;
 
-    int port = Integer.parseInt(args[1]);
-    if ((port < 1) || (port > 65535))
-       throw new IllegalArgumentException("invalid port "+port); //@@@ NLS
-    portNumber = port;
+    String portarg = args[1];
+    try {
+      int port = Integer.parseInt(portarg);
+      if ((port < 1) || (port > 65535))
+         throw new IllegalArgumentException
+           (Catalog.CMDLINE_BAD_PORT_1.format(portarg));
+
+      portNumber = port;
+    } catch (NumberFormatException nfx) {
+      throw new IllegalArgumentException
+        (Catalog.CMDLINE_BAD_PORT_1.format(portarg), nfx);
+    }
   }
 
 

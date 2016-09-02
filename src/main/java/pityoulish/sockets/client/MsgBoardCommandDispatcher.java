@@ -137,12 +137,13 @@ public class MsgBoardCommandDispatcher
 
       if ((limit < 1) || (limit > 127))
        {
-         System.err.println("limit out of range: "+limit); //@@@ NLS
+         System.err.println(Catalog.CMDLINE_BAD_LIMIT_1.format(arg));
          limit = -1;
        }
 
     } catch (Exception x) {
-      System.err.println("invalid limit: "+x); //@@@ NLS
+      System.err.println(Catalog.CMDLINE_BAD_LIMIT_1.format(arg));
+      System.err.println(x);
       limit = -1;
     }
 
