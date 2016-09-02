@@ -60,8 +60,9 @@ public final class Main
     ResponseBuilder rspb = new TLVResponseBuilderImpl();
     RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
 
-    mmb.putSystemMessage(null, "The message board is open now."); //@@@ NLS
-    mmb.putSystemMessage(null, "Its capacity is "+capacity+"."); //@@@ NLS
+    mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
+    mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format
+                         (new Object[]{ capacity }));
 
     SocketHandler shandler = new SimplisticSocketHandler(rh);
    

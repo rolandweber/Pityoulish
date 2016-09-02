@@ -15,6 +15,8 @@ import pityoulish.i18n.TextEntry;
 public enum Catalog implements TextEntry
  {
    USAGE,
+   SYSMSG_OPEN,
+   SYSMSG_CAPACITY_1,
 
    INVALID_TOP_TLV_HEADER_0,
    INVALID_TOP_TLV_TYPE_1,
