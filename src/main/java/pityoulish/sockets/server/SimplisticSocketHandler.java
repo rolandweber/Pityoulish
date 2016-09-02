@@ -128,13 +128,16 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // Calling flush() on the OutputStream isn't enough to achieve that.
       sock.setSendBufferSize(4);
     } catch (Exception ignore) {
-      System.out.println("failed to disable send buffer... "+ignore);
+      System.out.println(Catalog.NO_DISABLE_SEND_BUFFER_0.format());
+      System.out.println(ignore);
     }
 
     StringBuilder sb = new StringBuilder(120);
-    sb.append(handlerName);
-    sb.append(": connection from ")
-      .append(sock.getRemoteSocketAddress());
+    sb.append(handlerName)
+      .append(": ")
+      .append(Catalog.RECEIVE_FROM_1.format(new Object[]{
+            sock.getRemoteSocketAddress()
+          }));
     System.out.println(sb);
 
     // the following calls close the socket on error, so let exceptions pass
@@ -232,7 +235,6 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     InputStream is = sock.getInputStream();
 
     //@@@ This logic is specific to TLVs; also needed by clients... refactor!
-    //@@@ NLS light
     //@@@ Send error response to bogus request, or just drop the connection?
 
     // Read the first 4 bytes of data, expected in first block of data.
@@ -241,7 +243,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (pos < 4)
      {
        throw cancelRequest
-         ("did not receive minimum data in first block", null, sock);
+         (Catalog.RECEIVE_INITIAL_BLOCK_TOO_SMALL_0.format(), null, sock);
      }
 
     // Requests are in TLV format, see ASN.1 BER
@@ -253,13 +255,17 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if ((data[0] & 0xe0) != 0xe0) // expect bits: 111xxxx
      {
        throw cancelRequest
-         ("unexpected type "+data[0], null, sock);
+         (Catalog.RECEIVE_BAD_TYPE_1.format(new Object[]{
+             "0x"+Integer.toHexString(data[0] & 0xff)
+           }), null, sock);
      }
 
     if (data[1] != MsgBoardTLV.LENGTH_OF_LENGTH_2)
      {
        throw cancelRequest
-         ("unexpected length of length "+data[1], null, sock);
+         (Catalog.RECEIVE_BAD_LEN_OF_LEN_1.format(new Object[]{
+             "0x"+Integer.toHexString(data[1] & 0xff)
+           }), null, sock);
      }
 
     int length = ((data[2] & 0xff)<<8) + (data[3] & 0xff);
@@ -267,7 +273,9 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     if (size > MAX_REQUEST_SIZE)
      {
        throw cancelRequest
-         ("request too long: "+length, null, sock);
+         (Catalog.RECEIVE_TOO_LONG_2.format(new Object[]{
+             length, MAX_REQUEST_SIZE
+           }), null, sock);
      }
 
     while (pos < size)
@@ -275,14 +283,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
        if (System.currentTimeMillis() > deadline)
         {
           throw cancelRequest
-            ("deadline for receiving expired", null, sock);
+            (Catalog.RECEIVE_DEADLINE_EXPIRED_0.format(), null, sock);
         }
 
        int count = is.read(data, pos, data.length-pos);
        if (count < 0)
         {
           throw cancelRequest
-            ("unexpected end of data", null, sock);
+            (Catalog.RECEIVE_INCOMPLETE_0.format(), null, sock);
         }
        pos += count;
      }
