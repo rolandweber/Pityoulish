@@ -10,9 +10,6 @@ import java.util.HashMap;
 import java.net.InetAddress;
 
 
-//@@@ Move texts to properties files. Prepare for localization.
-//@@@ Maintain an enum for mapping names to message codes?
-
 /**
  * Default implementation of a {@link TicketManager}.
  * Ticket managers must be thread safe.
@@ -49,13 +46,14 @@ public class DefaultTicketManager implements TicketManager
        throw new NullPointerException("username");
 
     if (username.length() < 1)
-       throw new TicketException("The username is empty.");
+       throw new TicketException(Catalog.USERNAME_EMPTY.lookup());
 
     final long now = System.currentTimeMillis();
 
     TicketImpl tick = ticketsByUsername.get(username);
     if ((tick != null) && !tick.isExpired(now))
-       throw new TicketException("This user already has a ticket.");
+       throw new TicketException(Catalog.USER_ALREADY_HAS_TICKET_1
+                                 .format(username));
 
     if (address != null)
      {
@@ -69,7 +67,8 @@ public class DefaultTicketManager implements TicketManager
 
        tick = ticketsByAddress.get(address);
        if ((tick != null) && !tick.isExpired(now))
-          throw new TicketException("This address already has a ticket.");
+          throw new TicketException(Catalog.ADDRESS_ALREADY_HAS_TICKET_1
+                                    .format(address));
      }
     //@@@ trigger housekeeping if an expired ticket was found?
 
@@ -96,11 +95,11 @@ public class DefaultTicketManager implements TicketManager
        throw new NullPointerException("token");
 
     if (token.length() < 1)
-       throw new TicketException("The ticket token is empty.");
+       throw new TicketException(Catalog.TOKEN_EMPTY.lookup());
 
     TicketImpl tick = ticketsByToken.get(token);
     if (tick == null)
-       throw new TicketException("Ticket '"+token+"' not found.");
+       throw new TicketException(Catalog.TICKET_NOT_FOUND_1.format(token));
 
     tick.validate(this, null, address, token);
 

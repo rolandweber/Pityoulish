@@ -92,17 +92,17 @@ public class TicketImpl implements Ticket
        throw new NullPointerException("token");
 
     if (issuedBy != creator)
-       throw new TicketException("Wrong ticket manager.");
+       throw new TicketException(Catalog.WRONG_TICKET_MANAGER.lookup());
     if (!ticketToken.equals(token))
-       throw new TicketException("Wrong token.");
+       throw new TicketException(Catalog.WRONG_TOKEN.lookup());
     if ((username != null) && !issuedToUsername.equals(username))
-       throw new TicketException("Wrong username.");
+       throw new TicketException(Catalog.WRONG_USERNAME.lookup());
     if ((address != null) && (issuedToAddress != null) &&
         !issuedToAddress.equals(address))
-       throw new TicketException("Wrong network address.");
+       throw new TicketException(Catalog.WRONG_NETWORK_ADDRESS.lookup());
 
     if (isExpired())
-       throw new TicketException("Ticket already expired.");
+       throw new TicketException(Catalog.TICKET_EXPIRED.lookup());
 
     // ok
   }
