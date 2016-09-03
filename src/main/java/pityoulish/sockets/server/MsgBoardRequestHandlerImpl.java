@@ -95,16 +95,13 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
          //@@@ Return a status object that indicates Info/Error with msg?
          //@@@ Generalize for all handler methods?
          throw new ProtocolException
-           (Catalog.HANDLER_TICKET_USED_UP_1.format(new Object[]{
-               tick.getToken()
-             }));
+           (Catalog.HANDLER_TICKET_USED_UP_1.format(tick.getToken()));
        }
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
-            mbreq.getTicket()
-          }), tx);
+        (Catalog.HANDLER_BAD_TICKET_2.format(mbreq.getTicket(),
+                                             tx.getLocalizedMessage()), tx);
     }
   }
 
@@ -131,9 +128,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
-            mbreq.getTicket()
-          }), tx);
+        (Catalog.HANDLER_TICKET_DENIED_2.format(mbreq.getOriginator(),
+                                                tx.getLocalizedMessage()), tx);
     }
   }
 
@@ -159,9 +155,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
-            mbreq.getTicket()
-          }), tx);
+        (Catalog.HANDLER_BAD_TICKET_2.format(mbreq.getTicket(),
+                                             tx.getLocalizedMessage()), tx);
     }
 
     return Catalog.HANDLER_INFO_OK.lookup();
@@ -195,9 +190,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     } catch (TicketException tx) {
       throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_1.format(new Object[]{
-            mbreq.getTicket()
-          }), tx);
+        (Catalog.HANDLER_REPLACE_DENIED_2.format(mbreq.getTicket(),
+                                                 tx.getLocalizedMessage()),
+         tx);
     }
   }
     
