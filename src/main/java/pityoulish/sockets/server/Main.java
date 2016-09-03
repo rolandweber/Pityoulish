@@ -61,8 +61,7 @@ public final class Main
     RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
 
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
-    mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format
-                         (new Object[]{ capacity }));
+    mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
 
     SocketHandler shandler = new SimplisticSocketHandler(rh);
    

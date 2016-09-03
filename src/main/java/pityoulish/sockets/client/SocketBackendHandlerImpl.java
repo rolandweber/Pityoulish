@@ -28,7 +28,7 @@ public class SocketBackendHandlerImpl implements SocketBackendHandler
   public void describeUsage(Appendable app, String cmd)
     throws IOException
   {
-    app.append(Catalog.BACKEND_ARGS_1.format(new Object[]{ cmd }));
+    app.append(Catalog.BACKEND_ARGS_1.format(cmd));
   }
 
 

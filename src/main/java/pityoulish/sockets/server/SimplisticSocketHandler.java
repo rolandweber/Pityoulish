@@ -135,9 +135,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
     StringBuilder sb = new StringBuilder(120);
     sb.append(handlerName)
       .append(": ")
-      .append(Catalog.RECEIVE_FROM_1.format(new Object[]{
-            sock.getRemoteSocketAddress()
-          }));
+      .append(Catalog.RECEIVE_FROM_1.format(sock.getRemoteSocketAddress()));
     System.out.println(sb);
 
     // the following calls close the socket on error, so let exceptions pass
@@ -254,28 +252,24 @@ public class SimplisticSocketHandler extends SocketHandlerBase
 
     if ((data[0] & 0xe0) != 0xe0) // expect bits: 111xxxx
      {
-       throw cancelRequest
-         (Catalog.RECEIVE_BAD_TYPE_1.format(new Object[]{
-             "0x"+Integer.toHexString(data[0] & 0xff)
-           }), null, sock);
+       throw cancelRequest(Catalog.RECEIVE_BAD_TYPE_1
+                           .format("0x"+Integer.toHexString(data[0] & 0xff)),
+                           null, sock);
      }
 
     if (data[1] != MsgBoardTLV.LENGTH_OF_LENGTH_2)
      {
-       throw cancelRequest
-         (Catalog.RECEIVE_BAD_LEN_OF_LEN_1.format(new Object[]{
-             "0x"+Integer.toHexString(data[1] & 0xff)
-           }), null, sock);
+       throw cancelRequest(Catalog.RECEIVE_BAD_LEN_OF_LEN_1
+                           .format("0x"+Integer.toHexString(data[1] & 0xff)),
+                           null, sock);
      }
 
     int length = ((data[2] & 0xff)<<8) + (data[3] & 0xff);
     int size = length+4;
     if (size > MAX_REQUEST_SIZE)
      {
-       throw cancelRequest
-         (Catalog.RECEIVE_TOO_LONG_2.format(new Object[]{
-             length, MAX_REQUEST_SIZE
-           }), null, sock);
+       throw cancelRequest(Catalog.RECEIVE_TOO_LONG_2
+                           .format(length, MAX_REQUEST_SIZE), null, sock);
      }
 
     while (pos < size)
