@@ -16,43 +16,39 @@ public class FormattingVisitorImpl implements ResponseParser.Visitor
   // non-javadoc, see interface
   public void visitInfo(String text)
   {
-    //@@@ NLS light
-    System.out.println("Info: "+text);
+    System.out.println(Catalog.CONSOLE_INFO_TEXT_1.format(text));
   }
 
 
   // non-javadoc, see interface
   public void visitError(String text)
   {
-    //@@@ NLS light
-    System.out.println("ERROR: "+text);
+    System.out.println(Catalog.CONSOLE_ERROR_TEXT_1.format(text));
   }
 
 
   // non-javadoc, see interface
   public void enterMessageBatch(String marker, boolean missed)
   {
-    //@@@ NLS light
-    System.out.println(">>> MESSAGE BATCH");
-    System.out.println("MARKER: "+marker);
+    System.out.println(Catalog.CONSOLE_MSG_BATCH_ENTER.lookup());
+    System.out.println(Catalog.CONSOLE_MARKER_1.format(marker));
     if (missed)
-       System.out.println("Messages might have been missed.");
+       System.out.println(Catalog.CONSOLE_MESSAGES_MISSED.lookup());
   }
 
 
   // non-javadoc, see interface
   public void leaveMessageBatch()
   {
-    //@@@ NLS light
-    System.out.println("<<< MESSAGE BATCH");
+    System.out.println(Catalog.CONSOLE_MSG_BATCH_LEAVE.lookup());
   }
 
 
   // non-javadoc, see interface
   public void visitMessage(String originator, String timestamp, String text)
   {
-    //@@@ NLS light
-    System.out.println("--- MESSAGE from '"+originator+"' at "+timestamp+": ");
+    System.out.println(Catalog.CONSOLE_MESSAGE_ABOUT_2.format(originator,
+                                                              timestamp));
     System.out.println(text);
   }
 
@@ -60,8 +56,7 @@ public class FormattingVisitorImpl implements ResponseParser.Visitor
   // non-javadoc, see interface
   public void visitTicketGrant(String ticket)
   {
-    //@@@ NLS light
-    System.out.println("Ticket: "+ticket);
+    System.out.println(Catalog.CONSOLE_TICKET_1.format(ticket));
   }
 
 }
