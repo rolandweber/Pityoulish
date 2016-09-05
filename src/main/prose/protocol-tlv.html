@@ -68,14 +68,31 @@ as uppercase keywords, the terms are used here in the spirit of the RFC.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="tlv"><span>TLV</span></h2>
 
-<p class="todo">...</p>
-<ul>
-<li>Type - Length - Value</li>
-<li>primitive or constructed (nested TLVs)</li>
-<li>in this exercise: single-byte type, three-byte length</li>
-</ul>
-
-
+<p>
+TLV stands for Type - Length - Value, or sometimes Tag - Length - Value.
+In a binary encoding, these three elements appear in the given order.
+If the Length is 0, the value is absent.
+</p>
+<p>
+In general, all three elements of a TLV may have a variable size.
+To simplify the Binary Protocol here, the Type is always a single byte,
+and the Length is always encoded in three bytes.
+</p>
+<p>
+The first Length byte is 0x82, which indicates that there are two more bytes.
+Those contain the length of the value, in bytes, as a 16-bit integer.
+The length is stored big-endian, high byte before low byte.
+</p>
+<p>
+The Types defined for the Binary Protocol are listed below.
+There are two kinds of TLVs, primitive and constructed.
+A primitive TLV contains an unstructured value,
+for example a string or a number.
+Its Type is from the range 0xC0 to 0xDE, inclusive.
+The value of a constructed TLV contains any number of other TLVs.
+The contained TLVs may be constructed or primitive.
+The Type of a constructed TLV is from the range 0xE0 to 0xFE, inclusive.
+</p>
 <p>
 For example, here is a <a href="#0xPutMsg">Put Message</a> TLV.
 Its value comprises two other TLVs,
@@ -274,6 +291,59 @@ Type  Length  |~~~~~~~~                 Value                       ~~~~~~~~|
 
 
 </dl><!-- constructed TLV -->
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="notes"><span>Explanatory Notes</span></h2>
+
+<p>
+In their binary encoding, TLVs are convenient to parse.
+The Type immediately tells what kind of data to deal with.
+It can be evaluated with <code>switch</code> statements.
+The Length allows for easy skipping to the subsequent TLV.
+</p>
+<p>
+There are different, related specifications for encoding TLVs in binary format.
+The <a href="http://en.wikipedia.org/wiki/Basic_Encoding_Rules"
+       >Basic Encoding Rules (BER)</a>
+allow for some variations. For example, a length of 80 byte could be encoded
+with a single byte 0x50, or with two bytes 0x81 0x50,
+or with three bytes 0x82 0x00 0x50, or more.
+The <a href="http://en.wikipedia.org/wiki/Distinguished_Encoding_Rules#DER_encoding"
+       >Distinguished Encoding Rules (DER)</a>
+are compatible with BER, but remove the variations. Along with other
+restrictions, the length must be encoded in the smallest possible form.
+</p>
+<p>
+The binary encoding of TLVs is, in general, inconvenient to generate.
+That applies for both BER and DER.
+The reason for that is that you have to know the length of the value
+to know how many bytes you need for encoding the length.
+But you cannot encode the value in-place before you know
+the size of the length.
+In consequence, you can either generate the value first; with the risk of
+having to copy it if you guessed the size of the Length element wrong.
+Or you can determine the length of the value in advance, recursively.
+The latter requires extra logic, which might not be trivial if you consider
+strings with variable-length encoding for characters, like UTF-8.
+</p>
+<p>
+The Binary Protocol above avoids the inconvenience by specifying a
+fixed-sized Length encoding. It is a specialization of BER, but not of DER.
+Lengths from 0 to 65535 bytes are sufficient for the programming exercises
+around the protocol. A BER-compatible single-byte encoding of the Length
+would allow for a maximum of only 127. That is insufficient for a non-trivial
+<a href="#0xMsgBtch">Message Batch</a>.
+</p>
+<p>
+Real-life examples where TLVs are used include
+X.509 cryptographic certificates
+(<a href="https://tools.ietf.org/html/rfc5280#section-4.1"
+    >RFC 5280</a>)
+and LDAP, the Lightweight Directory Access Protocol
+(<a href="https://tools.ietf.org/html/rfc4511#section-5.1"
+    >RFC 4511</a>).
+</p>
 
 
 </body>
