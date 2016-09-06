@@ -12,8 +12,12 @@ Targets for development, for working with the (Java) code.
 <import file="setup.xml" />
 
 
+<property name="src.main"       location="src/main/java" />
+<property name="src.test"       location="src/test/java" />
 <property name="src.pitted"     location="${dir.tmp}/src-pitted" />
 <property name="src.filled"     location="${dir.tmp}/src-filled" />
+<property name="classes.main"   location="${dir.tmp}/classes/main" />
+<property name="classes.test"   location="${dir.tmp}/classes/test" />
 <property name="classes.pitted" location="${dir.tmp}/classes/pitted" />
 <property name="classes.filled" location="${dir.tmp}/classes/filled" />
 
@@ -24,8 +28,8 @@ Targets for development, for working with the (Java) code.
 
 <target name="compile"
         description="compiles all Java sources, without preprocessing">
-  <jc destdir="${dir.tmp}/classes/main">
-    <src path="src/main/java" />
+  <jc destdir="${classes.main}">
+    <src path="${src.main}" />
   </jc>
 </target>
 
@@ -65,7 +69,7 @@ Targets for development, for working with the (Java) code.
   <!-- 'pitted' source code -->
 
   <copy todir="${src.pitted}">
-    <fileset dir="src/main/java" />
+    <fileset dir="${src.main}" />
   </copy>
   <!-- remove just the PYL:keep line -->
   <replaceregexp match="(\r?\n)[ /*]*PYL:keep[ /*]*\r?\n"
@@ -84,7 +88,7 @@ Targets for development, for working with the (Java) code.
   <!-- 'filled' source code -->
 
   <copy todir="${src.filled}">
-    <fileset dir="src/main/java">
+    <fileset dir="${src.main}" >
       <exclude name="**/outtake/**" />
     </fileset>
   </copy>
@@ -113,7 +117,7 @@ Targets for development, for working with the (Java) code.
 <target name="jdoc" description="builds JavaDocs from all Java sources">
   <mkdir dir="${dir.jdoc}" />
   <javadoc destdir="${dir.jdoc}"
-    sourcepath="src/main/java"
+    sourcepath="${src.main}"
     access="protected"
     windowtitle="Pityoulish: Programming Exercises"
     nohelp="true"
@@ -139,7 +143,7 @@ Targets for development, for working with the (Java) code.
 -->
   </javadoc>
   <copy todir="${dir.jdoc}">
-    <fileset dir="src/main/java" includes="**/HowTo*.java" />
+    <fileset dir="${src.main}" includes="**/HowTo*.java" />
     <globmapper from="*" to="*.txt"/>
   </copy>
 </target>
@@ -157,10 +161,10 @@ Targets for development, for working with the (Java) code.
 -->
 <target name="compile-tests"
         description="compiles all Java tests">
-  <jc destdir="${dir.tmp}/classes/test">
-    <src path="src/test/java" />
+  <jc destdir="${classes.test}">
+    <src path="${src.test}" />
     <classpath>
-      <pathelement location="${dir.tmp}/classes/main" />
+      <pathelement location="${classes.main}" />
       <pathelement location="${junit4.jar}" />
       <pathelement location="${hamcrest.jar}" />
     </classpath>
@@ -185,14 +189,14 @@ Targets for development, for working with the (Java) code.
          printsummary="on"
          >
     <classpath>
-      <pathelement location="src/main/java" /><!-- for properties files -->
-      <pathelement location="${dir.tmp}/classes/main" />
-      <pathelement location="${dir.tmp}/classes/test" />
+      <pathelement location="${src.main}" /><!-- for properties files -->
+      <pathelement location="${classes.main}" />
+      <pathelement location="${classes.test}" />
       <pathelement location="${junit4.jar}" />
     </classpath>
 
     <batchtest todir="${test.output}">
-      <fileset dir="${dir.tmp}/classes/test" includes="**/*Test.class" />
+      <fileset dir="${classes.test}" includes="**/*Test.class" />
       <formatter type="xml" />
     </batchtest>
   </junit>

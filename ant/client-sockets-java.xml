@@ -42,6 +42,7 @@ Exercise: Message Board Client with Sockets, in Java
   <!-- same pattern for sources and classes, pitted and filled -->
   <patternset id="client-sockets-java.into.jar">
     <include name="pityoulish/sockets/client/*" />
+    <include name="pityoulish/sockets/tlv/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
     <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
@@ -88,7 +89,8 @@ Exercise: Message Board Client with Sockets, in Java
     encoding="ISO-8859-1"
     >
     <packageset dir="${src.pitted}">
-      <include name="pityoulish/sockets/*" />
+      <include name="pityoulish/sockets/client" />
+      <include name="pityoulish/sockets/tlv" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
     </packageset>

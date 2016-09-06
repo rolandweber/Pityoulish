@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="server-sockets-java" default="server-sockets-java" basedir="..">
+<description>
+Instructions: Message Board with Sockets
+</description>
+
+<import file="common.xml" />
+
+<target name="server-sockets-java" depends="ijs-all"
+        description="Instructions: Java Sockets (ijs)" />
+
+<!-- prefix of the target filenames -->
+<property name="server-sockets-java.name"  value="mbserver-sockets" />
+<property name="server-sockets-java.prose"
+          location="${dir.target}/${server-sockets-java.name}" />
+
+<property name="server-sockets-java.tmp"
+          location="${dir.tmp}/server-sockets-java" />
+<property name="server-sockets-java.jdoc"
+          location="${server-sockets-java.tmp}/jdoc" />
+
+
+<target name="ijs-clean">
+  <delete quiet="true">
+    <fileset dir="${server-sockets-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${server-sockets-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijs-jar" depends="_tstamps,compile">
+
+  <!-- server jar without sources -->
+  <patternset id="server-sockets-java.into.jar">
+    <include name="pityoulish/sockets/server/*" />
+    <include name="pityoulish/sockets/tlv/*" />
+    <include name="pityoulish/msgboard/*" />
+    <include name="pityoulish/tickets/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${server-sockets-java.name}.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.sockets.server.Main" />
+    </manifest>
+    <fileset dir="${classes.main}">
+      <patternset refid="server-sockets-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijs-prose">
+
+  <delete dir="${server-sockets-java.prose}" />
+  <copy todir="${server-sockets-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="ijs-*" />
+      <include name="message-board.html" />
+      <include name="protocol-tlv.html" />
+    </fileset>
+  </copy>
+  <move file="${server-sockets-java.prose}/ijs-index.html"
+        tofile="${server-sockets-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijs-all" depends="_tstamps,ijs-jar,ijs-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${server-sockets-java.prose}">
+    <file file="${dir.target}/${server-sockets-java.name}.jar" />
+  </copy>
+
+  <property name="server-sockets-java.zip.prefix"
+            value="${server-sockets-java.name}" />
+
+  <zip destfile="${dir.target}/${server-sockets-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${server-sockets-java.name}"
+                prefix="${server-sockets-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${server-sockets-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>
