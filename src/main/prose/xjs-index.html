@@ -10,11 +10,12 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <title>Exercise: Message Board Client with Sockets </title>
 </head>
 <body>
-<h1 id="tutorial" class="title">
+<h1 id="exercise" class="title">
   <span>Exercise: Message Board Client with Sockets</span>
 </h1>
-<p class="abstract todo">
-Objective of this exercise...
+<p class="abstract">
+During this exercise, you will get a glimpse of what it means to
+implement a low-level protocol interface on top of socket connections.
 </p>
 
 <div class="larger">
@@ -24,6 +25,10 @@ it's about the  <a href="message-board.html">Message Board</a>
 and Java Sockets.
 With a <a href="protocol-tlv.html">Binary Protocol</a>.
 </div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="prepare"><span>Prepare</span></h2>
 
 <div class="box-right">
 <dl>
@@ -36,6 +41,137 @@ With a <a href="protocol-tlv.html">Binary Protocol</a>.
 </dl>
 </div><!-- box-right -->
 
+<p>
+...
+</p>
+
+<ul class="todo">
+<li>
+Network connection and server address from instructor.
+</li>
+<li>
+Get the client JAR and rename.
+</li>
+<li>
+Read (and understand) usage instructions.
+</li>
+<li>
+Compare with the <a href="message-board.html">Message Board</a>.
+</li>
+<li>
+Prepare a test sequence... see below.
+</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="testsequence"><span>Test Sequence</span></h2>
+
+<p>
+Different from Tutorial, because of dependencies between the commands.
+Need a ticket for some. Need enough messages for others.
+Suggestion...
+</p>
+
+<ul class="todo">
+<li>
+list messages, without marker
+</li>
+<li>
+obtain ticket
+</li>
+<li>
+put message; verify with list messages
+</li>
+<li>
+list messages, with marker
+</li>
+<li>
+return ticket; verify with put message
+</li>
+<li>
+replace ticket; have to obtain a new one first
+</li>
+<li>
+  Error cases are not explicitly covered by this test sequence.
+  Can you think of non-error cases that are not covered?
+</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="testfixbuild"><span>Test, Fix, Build, repeat</span></h2>
+
+<ul class="todo">
+<li>
+Load the client into your IDE if you use one.
+</li>
+<li>
+Start testing.
+</li>
+<li>
+Locate the problem.
+</li>
+<li>
+THINK! See below for code overview.
+</li>
+<li>
+Fix, build, and iterate.
+</li>
+<li>
+When done, clean up by removing package <code>pityoulish.outtake</code>.
+</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="code"><span>Code Overview</span></h2>
+
+<ul class="todo">
+<li>
+JavaDoc, only two packages of relevance.
+</li>
+<li>
+Identify the command handler class.
+</li>
+<li>
+See package-level JavaDoc for further information.
+</li>
+<li>
+Only go into source files if you absolutely have to fix something in there.
+</li>
+</ul>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="learned"><span>Lessons Learned</span></h2>
+
+<!-- How much of this here, how much in Instructor's Notes? -->
+<ul class="todo">
+<li>
+Did you get through the full test sequence?
+</li>
+<li>
+Did you find and fix all the problems?
+Spotted things not covered by the test sequence?
+</li>
+<li>
+What problems did you encounter?
+Besides the errors that you fixed, of course.
+</li>
+<li>
+How do you like coding on this level?
+</li>
+<li>
+Found something in the code that you'd like to improve?
+Besides the errors that you fixed, of course.
+</li>
+<li>
+From here...
+Want to do some home programming?
+Help with the Open Source project?
+</li>
+</ul>
 
 </body>
 </html>
