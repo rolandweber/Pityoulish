@@ -84,7 +84,7 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
    */
   protected Sequencer newSequencer()
   {
-    return new TrivialSequencerImpl();
+    return new SimpleSequencerImpl();
   }
 
 
