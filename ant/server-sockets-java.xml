@@ -39,7 +39,6 @@ Instructions: Message Board with Sockets
 
 <target name="ijs-jar" depends="_tstamps,compile">
 
-  <!-- server jar without sources -->
   <patternset id="server-sockets-java.into.jar">
     <include name="pityoulish/sockets/server/*" />
     <include name="pityoulish/sockets/tlv/*" />
@@ -47,12 +46,18 @@ Instructions: Message Board with Sockets
     <include name="pityoulish/tickets/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
+    <!-- server jar without sources, but with properties -->
+    <exclude name="**/*.java" />
+    <exclude name="**/*.html" />
   </patternset>
 
   <jar.pty destfile="${dir.target}/${server-sockets-java.name}.jar">
     <manifest>
       <attribute name="Main-Class" value="pityoulish.sockets.server.Main" />
     </manifest>
+    <fileset dir="${src.main}">
+      <patternset refid="server-sockets-java.into.jar" />
+    </fileset>
     <fileset dir="${classes.main}">
       <patternset refid="server-sockets-java.into.jar" />
     </fileset>
