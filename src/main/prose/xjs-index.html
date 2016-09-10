@@ -120,35 +120,68 @@ match with the operations defined for a Message Board.
 <h2 id="sequence"><span>Define a Test Sequence</span></h2>
 
 <p>
-Different from Tutorial, because of dependencies between the commands.
-Need a ticket for some. Need enough messages for others.
-Suggestion...
+Some commands of the client depend upon others.
+For example, putting a message on the board depends on obtaining a ticket.
+And listing messages starting at a marker depends on
+getting a marker from a previous listing.
+Testing the full client functionality therefore requires execution of all
+commands in a logical sequence. Commands with different possible arguments,
+or with different possible results, should be covered in all variations.
 </p>
 
-<ul class="todo">
+<p>
+In practice, defining test cases that thoroughly cover a program or API
+requires good knowledge of that program or API, and some experience.
+To get you started with this exercise,
+you may use the following test sequence:
+</p>
+<ol>
 <li>
-list messages, without marker
+List messages from the board, without marker.
 </li>
 <li>
-obtain ticket
+Obtain a ticket.
 </li>
 <li>
-put message; verify with list messages
+Put some messages on the board.
 </li>
 <li>
-list messages, with marker
+List messages again, with and without marker.
+Make sure to use different markers.
 </li>
 <li>
-return ticket; verify with put message
+Return a ticket.
+Use it again afterwards, to verify that it is no longer valid.
 </li>
 <li>
-replace ticket; have to obtain a new one first
+Replace a ticket, before and after exhausting all operations.
 </li>
-<li>
-  Error cases are not explicitly covered by this test sequence.
-  Can you think of non-error cases that are not covered?
-</li>
-</ul>
+</ol>
+
+<p>
+That sequence covers only a few of the error cases, but that is sufficient
+for the exercise. You don't have to test for invalid arguments, for example.
+Not knowing for how long a ticket is valid, or how many operations it permits,
+will confront you with enough error situations to get into the spirit.
+</p>
+
+<p>
+That sequence is also missing some good cases.
+You may encounter them perchance, but they are not enforced.
+See if you can spot those gaps in the test coverage throughout the exercise.
+<!-- known gaps:
+1. List messages with an empty result list.
+   Likely to be encountered when testing with markers.
+   Impossible to be encountered without marker, because the server
+   initially puts at least one system message on the board.
+2. List messages with a "Missed" indicator in the result.
+   Unlikely to be encountered. Probability depends on board capacity,
+   message volume, and how much time you take for testing with markers.
+   To force this situation, you can get a marker from the beginning of
+   the board (list with limit 1), then put enough messages on the board
+   to drop that one and the next user message.
+-->
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
