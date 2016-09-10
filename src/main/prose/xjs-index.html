@@ -19,16 +19,51 @@ implement a low-level protocol interface on top of socket connections.
 </p>
 
 <div class="larger">
-<span class="todo">Overview...</span>
+<p>
+Your task is to find and fix errors in a Java client program.
+The client communicates with a <a href="message-board.html">Message Board</a>
+server using a <a href="protocol-tlv.html">Binary Protocol</a>.
+The server is operated by the instructor.
+The client, when fixed, enables you to put messages on the board,
+and to read the messages others have put there.
+</p>
 
-it's about the  <a href="message-board.html">Message Board</a>
-and Java Sockets.
-With a <a href="protocol-tlv.html">Binary Protocol</a>.
+<p>
+A recipe for solving this task has been conveyed beforehand in a Tutorial.
+If you failed to complete the Tutorial, you're probably screwed now.
+Instructions below recap the major steps just briefly.
+The sections appear in chronological order, more or less:
+</p>
+
+<ol>
+<li><a href="#setup">Setup</a> before you begin</li>
+<li><a href="#prepare">Prepare</a> a test sequence</li>
+<li><a href="#testfixbuild">Test, Fix, Build</a>, repeat</li>
+<li><a href="#code">Code Overview</a> for fixing</li>
+<li><a href="#learned">Lessons Learned</a> when done</li>
+</ol>
+
 </div>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="prepare"><span>Prepare</span></h2>
+<h2 id="setup"><span>Setup</span></h2>
+
+<p>
+You already set up a Java development environment in the Tutorial.
+Editor, Java compiler and tools, maybe an IDE, are readily available.
+Good.
+</p>
+
+<p>
+You already know how to access the instructions for this exercise,
+because you're reading them. Good.
+Other useful things you could open in separate browser tabs are
+the Java Platform API specification (aka standard JavaDocs)
+and the Tutorial instructions.
+Where to find those depends on the network setup.
+</p>
+
 
 <div class="box-right">
 <dl>
@@ -65,7 +100,7 @@ Prepare a test sequence... see below.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="testsequence"><span>Test Sequence</span></h2>
+<h2 id="prepare"><span>Prepare a Test Sequence</span></h2>
 
 <p>
 Different from Tutorial, because of dependencies between the commands.
