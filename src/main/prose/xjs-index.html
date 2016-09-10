@@ -70,7 +70,7 @@ Where to find either depends on the network setup.
 
 <p>
 Connect your computer to the network with the server, if you have not
-done so already. The instructor provides the necessary information,
+done so already. The instructor provides all necessary information,
 along with the following:
 </p>
 <ul>
@@ -130,7 +130,7 @@ or with different possible results, should be covered in all variations.
 </p>
 
 <p>
-In practice, defining test cases that thoroughly cover a program or API
+In practice, defining test cases which thoroughly cover a program or API
 requires good knowledge of that program or API, and some experience.
 To get you started with this exercise,
 you may use the following test sequence:
@@ -197,7 +197,7 @@ encounter a <code>pityoulish.outtake.Missing</code> exception.
 
 <p>
 As you remember from the Tutorial, that exception marks an intentional
-omission from the code. Don't start fixing it yet!
+omission from the code. Don't start fixing yet!
 The first time you encounter the exception, make sure to
 get a <a href="#code">Code Overview</a>
 from the <a href="jdoc/index.html">JavaDocs</a>
@@ -207,7 +207,7 @@ before you dive into the sources.
 <p>
 OK, you've got a general understanding of the packages and classes
 from the JavaDocs now. You found the classes from the stack trace there.
-It's time to hit the source code. It is included in the JAR.
+It's time to hit the source code, which is included in the JAR.
 Locate where the exception is raised, where some code is missing.
 Then stop to <b
 title="If you invoke the auto-completion of your IDE and pick the
@@ -227,8 +227,8 @@ There is an exception message, maybe some comment in the source code,
 JavaDocs of the method.
 </li>
 <li>
-What data is available? What data do you need?
-Look at method arguments, local variables, object attributes,
+What data do you need? What data is available?
+Look at local variables, method arguments, object attributes,
 getters in the class hierarchy.
 </li>
 <li>
@@ -236,7 +236,7 @@ How can you solve the problem?
 Is there a standard API to use, or something in the client code?
 </li>
 <li>
-Where can you copy?
+Where can you copy from?
 Are there other places in the client that do something similar?
 It's OK to re-use code snippets from there.
 </li>
@@ -245,19 +245,18 @@ It's OK to re-use code snippets from there.
 <p>
 Remove the call that raises the exception and fill in the missing code.
 Compile the sources and build a new JAR that includes your fix.
-Repeat the step of the test sequence that failed,
+Repeat the failing step of the test sequence,
 and prerequisite steps if necessary.
 If your fix is good, proceed with the test sequence.
 If not, improve your fix.
 </p>
 
 <p>
-When you reach the end of the test sequence, and all problems along the way
-are resolved, perform the final cleanup.
+After completing the test sequence, perform the final cleanup.
 Delete the package <code>pityoulish.outtake</code>, both source and classes.
 Delete the <code>.class</code> files from all other packages.
 Then compile the whole client from source code again.
-Fix the compilation problems, and then you're done.
+Fix compilation problems, and then you're done.
 </p>
 
 
