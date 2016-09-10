@@ -168,8 +168,8 @@ p.abstract {
   }
 } /* @media print */
 
-p.larger {
-  font-size: 120%;
+p.larger, div.larger {
+  font-size: 112%;
 }
 
 
