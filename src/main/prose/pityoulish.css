@@ -188,6 +188,9 @@ dl > dd {
   margin: 3px 1.7em 8px;
 }
 
+dl p {
+  margin: 4px 0px 8px;
+}
 
 ul {
   margin: 0px;

@@ -148,6 +148,65 @@ How much time to form groups?
 </ul>
 
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="hints"><span>Hints</span></h3>
+
+<dl>
+<dt>How to List Messages with different markers</dt>
+<dd>
+<p>
+You get a marker in response to a List Messages operation.
+The marker indicates where in the message stream the returned messages end.
+List messages with different limits to fetch less than the available messages.
+</p>
+<!-- <br/>-->
+<p>
+Alternatively, put more messages on the board and list messages again.
+The markers from previous responses remain valid.
+</p>
+</dd>
+
+<!--
+<dt></dt>
+<dd>
+</dd>
+-->
+</dl>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="answers"><span>Answers</span></h3>
+
+<p>
+The exercise mentions gaps in the suggested test sequence.
+The known gaps in the good cases are:
+</p>
+
+<dl>
+<dt>Empty batch in response to List Messages</dt>
+<dd>
+This case is likely to be encountered when testing with markers,
+but not enforced by the test sequence.
+It cannot be encountered without marker, because the board is never empty.
+The server always puts an initial message on the board.
+</dd>
+
+<dt>Missed messages indicator in response to List Messages</dt>
+<dd>
+<p>
+To get an indicator for missed messages, messages must drop off the board
+while the students are testing with markers. If the board capacity is high
+and the message volume low, that is unlikely to happen.
+</p>
+<p>
+Students can force this situation by getting a marker from the beginning
+of the board and then putting more messages on the board until at least
+two user messages are dropped.
+Depending on the board capacity, that may be a tedious task.
+The instructor can help by choosing a low capacity.
+</p>
+</dd>
+</dl>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="learned"><span>Lessons Learned</span></h2>
@@ -155,22 +214,24 @@ How much time to form groups?
 <!-- How much of this here, how much in Exercise? -->
 <ul class="todo">
 <li>
-Did you get through the full test sequence?
+Did the students get through the full test sequence within the allotted time?
+Did they find and fix all the problems?
 </li>
 <li>
-Did you find and fix all the problems?
+If not, why?
+Bad preparation on the students' side, or on the instructor's?
+Not enough time allotted? Lack of skills?
+Shortcomings of the exercise itself?
+</li>
+<li>
 Spotted things not covered by the test sequence?
 </li>
 <li>
-What problems did you encounter?
-Besides the errors that you fixed, of course.
-</li>
-<li>
-How do you like coding on this level?
-</li>
-<li>
-Found something in the code that you'd like to improve?
-Besides the errors that you fixed, of course.
+Gather feedback from the students.
+What (unplanned) problems did they encounter?
+What did they learn?
+How did they like the exercise?
+Suggested improvements?
 </li>
 <li>
 From here...
