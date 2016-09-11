@@ -315,32 +315,61 @@ into the client handler is of little interest.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="learned"><span>Lessons Learned</span></h2>
 
-<!-- How much of this here, how much in Instructor's Notes? -->
-<ul class="todo">
-<li>
-Did you get through the full test sequence?
-</li>
-<li>
-Did you find and fix all the problems?
-Spotted things not covered by the test sequence?
-</li>
-<li>
-What problems did you encounter?
-Besides the errors that you fixed, of course.
-</li>
-<li>
+<p>
+Did you get through the full test sequence in time?
+If not, where or how did you lose time?
+</p>
+
+<p>
+Did you spot gaps in the suggested test sequence?
+</p>
+
+<p>
 How do you like coding on this level?
-</li>
-<li>
-Found something in the code that you'd like to improve?
-Besides the errors that you fixed, of course.
-</li>
-<li>
-From here...
-Want to do some home programming?
-Help with the Open Source project?
-</li>
-</ul>
+Opening connections, building and parsing TLVs,...
+</p>
+
+<p>
+Are the instructions in this exercise sufficiently clear?
+If not, what was missing?
+</p>
+
+<p>
+Were you well prepared by the Tutorial?
+If not, because of the Tutorial or because you didn't complete it?
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="gimme-more"><span>Want some more?</span></h3>
+
+<p>
+To gain programming experience, you could implement a long-running client
+that looks for new messages every few seconds.
+<!--
+When there are no new messages for a while, reduce the polling frequency.
+When there is a new message, increase it again.
+-->
+If you do it in Java, you may re-use the classes from this exercise.
+But you can also do it in Python, JavaScript, or a bunch of other languages.
+All you need is a Socket API and Unicode support.
+Ask the instructor for the server JAR, so you can test at home.
+</p>
+
+<p>
+This exercise is from <i>Pityoulish</i>,
+an Open Source project hosted on GitHub.
+<!-- Intentionally not linked here...
+     https://github.com/rolandweber/pityoulish/
+     Don't want to point students there during the exercise :-)
+-->
+If you want to help, you can submit Pull Requests
+with improvements to the instructions or the code.
+Among the Issues is a selection of smaller and bigger implementation tasks,
+tagged with "help wanted". Most of them are about coding, but you can also
+help with translations, by proof-reading, inventing new exercises, and more.
+</p>
+
 
 </body>
 </html>
