@@ -281,17 +281,18 @@ needed by client and server alike, therefore the extra package.
 
 <p>
 Select package <code>pityoulish.sockets.client</code>
-and take a look at the interfaces.
+and look at the interfaces.
 Two of them are called <code>Handler</code>, and you remember that term
 from the Tutorial. The <code>MsgBoardClientHandler</code>
 has one method for each command that the client supports.
 The arguments match those that are expected on the command line.
 But there is nothing about a hostname or port to connect to.
 Move on to <code>SocketBackendHandler</code>.
-So that's where those parameters are handled.
-The purpose of <code>RequestBuilder</code> and <code>ResponseParser</code> are
-obvious, although the latter does something funny with a <code>Visitor</code>.
-Never mind that detail now - your must get the <i>Overview</i> first.
+That's where those parameters are taken care of.
+The purposes of <code>RequestBuilder</code> and <code>ResponseParser</code>
+are obvious from their name, although the latter does something funny
+with a <code>Visitor</code>.
+Never mind that detail now - you must get an <i>Overview</i>.
 </p>
 
 <p>
@@ -303,10 +304,10 @@ The base class has attributes for several helper objects.
 It implements all methods of the interface, but defines an abstract method
 to fire requests. The abstract method gets a binary request as argument.
 That means the base class uses its <code>RequestBuilder</code> to map
-all the commands of the client to the abstract method.
-The impl class implements that abstract method, and has extra methods
-for sending requests and reading responses. They expect a socket as argument,
-so here is where IO takes place.
+all the commands of the client to that abstract method.
+The impl class implements the abstract method, and has extra methods
+for sending requests and reading responses.
+Those expect a socket as argument, so here you found the IO logic.
 </p>
 
 <p>
@@ -314,8 +315,8 @@ That's enough for an overview.
 The package-level JavaDocs provide more details, in case you need them.
 But from these brief observations, you already know that different classes
 are responsible for building requests, parsing responses, and
-communicating through sockets.
-The base class of the client handler ties the helpers together.
+communicating over socket connections.
+The client handler base class ties the helpers together.
 The call path from the <code>Main</code> class
 through package <code>pityoulish.cmdline</code>
 and class <code>MsgBoardCommandDispatcher</code>
