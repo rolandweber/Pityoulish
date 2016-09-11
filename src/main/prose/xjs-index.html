@@ -268,20 +268,59 @@ Fix compilation problems, and then you're done.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="code"><span>Code Overview</span></h2>
 
-<ul class="todo">
-<li>
-JavaDoc, only two packages of relevance.
-</li>
-<li>
-Identify the command handler class.
-</li>
-<li>
-See package-level JavaDoc for further information.
-</li>
-<li>
-Only go into source files if you absolutely have to fix something in there.
-</li>
-</ul>
+<p>
+Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a> for the client
+and look at the list of packages. Two of them,
+<code>pityoulish.cmdline</code> and <code>pityoulish.i18n</code>,
+are the same as in the Tutorial. There's no need to look at them now.
+The other two are specific to the Message Board with sockets.
+In <code>pityoulish.sockets.client</code>, you will apparently find the client.
+The TLV utility classes in <code>pityoulish.sockets.tlv</code> are
+needed by client and server alike, therefore the extra package.
+</p>
+
+<p>
+Select package <code>pityoulish.sockets.client</code>
+and take a look at the interfaces.
+Two of them are called <code>Handler</code>, and you remember that term
+from the Tutorial. The <code>MsgBoardClientHandler</code>
+has one method for each command that the client supports.
+The arguments match those that are expected on the command line.
+But there is nothing about a hostname or port to connect to.
+Move on to <code>SocketBackendHandler</code>.
+So that's where those parameters are handled.
+The purpose of <code>RequestBuilder</code> and <code>ResponseParser</code> are
+obvious, although the latter does something funny with a <code>Visitor</code>.
+Never mind that detail now - your must get the <i>Overview</i> first.
+</p>
+
+<p>
+Now look at where the handlers are implemented.
+There is a single class for <code>SocketBackendHandler</code>, that's easy.
+For <code>MsgBoardClientHandler</code>, there is a <code>Base</code> and
+an <code>Impl</code> class.
+The base class has attributes for several helper objects.
+It implements all methods of the interface, but defines an abstract method
+to fire requests. The abstract method gets a binary request as argument.
+That means the base class uses its <code>RequestBuilder</code> to map
+all the commands of the client to the abstract method.
+The impl class implements that abstract method, and has extra methods
+for sending requests and reading responses. They expect a socket as argument,
+so here is where IO takes place.
+</p>
+
+<p>
+That's enough for an overview.
+The package-level JavaDocs provide more details, in case you need them.
+But from these brief observations, you already know that different classes
+are responsible for building requests, parsing responses, and
+communicating through sockets.
+The base class of the client handler ties the helpers together.
+The call path from the <code>Main</code> class
+through package <code>pityoulish.cmdline</code>
+and class <code>MsgBoardCommandDispatcher</code>
+into the client handler is of little interest.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
