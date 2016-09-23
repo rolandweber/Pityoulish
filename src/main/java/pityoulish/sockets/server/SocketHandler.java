@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 
 
 /**
+ * Handles requests, on the transport layer.
  * Handler for servicing requests received through socket connections.
  */
 public interface SocketHandler

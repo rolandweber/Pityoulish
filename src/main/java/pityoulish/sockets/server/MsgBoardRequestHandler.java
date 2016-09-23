@@ -11,8 +11,7 @@ import pityoulish.msgboard.MessageBatch;
 
 
 /**
- * Handles {@link MsgBoardRequest}s.
- * This encapsulates application-level logic.
+ * Handles {@link MsgBoardRequest}s, on the application layer.
  * There is neither request parsing nor response building here.
  * Input is expected as an already parsed request object.
  * On success, output is provided as a single result object.

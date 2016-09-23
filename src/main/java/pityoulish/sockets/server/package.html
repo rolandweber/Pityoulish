@@ -5,9 +5,84 @@
   https://creativecommons.org/publicdomain/zero/1.0/
 -->
 <body>
-Message Board Server with sockets.
+Message Board Server with sockets:
+server-side implementation of the binary protocol for the Message Board.
 
-Server-side implementation of the binary protocol for the Message Board.
+<p>
+This package distinguishes three layers for handling requests:
+</p>
+<dl>
+<dt>
+Application Layer, see
+{@link pityoulish.sockets.server.MsgBoardRequestHandler}
+</dt>
+<dd>
+Request data is available as Java objects,
+encapsulated by {@link pityoulish.sockets.server.MsgBoardRequest}.
+Response data is provided as Java objects,
+the classes depend on the request.
+This layer executes the requested operations.
+It is unaware of the wire format for requests or responses.
+</dd>
+<dt>Protocol Layer, see
+{@link pityoulish.sockets.server.RequestHandler}
+</dt>
+<dd>
+Request data is available as binary data in memory.
+Response data is provided as binary data in memory.
+This layer takes care of parsing and building the wire format,
+using {@link pityoulish.sockets.server.RequestParser}
+and   {@link pityoulish.sockets.server.ResponseBuilder} helpers.
+It is unaware of the communication technology and threading details.
+</dd>
+<dt>Transport Layer, see
+{@link pityoulish.sockets.server.SocketHandler}
+</dt>
+<dd>
+Request data is received from clients into memory.
+Response data is sent to clients from memory.
+This layer takes care of accepting connections, reading, and writing.
+The implementation determines how many threads are used for servicing,
+how many requests can be processed in parallel, and the like.
+</dd>
+</dl>
+
+<p>
+The {@link pityoulish.sockets.server.Main} class interprets
+command-line arguments, then creates the stack of handlers and helpers.
+</p>
+
+<p>
+On the application layer,
+{@link pityoulish.sockets.server.MsgBoardRequestImpl}
+contains request data and
+{@link pityoulish.sockets.server.MsgBoardRequestHandlerImpl}
+executes requested operations.
+</p>
+
+<p>
+On the protocol layer,
+{@link pityoulish.sockets.server.RequestHandlerImpl}
+parses requests, calls the application-layer handler, and builds responses.
+The TLV wire format is implemented
+in  {@link pityoulish.sockets.server.TLVRequestParserImpl}
+and {@link pityoulish.sockets.server.TLVResponseBuilderImpl}.
+</p>
+
+<p>
+On the transport layer,
+{@link pityoulish.sockets.server.SimplisticSocketHandler}
+implements the bare minimum of functionality. It uses a single thread to
+accept connections, read requests, handle requests, and send responses.
+Because it uses blocking IO, it cannot accept a new connection while
+serving a request.
+Malicious clients could send requests slowly, byte by byte,
+to make the server unavailable for other clients.
+<i>
+An implementation with asynchronous IO is planned for the future, see
+<a href="https://github.com/rolandweber/pityoulish/issues/15">Issue #15</a>.
+</i>
+</p>
 
 </body>
 </html>

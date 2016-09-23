@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 
 /**
- * Handles requests, on the protocol level.
+ * Handles requests, on the protocol layer.
  * Expects binary request data as input,
  * provides binary response data as output.
  * Sending and receiving is left to the caller.
