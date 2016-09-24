@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
+import pityoulish.outtake.Missing;
+
 
 /**
  * Default implementation of {@link SocketBackendHandler}.
@@ -109,8 +111,15 @@ public class SocketBackendHandlerImpl implements SocketBackendHandler
   protected Socket connectBlocking()
     throws IOException
   {
-    //@@@ to allow for failover, look up all InetAddresses and try one by one?
-    return new Socket(hostName, portNumber);
+    Socket sock = null;
+
+    // PYL:keep
+    Missing.here("create and connect a socket");
+    // PYL:cut
+    sock = new Socket(hostName, portNumber);
+    // PYL:end
+
+    return sock;
   }
 
 
@@ -124,7 +133,6 @@ public class SocketBackendHandlerImpl implements SocketBackendHandler
   protected Socket connectAsynchronously()
     throws IOException
   {
-    //@@@ to allow for failover, look up all InetAddresses and try one by one?
     InetSocketAddress isa = new InetSocketAddress(hostName, portNumber);
     return SocketChannel.open(isa).socket();
   }

@@ -7,6 +7,7 @@ package pityoulish.sockets.client;
 
 import java.nio.ByteBuffer;
 
+import pityoulish.outtake.Missing;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
 
@@ -51,8 +52,16 @@ public class TLVResponseParserImpl implements ResponseParser
       } break;
 
       case TICKET_GRANT: {
-        String ticket =
-          parseNestedStringValue(tlv, MsgBoardType.TICKET, "US-ASCII");
+        String ticket = null;
+
+        // PYL:keep
+        Missing.here("parse the Ticket Grant response");
+        // Refer to the specification of the Binary Protocol for details.
+        // Watch out for the correct encoding of the ticket.
+        // PYL:cut
+        ticket = parseNestedStringValue(tlv, MsgBoardType.TICKET, "US-ASCII");
+        // PYL:end
+
         visitor.visitTicketGrant(ticket);
       } break;
 

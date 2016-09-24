@@ -7,6 +7,7 @@ package pityoulish.sockets.client;
 
 import java.nio.ByteBuffer;
 
+import pityoulish.outtake.Missing;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
 
@@ -58,9 +59,14 @@ public class TLVRequestBuilderImpl implements RequestBuilder
 
     if (marker != null)
      {
+       // PYL:keep
+       Missing.here("add a Marker to the List Messages request");
+       // Refer to the specification of the Binary Protocol for details.
+       // PYL:cut
        param = request.appendTLV(MsgBoardType.MARKER);
        param.setTextValue(marker, "US-ASCII");
        request.addToLength(param.getSize());
+       // PYL:end
      }
 
     return request.toBuffer();
@@ -110,11 +116,20 @@ public class TLVRequestBuilderImpl implements RequestBuilder
   // non-javadoc, see interface
   public ByteBuffer buildReplaceTicket(String ticket)
   {
-    return buildSingleStringRequest(0,
-                                    MsgBoardType.REPLACE_TICKET,
-                                    MsgBoardType.TICKET,
-                                    ticket, false
-                                    ).toBuffer();
+    MsgBoardTLV request = null;
+
+    // PYL:keep
+    Missing.here("build the Replace Ticket request");
+    // Refer to the specification of the Binary Protocol for details.
+    // PYL:cut
+    request = buildSingleStringRequest(0,
+                                       MsgBoardType.REPLACE_TICKET,
+                                       MsgBoardType.TICKET,
+                                       ticket, false
+                                       );
+    // PYL:end
+
+    return request.toBuffer();
   }
 
 
