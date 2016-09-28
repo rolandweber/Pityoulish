@@ -77,6 +77,7 @@ Instructions: Message Board with Sockets
       <include name="ijs-*" />
       <include name="message-board.html" />
       <include name="protocol-tlv.html" />
+      <include name="classroom-setup.html" />
     </fileset>
   </copy>
   <move file="${server-sockets-java.prose}/ijs-index.html"
