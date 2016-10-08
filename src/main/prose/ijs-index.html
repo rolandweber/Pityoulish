@@ -13,22 +13,44 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <h1 id="tutorial" class="title">
   <span>Instructor's Notes: Message Board with Sockets</span>
 </h1>
-<p class="abstract todo">
-Objective of this exercise...
+<p class="abstract">
+During this exercise, students will get a glimpse of how tedious it is
+to implement a low-level protocol on top of socket connections or other
+primitive communication mechanisms.
 </p>
 
 <div class="larger">
-<span class="todo">Overview...</span>
+<p>
+You're going to run a <a href="message-board.html">Message Board</a> server
+which implements the <a href="protocol-tlv.html">Binary Protocol</a>.
+Students have to fix a Java client that connects to your server via sockets.
+Missing code requires the students
+to open connections, create requests, and parse responses.
+The server generates console output
+to provide immediate feedback about incoming requests.
+</p>
+<p>
+These Instructor's Notes are organized chronologically:
+</p>
 
-it's about the  <a href="message-board.html">Message Board</a>
-and Java Sockets.
-With a <a href="protocol-tlv.html">Binary Protocol</a>.
+<ol>
+<li><a href="#prepare">Prepare</a>:
+  Get hardware, install software, hand out the Tutorial.</li>
+<li><a href="#rehearse">Rehearse</a>:
+  Hook up the hardware, work through the exercise yourself.</li>
+<li><a href="#execute">Execute</a>:
+  Let students work through the exercise, enjoy the show.</li>
+<li><a href="#evaluate">Lessons Learned</a>:
+  By the students, by yourself, for the next time, for others.</li>
+</ol>
+
 </div>
 
 
 
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="upfront"><span>What You Need</span></h2><!-- Ingredients -->
+<h2 id="prepare"><span>Prepare</span></h2>
 
 <div class="box-right">
 <dl>
@@ -40,55 +62,66 @@ With a <a href="protocol-tlv.html">Binary Protocol</a>.
 </dl>
 </div><!-- box-right -->
 
+<p class="todo">
+Tutorial: Give as homework, one or two weeks of headroom.
+<i>Details to be fleshed out.</i>
+</p>
+
+<p class="todo">
+Get <a href="classroom-setup.html#procure">What You Need</a> as described
+in the generic <a href="classroom-setup.html">Classroom Setup</a>.
+Exercise-specific details:
+</p>
+
 <ul class="todo">
 <li>
-Tutorial. Give as homework, one or two weeks of headroom.
-<i>Details to be fleshed out.</i>
-</li>
-<li>
-Hardware. See generic <a href="classroom-setup.html">Classroom Setup</a>.
-</li>
-<li>
-Software. JDK as the server runtime (JVM might suffice).
 Message Board socket server, see box.
-Local web server with exercise and Java API docs;
-optional if Internet connection is available.
 </li>
 <li>
-Client. Different machine!
-<i>Only for the rehearsal, but you MUST rehearse.</i>
+Server Runtime: JDK.
+A JVM might suffice, but better be prepared to recompile something.
+</li>
+<li>
+Web Server:
+Classroom Exercise (must),
+Tutorial (recommended),
+Java API Docs (recommended).
+</li>
+<li>
+Don't put these Instructor's Notes on the web server.
+Students might be tempted to look into the server implementation.
 </li>
 </ul>
+
+
+<p class="todo">
+Schedule: see generic <a href="classroom-setup.html">Classroom Setup</a>.
+<i>Anything exercise-specific to add here?</i>
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="rehearse"><span>Rehearse</span></h2>
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="rehearse-tech"><span>Tech Rehearsal</span></h3>
-
-<p>
-See generic <a href="classroom-setup.html">Classroom Setup</a>.
+<p class="todo">
+Perform the <a href="classroom-setup.html#rehearse">Tech Rehearsal</a>
+as described in the <a href="classroom-setup.html">Classroom Setup</a>.
+Do this at least once a year, or whenever you change the server,
+the operating system, the classroom, or the classroom equipment.
 </p>
-
 <ul class="todo">
 <li>
-Exercise-specific instructions beyond the generic ones?
+See above for the Message Board socket server.
 </li>
 <li>
-Web server: Exercise, Java API docs, Tutorial (optional).
-</li>
-<li>
-Start Message Board Socket server in terminal.
 Wanna play with the server locale?
-Access Message Board server from other machine.
 </li>
 </ul>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="rehearse-content"><span>Content Rehearsal</span></h3>
-
+<p>
+Content Rehearsal:
+</p>
 <ul class="todo">
 <li>
 Work through the Tutorial yourself, if you haven't done so yet.
@@ -98,20 +131,6 @@ Work through the Exercise yourself.
 </li>
 <li>
 You need to be prepared even better than the students, so you can help them.
-</li>
-</ul>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="schedule"><span>Schedule</span></h2>
-
-<p>
-See generic <a href="classroom-setup.html">Classroom Setup</a>.
-</p>
-
-<ul class="todo">
-<li>
- Anything exercise-specific to add here?
 </li>
 </ul>
 
@@ -186,7 +205,7 @@ The instructor can help by choosing a low capacity.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="learned"><span>Lessons Learned</span></h2>
+<h2 id="evaluate"><span>Lessons Learned</span></h2>
 
 <!-- How much of this here, how much in Exercise? -->
 <ul class="todo">
@@ -213,7 +232,7 @@ Suggested improvements?
 </ul>
 
 <p>
-Provide feedback, positive and negative, to the Open Source project at
+Please provide feedback, positive and negative, to the Open Source project at
 <a href="https://github.com/rolandweber/pityoulish/"
    >https://github.com/rolandweber/pityoulish/</a>.
 Just open an issue and share your experience.
