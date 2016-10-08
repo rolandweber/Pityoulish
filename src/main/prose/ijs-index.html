@@ -35,7 +35,7 @@ These Instructor's Notes are organized chronologically:
 
 <ol>
 <li><a href="#prepare">Prepare</a>:
-  Get hardware, install software, hand out the Tutorial.</li>
+  Get hardware, install software, assign the Tutorial.</li>
 <li><a href="#rehearse">Rehearse</a>:
   Hook up the hardware, work through the exercise yourself.</li>
 <li><a href="#execute">Execute</a>:
@@ -62,42 +62,65 @@ These Instructor's Notes are organized chronologically:
 </dl>
 </div><!-- box-right -->
 
-<p class="todo">
-Tutorial: Give as homework, one or two weeks of headroom.
-<i>Details to be fleshed out.</i>
+<p>
+Students must work through the <b>Tutorial</b> to prepare for Java exercises.
+Assign it as homework at least one week before the classroom exercise.
+Maybe two weeks, depending on the proficiency and workload of the students.
+Refer to section <a href="classroom-setup.html#schedule">Schedule</a>
+in the <a href="classroom-setup.html">Classroom Setup</a>
+for planning the classroom session.
+</p>
+<p>
+Explain protocol families (IPv4/v6), host addresses, and port numbers
+before the Tutorial.
+Explain socket connections before the classroom exercise.
+Explain TLVs before the classroom exercise, maybe on the very day.
+That's an opportunity to discuss protocol design,
+before or after the exercise.
+
+Advantages and drawbacks of bit-level protocols
+like <a href="https://tools.ietf.org/html/rfc2795#section-3"
+    class="covert">IMPS</a>,
+compared to
+<a href="https://en.wikipedia.org/wiki/X.690"
+    title="Overview of X.690 on Wikipedia" class="covert">TLVs</a>,
+or text-based protocols like
+<a href="https://tools.ietf.org/html/rfc2616" class="covert">HTTP/1.1</a>?
+
+Why not use plain
+<a href="http://www.json.org/" class="covert">JSON</a> or
+<a href="https://tools.ietf.org/html/rfc5322" class="covert">IMF</a>
+in the transport layer?
+<!--
+The transport layer has no (simple) way to detect the end of a message.
+Would have to close the connection to indicate the end,
+or define a message terminator that is invalid JSON/IMF (null byte?),
+or parse JSON in the transport layer.
+Parsing JSON should better be left to a higher layer.
+-->
 </p>
 
-<p class="todo">
-Get <a href="classroom-setup.html#procure">What You Need</a> as described
-in the generic <a href="classroom-setup.html">Classroom Setup</a>.
-Exercise-specific details:
-</p>
 
-<ul class="todo">
-<li>
-Message Board socket server, see box.
-</li>
-<li>
-Server Runtime: JDK.
-A JVM might suffice, but better be prepared to recompile something.
-</li>
-<li>
-Web Server:
-Classroom Exercise (must),
-Tutorial (recommended),
-Java API Docs (recommended).
-</li>
-<li>
-Don't put these Instructor's Notes on the web server.
-Students might be tempted to look into the server implementation.
-</li>
+<p>
+Refer to section <a href="classroom-setup.html#procure">What You Need</a>
+in the <a href="classroom-setup.html">Classroom Setup</a>
+for generic hardware and software requirements.
+
+The expected <b>server runtime</b> is a Java Development Kit (JDK).
+A Java Virtual Machine (JVM) might suffice,
+but it's better to be prepared for compiling something.
+<a href="mbserver-sockets.jar"
+       ><code>mbserver-sockets.jar</code></a>
+contains the Message Board server with sockets,
+see the box above for usage instructions.
+
+Recommended information to put on the local web server includes:
+</p>
+<ul>
+<li>Classroom Exercise</li>
+<li>Tutorial</li>
+<li>Java API Docs</li>
 </ul>
-
-
-<p class="todo">
-Schedule: see generic <a href="classroom-setup.html">Classroom Setup</a>.
-<i>Anything exercise-specific to add here?</i>
-</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -139,6 +162,8 @@ You need to be prepared even better than the students, so you can help them.
 <h2 id="execute"><span>Execute</span></h2>
 
 <ul class="todo">
+<li>Instructions to start the server?
+</li>
 <li>...
 </li>
 </ul>
