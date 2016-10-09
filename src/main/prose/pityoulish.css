@@ -300,6 +300,7 @@ div.side-note {
 div.side-note .content {
   float: right;
   margin-top: -1px;
+  margin-left: 1em;
   border: 1px solid;
   border-bottom-left-radius:  12px;
   border-bottom-right-radius: 12px;
