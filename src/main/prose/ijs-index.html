@@ -126,36 +126,63 @@ Recommended information to put on the local web server includes:
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="rehearse"><span>Rehearse</span></h2>
 
-<p class="todo">
-Perform the <a href="classroom-setup.html#rehearse">Tech Rehearsal</a>
-as described in the <a href="classroom-setup.html">Classroom Setup</a>.
-Do this at least once a year, or whenever you change the server,
-the operating system, the classroom, or the classroom equipment.
-</p>
-<ul class="todo">
-<li>
-See above for the Message Board socket server.
-</li>
-<li>
-Wanna play with the server locale?
-</li>
-</ul>
-
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Setup</span>
+</div></div>
 
 <p>
-Content Rehearsal:
+Perform the <a href="classroom-setup.html#rehearse">Tech Rehearsal</a>
+as described in the <a href="classroom-setup.html">Classroom Setup</a>.
+This will sort out power, display, network, and software configuration.
+You don't want to discover in front of the students that your new computer
+has a display adapter which doesn't connect to the projector,
+that a cable is too short, or that an operating system update
+has moved some configuration dialogs to arcane locations.
 </p>
-<ul class="todo">
-<li>
-Work through the Tutorial yourself, if you haven't done so yet.
+
+<p>
+See above for the Message Board server program you need to run.
+Parameters to consider:
+</p>
+<ul>
+<li>Port number.
+Pick one that isn't blocked by a firewall.
+Does 2888 work?
 </li>
-<li>
-Work through the Exercise yourself.
+<li>Board Capacity.
+A low capacity, for example 8 instead of 800,
+increases the probability of losing messages.
+In a production system, that would be undesired.
+During the exercise, it exposes a feature of the protocol.
 </li>
-<li>
-You need to be prepared even better than the students, so you can help them.
+<li>Server locale.
+<i>As of 2016, the server is not yet localized to languages
+  other than English.</i>
 </li>
 </ul>
+
+<div style="height: 0.8em;"></div>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Content</span>
+</div></div>
+
+<p>
+Perform a <b>Content Rehearsal</b> by working through the exercise yourself,
+on a dedicated client machine. That point is important. Some problems simply
+won't arise as long as you are running client and server on the same machine.
+If possible, use the actual network of your classroom setup, too.
+</p>
+
+<p>
+If you're encountering problems during the Content Rehearsal,
+maybe you should work through the Tutorial as well?
+You need to be prepared even better than the students, because they will be
+<span title="If they don't, your position as an instructor is doubtful."
+      >looking to you for help</span>.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
