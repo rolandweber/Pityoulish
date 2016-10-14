@@ -27,9 +27,12 @@ public interface RemoteMessageBoard extends Remote
    *            <code>marker</code>.
    *            The order of the messages is from older to newer.
    *            The list contains no more than <code>limit</code> messages.
+   *
+   * @throws APIException       in case of an application-level problem
+   * @throws RemoteException    in case of an infrastructure problem
    */
   public MessageList listMessages(int limit, String marker)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 
@@ -40,9 +43,12 @@ public interface RemoteMessageBoard extends Remote
    * @param ticket      the ticket (token) to authorize the operation
    *                    and to identify the originator
    * @param text        the content of the message
+   *
+   * @throws APIException       in case of an application-level problem
+   * @throws RemoteException    in case of an infrastructure problem
    */
   public void putMessage(String ticket, String text)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 }

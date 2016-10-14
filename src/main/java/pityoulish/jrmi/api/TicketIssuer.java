@@ -23,10 +23,11 @@ public interface TicketIssuer extends Remote
    * @return    the token of a newly issued ticket for the given user.
    *            If the request is denied, an exception is thrown.
    *
+   * @throws APIException       in case of an application-level problem
    * @throws RemoteException    in case of an infrastructure problem
    */
   public String obtainTicket(String username)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 
@@ -35,10 +36,11 @@ public interface TicketIssuer extends Remote
    *
    * @param ticket   the {@link #obtainTicket token} of the ticket to return
    *
+   * @throws APIException       in case of an application-level problem
    * @throws RemoteException    in case of an infrastructure problem
    */
   public void returnTicket(String ticket)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 
@@ -50,10 +52,11 @@ public interface TicketIssuer extends Remote
    * @return    the token of a newly issued ticket for the same user.
    *            If the request is denied, an exception is thrown.
    *
+   * @throws APIException       in case of an application-level problem
    * @throws RemoteException    in case of an infrastructure problem
    */
   public String replaceTicket(String ticket)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 }
