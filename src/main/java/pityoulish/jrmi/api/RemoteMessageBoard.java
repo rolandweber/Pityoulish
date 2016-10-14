@@ -5,11 +5,14 @@
  */
 package pityoulish.jrmi.api;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
 
 /**
  * Remote interface for the Message Board.
  */
-public interface RemoteMessageBoard
+public interface RemoteMessageBoard extends Remote
 {
   /**
    * Lists messages from this board.
@@ -26,6 +29,7 @@ public interface RemoteMessageBoard
    *            The list contains no more than <code>limit</code> messages.
    */
   public MessageList listMessages(int limit, String marker)
+    throws RemoteException
     ;
 
 
@@ -38,6 +42,7 @@ public interface RemoteMessageBoard
    * @param text        the content of the message
    */
   public void putMessage(String ticket, String text)
+    throws RemoteException
     ;
 
 }
