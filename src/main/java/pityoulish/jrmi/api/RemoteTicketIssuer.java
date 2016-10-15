@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  * Remote API for managing tickets.
  * On the caller side, tickets are represented by their token, a string.
  */
-public interface TicketIssuer extends Remote
+public interface RemoteTicketIssuer extends Remote
 {
   /**
    * Obtains a ticket.

@@ -21,7 +21,7 @@ public final class RegistryNames
   /** The name of the {@link RemoteMessageBoard} in the registry. */
   public final static String MESSAGE_BOARD = "RemoteMessageBoard";
 
-  /** The name of the {@link TicketIssuer} in the registry. */
-  public final static String TICKET_ISSUER = "TicketIssuer";
+  /** The name of the {@link RemoteTicketIssuer} in the registry. */
+  public final static String TICKET_ISSUER = "RemoteTicketIssuer";
 
 }
