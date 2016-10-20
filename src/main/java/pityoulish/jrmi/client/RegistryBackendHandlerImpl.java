@@ -6,6 +6,13 @@
 package pityoulish.jrmi.client;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+
+import pityoulish.jrmi.api.RegistryNames;
+import pityoulish.jrmi.api.RemoteMessageBoard;
+import pityoulish.jrmi.api.RemoteTicketIssuer;
 
 //import pityoulish.outtake.Missing;
 
@@ -19,7 +26,8 @@ public class RegistryBackendHandlerImpl implements RegistryBackendHandler
 
   protected int portNumber;
 
-  //@@@ RMI Registry
+  protected Registry rmiRegistry;
+
 
   // non-javadoc, see interface BackendHandler
   public void describeUsage(Appendable app, String cmd)
@@ -73,5 +81,39 @@ public class RegistryBackendHandlerImpl implements RegistryBackendHandler
   }
 
 
-  //@@@ implement additional methods
+  /**
+   * Looks up the RMI registry, if not already done.
+   *
+   * @return the registry
+   *
+   * @throws RemoteException    in case of a problem
+   */
+  public synchronized Registry ensureRegistry()
+    throws RemoteException
+  {
+    if (rmiRegistry == null)
+     {
+       // obtain a stub for the RMI registry on the server
+       rmiRegistry = LocateRegistry.getRegistry(hostName, portNumber);
+     }
+
+    return rmiRegistry;
+  }
+
+
+  public RemoteMessageBoard getRemoteMessageBoard()
+    throws Exception
+  {
+    return (RemoteMessageBoard)
+      ensureRegistry().lookup(RegistryNames.MESSAGE_BOARD.lookupName);
+  }
+
+
+  public RemoteTicketIssuer getRemoteTicketIssuer()
+    throws Exception
+  {
+    return (RemoteTicketIssuer)
+      ensureRegistry().lookup(RegistryNames.TICKET_ISSUER.lookupName);
+  }
+
 }

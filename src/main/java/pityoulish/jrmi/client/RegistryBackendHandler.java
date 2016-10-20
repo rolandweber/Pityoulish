@@ -8,6 +8,9 @@ package pityoulish.jrmi.client;
 import java.io.IOException;
 
 import pityoulish.cmdline.BackendHandler;
+import pityoulish.jrmi.api.RemoteMessageBoard;
+import pityoulish.jrmi.api.RemoteTicketIssuer;
+
 
 
 /**
@@ -33,9 +36,28 @@ public interface RegistryBackendHandler extends BackendHandler
     ;
 
 
-  //@@@ add methods to...
-  //@@@ - get the registry
-  //@@@ - lookup the anchor objects from api.RegistryNames
+  /**
+   * Look up the {@link RemoteMessageBoard} in the registry.
+   *
+   * @return    a stub for the Message Board
+   *
+   * @throws Exception    in case of a problem
+   */
+  public RemoteMessageBoard getRemoteMessageBoard()
+    throws Exception
+    ;
+
+
+  /**
+   * Look up the {@link RemoteTicketIssuer} in the registry.
+   *
+   * @return    a stub for the Ticket Issuer
+   *
+   * @throws Exception    in case of a problem
+   */
+  public RemoteTicketIssuer getRemoteTicketIssuer()
+    throws Exception
+    ;
 
 }
 

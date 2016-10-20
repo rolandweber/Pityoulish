@@ -5,6 +5,11 @@
  */
 package pityoulish.jrmi.client;
 
+import pityoulish.jrmi.api.MessageItem;
+import pityoulish.jrmi.api.MessageList;
+import pityoulish.jrmi.api.RemoteMessageBoard;
+import pityoulish.jrmi.api.RemoteTicketIssuer;
+
 
 /**
  * Default implementation of {@link MsgBoardClientHandler}.
@@ -12,7 +17,7 @@ package pityoulish.jrmi.client;
 public class MsgBoardClientHandlerImpl
   implements MsgBoardClientHandler
 {
-  protected final RegistryBackendHandler registryBackend;
+  protected final RegistryBackendHandler regBackend;
 
 
   /**
@@ -26,7 +31,7 @@ public class MsgBoardClientHandlerImpl
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
 
-    registryBackend = rbh;
+    regBackend = rbh;
   }
 
 
@@ -34,7 +39,18 @@ public class MsgBoardClientHandlerImpl
   public void listMessages(int limit, String marker)
     throws Exception
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
+
+    //@@@ NLS light
+    System.out.println("requesting "+limit+" message(s)" +
+                       (marker != null ? " with marker"+marker : ""));
+    MessageList msglist = rmb.listMessages(limit, marker);
+
+    //@@@ delegate printing to a call-completion handler
+    System.out.println("result: "+msglist);
+    //@@@ print marker, print missed indicator
+    for (MessageItem msg : msglist.getMessages())
+       System.out.println(msg);
   }
 
 
@@ -42,7 +58,9 @@ public class MsgBoardClientHandlerImpl
   public void putMessage(String ticket, String text)
     throws Exception
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
+
+    rmb.putMessage(ticket, text);
   }
 
 
@@ -50,7 +68,12 @@ public class MsgBoardClientHandlerImpl
   public void obtainTicket(String username)
     throws Exception
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
+
+    String ticket = rti.obtainTicket(username);
+
+    //@@@ delegate printing to a call-completion handler
+    System.out.println("obtained ticket: "+ticket);
   }
 
 
@@ -58,7 +81,9 @@ public class MsgBoardClientHandlerImpl
   public void returnTicket(String ticket)
     throws Exception
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
+
+    rti.returnTicket(ticket);
   }
 
 
@@ -66,7 +91,12 @@ public class MsgBoardClientHandlerImpl
   public void replaceTicket(String ticket)
     throws Exception
   {
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
+
+    String replacement = rti.replaceTicket(ticket);
+
+    //@@@ delegate printing to a call-completion handler
+    System.out.println("obtained ticket: "+replacement);
   }
 
 }
