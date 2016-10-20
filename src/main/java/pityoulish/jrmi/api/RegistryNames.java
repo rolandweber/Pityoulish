@@ -9,19 +9,28 @@ package pityoulish.jrmi.api;
 /**
  * Name constants for lookup in the RMI Registry.
  */
-public final class RegistryNames
+public enum RegistryNames
 {
-  /** Disabled default constructor. */
-  private RegistryNames()
+  /** The name of the {@link RemoteMessageBoard} in the registry. */
+  MESSAGE_BOARD("RemoteMessageBoard"),
+
+  /** The name of the {@link RemoteTicketIssuer} in the registry. */
+  TICKET_ISSUER("RemoteTicketIssuer");
+
+
+  /** The name for looking up or registering this remote object. */
+  public final String lookupName;
+
+
+  private RegistryNames(String ln)
   {
-    throw new UnsupportedOperationException("cannot be instantiated");
+    lookupName = ln;
   }
 
 
-  /** The name of the {@link RemoteMessageBoard} in the registry. */
-  public final static String MESSAGE_BOARD = "RemoteMessageBoard";
-
-  /** The name of the {@link RemoteTicketIssuer} in the registry. */
-  public final static String TICKET_ISSUER = "RemoteTicketIssuer";
+  public final String getLookupName()
+  {
+    return lookupName;
+  }
 
 }

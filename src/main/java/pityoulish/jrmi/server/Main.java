@@ -70,8 +70,8 @@ public final class Main
     System.out.println(rtiistub);
 
     Registry mainreg = createDefaultRegistry(port);
-    mainreg.bind(RegistryNames.MESSAGE_BOARD, rmbi);
-    mainreg.bind(RegistryNames.TICKET_ISSUER, rtii);
+    mainreg.bind(RegistryNames.MESSAGE_BOARD.lookupName, rmbi);
+    mainreg.bind(RegistryNames.TICKET_ISSUER.lookupName, rtii);
 
 
     // If we just return here, the Java program keeps running. There are
