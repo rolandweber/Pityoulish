@@ -1,0 +1,35 @@
+<html>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<body>
+Exercise: Message Board Client with Java RMI.
+
+<p>
+When called from the command line
+through the {@link pityoulish.jrmi.client.Main} class,
+the client looks up the RMI registry, then the relevant anchor object,
+performs one remote call to the server, reports the result,
+and finally ends.
+Two command-line arguments specify the server to contact,
+this information is passed to the
+{@link pityoulish.jrmi.client.RegistryBackendHandler}.
+Further command-line arguments specify the call to perform,
+this information is passed to the
+{@link pityoulish.sockets.client.MsgBoardCommandDispatcher},
+which delegates to a
+{@link pityoulish.sockets.client.MsgBoardClientHandler}.
+That's where the real action takes place.
+</p>
+
+<p>
+The implementation of the client handler interface is
+{@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}.
+With the given remote API, and the single-call functionality explained above,
+there's not much point in an alternative implementation.
+</p>
+
+</body>
+</html>
