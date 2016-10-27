@@ -5,7 +5,6 @@
  */
 package pityoulish.jrmi.client;
 
-import pityoulish.jrmi.api.MessageItem;
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
@@ -19,19 +18,26 @@ public class MsgBoardClientHandlerImpl
 {
   protected final RegistryBackendHandler regBackend;
 
+  protected final DataFormatter userOutput;
+
 
   /**
    * Creates a new client handler implementation.
    *
    * @param rbh   the backend handler
+   * @param df    the data formatter for printing results
    */
   //@@@ pass a call-completion handler (or output formatter? result handler?)
-  public MsgBoardClientHandlerImpl(RegistryBackendHandler rbh)
+  public MsgBoardClientHandlerImpl(RegistryBackendHandler rbh,
+                                   DataFormatter df)
   {
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
+    if (df == null)
+       throw new NullPointerException("DataFormatter");
 
     regBackend = rbh;
+    userOutput = df;
   }
 
 
@@ -46,11 +52,7 @@ public class MsgBoardClientHandlerImpl
                        (marker != null ? " with marker"+marker : ""));
     MessageList msglist = rmb.listMessages(limit, marker);
 
-    //@@@ delegate printing to a call-completion handler
-    System.out.println("result: "+msglist);
-    //@@@ print marker, print missed indicator
-    for (MessageItem msg : msglist.getMessages())
-       System.out.println(msg);
+    userOutput.printMessageList(msglist);
   }
 
 
@@ -72,8 +74,7 @@ public class MsgBoardClientHandlerImpl
 
     String ticket = rti.obtainTicket(username);
 
-    //@@@ delegate printing to a call-completion handler
-    System.out.println("obtained ticket: "+ticket);
+    userOutput.printTicket(ticket);
   }
 
 
@@ -95,8 +96,7 @@ public class MsgBoardClientHandlerImpl
 
     String replacement = rti.replaceTicket(ticket);
 
-    //@@@ delegate printing to a call-completion handler
-    System.out.println("obtained ticket: "+replacement);
+    userOutput.printTicket(ticket);
   }
 
 }

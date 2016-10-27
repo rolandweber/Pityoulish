@@ -22,9 +22,11 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
+    DataFormatter df = new DataFormatterImpl(System.out);
+
     // rbh deals with the registry, mbch calls the server remotely
     RegistryBackendHandler rbh = new RegistryBackendHandlerImpl();
-    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(rbh);
+    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(rbh, df);
 
     // mbcd interprets command-line arguments
     MsgBoardCommandDispatcher mbcd = new MsgBoardCommandDispatcher(mbch);
