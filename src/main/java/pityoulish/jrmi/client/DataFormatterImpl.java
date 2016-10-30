@@ -46,16 +46,21 @@ public class DataFormatterImpl implements DataFormatter
     if (msglist == null)
        throw new NullPointerException("MessageList");
 
-    //@@@ NLS light
-    out.println("result: "+msglist);
+    out.println(Catalog.CONSOLE_MSG_LIST_HEADER.lookup());
 
     if (msglist.isDiscontinuous())
-       out.println("...messages could be missing...");
+       out.println(Catalog.CONSOLE_MESSAGES_MISSED.lookup());
 
     for (MessageItem msg : msglist.getMessages())
-       out.println(msg);
+     {
+       out.println(Catalog.CONSOLE_MESSAGE_ABOUT_2.format
+                   (msg.getOriginator(), msg.getTimestamp()));
+       out.println(msg.getText());
+     }
 
-    out.println("Marker: "+msglist.getMarker());
+    out.println(Catalog.CONSOLE_MSG_LIST_FOOTER.lookup());
+
+    out.println(Catalog.CONSOLE_MARKER_1.format(msglist.getMarker()));
   }
 
 
@@ -64,8 +69,7 @@ public class DataFormatterImpl implements DataFormatter
     if (ticket == null)
        throw new NullPointerException("ticket");
 
-    //@@@ NLS light
-    out.println("obtained ticket: "+ticket);
+    out.println(Catalog.CONSOLE_TICKET_1.format(ticket));
   }
 
 }

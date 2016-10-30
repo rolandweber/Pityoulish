@@ -27,7 +27,6 @@ public class MsgBoardClientHandlerImpl
    * @param rbh   the backend handler
    * @param df    the data formatter for printing results
    */
-  //@@@ pass a call-completion handler (or output formatter? result handler?)
   public MsgBoardClientHandlerImpl(RegistryBackendHandler rbh,
                                    DataFormatter df)
   {
@@ -47,9 +46,6 @@ public class MsgBoardClientHandlerImpl
   {
     RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
 
-    //@@@ NLS light
-    System.out.println("requesting "+limit+" message(s)" +
-                       (marker != null ? " with marker"+marker : ""));
     MessageList msglist = rmb.listMessages(limit, marker);
 
     userOutput.printMessageList(msglist);
@@ -96,7 +92,7 @@ public class MsgBoardClientHandlerImpl
 
     String replacement = rti.replaceTicket(ticket);
 
-    userOutput.printTicket(ticket);
+    userOutput.printTicket(replacement);
   }
 
 }
