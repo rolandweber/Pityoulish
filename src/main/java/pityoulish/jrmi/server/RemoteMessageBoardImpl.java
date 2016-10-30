@@ -80,13 +80,12 @@ public class RemoteMessageBoardImpl extends RemoteObject
        }
       else
        {
-         throw new APIException("ticket used up");
-         //@@@ (Catalog.HANDLER_TICKET_USED_UP_1.format(tick.getToken()));
+         throw Catalog.TICKET_USED_UP_1.asApiX(tick.getToken());
        }
 
     } catch (TicketException tx) {
-      //@@@ improve exception handling
-      throw new APIException(tx.toString());
+      // clients couldn't deserialize class TicketException
+      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
     }
   }
 

@@ -53,8 +53,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
       return tick.getToken();
 
     } catch (TicketException tx) {
-      //@@@ improve exception handling
-      throw new APIException(tx.toString());
+      // clients couldn't deserialize class TicketException
+      throw Catalog.TICKET_DENIED_2.asApiX(username, tx.getLocalizedMessage());
     }
   }
 
@@ -70,8 +70,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
       ticketMgr.returnTicket(tick);
 
     } catch (TicketException tx) {
-      //@@@ improve exception handling
-      throw new APIException(tx.toString());
+      // clients couldn't deserialize class TicketException
+      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
     }
   }
 
@@ -93,8 +93,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
       return tick.getToken();
 
     } catch (TicketException tx) {
-      //@@@ improve exception handling
-      throw new APIException(tx.toString());
+      // clients couldn't deserialize class TicketException
+      throw Catalog.TICKET_REPLACE_DENIED_2.asApiX(tictok,
+                                                   tx.getLocalizedMessage());
     }
   }
 

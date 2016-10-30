@@ -48,8 +48,7 @@ public final class Main
       if (args.length > 1)
          capacity = Integer.parseInt(args[1]);
     } catch (NumberFormatException nfx) {
-      System.out.println(nfx);
-      //@@@ System.out.println(Catalog.fixEOL(Catalog.USAGE.lookup())); NLS
+      System.out.println(Catalog.fixEOL(Catalog.USAGE.lookup()));
       System.exit(1);
     }
 
@@ -68,6 +67,9 @@ public final class Main
     //@@@ NLS light?
     System.out.println(rmbistub);
     System.out.println(rtiistub);
+
+    mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
+    mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
 
     Registry mainreg = createDefaultRegistry(port);
     mainreg.bind(RegistryNames.MESSAGE_BOARD.lookupName, rmbi);
@@ -94,8 +96,9 @@ public final class Main
   public static Registry createDefaultRegistry(int port)
     throws RemoteException
   {
-    //@@@ NLS light
-    System.out.println("creating registry listening on port "+port);
+    System.out.println(Catalog.REPORT_CREATE_REGISTRY_1.format
+                       (String.valueOf(port)));
+
     return LocateRegistry.createRegistry(port);
   }
 
@@ -118,17 +121,14 @@ public final class Main
     final boolean ok = (value != null) && (value.length() > 0);
     if (ok)
      {
-       //@@@ NLS light
-       System.out.println("Stubs will point to address '"+value+"'.");
+       System.out.println(Catalog.REPORT_JRMI_HOSTNAME_1.format
+                          (value));
      }
     else
      {
-       //@@@ NLS light
        // Not a fatal problem, still good enough for local development.
-       System.out.println("Please set property '"+name+
-                          "' to call here over a network.");
-       System.out.println("Use -D"+name+"=<name-or-IP-address> "+
-                          "when running this program.");
+       System.out.println(Catalog.REPORT_JRMI_HOSTNAME_PROPERTY_1.format
+                          (name));
      }
 
     return ok;

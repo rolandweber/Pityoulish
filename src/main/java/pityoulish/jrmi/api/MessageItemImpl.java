@@ -76,8 +76,8 @@ public class MessageItemImpl implements MessageItem, Serializable
     int len = 2+originator.length()+timestamp.length()+text.length();
     StringBuilder sb = new StringBuilder(len);
 
-    sb.append(originator).append(':')
-      .append(timestamp).append(':')
+    sb.append(originator).append('@')
+      .append(timestamp).append(' ')
       .append(text);
 
     return sb.toString();
