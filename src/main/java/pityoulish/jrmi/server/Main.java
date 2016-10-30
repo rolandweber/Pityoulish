@@ -34,12 +34,7 @@ public final class Main
   public static void main(String[] args)
     throws Exception
   {
-    // The server name or IP address has to be set as a system property.
-    // Otherwise, stubs will point to some version of 'localhost' and be
-    // useless on other machines. Report whether the property is set.
-    checkForHostnameProperty();
-
-    int port = 1088; // default port for registries is 1099
+    int port = 1088; // default for the exercises (RMI default is 1099)
     int capacity = 8;
 
     try {
@@ -51,6 +46,11 @@ public final class Main
       System.out.println(Catalog.fixEOL(Catalog.USAGE.lookup()));
       System.exit(1);
     }
+
+    // The server name or IP address has to be set as a system property.
+    // Otherwise, stubs will point to some version of 'localhost' and be
+    // useless on other machines. Report whether the property is set.
+    checkForHostnameProperty();
 
 
     MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
