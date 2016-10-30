@@ -53,20 +53,23 @@ public final class Main
     checkForHostnameProperty();
 
 
-    MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
-    TicketManager          tim  = new DefaultTicketManager();
+    MixedMessageBoard       mmb  = new MixedMessageBoardImpl(capacity);
+    TicketManager           tim  = new DefaultTicketManager();
 
-    RemoteMessageBoardImpl rmbi = new RemoteMessageBoardImpl(mmb, tim);
-    RemoteTicketIssuerImpl rtii = new RemoteTicketIssuerImpl(tim);
+    RemoteMessageBoardImpl  rmbi = new RemoteMessageBoardImpl(mmb, tim);
+    RemoteTicketIssuerImpl  rtii = new RemoteTicketIssuerImpl(tim);
+    RemoteOutletManagerImpl romi = new RemoteOutletManagerImpl(tim);
 
     // These objects will most likely listen on another port than the registry.
     // It depends on the RMI implementation whether they share the same port.
     Remote rmbistub = UnicastRemoteObject.exportObject(rmbi, 0);
     Remote rtiistub = UnicastRemoteObject.exportObject(rtii, 0);
+    Remote romistub = UnicastRemoteObject.exportObject(romi, 0);
 
     //@@@ NLS light?
     System.out.println(rmbistub);
     System.out.println(rtiistub);
+    System.out.println(romistub);
 
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
@@ -74,6 +77,7 @@ public final class Main
     Registry mainreg = createDefaultRegistry(port);
     mainreg.bind(RegistryNames.MESSAGE_BOARD.lookupName, rmbi);
     mainreg.bind(RegistryNames.TICKET_ISSUER.lookupName, rtii);
+    mainreg.bind(RegistryNames.OUTLET_MANAGER.lookupName, romi);
 
 
     // If we just return here, the Java program keeps running. There are
