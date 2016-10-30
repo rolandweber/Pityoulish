@@ -56,7 +56,11 @@ public class RemoteMessageBoardImpl extends RemoteObject
   {
     //@@@ verify arguments... see issue #11
 
-    MessageBatch mb = msgBoard.listMessages(limit, marker);
+    MessageBatch mb = null;
+    synchronized (msgBoard) {
+      // the default message board implementation is not thread safe
+      mb = msgBoard.listMessages(limit, marker);
+    }
 
     // MessageBatch and other interfaces and classes from pityoulish.msgboard
     // are internal server classes. The data must be converted into classes
@@ -73,10 +77,13 @@ public class RemoteMessageBoardImpl extends RemoteObject
     //@@@ verify arguments... see issue #11
 
     try {
+      // Ticket and TicketManager are thread safe, MessageBoard is not
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
       if (tick.punch())
        {
-         msgBoard.putMessage(tick.getUsername(), text);
+         synchronized (msgBoard) {
+           msgBoard.putMessage(tick.getUsername(), text);
+         }
        }
       else
        {
