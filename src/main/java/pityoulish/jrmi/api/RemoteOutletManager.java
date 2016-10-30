@@ -69,7 +69,7 @@ public interface RemoteOutletManager extends Remote
    * @throws RemoteException    in case of an infrastructure problem
    */
   public DirectMessageOutlet getOutlet(String username)
-    throws RemoteException
+    throws RemoteException, APIException
     ;
 
 }
