@@ -8,6 +8,7 @@ package pityoulish.jrmi.server;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
 
+import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.UserMessageBoard;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
@@ -55,7 +56,13 @@ public class RemoteMessageBoardImpl extends RemoteObject
   {
     //@@@ verify arguments... see issue #11
 
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    MessageBatch mb = msgBoard.listMessages(limit, marker);
+
+    // MessageBatch and other interfaces and classes from pityoulish.msgboard
+    // are internal server classes. The data must be converted into classes
+    // and interfaces of the remote API, which is available to the client.
+
+    return DataConverter.toMessageList(mb);
   }
 
 
