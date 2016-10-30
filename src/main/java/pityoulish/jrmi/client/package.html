@@ -18,15 +18,15 @@ this information is passed to the
 {@link pityoulish.jrmi.client.RegistryBackendHandler}.
 Further command-line arguments specify the call to perform,
 this information is passed to the
-{@link pityoulish.sockets.client.MsgBoardCommandDispatcher},
+{@link pityoulish.jrmi.client.MsgBoardCommandDispatcher},
 which delegates to a
-{@link pityoulish.sockets.client.MsgBoardClientHandler}.
+{@link pityoulish.jrmi.client.MsgBoardClientHandler}.
 That's where the real action takes place.
 </p>
 
 <p>
 The implementation of the client handler interface is
-{@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}.
+{@link pityoulish.jrmi.client.MsgBoardClientHandlerImpl}.
 With the given remote API, and the single-call functionality explained above,
 there's not much point in an alternative implementation.
 </p>

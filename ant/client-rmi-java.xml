@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="client-rmi-java" default="client-rmi-java" basedir="..">
+<description>
+Exercise: Message Board Client with Java RMI
+</description>
+
+<import file="common.xml" />
+
+<target name="client-rmi-java" depends="xjr-all"
+        description="Exercise: Java RMI (xjr)" />
+
+<!-- prefix of the target filenames -->
+<property name="client-rmi-java.name"  value="mbclient-jrmi" />
+<property name="client-rmi-java.prose"
+          location="${dir.target}/${client-rmi-java.name}" />
+
+<property name="client-rmi-java.tmp"
+          location="${dir.tmp}/client-rmi-java" />
+<property name="client-rmi-java.jdoc"
+          location="${client-rmi-java.tmp}/jdoc" />
+
+
+<target name="xjr-clean">
+  <delete quiet="true">
+    <fileset dir="${client-rmi-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${client-rmi-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjr-jar" depends="_tstamps,compile-pitfill">
+
+  <!-- same pattern for sources and classes, pitted and filled -->
+  <patternset id="client-rmi-java.into.jar">
+    <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/client/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${client-rmi-java.name}-faulty.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.client.Main" />
+    </manifest>
+    <fileset dir="${src.pitted}">
+      <patternset refid="client-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.pitted}">
+      <patternset refid="client-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+  <jar.pty destfile="${dir.target}/${client-rmi-java.name}-good.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.client.Main" />
+    </manifest>
+    <fileset dir="${src.filled}">
+      <patternset refid="client-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.filled}">
+      <patternset refid="client-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjr-jdoc" depends="preprocess">
+
+  <delete dir="${client-rmi-java.tmp}/jdoc" quiet="true" />
+  <mkdir  dir="${client-rmi-java.tmp}/jdoc" />
+
+  <javadoc destdir="${client-rmi-java.tmp}/jdoc"
+    access="protected"
+    windowtitle="Exercise: Message Board Client with Java RMI"
+    nohelp="true"
+    encoding="ISO-8859-1"
+    >
+    <packageset dir="${src.pitted}">
+      <include name="pityoulish/jrmi/api" />
+      <include name="pityoulish/jrmi/client" />
+      <include name="pityoulish/cmdline" />
+      <include name="pityoulish/i18n" />
+    </packageset>
+    <group title="Remote API">
+      <package name="pityoulish.jrmi.api" />
+    </group>
+    <group title="Client">
+      <package name="pityoulish.jrmi.client" />
+    </group>
+    <group title="Support">
+      <package name="pityoulish.cmdline" />
+      <package name="pityoulish.i18n" />
+    </group>
+  </javadoc>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjr-prose">
+
+  <delete dir="${client-rmi-java.prose}" />
+  <copy todir="${client-rmi-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="xjr-*" />
+      <include name="message-board.html" />
+    </fileset>
+  </copy>
+  <move file="${client-rmi-java.prose}/xjr-index.html"
+        tofile="${client-rmi-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="xjr-all" depends="_tstamps,xjr-jar,xjr-jdoc,xjr-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${client-rmi-java.prose}">
+    <file file="${dir.target}/${client-rmi-java.name}-faulty.jar" />
+    <fileset dir="${client-rmi-java.tmp}" includes="jdoc/**" />
+  </copy>
+
+  <property name="client-rmi-java.zip.prefix"
+            value="${client-rmi-java.name}" />
+
+  <zip destfile="${dir.target}/${client-rmi-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${client-rmi-java.name}"
+                prefix="${client-rmi-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${client-rmi-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>
