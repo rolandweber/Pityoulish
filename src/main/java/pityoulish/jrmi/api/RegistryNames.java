@@ -15,7 +15,10 @@ public enum RegistryNames
   MESSAGE_BOARD("RemoteMessageBoard"),
 
   /** The name of the {@link RemoteTicketIssuer} in the registry. */
-  TICKET_ISSUER("RemoteTicketIssuer");
+  TICKET_ISSUER("RemoteTicketIssuer"),
+
+  /** The name of the {@link RemoteOutletManager} in the registry. */
+  OUTLET_MANAGER("RemoteOutletManager");
 
 
   /** The name for looking up or registering this remote object. */
