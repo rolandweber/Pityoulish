@@ -5,6 +5,7 @@
  */
 package pityoulish.jrmi.outlet;
 
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Arrays;
 
@@ -36,12 +37,37 @@ public class MsgOutletHandlerImpl
 
 
   // non-javadoc, see interface MsgBoardClientHandler
-  public void openOutlet(String ticket, int limit)
+  public void openOutlet(String ticket, int seconds)
     throws Exception
   {
     checkForHostnameProperty();
 
-    throw new UnsupportedOperationException("@@@ not yet implemented");
+    RemoteOutletManager rom = regBackend.getRemoteOutletManager();
+
+    DirectMessageOutletImpl dmoi = new DirectMessageOutletImpl();
+    DirectMessageOutlet     stub =
+      (DirectMessageOutlet) UnicastRemoteObject.exportObject(dmoi, 0);
+
+    System.out.println(Catalog.REPORT_OPEN_OUTLET_1.format(dmoi));
+    System.out.println(Catalog.REPORT_OPEN_STUB_1.format(stub));
+
+    // In order for this JVM to terminate without a call to System.exit,
+    // the object has to be unexported. That's done in the finally block.
+    try {
+      System.out.println(Catalog.REPORT_OPEN_PUBLISH_0.format());
+      // It doesn't matter whether the object or its stub is published.
+      // The RMI logic will pass the stub either way.
+      rom.publishOutlet(ticket, dmoi);
+
+      System.out.println(Catalog.REPORT_OPEN_WAITING_1.format(seconds));
+      Thread.sleep(seconds*1000);
+
+      System.out.println(Catalog.REPORT_OPEN_UNPUBLISH_0.format());
+      rom.unpublishOutlet(ticket);
+
+    } finally {
+      UnicastRemoteObject.unexportObject(dmoi, true);
+    }
   }
 
 

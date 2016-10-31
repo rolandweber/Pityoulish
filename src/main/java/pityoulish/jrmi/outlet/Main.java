@@ -31,7 +31,11 @@ public class Main
     ArgsInterpreter ai = new ArgsInterpreter(rbh, mocd);
 
     int status = ai.handle(args);
-    System.exit(status);
+
+    // For the learning experience, I don't want the JVM to terminate while
+    // there are still RMI threads running. Call System.exit only for errors.
+    if (status != 0)
+       System.exit(status);
   }
 
 }

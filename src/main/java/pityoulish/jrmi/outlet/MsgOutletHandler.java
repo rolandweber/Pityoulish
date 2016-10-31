@@ -21,7 +21,7 @@ public interface MsgOutletHandler
    * @param ticket      the ticket that permits the operation
    * @param seconds     how long to keep open
    */
-  public void openOutlet(String ticket, int limit)
+  public void openOutlet(String ticket, int seconds)
     throws Exception
     ;
 
