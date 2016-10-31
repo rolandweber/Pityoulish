@@ -37,6 +37,23 @@ public class MsgOutletHandlerImpl
 
 
   // non-javadoc, see interface MsgBoardClientHandler
+  public void listUsernames()
+    throws Exception
+  {
+    RemoteOutletManager rom = regBackend.getRemoteOutletManager();
+
+    List<String> usernames = rom.listUsernames();
+    if (usernames.size() < 1)
+     {
+       System.out.println(Catalog.REPORT_NO_OUTLET_0.format());
+     }
+
+    for (String username : usernames)
+       System.out.println(username);
+  }
+
+
+  // non-javadoc, see interface MsgBoardClientHandler
   public void openOutlet(String ticket, int seconds)
     throws Exception
   {

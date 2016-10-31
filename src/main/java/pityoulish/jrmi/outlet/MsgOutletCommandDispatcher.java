@@ -33,7 +33,7 @@ public class MsgOutletCommandDispatcher
    */
   public enum OutletCommand implements Command
   {
-    OPEN(2,2), SEND(3,3), UNPUBLISH(1,1);
+    LIST(0,0), OPEN(2,2), SEND(3,3), UNPUBLISH(1,1);
 
     public final int minArgs;
     public final int maxArgs;
@@ -81,6 +81,11 @@ public class MsgOutletCommandDispatcher
     int status = 0;
     switch(cmd)
      {
+      case LIST:
+        outletHandler.listUsernames();
+        break;
+
+
       case OPEN: {
         String ticket = args[0];
         int seconds = parseSeconds(args[1]);

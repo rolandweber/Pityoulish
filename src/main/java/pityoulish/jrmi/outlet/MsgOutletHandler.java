@@ -14,6 +14,14 @@ package pityoulish.jrmi.outlet;
 public interface MsgOutletHandler
 {
   /**
+   * Lists the usernames for which an outlet is published.
+   */
+  public void listUsernames()
+    throws Exception
+    ;
+
+
+  /**
    * Opens an outlet for a while and publishes it.
    * The outlet will close automatically, but will not be unpublished.
    * The ticket might be expired by then anyway.
