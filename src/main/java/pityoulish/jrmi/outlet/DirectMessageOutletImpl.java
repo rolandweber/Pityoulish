@@ -35,58 +35,52 @@ public class DirectMessageOutletImpl extends RemoteObject
     }
   }
 
+  /** The maximum length of a message, in characters. */
+  protected final static int MAX_MSGESSAGE_LENGTH = 160;
+
 
   // non-javadoc, see interface
   public void deliverMessage(String originator, String text)
   {
     String error = null;
-    String print = null;
-
-    //@@@ NLS light
 
     if ((originator == null) || (originator.length() < 1))
      {
-       error = "There is no originator. You're nobody.";
-       print = "no originator";
+       error = Catalog.MISSING_ORIGINATOR_0.format();
      }
     else if (!ORIGINATOR_PATTERN.matcher(originator).matches())
      {
-       error = "Invalid originator, for length or characters.";
-       print = "invalid originator";
+       error = Catalog.BAD_ORIGINATOR_0.format();
      }
     else if ((text == null) || (text.length() < 1))
      {
-       error = "There is no message. Stop wasting my time.";
-       print = "empty";
+       error = Catalog.MISSING_MESSAGE_0.format();
      }
-    else if (text.length() > 160)
+    else if (text.length() > MAX_MSGESSAGE_LENGTH)
      {
-       error = "The message is too long, maximum 160 characters.";
-       print = "message too long";
+       error = Catalog.MESSAGE_TOO_LONG_1.format(MAX_MSGESSAGE_LENGTH);
      }
     else if (!TEXT_PATTERN.matcher(text).matches())
      {
-       error = "Invalid character in message, don't use control characters.";
-       print = "invalid message";
+       error = Catalog.BAD_MESSAGE_0.format();
      }
 
     if (error != null)
      {
-       System.out.println("--- error: "+print);
+       System.out.println(Catalog.REPORT_BAD_DELIVERY_1.format(error));
        // Throwing an exception that is available in every JVM is safe,
        // even for remote calls.
        throw new IllegalArgumentException(error);
      }
 
-    System.out.println("--- from '"+originator+"' (unauthenticated)");
-    System.out.println(text);
+    System.out.println(Catalog.REPORT_MESSAGE_2.format(originator, text));
   }
 
 
   // non-javadoc, see interface
   public void ping()
   {
-    System.out.println("--- ping");
+    System.out.println(Catalog.REPORT_PING_0.format());
   }
 
 }
