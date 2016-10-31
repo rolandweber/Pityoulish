@@ -13,6 +13,40 @@ package pityoulish.jrmi.outlet;
  */
 public interface MsgOutletHandler
 {
-  //@@@ methods to be defined
+  /**
+   * Opens an outlet for a while and publishes it.
+   * The outlet will close automatically, but will not be unpublished.
+   * The ticket might be expired by then anyway.
+   *
+   * @param ticket      the ticket that permits the operation
+   * @param seconds     how long to keep open
+   */
+  public void openOutlet(String ticket, int limit)
+    throws Exception
+    ;
+
+
+  /**
+   * Sends a message to receivers.
+   *
+   * @param originator   the (purported) originator of the message
+   * @param text         the content of the message
+   * @param recipients   the recipients of the message,
+   *                     "*" for all published outlets
+   */
+  public void sendMessage(String originator, String text, String... recipients)
+    throws Exception
+    ;
+
+
+  /**
+   * Unpublishes an outlet.
+   * The username is implicitly specified by the ticket.
+   *
+   * @param ticket      the ticket that permits the operation
+   */
+  public void unpublishOutlet(String ticket)
+    throws Exception
+    ;
 
 }
