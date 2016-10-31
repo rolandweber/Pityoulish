@@ -179,8 +179,6 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
        throw new NullPointerException("InetAddress");
 
     try {
-      //@@@ should (some) errors be tolerated when returning the ticket?
-      //@@@ could take some fun out of error handling on the client side
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
       ticketMgr.returnTicket(tick);
 

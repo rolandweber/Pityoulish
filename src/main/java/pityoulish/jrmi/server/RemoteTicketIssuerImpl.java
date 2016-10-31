@@ -83,8 +83,6 @@ public class RemoteTicketIssuerImpl extends RemoteObject
     //@@@ verify argument... see issue #11
 
     try {
-      //@@@ should (some) errors be tolerated when returning the ticket?
-      //@@@ keep in sync with socket-based Message Board Server
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
       ticketMgr.returnTicket(tick);
 
