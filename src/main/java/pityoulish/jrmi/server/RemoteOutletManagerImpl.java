@@ -60,28 +60,62 @@ public class RemoteOutletManagerImpl extends RemoteObject
   {
     //@@@ verify first argument... see issue #11
 
-    //@@@ verify outlet... must be pingable
+    if (outlet == null)
+       throw new NullPointerException("DirectMessageOutlet");
 
     try {
+      outlet.ping(); // make sure the outlet is reachable (wrong hostname?)
+    } catch (RemoteException rx) {
+      // RemoteException is a standard exception, so it should be
+      // safe to wrap it, even when throwing to a remote caller.
+      throw Catalog.OUTLET_UNREACHABLE_1.asApiXWithCause(rx, outlet);
+    }
+
+    Ticket tick = null;
+    try {
       // Ticket and TicketManager are thread safe
-      Ticket tick = ticketMgr.lookupTicket(tictok, null);
-      if (tick.punch())
-       {
-         synchronized (username2outlet) {
-           //@@@ fail if an outlet for the username is already registered?
-           username2outlet.put(tick.getUsername(), outlet);
-         }
-       }
-      else
-       {
+      tick = ticketMgr.lookupTicket(tictok, null);
+      if (!tick.punch())
          throw Catalog.TICKET_USED_UP_1.asApiX(tick.getToken());
-       }
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
       throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
     }
-  }
+    // at this point, the ticket is valid and already punched
+    final String username = tick.getUsername();
+
+    // check if the user already has an outlet which is still alive
+    DirectMessageOutlet oldlet = null;
+    synchronized (username2outlet) {
+      oldlet = username2outlet.get(username);
+    }
+    if (oldlet != null)
+     {
+       // The ping can take a long time, so it's done outside synchronized {}.
+       // In consequence, other calls could set a new outlet, or replace
+       // the old one while it's being tested. That must be considered below.
+       try {
+         oldlet.ping();
+         throw Catalog.OUTLET_STILL_ALIVE_1.asApiX(oldlet);
+
+       } catch (RemoteException expected) {
+         // proceed, the exception indicates that the old outlet is dead
+       } 
+     }
+
+    synchronized (username2outlet) {
+      DirectMessageOutlet replaced = username2outlet.put(username, outlet);
+      if ((replaced != null) && (replaced != oldlet) && (replaced != outlet))
+       {
+         // A concurrent call published a different outlet for this user.
+         // Restore the other outlet and fail this call. This happens inside
+         // synchronized {}, so there is no other concurrent modification.
+         username2outlet.put(username, replaced);
+         throw Catalog.OUTLET_CONCURRENTLY_PUBLISHED_1.asApiX(replaced);
+       }
+    }
+  } // publishOutlet
 
 
   public void unpublishOutlet(String tictok)
@@ -94,10 +128,12 @@ public class RemoteOutletManagerImpl extends RemoteObject
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
       if (tick.punch())
        {
+         DirectMessageOutlet removed = null;
          synchronized (username2outlet) {
-           //@@@ fail if no outlet for the username is registered?
-           username2outlet.remove(tick.getUsername());
+           removed = username2outlet.remove(tick.getUsername());
          }
+         if (removed == null)
+            throw Catalog.OUTLET_NONE_1.asApiX(tick.getUsername());
        }
       else
        {
@@ -138,7 +174,7 @@ public class RemoteOutletManagerImpl extends RemoteObject
     }
 
     if (outlet == null)
-       throw new APIException("no outlet for '"+username+"'"); //@@@ NLS
+       throw Catalog.OUTLET_NONE_1.asApiX(username);
 
     return outlet;
   }
