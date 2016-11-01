@@ -50,6 +50,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
     try {
       Ticket tick = ticketMgr.obtainTicket(username, null);
 
+      System.out.println(Catalog.REPORT_OBTAIN_TICKET_2.format
+                         (username, tick.getToken()));
+
       return tick.getToken();
 
     } catch (TicketException tx) {
@@ -69,6 +72,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
       ticketMgr.returnTicket(tick);
 
+      System.out.println(Catalog.REPORT_RETURN_TICKET_1.format
+                         (tick.getUsername()));
+
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
       throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
@@ -87,6 +93,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
       ticketMgr.returnTicket(tick);
 
       tick = ticketMgr.obtainTicket(tick.getUsername(), null);
+
+      System.out.println(Catalog.REPORT_REPLACE_TICKET_2.format
+                         (tick.getUsername(), tick.getToken()));
 
       return tick.getToken();
 

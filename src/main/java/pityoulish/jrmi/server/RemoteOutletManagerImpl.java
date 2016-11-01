@@ -85,6 +85,9 @@ public class RemoteOutletManagerImpl extends RemoteObject
     // at this point, the ticket is valid and already punched
     final String username = tick.getUsername();
 
+    System.out.println(Catalog.REPORT_PUBLISH_OUTLET_1.format
+                       (username));
+
     // check if the user already has an outlet which is still alive
     DirectMessageOutlet oldlet = null;
     synchronized (username2outlet) {
@@ -128,12 +131,16 @@ public class RemoteOutletManagerImpl extends RemoteObject
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
       if (tick.punch())
        {
+         final String username = tick.getUsername();
+         System.out.println(Catalog.REPORT_UNPUBLISH_OUTLET_1.format
+                            (username));
+
          DirectMessageOutlet removed = null;
          synchronized (username2outlet) {
-           removed = username2outlet.remove(tick.getUsername());
+           removed = username2outlet.remove(username);
          }
          if (removed == null)
-            throw Catalog.OUTLET_NONE_1.asApiX(tick.getUsername());
+            throw Catalog.OUTLET_NONE_1.asApiX(username);
        }
       else
        {

@@ -62,6 +62,9 @@ public class RemoteMessageBoardImpl extends RemoteObject
       mb = msgBoard.listMessages(limit, marker);
     }
 
+    System.out.println(Catalog.REPORT_LIST_MESSAGES_2.format
+                       (mb.getMessages().size(), mb.getMarker()));
+
     // MessageBatch and other interfaces and classes from pityoulish.msgboard
     // are internal server classes. The data must be converted into classes
     // and interfaces of the remote API, which is available to the client.
@@ -84,6 +87,8 @@ public class RemoteMessageBoardImpl extends RemoteObject
          synchronized (msgBoard) {
            msgBoard.putMessage(tick.getUsername(), text);
          }
+         System.out.println(Catalog.REPORT_PUT_MESSAGE_1.format
+                            (tick.getUsername()));
        }
       else
        {
