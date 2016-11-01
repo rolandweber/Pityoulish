@@ -1,0 +1,134 @@
+<html>
+<!-- 
+This work is released into the Public Domain under the
+terms of the Creative Commons CC0 1.0 Universal license.
+https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="pityoulish.css" />
+<title>Direct Messages - Functional Description</title>
+</head>
+<body>
+<h1 id="direct" class="title"><span>Direct Messages</span></h1>
+<p class="abstract">
+Direct Messages complement the Message Board.
+Each user can create a personal outlet for receiving direct messages.
+The server manages a directory of published outlets.
+</p>
+
+<p class="larger">
+An outlet is a receiver for direct messages to a user.
+Users can create a personal outlet, publish or unpublish it in a directory,
+list the available outlets of all users, and send direct messages to them.
+Publishing or unpublishing an outlet requires a valid ticket.
+Tickets are the same as for the <a href="message-board.html">Message Board</a>.
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="outlets"><span>Outlets</span></h2>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="message-data"><span>Data</span></h3>
+
+<p>
+A direct message comprises...
+</p>
+<ul>
+<li><span class="title">Originator:</span>
+  The (purported) source of the message, a username or system name.
+  Beware, as there is no authentication.
+</li>
+
+<li><span class="title">Text:</span>
+  The contents of the message.
+  A string of Unicode characters, provided by the originator.
+  Keep it short and to the point, there is a size limit.
+</li>
+</ul>
+
+<p>
+There is no timestamp. Direct messages are delivered immediately.
+The receiver may generate a timestamp if desired.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="message-ops"><span>Operations</span></h3>
+
+<dl>
+<dt id="Create">(Create)</dt>
+<dd>
+  Creates a new outlet for receiving direct messages.
+  The outlet is made available for calls from others,
+  so that they can send direct messages here.
+</dd>
+
+<dt id="DeliverMessage">Deliver Message</dt>
+<dd>
+  Delivers a direct message to the owner of the outlet.
+  This operation is called by the originator of the direct message.
+</dd>
+
+<dt id="Ping">Ping</dt>
+<dd>
+  Does nothing.
+  This operation may be called by others to verify
+  that the outlet is alive and reachable.
+</dd>
+</dl>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="manager"><span>Outlet Manager</span></h2>
+<p>
+The outlet manager maintains a directory of published outlets.
+Publishing or unpublishing an outlet requires a valid ticket.
+Those are the same tickets as required by the
+<a href="message-board.html">Message Board</a>
+for putting up a message.
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="ticket-data"><span>Data</span></h3>
+
+<p>
+The directory is a map from usernames to outlets.
+When implemented with remote method invocation (RMI) or
+remote procedure calls (RPC), outlets are represented as stubs.
+The username is taken from the ticket when publishing or unpublishing.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="ticket-ops"><span>Operations</span></h3>
+
+<dl>
+<dt id="PublishOutlet">Publish Outlet</dt>
+<dd>
+  Publishes an outlet in the directory.
+  The client provides a ticket and an outlet.
+  The server associates the outlet with the username from the ticket.
+  The server may reject outlets that are not reachable.
+</dd>
+
+<dt id="UnpublishOutlet">Unpublish Outlet</dt>
+<dd>
+  Removes a published outlet from the directory.
+  The client provides a ticket.
+  The server removes the directory entry for the username from the ticket.
+</dd>
+
+<dt id="ListUsernames">List Usernames</dt>
+<dd>
+  Obtains the usernames in the directory.
+</dd>
+
+<dt id="GetOutlet">Get Outlet</dt>
+<dd>
+  Obtains the outlet for a username.
+  The client provides the username.
+  The server returns the outlet published by that user.
+</dd>
+</dl>
+
+</body>
