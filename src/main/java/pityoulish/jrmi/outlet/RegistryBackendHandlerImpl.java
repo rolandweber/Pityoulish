@@ -12,8 +12,7 @@ import java.rmi.registry.LocateRegistry;
 
 import pityoulish.jrmi.api.RegistryNames;
 import pityoulish.jrmi.api.RemoteOutletManager;
-
-//import pityoulish.outtake.Missing;
+import pityoulish.outtake.Missing;
 
 
 /**
@@ -92,8 +91,15 @@ public class RegistryBackendHandlerImpl implements RegistryBackendHandler
   {
     if (rmiRegistry == null)
      {
+       // PYL:keep
+       Missing.here("locate the RMI registry");
+       // ...and store it in the rmiRegistry attribute.
+       // That's the same piece of code which is missing from the client, too.
+       // You didn't think you could copy it from here, did you?
+       // PYL:cut
        // obtain a stub for the RMI registry on the server
        rmiRegistry = LocateRegistry.getRegistry(hostName, portNumber);
+       // PYL:end
      }
 
     return rmiRegistry;

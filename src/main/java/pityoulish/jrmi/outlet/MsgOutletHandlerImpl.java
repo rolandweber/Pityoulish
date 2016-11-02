@@ -5,12 +5,16 @@
  */
 package pityoulish.jrmi.outlet;
 
+// PYL:keep
+// PYL:cut
 import java.rmi.server.UnicastRemoteObject;
+// PYL:end
 import java.util.List;
 import java.util.Arrays;
 
 import pityoulish.jrmi.api.RemoteOutletManager;
 import pityoulish.jrmi.api.DirectMessageOutlet;
+import pityoulish.outtake.Missing;
 
 
 /**
@@ -60,21 +64,17 @@ public class MsgOutletHandlerImpl
     checkForHostnameProperty();
 
     RemoteOutletManager rom = regBackend.getRemoteOutletManager();
+    DirectMessageOutlet dmo = createLocalOutlet();
 
-    DirectMessageOutletImpl dmoi = new DirectMessageOutletImpl();
-    DirectMessageOutlet     stub =
-      (DirectMessageOutlet) UnicastRemoteObject.exportObject(dmoi, 0);
-
-    System.out.println(Catalog.REPORT_OPEN_OUTLET_1.format(dmoi));
-    System.out.println(Catalog.REPORT_OPEN_STUB_1.format(stub));
-
-    // In order for this JVM to terminate without a call to System.exit,
-    // the object has to be unexported. That's done in the finally block.
+    // PYL:keep
+    boolean noproblem = false;
+    // PYL:cut
+    // PYL:end
     try {
       System.out.println(Catalog.REPORT_OPEN_PUBLISH_0.format());
       // It doesn't matter whether the object or its stub is published.
-      // The RMI logic will pass the stub either way.
-      rom.publishOutlet(ticket, dmoi);
+      // The RMI logic will pass the stub to the registry either way.
+      rom.publishOutlet(ticket, dmo);
 
       System.out.println(Catalog.REPORT_OPEN_WAITING_1.format(seconds));
       Thread.sleep(seconds*1000);
@@ -82,9 +82,55 @@ public class MsgOutletHandlerImpl
       System.out.println(Catalog.REPORT_OPEN_UNPUBLISH_0.format());
       rom.unpublishOutlet(ticket);
 
+      // PYL:keep
+      noproblem = true;
+      // PYL:cut
+      // PYL:end
     } finally {
-      UnicastRemoteObject.unexportObject(dmoi, true);
+      // PYL:keep
+      // The "Missing" exception could shadow other problems, for example
+      // an invalid ticket. Throw it only if there is no other problem.
+      // Please remove the 'noproblem' flag from the code when you fix it.
+      if (noproblem)
+         Missing.here("close the outlet for remote method invocations");
+      // At this point, the outlet should become unavailable. However,
+      // the RMI runtime is still ready to serve remote calls. You'll
+      // notice that the JVM keeps running if you don't clean up here.
+      // Calling System.exit would be cheating. Tell RMI to stop serving
+      // remote calls for the outlet, then the JVM terminates gracefully.
+      // PYL:cut
+      UnicastRemoteObject.unexportObject(dmo, true);
+      // PYL:end
     }
+  }
+
+
+  /**
+   * Creates an outlet and makes it available for remote method invocations.
+   * Called from {@link #openOutlet}.
+   *
+   * @return    the outlet or its stub, it doesn't matter which
+   */
+  protected DirectMessageOutlet createLocalOutlet()
+    throws Exception
+  {
+    DirectMessageOutletImpl dmoi = null;
+    DirectMessageOutlet     stub = null;
+
+    // PYL:keep
+    Missing.here("create a local outlet");
+    // The JavaDocs and signature of this method, along with
+    // the variables declared here, should be clear enough.
+    // An import from java.rmi.server is missing though.
+    // PYL:cut
+    dmoi = new DirectMessageOutletImpl();
+    stub = (DirectMessageOutlet) UnicastRemoteObject.exportObject(dmoi, 0);
+    // PYL:end
+
+    System.out.println(Catalog.REPORT_OPEN_OUTLET_1.format(dmoi));
+    System.out.println(Catalog.REPORT_OPEN_STUB_1.format(stub));
+
+    return dmoi;
   }
 
 
@@ -113,6 +159,11 @@ public class MsgOutletHandlerImpl
     for (String username: usernames)
      {
        System.out.println(Catalog.REPORT_SENDING_TO_1.format(username));
+       // PYL:keep
+       Missing.here("deliver the message to the outlet of '"+username+"'");
+       // ...and don't forget to handle errors. If the outlet is broken,
+       // the loop should deliver the message to the remaining users anyway.
+       // PYL:cut
        try {
          DirectMessageOutlet dmo = rom.getOutlet(username);
          System.out.println(dmo); // NLS?
@@ -120,6 +171,7 @@ public class MsgOutletHandlerImpl
        } catch (Exception x) {
          System.out.println(x.toString()); // no trace
        }
+       // PYL:end
      }
   }
 
