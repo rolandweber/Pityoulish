@@ -8,6 +8,7 @@ package pityoulish.jrmi.client;
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
+import pityoulish.outtake.Missing;
 
 
 /**
@@ -88,9 +89,14 @@ public class MsgBoardClientHandlerImpl
   public void replaceTicket(String ticket)
     throws Exception
   {
-    RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
+    String replacement = null;
 
-    String replacement = rti.replaceTicket(ticket);
+    // PYL:keep
+    Missing.here("obtain a replacement ticket");
+    // PYL:cut
+    RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
+    replacement = rti.replaceTicket(ticket);
+    // PYL:end
 
     userOutput.printTicket(replacement);
   }
