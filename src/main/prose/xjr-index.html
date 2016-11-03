@@ -13,24 +13,22 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <h1 id="exercise" class="title">
   <span>Exercise: Message Board Client with Java RMI</span>
 </h1>
-<p class="abstract todo">
-...
+<p class="abstract">
+During this exercise, you will enjoy the convenience,
+gape at the limitations, and curse the intricacies
+of remote method invocation.
 </p>
 
 <div class="larger">
-<p class="todo">
-Part 1: <a href="message-board.html">Message Board</a>
-and
-Part 2: <a href="direct-messages.html">Direct Messages</a>
-</p>
-
 <p>
-Your task is to find and fix errors in a Java client program.
-The client communicates with a <a href="message-board.html">Message Board</a>
-server using Java Remote Method Invocation.
-The server is operated by the instructor.
-The client, when fixed, enables you to put messages on the board,
-and to read the messages others have put there.
+Your task is to find and fix errors in two Java programs.
+The first one is a <a href="message-board.html">Message Board</a> client
+using Java Remote Method Invocation.
+This allows for a direct comparison with the Message Board client
+using sockets from a previous exercise.
+The second program sends and receives
+<a href="direct-messages.html">Direct Messages</a>.
+This exposes the callee side of remote invocations.
 </p>
 
 <p>
@@ -84,6 +82,7 @@ along with the following:
   if the network is isolated from the Internet.</li>
 <li>URL to this exercise, optionally.</li>
 <li>URL to the Tutorial, optionally.</li>
+<li>URL to the exercise with sockets, optionally.</li>
 </ul>
 
 
@@ -339,50 +338,29 @@ Instead, use the Message Board client to obtain tickets.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="learned"><span>Lessons Learned</span></h2>
 
-<p class="todo">
-...
-</p>
-
 <p>
-Did you get through the full test sequence in time?
+Did you get through both test sequences in time?
 If not, where or how did you lose time?
 </p>
 
 <p>
-Did you spot gaps in the suggested test sequence?
-</p>
-
-<p>
 How do you like coding on this level?
-Opening connections, building and parsing TLVs,...
+Compare to the exercise with sockets.
 </p>
 
 <p>
-Are the instructions in this exercise sufficiently clear?
-If not, what was missing?
-</p>
-
-<p>
-Were you well prepared by the Tutorial?
-If not, because of the Tutorial or because you didn't complete it?
+Which security gaps did you spot during the exercise?
+Should those be addressed by the application, or by Java RMI?
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="gimme-more"><span>Want some more?</span></h3>
 
-<p>
-To gain programming experience, you could implement a long-running client
-that looks for new messages every few seconds.
 <!--
-When there are no new messages for a while, reduce the polling frequency.
-When there is a new message, increase it again.
+Is there a sensible programming task in this context?
+A long-running client, like for the sockets exercise, seems too dull.
 -->
-If you do it in Java, you may re-use the classes from this exercise.
-But you can also do it in Python, JavaScript, or a bunch of other languages.
-All you need is a Socket API and Unicode support.
-Ask the instructor for the server JAR, so you can test at home.
-</p>
 
 <p>
 This exercise is from <i>Pityoulish</i>,
