@@ -112,18 +112,15 @@ along with the following:
 Download the client program, <a href="mbclient-jrmi-faulty.jar"
                         ><code>mbclient-jrmi-faulty.jar</code></a>,
 and give it a decent filename.
-Remember how important it is to keep a positive mindset:
-<i>You will extirpate all faultiness.</i>
-Start with the filename.
 </p>
 
 <p>
 Run the client without arguments to obtain the usage instructions.
 Read and understand those.
-If you haven't done so already, read the high-level description
-of the <a href="message-board.html">Message Board</a> now.
-You will notice that the commands supported by the client
-match with the operations defined for a Message Board.
+The high-level description of the
+<a href="message-board.html">Message Board</a>
+should be familiar from a previous exercise.
+The client supports exactly the same commands as the client with sockets.
 </p>
 
 
@@ -186,18 +183,13 @@ There are three problems to find and fix.
 Download the outlet program, <a href="dmoutlet-jrmi-faulty.jar"
                         ><code>dmoutlet-jrmi-faulty.jar</code></a>,
 and give it a decent filename.
-Remember how important it is to keep a positive mindset:
-<i>You will extirpate all faultiness.</i>
-Start with the filename.
 </p>
 
 <p>
 Run the program without arguments to obtain the usage instructions.
 Read and understand those.
-If you haven't done so already, read the high-level description
-of <a href="direct-messages.html">Direct Messages</a> now.
-You will notice that the commands supported by the program
-match with the operations defined for outlets and the outlet manager.
+Compare the supported operations with the high-level description
+of <a href="direct-messages.html">Direct Messages</a>.
 For obtaining tickets, use the Message Board client above.
 </p>
 
@@ -205,12 +197,52 @@ For obtaining tickets, use the Message Board client above.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="outlet-sequence"><span>Test Sequence</span></h3>
 
-<p class="todo">
-...
+<p>
+The outlet program supports two modes of operation.
+On one hand, it can open an outlet and wait for direct messages.
+On the other hand, it can make a remote call to an outlet or outlet manager.
+For cooperation with your fellow students, please open an outlet
+as soon as possible and keep it open while you work on the remote calls.
+Last but not least, cleanup is required when closing an outlet.
+For example, use the following test sequence:
 </p>
+<ol>
+<li>
+Open an outlet, with a timespan of several minutes.
+When that works, run the program in a dedicated terminal and
+keep the outlet open for the remainder of the programming session,
+or at least until you get to the cleanup part. Check the terminal
+once in a while for direct messages from other students or the instructor.
+</li>
+<li>
+List the usernames for published outlets.
+Expect to see your own, maybe that of the instructor, and
+those of other students that managed to open an outlet.
+</li>
+<li>
+Send direct messages to the published outlets:
+a single recipient, a list of recipients, or * for everyone.
+Expect to deal with errors, because outlets may close
+without removing their entry from the directory.
+</li>
+<li>
+Unpublish your own outlet, before or after stopping
+the program running in a dedicated terminal.
+</li>
+<li>
+Open an outlet, for a few seconds only.
+Make sure that the program closes the outlet and exits cleanly.
+Note the difference between closing the outlet and unpublishing it.
+</li>
+<li>
+Can you open more than one outlet at a time?
+</li>
+</ol>
 
 <p>
-There are four problems to find and fix.
+There are four problems to fix in the code.
+There are numerous problems in the application architecture,
+but those are not the topic of this exercise.
 </p>
 
 
