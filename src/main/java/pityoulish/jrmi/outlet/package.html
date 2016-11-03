@@ -8,7 +8,37 @@
 Exercise: Direct Message Outlet with Java RMI.
 
 <p>
-<i>description missing...</i><!-- @@@ -->
+The program is invoked from the command line through
+the {@link pityoulish.jrmi.outlet.Main} class.
+
+Two command-line arguments specify the server to contact,
+this information is passed to the
+{@link pityoulish.jrmi.outlet.RegistryBackendHandler}.
+Further command-line arguments specify the operation to perform,
+this information is passed to the
+{@link pityoulish.jrmi.outlet.MsgOutletCommandDispatcher},
+which delegates to a
+{@link pityoulish.jrmi.outlet.MsgOutletHandler}.
+That's where the real action takes place.
+</p>
+
+<p>
+For the operation "open", the handler instantiates a
+{@link pityoulish.jrmi.outlet.DirectMessageOutletImpl},
+publishes that on the server, and waits for a given timespan.
+During this time, other JVMs can remotely call the outlet
+to deliver messages, which will be printed to standard output.
+When the timespan is over, the handler attempts to unpublish
+and close the outlet.
+Quite often, this will fail because the ticket has expired or
+does not allow any more actions. That's an intentional flaw,
+designed to confront students with error situations.
+</p>
+
+<p>
+For other operations, the handler performs a series of remote calls
+as required. It reports progress and results to standard output,
+then terminates without further delay.
 </p>
 
 </body>

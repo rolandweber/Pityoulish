@@ -250,8 +250,89 @@ but those are not the topic of this exercise.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="code"><span>Code Overview</span></h2>
 
-<p class="todo">
-...
+<p>
+There is one set of <a href="jdoc/index.html" target="_blank">JavaDocs</a>
+for both parts of the exercise. It is split into four groups.
+The last group comprises support packages which are already known from
+the Tutorial. The other three packages are briefly described here.
+</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="code-RemoteAPI"><span>Remote API</span></h3>
+
+<p>
+The Remote API in <code>pityoulish.jrmi.api</code> defines the glue
+which keeps clients and the server, outlets and senders together.
+There are four interfaces for remotely callable objects,
+they extend <code>java.rmi.Remote</code>.
+Three of them are named <code>Remote*</code>, their objects will be
+running on the server and can be looked up in the RMI registry.
+The lookup names are defined by an enum, <code>RegistryNames</code>.
+The fourth interface is <code>DirectMessageOutlet</code>,
+its objects will be running on the machines of all the participants.
+</p>
+
+<p>
+The remaining two interfaces in the Remote API describe
+data that is passed in remote calls.
+They extend <code>java.io.Serializable</code>, and
+there are implementation classes in the Remote API.
+This ensures that all participants can deserialize the objects.
+Finally, the <code>APIException</code> is for reporting errors.
+It is intentionally not derived from <code>java.rmi.RemoteException</code>,
+to clearly distinguish Java RMI problems from application problems.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="code-MessageBoard"><span>Message Board</span></h3>
+
+<p>
+Package <code>pityoulish.jrmi.client</code>
+contains the client for the Message Board.
+From the Remote API, it relies on
+<code>RemoteMessageBoard</code>, <code>RemoteTicketIssuer</code>,
+and the data representation of
+<code>MessageList</code> and <code>MessageItem</code>.
+The <code>Main</code> class and <code>MsgBoardCommandDispatcher</code>
+are familiar from a previous exercise.
+Commands are delegated to a <code>MsgBoardClientHandler</code>,
+backend arguments interpreted by a <code>RegistryBackendHandler</code>.
+A <code>DataFormatter</code> is responsible for printing data
+obtained from the server.
+Each of these interfaces has a single implementation class.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="code-DirectMessages"><span>Direct Messages</span></h3>
+
+<p>
+Package <code>pityoulish.jrmi.outlet</code>
+contains the logic for sending and receiving Direct Messages.
+From the Remote API, it relies on
+<code>RemoteOutletManager</code> and <code>DirectMessageOutlet</code>.
+The former is provided by the server,
+the latter both implemented and called by this package.
+<code>Main</code>, <code>MsgOutletCommandDispatcher</code>,
+and <code>RegistryBackendHandler</code>
+are similar to the Message Board client above.
+</p>
+
+<p>
+<code>DirectMessageOutletImpl</code> is a simple implementation of an outlet.
+Besides argument checking, it merely prints invocations and their arguments
+to the console.
+The commands supported by the program are delegated to a
+<code>MsgOutletHandler</code>, which has a single implementation class.
+</p>
+
+
+<p>
+Logically, Direct Messages require the same ticket-related operations as
+the Message Board client. To reduce code duplication, those commands which
+call the <code>RemoteTicketIssuer</code> are not implemented here again.
+Instead, use the Message Board client to obtain tickets.
 </p>
 
 

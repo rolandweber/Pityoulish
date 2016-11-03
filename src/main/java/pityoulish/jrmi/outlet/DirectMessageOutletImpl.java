@@ -12,7 +12,7 @@ import pityoulish.jrmi.api.DirectMessageOutlet;
 
 
 /**
- * Default implementation of {@link MsgOutletHandler}.
+ * Default implementation of {@link DirectMessageOutlet}.
  */
 public class DirectMessageOutletImpl extends RemoteObject
   implements DirectMessageOutlet

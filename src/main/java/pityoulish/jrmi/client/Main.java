@@ -10,7 +10,7 @@ import pityoulish.cmdline.BackendHandler;
 
 
 /**
- * Main entry point to the Message Board Client with sockets.
+ * Main entry point to the Message Board Client with Java RMI.
  */
 public class Main
 {
