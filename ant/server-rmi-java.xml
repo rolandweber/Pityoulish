@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="server-rmi-java" default="server-rmi-java" basedir="..">
+<description>
+Instructions: Message Board with Java RMI
+</description>
+
+<import file="common.xml" />
+
+<target name="server-rmi-java" depends="ijr-all"
+        description="Instructions: Java RMI (ijr)" />
+
+<!-- prefix of the target filenames -->
+<property name="server-rmi-java.name"  value="mbserver-jrmi" />
+<property name="server-rmi-java.prose"
+          location="${dir.target}/${server-rmi-java.name}" />
+
+<property name="server-rmi-java.tmp"
+          location="${dir.tmp}/server-rmi-java" />
+<property name="server-rmi-java.jdoc"
+          location="${server-rmi-java.tmp}/jdoc" />
+
+
+<target name="ijr-clean">
+  <delete quiet="true">
+    <fileset dir="${server-rmi-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${server-rmi-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijr-jar" depends="_tstamps,compile">
+
+  <patternset id="server-rmi-java.into.jar">
+    <include name="pityoulish/jrmi/server/*" />
+    <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/msgboard/*" />
+    <include name="pityoulish/tickets/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+    <!-- server jar without sources, but with properties -->
+    <exclude name="**/*.java" />
+    <exclude name="**/*.html" />
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${server-rmi-java.name}.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.server.Main" />
+    </manifest>
+    <fileset dir="${src.main}">
+      <patternset refid="server-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.main}">
+      <patternset refid="server-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijr-prose">
+
+  <delete dir="${server-rmi-java.prose}" />
+  <copy todir="${server-rmi-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="ijr-*" />
+      <include name="message-board.html" />
+      <include name="direct-messages.html" />
+      <include name="classroom-setup.html" />
+    </fileset>
+  </copy>
+  <move file="${server-rmi-java.prose}/ijr-index.html"
+        tofile="${server-rmi-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ijr-all" depends="_tstamps,ijr-jar,ijr-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${server-rmi-java.prose}">
+    <file file="${dir.target}/${server-rmi-java.name}.jar" />
+  </copy>
+
+  <property name="server-rmi-java.zip.prefix"
+            value="${server-rmi-java.name}" />
+
+  <zip destfile="${dir.target}/${server-rmi-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${server-rmi-java.name}"
+                prefix="${server-rmi-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${server-rmi-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>

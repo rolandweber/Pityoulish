@@ -16,6 +16,7 @@ support a course on "Distributed Systems"
 <import file="ant/client-sockets-java.xml" />
 <import file="ant/server-sockets-java.xml" />
 <import file="ant/client-rmi-java.xml" />
+<import file="ant/server-rmi-java.xml" />
 
 <target name="default" depends="compile,compile-pitfill" />
 
