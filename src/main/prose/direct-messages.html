@@ -57,24 +57,31 @@ The receiver may generate a timestamp if desired.
 <h3 id="message-ops"><span>Operations</span></h3>
 
 <dl>
-<dt id="Create">(Create)</dt>
+<dt id="Open">(open)</dt>
 <dd>
-  Creates a new outlet for receiving direct messages.
+  Opens an outlet for receiving direct messages.
   The outlet is made available for calls from others,
-  so that they can send direct messages here.
+  so that they can send direct messages there.
+  This operation is performed by the owner of the outlet.
 </dd>
 
 <dt id="DeliverMessage">Deliver Message</dt>
 <dd>
   Delivers a direct message to the owner of the outlet.
-  This operation is called by the originator of the direct message.
+  This operation is called by the originators of direct messages.
 </dd>
 
 <dt id="Ping">Ping</dt>
 <dd>
   Does nothing.
   This operation may be called by others to verify
-  that the outlet is alive and reachable.
+  that the outlet is reachable.
+</dd>
+
+<dt id="Close">(close)</dt>
+<dd>
+  Closes an outlet, so that it no longer accepts direct messages.
+  This operation is performed by the owner of the outlet.
 </dd>
 </dl>
 
@@ -107,15 +114,15 @@ The username is taken from the ticket when publishing or unpublishing.
 <dd>
   Publishes an outlet in the directory.
   The client provides a ticket and an outlet.
-  The server associates the outlet with the username from the ticket.
+  The server associates the outlet with the owner of the ticket.
   The server may reject outlets that are not reachable.
 </dd>
 
 <dt id="UnpublishOutlet">Unpublish Outlet</dt>
 <dd>
-  Removes a published outlet from the directory.
+  Removes an outlet from the directory.
   The client provides a ticket.
-  The server removes the directory entry for the username from the ticket.
+  The server removes the directory entry for the owner of the ticket.
 </dd>
 
 <dt id="ListUsernames">List Usernames</dt>
