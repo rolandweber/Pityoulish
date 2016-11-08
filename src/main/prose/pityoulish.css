@@ -68,6 +68,10 @@ body > p, body > div, body > dl, body > .main
     font-weight: normal;
     /* text-decoration: none; ...keep the hover-underlining */
   }
+
+  a > code {
+    white-space: nowrap;
+  }
 } /* @media screen */
 
 @media print {
