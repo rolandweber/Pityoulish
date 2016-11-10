@@ -47,37 +47,61 @@ the other two about organization.
 
 <dl>
 <dt>Server Machine</dt>
-<dd class="todo">
-Any Netbook will have sufficient performance.
-Video output (HDMI, VGA?) to connect to projector or other shared display.
+<dd>
+Even a Netbook will have sufficient computing power and memory
+for running the server software. The machine needs video output,
+so that you can connect it to a projector or other public display.
+Check which connector (HDMI, VGA), cables, or adapters you need.
 </dd>
 
 <dt>Server Runtime</dt>
-<dd class="todo">
-Depends on the exercise: JVM, Node.js, Python,...
-If you're not on x86 (Linux or Windows), better double-check availability.
+<dd>
+As of 2016, the required server runtime is a Java Virtual Machine (JVM),
+or better a Java Development Kit (JDK). Future enhancements might add
+components for Node.js, Python, or other runtimes.
+If your server machine is an x86 architecture running Linux, Windows,
+or MacOS, these runtimes are readily available.
+If you're on another architecture, for example a Raspberry Pi,
+better double-check the availability of the runtimes you require.
 </dd>
 
 <dt>Network</dt>
-<dd class="todo">
-Wireless access point without Internet connection will do.
-Might even be better than having an Internet connection:
-less distraction, no access to Pityoulish sources.
-With students working in pairs, one can connect to the server
-while the other does online research.
+<dd>
+A wireless access point, without Internet connection,
+should be enough to serve a dozen groups of students or more.&sup1;
+When working in groups, students can still do online research from a
+different machine than the one connected to the exercise network.
+If they wanted to cheat by accessing the Pityoulish source code,
+you couldn't stop them anyway.
+<br/>
+If you prefer to use an on-site network in the classroom,
+either wired or wireless, verify that there are no firewalls
+that would prevent the student machines from connecting to your server,
+or to eachother.
+<p>&sup1;)
+<i>In 2016, the corporate laptop of one student acted up though,
+complaining about "limited availability" of the network.</i>
+</p>
 </dd>
 
 <dt>Web Server</dt>
-<dd class="todo">
-Local web server with exercise and related documentation;
-optional if Internet connection is available.
-Server software with suitable runtime, depending on the exercise.
+<dd>
+The Pityoulish exercises are packaged for presentation on a web server.
+If the exercise network has no Internet connection, you should run a
+web server on the server machine. Otherwise, you can upload the material
+on any public web server.
+The content students need to access are the exercises themselves,
+and required documentation such as the standard JavaDocs.
+The exercises can also be downloaded as a zip file and extracted locally,
+for browsing with a <code>file:</code> URL.
 </dd>
 
 <dt>Client Machine</dt>
-<dd class="todo">
-<i>Only for the rehearsal, but you MUST rehearse.</i>
-Some problems only occur if the client actually runs on a different machine.
+<dd>
+A dedicated client machine is required only for the rehearsal,
+but you MUST rehearse. Some network related problems, like a wrong hostname
+or IP address in an RMI stub, will only occur if you run the client code
+on a different machine than the server component.
 </dd>
 </dl>
 
