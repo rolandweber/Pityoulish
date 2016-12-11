@@ -14,8 +14,6 @@ import java.nio.ByteBuffer;
 public abstract class MsgBoardClientHandlerBase
   implements MsgBoardClientHandler
 {
-  protected final SocketBackendHandler socketBackend;
-
   protected final RequestBuilder reqBuilder;
 
   protected final ResponseParser rspParser;
@@ -26,18 +24,14 @@ public abstract class MsgBoardClientHandlerBase
   /**
    * Creates a new client handler implementation.
    *
-   * @param sbh   the backend handler
    * @param rb    the request builder
    * @param rp    the response parser
    * @param rv    the response visitor
    */
-  public MsgBoardClientHandlerBase(SocketBackendHandler sbh,
-                                   RequestBuilder rb,
+  public MsgBoardClientHandlerBase(RequestBuilder rb,
                                    ResponseParser rp,
                                    ResponseParser.Visitor rv)
   {
-    if (sbh == null)
-       throw new NullPointerException("SocketBackendHandler");
     if (rb == null)
        throw new NullPointerException("RequestBuilder");
     if (rp == null)
@@ -45,7 +39,6 @@ public abstract class MsgBoardClientHandlerBase
     if (rv == null)
        throw new NullPointerException("ResponseParser.Visitor");
 
-    socketBackend = sbh;
     reqBuilder = rb;
     rspParser = rp;
     rspVisitor = rv;

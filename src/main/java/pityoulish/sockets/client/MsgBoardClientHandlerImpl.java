@@ -19,6 +19,9 @@ import pityoulish.sockets.tlv.MsgBoardTLV;
  */
 public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 {
+  protected final SocketBackendHandler socketBackend;
+
+
   public final static int  MAX_RESPONSE_SIZE = 32768; // bytes
   public final static int  RCV_SO_TIMEOUT    =  3500; // milliseconds
 
@@ -36,7 +39,12 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
                                    ResponseParser rp,
                                    ResponseParser.Visitor rv)
   {
-    super(sbh, rb, rp, rv);
+    super(rb, rp, rv);
+
+    if (sbh == null)
+       throw new NullPointerException("SocketBackendHandler");
+
+    socketBackend = sbh;
   }
 
 
