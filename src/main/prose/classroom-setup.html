@@ -110,47 +110,89 @@ on a different machine than the server component.
 <h2 id="rehearse"><span>Rehearse</span></h2>
 
 <p>
-Tech Rehearsal to avoid pitfalls.
+Described here is the
 <a href="https://notalwaysworking.com/all-the-worlds-a-rage/30673"
-   >Anecdote</a>.
-There's also a Content Rehearsal for each exercise, see there.
+   class="covert"
+   >Tech Rehearsal</a>,
+to sort out problems with cables, network, and the like.
+Once completed, you should be fine with the technical aspects
+until you change the classroom or some of your equipment.
+But there are also Content Rehearsals specific to each exercise.
+You need to run those, too.
 </p>
 
-<ul class="todo">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="rehearse-network"><span>Network</span></h3>
+
+<ol>
 <li>
-Connect server to network. Look up IP address or hostname.
+If you are running your own wireless access point, start it up.
+What's the WLAN name and password that students need to connect?
+Do you need to configure the firewall or other security options
+of the access point?
 </li>
 <li>
-Start web server.
-Connect client to network.
-Access web server from client: Exercise, related documentation.
-Use IP address or hostname in URL? http or https?
+Connect the server machine to the network, wired or wireless.
+What's the hostname or IP address that students need to contact?
 </li>
 <li>
-Start exercise-specific server in terminal.
-Fixed port or random port?
-Access server from other machine.
-Use IP address or hostname? Firewall in the way?
+What's the URL to the exercise and other information that students need?
+Do you have a landing page from which all the rest is linked?
+If you provide the information on a local web server, start it now.
 </li>
 <li>
-Connect server to projector or other shared display.
-Do you get a picture?
-Need to adjust graphic adapter settings?
-Mirror display or extend desktop?
+Start the exercise-specific server in a terminal.
+What's the port number that students need to connect to?
+This is actually part of the Content Rehearsal, see
+the Instructor's Notes of the exercise for details.
 </li>
 <li>
-Move terminal to shared display.
-Adjust window size, 80 columns or more recommended.
-Output readable from the back row?
-Adjust font size and colors.
+Connect a client machine to the network.
+This <i>must</i> be a different machine, so that you are actually
+testing the network rather than machine-local connections.
 </li>
 <li>
-Where will you put auxiliary for the students?
-Whiteboard, blackboard, flipchart that is not blocked by the projection screen?
-An extra window on the projected screen?
-Can't use the server terminal, that will scroll off.
+From the client machine, access the web server. Make sure that
+the exercise description as well as other required information is accessible.
 </li>
-</ul>
+<li>
+From the client machine, access the exercise-specific server.
+Again, this is part of the Content Rehearsal, see
+the Instructor's Notes of the exercise for details.
+</li>
+</ol>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="rehearse-display"><span>Display</span></h3>
+
+<ol>
+<li>
+Connect the server machine to the projector,
+or another public display in the classroom.
+Do you have to adjust desktop settings?
+Mirror the display, extend the desktop, or use only the external display?
+</li>
+<li>
+Move the terminal of the exercise-specific server to the public display.
+If you need other windows on the public display, open them now.
+For example, a terminal running a Follow-the-Board client.
+This is part of the Content Rehearsal, see
+the Instructor's Notes of the exercise for details.
+</li>
+<li>
+Make sure that each terminal is at least 80 columns wide.
+Arrange the windows.
+Adjust the font size and colors, so that output is readable from the back row.
+</li>
+<li>
+How will you provide the network information and URL to the students?
+Whiteboard, blackboard, flipchart?
+They might be obstructed by the projection screen.
+You can't use the server terminal, information would scroll off.
+</li>
+</ol>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
