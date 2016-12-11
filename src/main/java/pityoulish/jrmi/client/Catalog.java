@@ -25,7 +25,8 @@ public enum Catalog implements TextEntry
    CONSOLE_MESSAGE_ABOUT_2,
    CONSOLE_MSG_LIST_FOOTER,
    CONSOLE_MARKER_1,
-   CONSOLE_TICKET_1
+   CONSOLE_TICKET_1,
+   CONSOLE_DONE_0
    ;
 
 

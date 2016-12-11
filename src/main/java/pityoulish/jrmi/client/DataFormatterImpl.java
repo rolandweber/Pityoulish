@@ -72,4 +72,9 @@ public class DataFormatterImpl implements DataFormatter
     out.println(Catalog.CONSOLE_TICKET_1.format(ticket));
   }
 
+  public void printDone()
+  {
+    out.println(Catalog.CONSOLE_DONE_0.format());
+  }
+
 }

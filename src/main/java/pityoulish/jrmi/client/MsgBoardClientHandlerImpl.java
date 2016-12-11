@@ -60,6 +60,8 @@ public class MsgBoardClientHandlerImpl
     RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
 
     rmb.putMessage(ticket, text);
+
+    userOutput.printDone();
   }
 
 
@@ -82,6 +84,8 @@ public class MsgBoardClientHandlerImpl
     RemoteTicketIssuer rti = regBackend.getRemoteTicketIssuer();
 
     rti.returnTicket(ticket);
+
+    userOutput.printDone();
   }
 
 

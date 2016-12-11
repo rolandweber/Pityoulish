@@ -19,4 +19,7 @@ public interface DataFormatter
   public void printTicket(String ticket)
     ;
 
+  public void printDone()
+    ;
+
 }
