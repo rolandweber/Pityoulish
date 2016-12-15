@@ -58,13 +58,17 @@ public class RequestHandlerImpl implements RequestHandler
 
 
   // non-javadoc, see interface
-  public ByteBuffer handle(byte[] reqdata, int start, int end,
-                           InetAddress address)
+  public ByteBuffer handle(ByteBuffer request, InetAddress address)
    {
      // A missing argument is not a "processing problem" that should be
      // reported as an error response. It's stupidity by the caller.
-     if (reqdata == null)
-        throw new NullPointerException("reqdata");
+     if (request == null)
+        throw new NullPointerException("request");
+
+     //@@@ quick hack while refactoring the method signature...
+     byte[] reqdata = request.array();
+     int    start   = request.position() + request.arrayOffset();
+     int    end     = request.limit() + request.arrayOffset();
 
      // no exceptions may pass through beyond this point!
      ByteBuffer response = null;

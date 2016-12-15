@@ -323,10 +323,7 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       // The port number there most likely changes for every request.
       InetAddress address = sock.getInetAddress();
 
-      return reqHandler.handle(request.array(),
-                               request.position()+request.arrayOffset(),
-                               request.limit(),
-                               address);
+      return reqHandler.handle(request, address);
 
     } catch (Exception x) {
       System.out.println(x.toString());

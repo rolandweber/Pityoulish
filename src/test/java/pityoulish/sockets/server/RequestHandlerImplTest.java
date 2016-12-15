@@ -44,7 +44,7 @@ public class RequestHandlerImplTest
       // missing mandatory LIMIT
     };
 
-    ByteBuffer rspbuf = handler.handle(reqpdu, 0, reqpdu.length, ADDRESS);
+    ByteBuffer rspbuf = handler.handle(ByteBuffer.wrap(reqpdu), ADDRESS);
 
     assertNotNull("no response buffer");
     assertEquals("unexpected response type",
