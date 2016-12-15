@@ -235,7 +235,7 @@ public class TLVRequestParserImplTest
       (byte) 'a', (byte) 'b', (byte) 'c'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -267,7 +267,7 @@ public class TLVRequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -295,7 +295,7 @@ public class TLVRequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -571,7 +571,7 @@ public class TLVRequestParserImplTest
       (byte)'e', (byte)'v', (byte)'e', (byte)'r'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
@@ -605,7 +605,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
@@ -818,7 +818,7 @@ public class TLVRequestParserImplTest
       (byte)'m', (byte)'e'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.OBTAIN_TICKET, mbr.getReqType());
@@ -846,7 +846,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.RETURN_TICKET, mbr.getReqType());
@@ -874,7 +874,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.REPLACE_TICKET, mbr.getReqType());
