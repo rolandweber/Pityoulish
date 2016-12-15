@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 
 /**
  * Parses a binary request PDU into a {@link MsgBoardRequest}.
@@ -15,9 +17,8 @@ public interface RequestParser
   /**
    * Parses a request TLV into a convenient in-memory representation.
    *
-   * @param data    array containing the data to parse
-   * @param start   index of the first byte of data to parse
-   * @param end     index after the last byte of data to parse
+   * @param request   buffer holding the request to parse.
+   *                  The buffer must be backed by an array.
    *
    * @return    the request information
    *
@@ -26,7 +27,7 @@ public interface RequestParser
    *    For example, it checks for missing TLV elements. However,
    *    it does not check a received text for valid characters or length.
    */
-  public MsgBoardRequest parse(byte[] data, int start, int end)
+  public MsgBoardRequest parse(ByteBuffer request)
     throws ProtocolException
     ;
 

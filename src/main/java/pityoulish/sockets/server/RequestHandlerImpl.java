@@ -65,16 +65,12 @@ public class RequestHandlerImpl implements RequestHandler
      if (request == null)
         throw new NullPointerException("request");
 
-     //@@@ quick hack while refactoring the method signature...
-     byte[] reqdata = request.array();
-     int    start   = request.position() + request.arrayOffset();
-     int    end     = request.limit() + request.arrayOffset();
-
      // no exceptions may pass through beyond this point!
      ByteBuffer response = null;
      try {
-       MsgBoardRequest mbreq = reqParser.parse(reqdata, start, end);
+       MsgBoardRequest mbreq = reqParser.parse(request);
        response = dispatch(mbreq, address);
+
      } catch (Exception x) {
        response = rspBuilder.buildErrorResponse(x);
        describeException(x);

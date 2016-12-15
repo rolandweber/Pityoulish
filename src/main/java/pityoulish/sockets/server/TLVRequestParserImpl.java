@@ -5,6 +5,7 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.EnumMap;
 
@@ -21,26 +22,13 @@ public class TLVRequestParserImpl implements RequestParser
 
 
   // non-javadoc, see interface
-  public MsgBoardRequest parse(byte[] data, int start, int end)
+  public MsgBoardRequest parse(ByteBuffer request)
     throws ProtocolException
   {
-    if (data == null)
-       throw new NullPointerException("data");
-    // need at least 4 bytes for a valid MsgBoardTLV
-    if (data.length < 4)
-       throw new IllegalArgumentException
-         ("data.length="+data.length);
-    if ((start < 0) || (start+4 > data.length))
-       throw new IllegalArgumentException
-         ("start="+start+",data.length="+data.length);
-    if (end < start+4)
-       throw new IllegalArgumentException
-         ("end="+end+",start="+start);
-    // end may reach beyond the data
+    if (request == null)
+       throw new NullPointerException("ByteBuffer");
 
-    // At this point, we know there are at least 4 byte of data,
-    // so we can try to interpret that as a MsgBoardTLV.
-    MsgBoardTLV reqtlv = getRequestTLV(data, start, end);
+    MsgBoardTLV reqtlv = getRequestTLV(request);
 
     MsgBoardRequest result = null;
     switch (reqtlv.getType())
@@ -69,9 +57,6 @@ public class TLVRequestParserImpl implements RequestParser
         throw Catalog.INVALID_TOP_TLV_TYPE_1.asPX(reqtlv.getType());
      }
 
-    if (result == null)
-       throw new UnsupportedOperationException("@@@ not yet implemented");
-
     return result;
 
   } // parse
@@ -80,34 +65,34 @@ public class TLVRequestParserImpl implements RequestParser
   /**
    * Creates the top-level TLV and performs some validations.
    *
-   * @param data    array containing the data to parse
-   * @param start   index of the first byte of data to parse
-   * @param end     index after the last byte of data to parse
+   * @param request   buffer holding the request to parse.
+   *                  The buffer must be backed by an array.
    *
    * @return    the constructed TLV representing the request,
    *            never <code>null</code>
    *
    * @throws ProtocolException  in case of invalid request data
    */
-  protected MsgBoardTLV getRequestTLV(byte[] data, int start, int end)
+  protected MsgBoardTLV getRequestTLV(ByteBuffer request)
     throws ProtocolException
   {
-    // arguments already checked in parse(...) above
+    // need at least 4 bytes for a valid MsgBoardTLV
+    if (request.limit() < 4)
+       throw new IllegalArgumentException
+         ("request.limit="+request.limit());
 
     MsgBoardTLV result = null;
 
     try {
-      result = new MsgBoardTLV(data, start);
+      result = new MsgBoardTLV
+        (request.array(), request.position()+request.arrayOffset());
 
     } catch (RuntimeException rtx) {
       throw Catalog.INVALID_TOP_TLV_HEADER_0.asPXwithCause(rtx);
     }
 
-    if (result.getEnd() > end)
+    if (result.getEnd() > request.limit() + request.arrayOffset())
        throw Catalog.INVALID_TOP_TLV_LENGTH_0.asPX();
-
-    if (result.getEnd() > data.length)
-       throw Catalog.INCOMPLETE_TOP_TLV_DATA_0.asPX();
 
     // We could check for a valid type here. But the caller is going to
     // switch on the type anyway, so it's simpler to check it there.

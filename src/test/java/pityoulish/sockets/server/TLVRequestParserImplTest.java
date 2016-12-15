@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import java.nio.ByteBuffer;
+
 import pityoulish.sockets.server.MsgBoardRequest.ReqType;
 import pityoulish.sockets.tlv.MsgBoardTLV;
 import pityoulish.sockets.tlv.MsgBoardType;
@@ -55,8 +57,9 @@ public class TLVRequestParserImplTest
     RequestParser rp = new TLVRequestParserImpl();
 
     try {
-      MsgBoardRequest mbr = rp.parse(null, 0, 8);
+      MsgBoardRequest mbr = rp.parse(null);
       fail("null data not detected: "+mbr);
+
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
                       UnsupportedOperationException.class,
@@ -65,47 +68,8 @@ public class TLVRequestParserImplTest
 
     byte[] data = new byte[2];
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, 8);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("short data not detected: "+mbr);
-    } catch (RuntimeException expected) {
-      assertNotEquals("wrong exception",
-                      UnsupportedOperationException.class,
-                      expected.getClass());
-    }
-
-    // the rest of the attempts is with enough data in the array
-    data = new byte[8];
-
-    try {
-      MsgBoardRequest mbr = rp.parse(data, -1, 8);
-      fail("negative start not detected: "+mbr);
-    } catch (RuntimeException expected) {
-      assertNotEquals("wrong exception",
-                      UnsupportedOperationException.class,
-                      expected.getClass());
-    }
-
-    try {
-      MsgBoardRequest mbr = rp.parse(data, data.length-3, 8);
-      fail("excessive start not detected: "+mbr);
-    } catch (RuntimeException expected) {
-      assertNotEquals("wrong exception",
-                      UnsupportedOperationException.class,
-                      expected.getClass());
-    }
-
-    try {
-      MsgBoardRequest mbr = rp.parse(data, 3, 2);
-      fail("end before start not detected: "+mbr);
-    } catch (RuntimeException expected) {
-      assertNotEquals("wrong exception",
-                      UnsupportedOperationException.class,
-                      expected.getClass());
-    }
-
-    try {
-      MsgBoardRequest mbr = rp.parse(data, 3, 6);
-      fail("end shortly after start not detected: "+mbr);
     } catch (RuntimeException expected) {
       assertNotEquals("wrong exception",
                       UnsupportedOperationException.class,
@@ -114,9 +78,9 @@ public class TLVRequestParserImplTest
 
     // the 'positive' case: we still get an exception, but
     // about invalid data rather than illegal arguments
-
+    data = new byte[8];
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("invalid data not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -138,7 +102,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -160,7 +124,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -169,7 +133,7 @@ public class TLVRequestParserImplTest
   }
 
 
-  @Test public void parse_invalid_header_Length_end()
+  @Test public void parse_invalid_header_Length()
     throws ProtocolException
   {
     RequestParser rp = new TLVRequestParserImpl();
@@ -183,30 +147,7 @@ public class TLVRequestParserImplTest
 
     try {
       // end points to actual end of data
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
-      fail("invalid header not detected: "+mbr);
-    } catch (Exception expected) {
-      // expected.printStackTrace(System.err);
-      assertPX(expected, null);
-    }
-  }
-
-
-  @Test public void parse_invalid_header_Length_data()
-    throws ProtocolException
-  {
-    RequestParser rp = new TLVRequestParserImpl();
-    byte[] data = new byte[]{
-      MsgBoardType.LIST_MESSAGES.typeByte,
-      MsgBoardTLV.LENGTH_OF_LENGTH_2,
-      (byte) 0,
-      (byte) 4,
-      (byte) 0, (byte) 0, (byte) 0 // data too short, expect 4 byte
-    };
-
-    try {
-      // end matches the TLV size, but is beyond the available data
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length+1);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("invalid header not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -235,7 +176,7 @@ public class TLVRequestParserImplTest
       (byte) 'a', (byte) 'b', (byte) 'c'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -267,7 +208,7 @@ public class TLVRequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -295,7 +236,7 @@ public class TLVRequestParserImplTest
       limit.byteValue()
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.LIST_MESSAGES, mbr.getReqType());
@@ -324,7 +265,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -345,7 +286,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("missing limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -370,7 +311,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -395,7 +336,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -420,7 +361,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad limit not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -450,7 +391,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -479,7 +420,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -508,7 +449,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -541,7 +482,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("bad marker not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -571,7 +512,7 @@ public class TLVRequestParserImplTest
       (byte)'e', (byte)'v', (byte)'e', (byte)'r'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
@@ -605,7 +546,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.PUT_MESSAGE, mbr.getReqType());
@@ -635,7 +576,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("missing text not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -662,7 +603,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("missing ticket not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -684,7 +625,7 @@ public class TLVRequestParserImplTest
     };
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("missing ticket and text not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -723,7 +664,7 @@ public class TLVRequestParserImplTest
 
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("duplicate text not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -760,7 +701,7 @@ public class TLVRequestParserImplTest
 
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("unexpected originator not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -793,7 +734,7 @@ public class TLVRequestParserImplTest
 
 
     try {
-      MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+      MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
       fail("excessive nested TLV not detected: "+mbr);
     } catch (Exception expected) {
       // expected.printStackTrace(System.err);
@@ -818,7 +759,7 @@ public class TLVRequestParserImplTest
       (byte)'m', (byte)'e'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.OBTAIN_TICKET, mbr.getReqType());
@@ -846,7 +787,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.RETURN_TICKET, mbr.getReqType());
@@ -874,7 +815,7 @@ public class TLVRequestParserImplTest
       (byte)'p', (byte)'a', (byte)'s', (byte)'s'
     };
 
-    MsgBoardRequest mbr = rp.parse(data, 0, data.length);
+    MsgBoardRequest mbr = rp.parse(ByteBuffer.wrap(data));
 
     assertNotNull("no result", mbr);
     assertEquals("wrong type", ReqType.REPLACE_TICKET, mbr.getReqType());
