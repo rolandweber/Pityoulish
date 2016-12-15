@@ -18,30 +18,23 @@ public abstract class MsgBoardClientHandlerBase
 
   protected final ResponseParser rspParser;
 
-  protected final ResponseParser.Visitor rspVisitor;
-
 
   /**
    * Creates a new client handler implementation.
    *
    * @param rb    the request builder
    * @param rp    the response parser
-   * @param rv    the response visitor
    */
   public MsgBoardClientHandlerBase(RequestBuilder rb,
-                                   ResponseParser rp,
-                                   ResponseParser.Visitor rv)
+                                   ResponseParser rp)
   {
     if (rb == null)
        throw new NullPointerException("RequestBuilder");
     if (rp == null)
        throw new NullPointerException("ResponseParser");
-    if (rv == null)
-       throw new NullPointerException("ResponseParser.Visitor");
 
     reqBuilder = rb;
     rspParser = rp;
-    rspVisitor = rv;
   }
 
 

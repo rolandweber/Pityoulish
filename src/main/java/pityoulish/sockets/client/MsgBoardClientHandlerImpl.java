@@ -21,6 +21,8 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 {
   protected final SocketBackendHandler socketBackend;
 
+  protected final ResponseParser.Visitor rspVisitor;
+
 
   public final static int  MAX_RESPONSE_SIZE = 32768; // bytes
   public final static int  RCV_SO_TIMEOUT    =  3500; // milliseconds
@@ -39,12 +41,15 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
                                    ResponseParser rp,
                                    ResponseParser.Visitor rv)
   {
-    super(rb, rp, rv);
+    super(rb, rp);
 
     if (sbh == null)
        throw new NullPointerException("SocketBackendHandler");
+    if (rv == null)
+       throw new NullPointerException("ResponseParser.Visitor");
 
     socketBackend = sbh;
+    rspVisitor = rv;
   }
 
 
