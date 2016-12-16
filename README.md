@@ -1,5 +1,22 @@
 # Pityoulish
-A collection of programming exercises to support a course on _Distributed Systems_.
+A collection of ~~programming~~ debugging exercises to support a course on _Distributed Systems_.
+
+## Notes for...
+### ...Students
+If you are a student working on an exercise, this is the wrong repository. Check with your instructor on how to access your current exercise.
+This repository contains _all_ exercises, and is missing the gaps you are supposed to fill in. Furthermore, it contains the code for clients and servers, while the exercises are about the clients.
+
+If you are a student cheating on an exercises, this is the right repository.
+It contains the code for _all_ exercises, and is missing the gaps you are supposed to fill in. But what's the point of cheating on these exercises? You're not getting graded for them, are you?
+
+### ...Instructors
+_To be written..._
+You might be interested in the [background](#background) though.
+
+### ...Developers
+_Instructions for setting up a dev environment are still missing._
+As of 2016, all exercises use Java. My build environment comprises a JDK, Ant, ant-contrib, and JUnit 4.
+Expect Hamcrest and JMockit to appear in the dependency during 2017.
 
 ## Background
 I've been teaching a course on _Distributed Systems_ once a year, for over a decade now. It's mostly lectures and theory, so I tried to add some practice in the form of two programming exercises. Both implement basically the same client-server functionality, one with socket connections and a binary protocol, the other with Java RMI. I provided the server component, students could write their own client, and then I'd link the server to a projector and let the students try out their clients.
