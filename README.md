@@ -30,8 +30,27 @@ It contains the code for _all_ exercises, and is missing the gaps you are suppos
 Consider becoming a [contributor](#contributors), too. After the exercise, of course :-)
 
 ### ...Instructors
-_To be written..._
-You might be interested in the [background](#background) though.
+To squeeze the classroom exercises into the planned timeframe, students are provided with an almost-working client program to debug. The instructor is running the server, with output on a public display visible to all students.
+Intentional omissions in the client program guide the students to points of interest in the code.
+You may fork this project and put in your own omissions, to better match the topics you are teaching.
+
+The current set of exercises comprises:
+* Tutorial - IP addresses and hostnames.
+  The Tutorial is for preparation at home. It explains how to debug the Java command-line programs of the classroom exercises.
+  It takes between one and two hours to complete, depending on each student's fluency in Java programming.
+* Classroom - Java Sockets and TLVs.
+  It's about socket connections and binary messages (PDUs) which need to be created, sent, received, and parsed.
+  Shows how tedious it is to implement a protocol.
+* Classroom - Java RMI.
+  Part 1 is about the caller side: look up stubs and call remote objects.
+  Part 2 is about the callee side: implement and register your own object to be called remotely.
+  Shows how convenient, yet limiting, it is to use an API with generated stubs and skeletons.
+
+I'm considering various [enhancements](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) and additional exercises, both in class and at home.
+You're welcome to contribute, see just below :-)
+My primary focus is to make the existing exercises work better in class though.
+You can read some more about the [background](#background) of this project and my [lessons learned](#history-and-lessons-learned). I'll update those at the end of each term, so you can follow my progress.
+
 
 ### ...Contributors
 There are many ways in which you might contribute to Pityoulish: proof-reading exercises, commenting on or opening new issues, translating program output or exercises into different languages, coding, and more. 
@@ -85,8 +104,9 @@ I reworked the exercises to a fill-in-the-gaps style. Handed out instructions, a
 
 First exercise, sockets+TLV: Home programming. Feedback from a few students: too easy, we wanted to do more. I asked whether the exercise would have been easy enough to do it in-class. Response: yes.
 
-Second exercise, Java RMI: In-class. Groups of two, everybody tried, most failed. Many were unfamiliar with Java programming. Some didn't know how to interpret stack traces. Others couldn't get their IDE to generate an executable JAR. Some loaded the server JAR into the same IDE project at the client JAR, totally messing up the client-server boundary. In consequence, one group created their own server-side objects instead of calling my server. Feedback: Still way too much information to digest during the exercise.
+Second exercise, Java RMI: In-class. Groups of two, everybody tried, most failed. Many were unfamiliar with Java programming. Some didn't know how to interpret stack traces. Others couldn't get their IDE to generate an executable JAR. Some loaded the server JAR into the same IDE project as the client JAR, totally messing up the client-server boundary. Consequently, one group instantiated their own server-side objects instead of calling my server. Feedback: Still way too much information to digest during the exercise.
 
+For 2016,
 I created the [Pityoulish](https://github.com/rolandweber/pityoulish) project and wrote the Tutorial. It will help students to set up their development environment and learn the basic steps for debugging at home, before the first classroom exercise.
 
 ### before 2015
