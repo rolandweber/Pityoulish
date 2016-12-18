@@ -1,5 +1,23 @@
 # Pityoulish
-A collection of in-class ~~programming~~ debugging exercises to support a course on _Distributed Systems_.
+A collection of programming or debugging exercises to support a course on _Distributed Systems_.
+The focus is on classroom debugging exercises that can be completed in less than two hours.
+(not there yet)
+
+The Pityoulish exercises revolve around a common topic:
+A server implements a Message Board which holds a limited number of messages.
+Clients can fetch messages from the board and put up new ones.
+Putting up messages requires a ticket from the server.
+
+It's a fictitious problem with toy implementations. There is no authentication, no security, no high availability.
+The initial classroom exercises showcase different communication techniques for the client/server interaction.
+Future exercises might add encrypted communication, user authentication, or more.
+You're welcome to help getting there :-)
+
+Are you...
+* a [student](#students)
+* an [instructor](#instructors)
+* a [contributor](#contributors) to be
+* interested in the [background](#background) or [history](#history-and-lessons-learned)
 
 ## Notes for...
 ### ...Students
