@@ -9,13 +9,13 @@ This repository contains _all_ exercises, and is missing the gaps you are suppos
 If you are a student cheating on an exercises, this is the right repository.
 It contains the code for _all_ exercises, and is missing the gaps you are supposed to fill in. But what's the point of cheating on these exercises? You're not getting graded for them, are you?
 
-Consider becoming a [developer](#developers), too. After the exercise, of course :-)
+Consider becoming a [contributor](#contributors), too. After the exercise, of course :-)
 
 ### ...Instructors
 _To be written..._
 You might be interested in the [background](#background) though.
 
-### ...Developers
+### ...Contributors
 There are many ways in which you might contribute to Pityoulish: proof-reading exercises, commenting on or opening new issues, translating program output or exercises into different languages, coding, and more. 
 If you're interested, have a look at issues labeled ["help wanted"](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). A second label indicates the expected effort:
 * **effort low**: It would take me less than an hour to implement, because I know the code inside out. You might take longer if you still need to get familiar with the codebase.
