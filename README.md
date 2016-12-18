@@ -16,6 +16,12 @@ _To be written..._
 You might be interested in the [background](#background) though.
 
 ### ...Developers
+There are many ways in which you might contribute to Pityoulish: proof-reading exercises, commenting on or opening new issues, translating program output or exercises into different languages, coding, and more. 
+If you're interested, have a look at issues labeled ["help wanted"](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). A second label indicates the expected effort:
+* **effort low**: It would take me less than an hour to implement, because I know the code inside out. You might take longer if you still need to get familiar with the codebase.
+* **effort medium**: It would take me more than an hour to implement, but could be done in a single session on a long afternoon or evening.
+* **effort high**: It would take me more than one programming session to implement. It's probably so complex that I'd like to sleep over the solution at least once before closing the issue.
+
 _Instructions for setting up a dev environment are still missing._
 As of 2016, all exercises are coded in Java. My build environment comprises a JDK, Ant, ant-contrib, and JUnit 4.
 Expect JMockit and maybe Hamcrest to appear in the dependency list during 2017.
