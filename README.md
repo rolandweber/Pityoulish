@@ -1,5 +1,5 @@
 # Pityoulish
-A collection of ~~programming~~ debugging exercises to support a course on _Distributed Systems_.
+A collection of in-class ~~programming~~ debugging exercises to support a course on _Distributed Systems_.
 
 ## Notes for...
 ### ...Students
@@ -9,14 +9,19 @@ This repository contains _all_ exercises, and is missing the gaps you are suppos
 If you are a student cheating on an exercises, this is the right repository.
 It contains the code for _all_ exercises, and is missing the gaps you are supposed to fill in. But what's the point of cheating on these exercises? You're not getting graded for them, are you?
 
+Consider becoming a [developer](#developers), too. After the exercise, of course :-)
+
 ### ...Instructors
 _To be written..._
 You might be interested in the [background](#background) though.
 
 ### ...Developers
 _Instructions for setting up a dev environment are still missing._
-As of 2016, all exercises use Java. My build environment comprises a JDK, Ant, ant-contrib, and JUnit 4.
-Expect Hamcrest and JMockit to appear in the dependency during 2017.
+As of 2016, all exercises are coded in Java. My build environment comprises a JDK, Ant, ant-contrib, and JUnit 4.
+Expect JMockit and maybe Hamcrest to appear in the dependency list during 2017.
+
+My workflow is based on an editor, command line, and browser. Sometimes [grip](https://github.com/joeyespo/grip) for previewing markdown before committing. When building exercises, the Java sources are pre-processed with Ant to put in gaps that students have to fill. You might find it tricky to use an IDE for that step.
+The actual coding and unit-testing during development is done without pre-processing though. It will work smoothly with an IDE.
 
 ## Background
 I've been teaching a course on _Distributed Systems_ once a year, for over a decade now. It's mostly lectures and theory, so I tried to add some practice in the form of two programming exercises. Both implement basically the same client-server functionality, one with socket connections and a binary protocol, the other with Java RMI. I provided the server component, students could write their own client, and then I'd link the server to a projector and let the students try out their clients.
