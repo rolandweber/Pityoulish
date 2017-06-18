@@ -13,7 +13,6 @@ import java.rmi.registry.LocateRegistry;
 import pityoulish.jrmi.api.RegistryNames;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
-import pityoulish.outtake.Missing;
 
 
 /**
@@ -91,16 +90,7 @@ public class RegistryBackendHandlerImpl implements RegistryBackendHandler
     throws RemoteException
   {
     if (rmiRegistry == null)
-     {
-       // PYL:keep
-       Missing.here("locate the RMI registry");
-       // ...and store it in the rmiRegistry attribute.
-       // The other attributes provide all the data you need.
-       // PYL:cut
-       // obtain a stub for the RMI registry on the server
        rmiRegistry = LocateRegistry.getRegistry(hostName, portNumber);
-       // PYL:end
-     }
 
     return rmiRegistry;
   }
@@ -117,17 +107,8 @@ public class RegistryBackendHandlerImpl implements RegistryBackendHandler
   public RemoteTicketIssuer getRemoteTicketIssuer()
     throws Exception
   {
-    RemoteTicketIssuer rti = null;
-
-    // PYL:keep
-    Missing.here("look up the RemoteTicketIssuer");
-    // ...and return it
-    // PYL:cut
-    rti = (RemoteTicketIssuer)
+    return (RemoteTicketIssuer)
       ensureRegistry().lookup(RegistryNames.TICKET_ISSUER.lookupName);
-    // PYL:end
-
-    return rti;
   }
 
 }

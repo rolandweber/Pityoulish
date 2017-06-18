@@ -10,6 +10,10 @@ import java.io.IOException;
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.CommandHandlerBase;
 
+import pityoulish.jrmi.api.MessageItem;
+import pityoulish.jrmi.api.MessageList;
+import pityoulish.jrmi.api.RemoteMessageBoard;
+
 
 /**
  * Command handler for the Follow-the-Board client.
@@ -20,10 +24,15 @@ import pityoulish.cmdline.CommandHandlerBase;
 public class FollowTheBoardHandler
   extends CommandHandlerBase<FollowTheBoardHandler.DummyCommand>
 {
+  protected static final int DEFAULT_POLLING_SECONDS = 8;
+
   protected final RegistryBackendHandler regBackend;
 
-  /** The polling interval, with default value. */
-  protected int pollingSeconds = 3;
+  /** The polling interval, in seconds. */
+  protected int pollingSeconds;
+
+  /** The marker from which to list subsequent messages. Initially null. */
+  protected String listMarker;
 
 
   /**
@@ -78,10 +87,64 @@ public class FollowTheBoardHandler
        else
           return 2; // error status
      }
+    else
+     {
+       pollingSeconds = DEFAULT_POLLING_SECONDS;
+     }
 
-    System.out.println("@@@ should poll messages now");
+    pollForMessages();
+    // never reached
 
     return 0; // status OK
+  }
+
+
+  /**
+   * Polls for messages, forever.
+   * Actually, until an exception is thrown, for whatever reason.
+   */
+  protected void pollForMessages()
+    throws Exception
+  {
+    while (true)
+     {
+       listAvailableMessages();
+
+       try {
+         Thread.sleep(pollingSeconds * 1000L);
+       } catch (InterruptedException ix) {
+         // ignore
+       }
+     }
+  }
+
+
+  /**
+   * Lists as many messages as are available.
+   * If {@link #listMarker} is set, messages are listed from there.
+   * The marker is updated here, for subsequent calls.
+   */
+  protected void listAvailableMessages()
+    throws Exception
+  {
+    RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
+
+    final int BATCH_SIZE = 127;
+
+    boolean more = true;
+    while (more)
+     {
+       MessageList msglist = rmb.listMessages(BATCH_SIZE, listMarker);
+
+       if (msglist.isDiscontinuous())
+          printDiscontinuous();
+
+       for (MessageItem msg : msglist.getMessages())
+          printMessage(msg);
+
+       more = (msglist.getMessages().size() > 0);
+       listMarker = msglist.getMarker();
+     }
   }
 
 
@@ -113,6 +176,22 @@ public class FollowTheBoardHandler
     }
 
     return interval;
+  }
+
+
+  //@@@ move the printXXX methods to a DataFormatter
+
+  public void printDiscontinuous()
+  {
+    System.out.println(Catalog.CONSOLE_MESSAGES_MISSED.lookup());
+  }
+
+
+  public void printMessage(MessageItem msg)
+  {
+    System.out.println(Catalog.CONSOLE_MESSAGE_ABOUT_2.format
+                   (msg.getOriginator(), msg.getTimestamp()));
+    System.out.println(msg.getText());
   }
 
 }
