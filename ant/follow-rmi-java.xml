@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="follow-rmi-java" default="follow-rmi-java" basedir="..">
+<description>
+Instructions: Message Board with Java RMI
+</description>
+
+<import file="common.xml" />
+
+<target name="follow-rmi-java" depends="fjr-all"
+        description="Follow the Board with Java RMI (fjr)" />
+
+<!-- prefix of the target filenames -->
+<property name="follow-rmi-java.name"  value="mbfollow-jrmi" />
+
+<property name="follow-rmi-java.tmp"
+          location="${dir.tmp}/follow-rmi-java" />
+
+
+<target name="fjr-clean">
+  <delete quiet="true">
+    <fileset dir="${follow-rmi-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${follow-rmi-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="fjr-jar" depends="_tstamps,compile">
+
+  <patternset id="follow-rmi-java.into.jar">
+    <include name="pityoulish/jrmi/follow/*" />
+    <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/msgboard/*" />
+    <!--include name="pityoulish/tickets/*" /-->
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${follow-rmi-java.name}.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.follow.Main" />
+    </manifest>
+    <fileset dir="${src.main}">
+      <patternset refid="follow-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.main}">
+      <patternset refid="follow-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="fjr-all" depends="fjr-jar" />
+
+
+</project>
