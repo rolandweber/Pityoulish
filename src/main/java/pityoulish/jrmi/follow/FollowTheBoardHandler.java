@@ -10,7 +10,6 @@ import java.io.IOException;
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.CommandHandlerBase;
 
-import pityoulish.jrmi.api.MessageItem;
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 
@@ -24,12 +23,15 @@ import pityoulish.jrmi.api.RemoteMessageBoard;
 public class FollowTheBoardHandler
   extends CommandHandlerBase<FollowTheBoardHandler.DummyCommand>
 {
-  protected static final int DEFAULT_POLLING_SECONDS = 8;
-
   protected final RegistryBackendHandler regBackend;
+
+  protected final DataFormatter userOutput;
+
 
   /** The polling interval, in seconds. */
   protected int pollingSeconds;
+
+  protected static final int DEFAULT_POLLING_SECONDS = 8;
 
   /** The marker from which to list subsequent messages. Initially null. */
   protected String listMarker;
@@ -55,15 +57,20 @@ public class FollowTheBoardHandler
    * Creates a new command dispatcher.
    *
    * @param rbh   the backend handler
+   * @param df    the data formatter for printing messages
    */
-  public FollowTheBoardHandler(RegistryBackendHandler rbh)
+  public FollowTheBoardHandler(RegistryBackendHandler rbh,
+                               DataFormatter df)
   {
     super(DummyCommand.class);
 
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
+    if (df == null)
+       throw new NullPointerException("DataFormatter");
 
     regBackend = rbh;
+    userOutput = df;
   }
 
 
@@ -135,14 +142,9 @@ public class FollowTheBoardHandler
     while (more)
      {
        MessageList msglist = rmb.listMessages(BATCH_SIZE, listMarker);
+       userOutput.printMessageList(msglist);
 
-       if (msglist.isDiscontinuous())
-          printDiscontinuous();
-
-       for (MessageItem msg : msglist.getMessages())
-          printMessage(msg);
-
-       more = (msglist.getMessages().size() > 0);
+       more = (msglist.getMessages().size() >= BATCH_SIZE);
        listMarker = msglist.getMarker();
      }
   }
@@ -176,22 +178,6 @@ public class FollowTheBoardHandler
     }
 
     return interval;
-  }
-
-
-  //@@@ move the printXXX methods to a DataFormatter
-
-  public void printDiscontinuous()
-  {
-    System.out.println(Catalog.CONSOLE_MESSAGES_MISSED.lookup());
-  }
-
-
-  public void printMessage(MessageItem msg)
-  {
-    System.out.println(Catalog.CONSOLE_MESSAGE_ABOUT_2.format
-                   (msg.getOriginator(), msg.getTimestamp()));
-    System.out.println(msg.getText());
   }
 
 }

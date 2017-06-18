@@ -24,9 +24,11 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
+    DataFormatter df = new DataFormatterImpl(System.out);
+
     // rbh deals with the registry, ftbh calls the server remotely
     RegistryBackendHandler rbh = new RegistryBackendHandlerImpl();
-    FollowTheBoardHandler ftbh = new FollowTheBoardHandler(rbh);
+    FollowTheBoardHandler ftbh = new FollowTheBoardHandler(rbh, df);
 
     ArgsInterpreter ai = new ArgsInterpreter(rbh, ftbh);
 
