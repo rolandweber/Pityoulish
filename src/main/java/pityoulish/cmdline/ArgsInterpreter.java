@@ -7,12 +7,15 @@ package pityoulish.cmdline;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.Collections;
 
 
 /**
  * Interprets command-line arguments and delegates to a {@link CommandHandler}.
- * This class assumes that the first three arguments are a server name,
- * port number, and command name. Commands may require additional arguments.
+ * This class assumes that a fixed number of arguments describe the backend.
+ * Then follows a command name, and a variable number of command-specific
+ * arguments. Programs that support only one command can provide its name
+ * to the constructor, instead of expecting it on the command line.
  */
 public class ArgsInterpreter
 {
@@ -22,24 +25,33 @@ public class ArgsInterpreter
   /** The command handlers to be invoked. */
   protected final List<CommandHandler> cmdHandlers;
 
+  /** The implied command name, if only one command is supported. */
+  protected final String onlyCommand;
+
 
   /**
    * Creates a new arguments interpreter.
    *
    * @param backend     the backend handler to initialize
+   * @param onlycmd     the name of the only command, or <code>null</code>.
+   *        If a value is passed here, the command-line arguments cannot
+   *        include a command name. If <code>null</code> is passed here,
+   *        a command name on the command line is mandatory.
    * @param commands    the list of command handlers to delegate to
    */
   public ArgsInterpreter(BackendHandler backend,
+                         String onlycmd,
                          List<CommandHandler> commands)
-   {
-     if (backend == null)
-        throw new NullPointerException("BackendHandler");
-     if ((commands == null) || commands.isEmpty())
-        throw new NullPointerException("List of CommandHandler");
+  {
+    if (backend == null)
+       throw new NullPointerException("BackendHandler");
+    if ((commands == null) || commands.isEmpty())
+       throw new NullPointerException("List of CommandHandler");
 
-     backendHandler = backend;
-     cmdHandlers = commands;
-   }
+    backendHandler = backend;
+    onlyCommand = onlycmd;
+    cmdHandlers = commands;
+  }
 
 
   /**
@@ -51,7 +63,23 @@ public class ArgsInterpreter
   public ArgsInterpreter(BackendHandler backend,
                          CommandHandler... commands)
   {
-    this(backend, Arrays.asList(commands));
+    this(backend, null, Arrays.asList(commands));
+  }
+
+
+  /**
+   * Creates a new arguments interpreter, with implied command.
+   * There's only a single handler, nothing else makes sense.
+   *
+   * @param backend     the backend handler to initialize
+   * @param onlycmd     the name of the only command
+   * @param cmdhandler  the command handler to delegate to
+   */
+  public ArgsInterpreter(BackendHandler backend,
+                         String onlycmd,
+                         CommandHandler cmdhandler)
+  {
+    this(backend, onlycmd, Collections.singletonList(cmdhandler));
   }
 
 
@@ -69,7 +97,12 @@ public class ArgsInterpreter
     throws Exception
   {
     final int beargc = backendHandler.getArgCount();
-    if (args.length < beargc+1)
+
+    int minargc = beargc;
+    if (onlyCommand == null)
+       minargc++;
+
+    if (args.length < minargc)
      {
        System.out.println(getUsage());
        return 1;
@@ -78,8 +111,9 @@ public class ArgsInterpreter
     final String[] beargs  = Arrays.copyOfRange(args, 0, beargc);
     backendHandler.setBackend(beargs);
 
-    final String   cmdname = args[beargc];
-    final String[] cmdargs = Arrays.copyOfRange(args, beargc+1, args.length);
+    final String   cmdname =
+      (onlyCommand != null) ? onlyCommand : args[beargc];
+    final String[] cmdargs = Arrays.copyOfRange(args, minargc, args.length);
 
     StatusCode status = new StatusCode();
     boolean handled = false;

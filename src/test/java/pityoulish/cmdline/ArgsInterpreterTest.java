@@ -146,6 +146,24 @@ public class ArgsInterpreterTest
 
 
   /**
+   * Creates an interpreter for a single command.
+   * <ul>
+   * <li>Backend handler with one argument</li>
+   * <li>Command handler for "only" with one argument</li>
+   * </ul>
+   *
+   * @return the argument interpreter
+   */
+  public static ArgsInterpreter createOnlyCommandTestSubject()
+  {
+    MockBackendHandler mbh = new MockBackendHandler(1);
+    MockCommandHandler cho = new MockCommandHandler("fixed", 1);
+
+    return new ArgsInterpreter(mbh, "fixed", cho);
+  }
+
+
+  /**
    * Asserts that the backend handler has been called with the expected args.
    *
    * @param args   the arguments for the backend, and possibly more
@@ -414,6 +432,20 @@ public class ArgsInterpreterTest
     assertEquals("unexpected status", 112, status);
     assertBackendArgs(args, 0, (MockBackendHandler) ai.backendHandler);
     assertCommandArgs(args, 2, (MockCommandHandler) ai.cmdHandlers.get(3));
+  }
+
+
+  @Test public void handleOnlyCmd_OK()
+    throws Exception
+  {
+    ArgsInterpreter ai = createOnlyCommandTestSubject();
+    String[] args = new String[]{ "backend", "101" };
+
+    int status = ai.handle(args);
+
+    assertEquals("unexpected status", 101, status);
+    assertBackendArgs(args, 1, (MockBackendHandler) ai.backendHandler);
+    assertCommandArgs(args, 1, (MockCommandHandler) ai.cmdHandlers.get(0));
   }
 
 }
