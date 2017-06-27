@@ -18,10 +18,9 @@ import pityoulish.jrmi.api.RemoteMessageBoard;
  * Command handler for the Follow-the-Board client.
  * The client supports only a single command.
  */
-//@@@ TODO: Don't use the command-based ArgsInterpreter.
-//@@@       Or give it a mode with an implicit command.
+//@@@ implement a base class for single-command handlers
 public class FollowTheBoardHandler
-  extends CommandHandlerBase<FollowTheBoardHandler.DummyCommand>
+  extends CommandHandlerBase<FollowTheBoardHandler.OnlyCommand>
 {
   protected final RegistryBackendHandler regBackend;
 
@@ -38,12 +37,12 @@ public class FollowTheBoardHandler
 
 
   /**
-   * Dummy list of the only command.
+   * List of the only command.
    * <ul>
    * <li><b>follow</b> the board messages</li>
    * </ul>
    */
-  public enum DummyCommand implements Command
+  public enum OnlyCommand implements Command
   {
     FOLLOW;
 
@@ -62,7 +61,7 @@ public class FollowTheBoardHandler
   public FollowTheBoardHandler(RegistryBackendHandler rbh,
                                DataFormatter df)
   {
-    super(DummyCommand.class);
+    super(OnlyCommand.class);
 
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
@@ -71,6 +70,15 @@ public class FollowTheBoardHandler
 
     regBackend = rbh;
     userOutput = df;
+  }
+
+
+  /**
+   * Obtains the name of the only command.
+   */
+  public final String getCommandName()
+  {
+    return OnlyCommand.FOLLOW.name();
   }
 
 
@@ -83,7 +91,7 @@ public class FollowTheBoardHandler
 
 
   // non-javadoc, see base class
-  protected int handleCommand(DummyCommand cmd, String... args)
+  protected int handleCommand(OnlyCommand cmd, String... args)
     throws Exception
   {
     if (args.length > 0)

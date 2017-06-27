@@ -30,7 +30,7 @@ public class Main
     RegistryBackendHandler rbh = new RegistryBackendHandlerImpl();
     FollowTheBoardHandler ftbh = new FollowTheBoardHandler(rbh, df);
 
-    ArgsInterpreter ai = new ArgsInterpreter(rbh, ftbh);
+    ArgsInterpreter ai = new ArgsInterpreter(rbh, ftbh.getCommandName(), ftbh);
 
     int status = ai.handle(args);
     System.exit(status);
