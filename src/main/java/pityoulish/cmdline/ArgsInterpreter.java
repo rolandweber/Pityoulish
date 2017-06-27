@@ -137,9 +137,13 @@ public class ArgsInterpreter
     StringBuilder sb = new StringBuilder(1016);
 
     sb.append(Catalog.USAGE_INTRO.lookup()).append('\n');
-    backendHandler.describeUsage(sb, Catalog.CMD_AND_ARGS.lookup());
-    sb.append('\n')
-      .append(Catalog.CMD_HEADING.lookup()).append('\n');
+    Catalog insert =
+      (onlyCommand != null) ? Catalog.ARGS_NO_CMD : Catalog.CMD_AND_ARGS;
+    Catalog heading =
+      (onlyCommand != null) ? Catalog.ARGS_HEADING : Catalog.CMD_HEADING;
+
+    backendHandler.describeUsage(sb, insert.lookup());
+    sb.append('\n').append(heading.lookup()).append('\n');
 
     for(CommandHandler ch : cmdHandlers)
      {

@@ -15,8 +15,10 @@ import pityoulish.i18n.TextEntry;
 public enum Catalog implements TextEntry
  {
    USAGE_INTRO,
-     CMD_AND_ARGS,
-     CMD_HEADING;
+   CMD_AND_ARGS,
+   ARGS_NO_CMD,
+   CMD_HEADING,
+   ARGS_HEADING;
 
 
    private final static String 
