@@ -67,7 +67,7 @@ public class CommandHandlerBaseTest
 
 
   /**
-   * Asserts that the expected command been called with the expected args.
+   * Asserts that the expected command has been called with the expected args.
    *
    * @param cmd    the expected command
    * @param args   the expected arguments for the command
