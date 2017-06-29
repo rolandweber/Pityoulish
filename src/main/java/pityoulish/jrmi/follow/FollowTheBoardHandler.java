@@ -12,6 +12,7 @@ import pityoulish.cmdline.SingleCommandHandlerBase;
 
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
+import pityoulish.jrmi.client.RegistryBackendHandler;
 
 
 /**

@@ -33,11 +33,12 @@ Instructions: Message Board with Java RMI
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<target name="fjr-jar" depends="_tstamps,compile">
+<target name="fjr-jar" depends="_tstamps,compile-pitfill">
 
   <patternset id="follow-rmi-java.into.jar">
     <include name="pityoulish/jrmi/follow/*" />
     <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/client/*" />
     <include name="pityoulish/msgboard/*" />
     <!--include name="pityoulish/tickets/*" /-->
     <include name="pityoulish/cmdline/*" />
@@ -48,10 +49,10 @@ Instructions: Message Board with Java RMI
     <manifest>
       <attribute name="Main-Class" value="pityoulish.jrmi.follow.Main" />
     </manifest>
-    <fileset dir="${src.main}">
+    <fileset dir="${src.filled}">
       <patternset refid="follow-rmi-java.into.jar" />
     </fileset>
-    <fileset dir="${classes.main}">
+    <fileset dir="${classes.filled}">
       <patternset refid="follow-rmi-java.into.jar" />
     </fileset>
   </jar.pty>

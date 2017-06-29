@@ -8,6 +8,9 @@ package pityoulish.jrmi.follow;
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
 
+import pityoulish.jrmi.client.RegistryBackendHandler;
+import pityoulish.jrmi.client.RegistryBackendHandlerImpl;
+
 
 /**
  * Main entry point to the Follow-the-Board Client with Java RMI.
