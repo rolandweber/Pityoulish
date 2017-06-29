@@ -8,7 +8,7 @@ package pityoulish.jrmi.follow;
 import java.io.IOException;
 
 import pityoulish.cmdline.Command;
-import pityoulish.cmdline.CommandHandlerBase;
+import pityoulish.cmdline.SingleCommandHandlerBase;
 
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
@@ -18,9 +18,7 @@ import pityoulish.jrmi.api.RemoteMessageBoard;
  * Command handler for the Follow-the-Board client.
  * The client supports only a single command.
  */
-//@@@ implement a base class for single-command handlers
-public class FollowTheBoardHandler
-  extends CommandHandlerBase<FollowTheBoardHandler.OnlyCommand>
+public class FollowTheBoardHandler extends SingleCommandHandlerBase
 {
   protected final RegistryBackendHandler regBackend;
 
@@ -37,23 +35,7 @@ public class FollowTheBoardHandler
 
 
   /**
-   * List of the only command.
-   * <ul>
-   * <li><b>follow</b> the board messages</li>
-   * </ul>
-   */
-  public enum OnlyCommand implements Command
-  {
-    FOLLOW;
-
-    public final int getMinArgs() { return 0; }
-    public final int getMaxArgs() { return 1; }
-  }
-
-
-
-  /**
-   * Creates a new command dispatcher.
+   * Creates a new command handler.
    *
    * @param rbh   the backend handler
    * @param df    the data formatter for printing messages
@@ -61,7 +43,7 @@ public class FollowTheBoardHandler
   public FollowTheBoardHandler(RegistryBackendHandler rbh,
                                DataFormatter df)
   {
-    super(OnlyCommand.class);
+    super(0, 1); // minArgs, maxArgs
 
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
@@ -70,15 +52,6 @@ public class FollowTheBoardHandler
 
     regBackend = rbh;
     userOutput = df;
-  }
-
-
-  /**
-   * Obtains the name of the only command.
-   */
-  public final String getCommandName()
-  {
-    return OnlyCommand.FOLLOW.name();
   }
 
 
@@ -91,7 +64,7 @@ public class FollowTheBoardHandler
 
 
   // non-javadoc, see base class
-  protected int handleCommand(OnlyCommand cmd, String... args)
+  protected int handleCommand(String... args)
     throws Exception
   {
     if (args.length > 0)
