@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="follow-sockets-java" default="follow-sockets-java" basedir="..">
+<description>
+Follow the Board with Sockets
+</description>
+
+<import file="common.xml" />
+
+<target name="follow-sockets-java" depends="fjs-all"
+        description="Follow the Board with Java Sockets (fjs)" />
+
+<!-- prefix of the target filenames -->
+<property name="follow-sockets-java.name"  value="mbfollow-sockets" />
+
+<property name="follow-sockets-java.tmp"
+          location="${dir.tmp}/follow-sockets-java" />
+
+
+<target name="fjs-clean">
+  <delete quiet="true">
+    <fileset dir="${follow-sockets-java.tmp}" />
+    <fileset dir="${dir.target}">
+      <include name="${follow-sockets-java.name}*" />
+    </fileset>
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="fjs-jar" depends="_tstamps,compile-pitfill">
+
+  <patternset id="follow-sockets-java.into.jar">
+    <include name="pityoulish/sockets/follow/*" />
+    <include name="pityoulish/sockets/client/*" />
+    <include name="pityoulish/sockets/tlv/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${follow-sockets-java.name}.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.sockets.follow.Main" />
+    </manifest>
+    <fileset dir="${src.filled}">
+      <patternset refid="follow-sockets-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.filled}">
+      <patternset refid="follow-sockets-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="fjs-all" depends="fjs-jar" />
+
+
+</project>
