@@ -6,7 +6,7 @@
 -->
 <project name="follow-rmi-java" default="follow-rmi-java" basedir="..">
 <description>
-Instructions: Message Board with Java RMI
+Follow the Board with Java RMI
 </description>
 
 <import file="common.xml" />
@@ -39,8 +39,6 @@ Instructions: Message Board with Java RMI
     <include name="pityoulish/jrmi/follow/*" />
     <include name="pityoulish/jrmi/api/*" />
     <include name="pityoulish/jrmi/client/*" />
-    <include name="pityoulish/msgboard/*" />
-    <!--include name="pityoulish/tickets/*" /-->
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
   </patternset>
