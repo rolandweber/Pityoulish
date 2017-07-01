@@ -18,6 +18,28 @@ import pityoulish.sockets.tlv.MsgBoardType;
 public class TLVResponseParserImpl implements ResponseParser
 {
 
+  /** Indicates whether to print the TLVs. */
+  protected boolean beVerbose;
+
+
+  /**
+   * Creates a new response parser with the given verbosity.
+   *
+   * @param verbose   <code>true</code> to print TLVs to System.out,
+   *                  <code>false</code> to remain silent
+   */
+  public TLVResponseParserImpl(boolean verbose)
+  {
+    beVerbose = verbose;
+  }
+
+  /** Creates a silent response parser. */
+  public TLVResponseParserImpl()
+  {
+    this(false);
+  }
+
+
   // non-javadoc, see interface
   public void parse(ByteBuffer response, Visitor visitor)
     throws Exception
@@ -29,7 +51,9 @@ public class TLVResponseParserImpl implements ResponseParser
 
     MsgBoardTLV tlv = new MsgBoardTLV
       (response.array(), response.position()+response.arrayOffset());
-    System.out.println(tlv.toFullString()); //@@@
+
+    if (beVerbose)
+       System.out.println(tlv.toFullString());
 
     //@@@ while parsing, make sure we don't reach beyond the buffer limit!
 

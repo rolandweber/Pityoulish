@@ -23,6 +23,9 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 
   protected final ResponseParser.Visitor rspVisitor;
 
+  /** Indicates whether to print what's going on. */
+  protected boolean beVerbose;
+
 
   public final static int  MAX_RESPONSE_SIZE = 32768; // bytes
   public final static int  RCV_SO_TIMEOUT    =  3500; // milliseconds
@@ -35,11 +38,15 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
    * @param rb    the request builder
    * @param rp    the response parser
    * @param rv    the response visitor
+   *
+   * @param verbose   <code>true</code> to print stuff to System.out,
+   *                  <code>false</code> to remain silent
    */
   public MsgBoardClientHandlerImpl(SocketBackendHandler sbh,
                                    RequestBuilder rb,
                                    ResponseParser rp,
-                                   ResponseParser.Visitor rv)
+                                   ResponseParser.Visitor rv,
+                                   boolean verbose)
   {
     super(rb, rp);
 
@@ -50,8 +57,24 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 
     socketBackend = sbh;
     rspVisitor = rv;
+    beVerbose = verbose;
   }
 
+  /**
+   * Creates a new, silent client handler implementation.
+   *
+   * @param sbh   the backend handler
+   * @param rb    the request builder
+   * @param rp    the response parser
+   * @param rv    the response visitor
+   */
+  public MsgBoardClientHandlerImpl(SocketBackendHandler sbh,
+                                   RequestBuilder rb,
+                                   ResponseParser rp,
+                                   ResponseParser.Visitor rv)
+  {
+    this(sbh, rb, rp, rv, false);
+  }
 
 
   /**
@@ -86,7 +109,7 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
    *
    * @throws Exception  in case of a problem
    */
-  public final static void sendRequest(Socket sock, ByteBuffer request)
+  public void sendRequest(Socket sock, ByteBuffer request)
     throws Exception
   {
     // To make it a bit harder for the server, don't send everything in a
@@ -95,9 +118,9 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
     // get glued together on the receiving side before the server process.
 
     int split = 4 + (int)(Math.random() * (double)(request.remaining()-3));
-    System.out.println(Catalog.INFO_SPLITTING_AT_2.format(split,
-                                                          request.remaining()
-                                                          ));
+    if (beVerbose)
+       System.out.println(Catalog.INFO_SPLITTING_AT_2.format
+                          (split, request.remaining())      );
 
     OutputStream os = sock.getOutputStream();
     os.write(request.array(),
@@ -133,7 +156,9 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
     byte[] data = new byte[MAX_RESPONSE_SIZE];
     int    pos  = 0;
 
-    System.out.println(Catalog.INFO_RECEIVING_0.format());
+    if (beVerbose)
+       System.out.println(Catalog.INFO_RECEIVING_0.format());
+
     InputStream is = sock.getInputStream();
 
     //@@@ This logic is specific to TLVs... move it elsewhere.
@@ -176,19 +201,27 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
          (Catalog.RECEIVE_TOO_LONG_2.format(length, MAX_RESPONSE_SIZE));
      }
 
-    if (pos >= size)
-     {
-     }
-
     while (pos < size)
      {
-       System.out.println(Catalog.INFO_STILL_MISSING_1.format(size-pos));
+       if (beVerbose)
+          System.out.println(Catalog.INFO_STILL_MISSING_1.format(size-pos));
 
        int count = is.read(data, pos, data.length-pos);
        if (count < 0)
           throw new Exception(Catalog.RECEIVE_INCOMPLETE_0.format());
        pos += count;
      }
+
+    if (pos > size)
+     {
+       // Expect exactly one TLV as response, nothing more.
+       // Technically, the TLV response could be up to 65539 bytes long.
+       // But it's not uncommon to define a sanity limit on message sizes.
+       throw new Exception(Catalog.RECEIVE_EXCESS_DATA_2.format(pos, size));
+     }
+
+    if (beVerbose)
+       System.out.println(Catalog.INFO_RESPONSE_RECEIVED_1.format(size));
 
     ByteBuffer response = ByteBuffer.wrap(data, 0, size);
     return response;

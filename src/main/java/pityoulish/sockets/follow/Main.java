@@ -43,8 +43,8 @@ public class Main
 
     // sbh connects to the backend, mbch sends requests and receives messages
     SocketBackendHandler sbh = new SocketBackendHandlerImpl();
-    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(sbh, rb, rp,
-                                                               tvi);
+    MsgBoardClientHandler mbch =
+      new MsgBoardClientHandlerImpl(sbh, rb, rp, tvi);
 
     // ftbh interprets command-line arguments
     FollowTheBoardHandler ftbh = new FollowTheBoardHandler(mbch, tvi);
