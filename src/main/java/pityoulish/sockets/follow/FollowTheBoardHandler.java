@@ -19,8 +19,11 @@ import pityoulish.sockets.client.MsgBoardClientHandler;
  */
 public class FollowTheBoardHandler extends SingleCommandHandlerBase
 {
-  /** The handler to invoke. */
+  /** The handler to invoke for communication. */
   public final MsgBoardClientHandler mbcHandler;
+
+  /** The batch tracker, for accessing batch metadata. */
+  public final MessageBatchTracker batchTracker;
 
 
   /** The polling interval, in seconds. */
@@ -35,16 +38,21 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   /**
    * Creates a new command handler.
    *
-   * @param mbch   the handler to invoke
+   * @param mbch   the handler to invoke for communication
+   * @param mbt    the tracker for batch metadata
    */
-  public FollowTheBoardHandler(MsgBoardClientHandler mbch)
+  public FollowTheBoardHandler(MsgBoardClientHandler mbch,
+                               MessageBatchTracker mbt)
   {
     super(0, 1); // minArgs, maxArgs
 
     if (mbch == null)
        throw new NullPointerException("MsgBoardClientHandler");
+    if (mbt == null)
+       throw new NullPointerException("MessageBatchTracker");
 
     mbcHandler = mbch;
+    batchTracker = mbt;
   }
 
 
@@ -110,10 +118,14 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   {
     final int BATCH_SIZE = 127;
 
-    mbcHandler.listMessages(BATCH_SIZE, listMarker);
-    //@@@ problem: the asynchronous handling
-    //@@@ How to update listMarker? How to detect if batch is full?
-    System.out.println("@@@ should update listMarker, list more messages?");
+    boolean more = true;
+    while (more)
+     {
+       mbcHandler.listMessages(BATCH_SIZE, listMarker);
+
+       more       = (batchTracker.getSize() >= BATCH_SIZE);
+       listMarker = batchTracker.getMarker();
+     }
   }
 
 

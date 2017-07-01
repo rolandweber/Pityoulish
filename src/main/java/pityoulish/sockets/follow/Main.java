@@ -39,16 +39,15 @@ public class Main
 
     // The visitor encapsulates application logic for processing the response.
     // It doesn't know about the binary format, but about response elements.
-    //@@@ use a visitor that stores the response for processing later?
-    ResponseParser.Visitor rv = new FormattingVisitorImpl();
+    TrackingVisitorImpl tvi = new TrackingVisitorImpl();
 
     // sbh connects to the backend, mbch sends requests and receives messages
     SocketBackendHandler sbh = new SocketBackendHandlerImpl();
-    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(sbh, rb, rp, rv);
+    MsgBoardClientHandler mbch = new MsgBoardClientHandlerImpl(sbh, rb, rp,
+                                                               tvi);
 
     // ftbh interprets command-line arguments
-    //@@@ pass the visitor to ftbh?
-    FollowTheBoardHandler ftbh = new FollowTheBoardHandler(mbch);
+    FollowTheBoardHandler ftbh = new FollowTheBoardHandler(mbch, tvi);
     ArgsInterpreter ai = new ArgsInterpreter(sbh, ftbh.getCommandName(), ftbh);
 
     int status = ai.handle(args);
