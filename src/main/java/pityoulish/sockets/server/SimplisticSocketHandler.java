@@ -12,7 +12,9 @@ import java.nio.ByteBuffer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 
+import pityoulish.logutil.Log;
 //@@@ some TLV parsing is duplicated here... refactor to avoid that!
 import pityoulish.sockets.tlv.MsgBoardTLV;
 
@@ -25,6 +27,8 @@ import pityoulish.sockets.tlv.MsgBoardTLV;
 public class SimplisticSocketHandler extends SocketHandlerBase
   implements Runnable
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   /** The thread executing this handler. */
   protected volatile Thread handlerThread;
 
@@ -100,9 +104,15 @@ public class SimplisticSocketHandler extends SocketHandlerBase
         {
           acceptAndServeRequest();
         }
+       catch (ProtocolException px)
+        {
+          // stack trace already logged when thrown
+          System.out.println(px.toString());
+        }
        catch (Exception x)
         {
-          x.printStackTrace(System.out);
+          Log.log(logger, "SocketHandler", x);
+          System.out.println(x.toString());
         }
      }
   }
@@ -170,9 +180,10 @@ public class SimplisticSocketHandler extends SocketHandlerBase
                                          Socket sock)
   {
     ProtocolException result = new ProtocolException(reason, cause);
-    System.out.println(result.toString());
+    // don't log yet, suppressed exceptions might be added
 
     sendErrorAndClose(result, sock);
+    Log.log(logger, "SocketHandler", result);
 
     return result;
   }

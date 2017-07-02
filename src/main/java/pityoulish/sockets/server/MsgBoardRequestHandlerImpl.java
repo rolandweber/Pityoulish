@@ -6,7 +6,9 @@
 package pityoulish.sockets.server;
 
 import java.net.InetAddress;
+import java.util.logging.Logger;
 
+import pityoulish.logutil.Log;
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.UserMessageBoard;
 import pityoulish.tickets.Ticket;
@@ -20,6 +22,8 @@ import pityoulish.sockets.server.MsgBoardRequest.ReqType;
  */
 public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   protected final UserMessageBoard msgBoard;
 
   protected final TicketManager ticketMgr;
@@ -94,14 +98,14 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
          //@@@ Define an extra exception class for "plain error" messages?
          //@@@ Return a status object that indicates Info/Error with msg?
          //@@@ Generalize for all handler methods?
-         throw new ProtocolException
-           (Catalog.HANDLER_TICKET_USED_UP_1.format(tick.getToken()));
+         throw Log.log(logger, "putMessage",
+                       Catalog.HANDLER_TICKET_USED_UP_1.asPX(tick.getToken()));
        }
 
     } catch (TicketException tx) {
-      throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_2.format(mbreq.getTicket(),
-                                             tx.getLocalizedMessage()), tx);
+      throw Log.log(logger, "putMessage",
+                    Catalog.HANDLER_BAD_TICKET_2.asPXwithCause
+                    (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
   }
 
@@ -127,9 +131,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
       return tick.getToken();
 
     } catch (TicketException tx) {
-      throw new ProtocolException
-        (Catalog.HANDLER_TICKET_DENIED_2.format(mbreq.getOriginator(),
-                                                tx.getLocalizedMessage()), tx);
+      throw Log.log(logger, "obtainTicket",
+                    Catalog.HANDLER_TICKET_DENIED_2.asPXwithCause
+                    (tx, mbreq.getOriginator(), tx.getLocalizedMessage()));
     }
   }
 
@@ -154,9 +158,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
       ticketMgr.returnTicket(tick);
 
     } catch (TicketException tx) {
-      throw new ProtocolException
-        (Catalog.HANDLER_BAD_TICKET_2.format(mbreq.getTicket(),
-                                             tx.getLocalizedMessage()), tx);
+      throw Log.log(logger, "returnTicket",
+                    Catalog.HANDLER_BAD_TICKET_2.asPXwithCause
+                    (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
 
     return Catalog.HANDLER_INFO_OK.lookup();
@@ -187,10 +191,9 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
       return tick.getToken();
 
     } catch (TicketException tx) {
-      throw new ProtocolException
-        (Catalog.HANDLER_REPLACE_DENIED_2.format(mbreq.getTicket(),
-                                                 tx.getLocalizedMessage()),
-         tx);
+      throw Log.log(logger, "returnTicket",
+                    Catalog.HANDLER_REPLACE_DENIED_2.asPXwithCause
+                    (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
   }
     

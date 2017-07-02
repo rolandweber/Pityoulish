@@ -7,7 +7,10 @@ package pityoulish.tickets;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import java.net.InetAddress;
+
+import pityoulish.logutil.Log;
 
 
 /**
@@ -16,6 +19,8 @@ import java.net.InetAddress;
  */
 public class DefaultTicketManager implements TicketManager
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   public final static long TIME_TO_LIVE_MS = 128000; // milliseconds
 
   /** Characters to be used in the random part of a token. */
@@ -46,14 +51,15 @@ public class DefaultTicketManager implements TicketManager
        throw new NullPointerException("username");
 
     if (username.length() < 1)
-       throw new TicketException(Catalog.USERNAME_EMPTY.lookup());
+       throw Log.log(logger, "obtainTicket", new TicketException
+                     (Catalog.USERNAME_EMPTY.lookup()));
 
     final long now = System.currentTimeMillis();
 
     TicketImpl tick = ticketsByUsername.get(username);
     if ((tick != null) && !tick.isExpired(now))
-       throw new TicketException(Catalog.USER_ALREADY_HAS_TICKET_1
-                                 .format(username));
+       throw Log.log(logger, "obtainTicket", new TicketException
+                     (Catalog.USER_ALREADY_HAS_TICKET_1.format(username)));
 
     if (address != null)
      {
@@ -67,8 +73,9 @@ public class DefaultTicketManager implements TicketManager
 
        tick = ticketsByAddress.get(address);
        if ((tick != null) && !tick.isExpired(now))
-          throw new TicketException(Catalog.ADDRESS_ALREADY_HAS_TICKET_1
-                                    .format(address));
+          throw Log.log(logger, "obtainTicket", new TicketException
+                        (Catalog.ADDRESS_ALREADY_HAS_TICKET_1.format(address))
+                        );
      }
     //@@@ trigger housekeeping if an expired ticket was found?
 
@@ -95,11 +102,13 @@ public class DefaultTicketManager implements TicketManager
        throw new NullPointerException("token");
 
     if (token.length() < 1)
-       throw new TicketException(Catalog.TOKEN_EMPTY.lookup());
+       throw Log.log(logger, "lookupTicket", new TicketException
+                     (Catalog.TOKEN_EMPTY.lookup()));
 
     TicketImpl tick = ticketsByToken.get(token);
     if (tick == null)
-       throw new TicketException(Catalog.TICKET_NOT_FOUND_1.format(token));
+       throw Log.log(logger, "lookupTicket", new TicketException
+                     (Catalog.TICKET_NOT_FOUND_1.format(token)));
 
     tick.validate(this, null, address, token);
 

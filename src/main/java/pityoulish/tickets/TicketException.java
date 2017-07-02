@@ -13,7 +13,7 @@ package pityoulish.tickets;
  * <ol>
  * <li>Exception wrapping. When a {@link TicketException} is thrown,
  *     it must be caught and should be replaced for example by a
- *     <code>ProtocolException</code> that is available on the caller side,
+ *     <code>APIException</code> that is available on the caller side,
  *     too. This cleanly separates the ticketing module from the remote API.
  *     The only tie between the two is in the module that uses ticketing
  *     to implement the remote API.
@@ -24,12 +24,11 @@ package pityoulish.tickets;
  *     Note that wrapping and re-throwing the exception is not enough.
  *     The {@link TicketException} must never be thrown through the remote API,
  *     not even wrapped. See the following option for an explanation.
- *     <p/>
  *     </li>
  * <li>Derive {@link TicketException} from an exception declared in the
- *     remote API, for example the <code>ProtocolException</code>.
+ *     remote API, for example the <code>APIException</code>.
  *     This ties the ticketing module to the (utility classes for) the
- *     example protocol and makes it harder to use in a different context.
+ *     remote API and makes it harder to use in a different context.
  *     At least this option would drag in additional classes that are
  *     not really meant for a different context.
  *     <br/>
@@ -41,7 +40,6 @@ package pityoulish.tickets;
  *     installed there, this causes a <code>java.rmi.UnmarshalException</code>
  *     to be thrown on the client. The original exception message will not
  *     be seen on the client side.
- *     <p/>
  *     </li>
  * <li>Declare the {@link TicketException} in the remote interface.
  *     This exposes an implementation detail in the API, namely
@@ -53,7 +51,6 @@ package pityoulish.tickets;
  *     implementation class explicitly visible. But it will not even allow
  *     the good cases to execute without the {@link TicketException}
  *     on the client side.
- *     <p/>
  *     </li>
  * </ol>
  */

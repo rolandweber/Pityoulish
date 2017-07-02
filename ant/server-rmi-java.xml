@@ -45,6 +45,7 @@ Instructions: Message Board with Java RMI
     <include name="pityoulish/msgboard/*" />
     <include name="pityoulish/tickets/*" />
     <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/logutil/*" />
     <include name="pityoulish/i18n/*" />
     <!-- server jar without sources, but with properties -->
     <exclude name="**/*.java" />

@@ -212,7 +212,7 @@ Targets for development, for working with the (Java) code.
     <report todir="${dir.tmp}/testresult/html" />
   </junitreport>
 <echo>
-Too see the test report, point your browser to:
+To see the test report, point your browser to:
 file://${dir.tmp}/testresult/html/index.html
 </echo>
 </target>
