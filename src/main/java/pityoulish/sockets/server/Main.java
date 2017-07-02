@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import pityoulish.logutil.LogConfig;
 import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
 import pityoulish.tickets.TicketManager;
@@ -51,6 +52,7 @@ public final class Main
       System.exit(1);
     }
 
+    LogConfig.configure(Main.class);
 
     MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager          tm   = new DefaultTicketManager();

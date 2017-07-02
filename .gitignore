@@ -9,3 +9,5 @@
 # Local files
 /local
 /ant.local
+/*.log
+/*.log.lck
