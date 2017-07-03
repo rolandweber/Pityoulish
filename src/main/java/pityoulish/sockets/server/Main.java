@@ -38,7 +38,8 @@ public final class Main
     throws Exception
   {
     //@@@ get network interface from command line arguments, too?
-    int port = 0;
+    //@@@ Use ArgsInterpreter and SingleCommandHandlerBase?
+    int port = 2888; // default for the exercises
     int capacity = 8;
 
     try {

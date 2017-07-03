@@ -40,6 +40,7 @@ Follow the Board with Java RMI
     <include name="pityoulish/jrmi/api/*" />
     <include name="pityoulish/jrmi/client/*" />
     <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/logutil/*" />
     <include name="pityoulish/i18n/*" />
   </patternset>
 

@@ -40,6 +40,7 @@ Follow the Board with Sockets
     <include name="pityoulish/sockets/client/*" />
     <include name="pityoulish/sockets/tlv/*" />
     <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/logutil/*" />
     <include name="pityoulish/i18n/*" />
   </patternset>
 

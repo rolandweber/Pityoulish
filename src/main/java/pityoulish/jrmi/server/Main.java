@@ -14,6 +14,7 @@ import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
+import pityoulish.logutil.LogConfig;
 import pityoulish.jrmi.api.RegistryNames;
 import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
@@ -34,6 +35,8 @@ public final class Main
   public static void main(String[] args)
     throws Exception
   {
+    //@@@ get network interface from command line arguments, too?
+    //@@@ Use ArgsInterpreter and SingleCommandHandlerBase?
     int port = 1088; // default for the exercises (RMI default is 1099)
     int capacity = 8;
 
@@ -52,6 +55,7 @@ public final class Main
     // useless on other machines. Report whether the property is set.
     checkForHostnameProperty();
 
+    LogConfig.configure(Main.class);
 
     MixedMessageBoard       mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager           tim  = new DefaultTicketManager();

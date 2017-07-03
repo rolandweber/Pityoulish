@@ -5,6 +5,7 @@
  */
 package pityoulish.jrmi.follow;
 
+import pityoulish.logutil.LogConfig;
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
 
@@ -27,6 +28,8 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
+    LogConfig.configure(Main.class);
+
     DataFormatter df = new DataFormatterImpl(System.out);
 
     // rbh deals with the registry, ftbh calls the server remotely

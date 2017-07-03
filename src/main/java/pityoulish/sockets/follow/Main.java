@@ -8,6 +8,7 @@ package pityoulish.sockets.follow;
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
 
+import pityoulish.logutil.LogConfig;
 import pityoulish.sockets.client.MsgBoardClientHandler;
 import pityoulish.sockets.client.MsgBoardClientHandlerImpl;
 import pityoulish.sockets.client.RequestBuilder;
@@ -32,6 +33,8 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
+    LogConfig.configure(Main.class);
+
     // rb and rp define the binary format, in this case TLV
     // They could be replaced by a JSON implementation, for example.
     RequestBuilder rb = new TLVRequestBuilderImpl();
