@@ -5,9 +5,13 @@
  */
 package pityoulish.sockets.follow;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
 
+import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.sockets.client.MsgBoardClientHandler;
 import pityoulish.sockets.client.MsgBoardClientHandlerImpl;
@@ -25,6 +29,8 @@ import pityoulish.sockets.client.SocketBackendHandlerImpl;
  */
 public class Main
 {
+  protected final static Logger LOGGER = Log.getPackageLogger(Main.class);
+
   /**
    * Main entry point.
    *
@@ -34,6 +40,7 @@ public class Main
     throws Exception
   {
     LogConfig.configure(Main.class);
+    LOGGER.log(Level.INFO, "starting Message Board follower");
 
     // rb and rp define the binary format, in this case TLV
     // They could be replaced by a JSON implementation, for example.

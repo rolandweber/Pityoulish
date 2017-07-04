@@ -7,6 +7,8 @@ package pityoulish.jrmi.server;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -14,6 +16,7 @@ import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
+import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.jrmi.api.RegistryNames;
 import pityoulish.msgboard.MixedMessageBoard;
@@ -27,6 +30,8 @@ import pityoulish.tickets.DefaultTicketManager;
  */
 public final class Main
 {
+  protected final static Logger LOGGER = Log.getPackageLogger(Main.class);
+
   /**
    * Main entry point.
    *
@@ -56,6 +61,7 @@ public final class Main
     checkForHostnameProperty();
 
     LogConfig.configure(Main.class);
+    LOGGER.log(Level.INFO, "starting Message Board server");
 
     MixedMessageBoard       mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager           tim  = new DefaultTicketManager();

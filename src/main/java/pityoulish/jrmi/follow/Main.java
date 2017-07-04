@@ -5,6 +5,10 @@
  */
 package pityoulish.jrmi.follow;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
@@ -20,6 +24,8 @@ import pityoulish.jrmi.client.RegistryBackendHandlerImpl;
  */
 public class Main
 {
+  protected final static Logger LOGGER = Log.getPackageLogger(Main.class);
+
   /**
    * Main entry point.
    *
@@ -29,6 +35,7 @@ public class Main
     throws Exception
   {
     LogConfig.configure(Main.class);
+    LOGGER.log(Level.INFO, "starting Message Board follower");
 
     DataFormatter df = new DataFormatterImpl(System.out);
 

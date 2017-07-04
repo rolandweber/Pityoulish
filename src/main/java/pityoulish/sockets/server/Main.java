@@ -7,6 +7,8 @@ package pityoulish.sockets.server;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import java.net.Socket;
 import java.net.ServerSocket;
@@ -16,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
@@ -29,6 +32,8 @@ import pityoulish.tickets.DefaultTicketManager;
  */
 public final class Main
 {
+  protected final static Logger LOGGER = Log.getPackageLogger(Main.class);
+
   /**
    * Main entry point.
    *
@@ -54,6 +59,7 @@ public final class Main
     }
 
     LogConfig.configure(Main.class);
+    LOGGER.log(Level.INFO, "starting Message Board server");
 
     MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
     TicketManager          tm   = new DefaultTicketManager();

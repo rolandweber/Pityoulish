@@ -88,14 +88,19 @@
 
 
 <target name="_clean" description="deletes temporary stuff">
-  <delete dir="${dir.tmp}" quiet="true" />
+  <delete includeemptydirs="true" quiet="true">
+    <fileset dir="${dir.tmp}"/>
+    <fileset dir="${projectdir}" includes="*.log" />
+  </delete>
 </target>
 
 <target name="_cleaner" depends="_clean" 
  description="deletes generated stuff"
   >
-  <delete dir="${dir.target}" quiet="true" />
-  <delete dir="${dir.jdoc}" quiet="true" />
+  <delete includeemptydirs="true" quiet="true">
+    <fileset dir="${dir.target}" />
+    <fileset dir="${dir.jdoc}" />
+  </delete>
 </target>
 
 </project>
