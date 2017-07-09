@@ -5,9 +5,7 @@
  */
 package pityoulish.jrmi.client;
 
-import java.io.IOException;
-
-import pityoulish.cmdline.BackendHandler;
+import pityoulish.mbclient.HostPortBackendHandler;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
 
@@ -16,26 +14,8 @@ import pityoulish.jrmi.api.RemoteTicketIssuer;
 /**
  * Backend handler for contacting the RMI Registry.
  */
-public interface RegistryBackendHandler extends BackendHandler
+public interface RegistryBackendHandler extends HostPortBackendHandler
 {
-  /**
-   * Obtains the hostname to connect to.
-   *
-   * @return the hostname, or <code>null</code> if not yet provided
-   */
-  public String getHostname()
-    ;
-
-
-  /**
-   * Obtains the port to connect to.
-   *
-   * @return the port number, or 0 if not yet provided
-   */
-  public int getPort()
-    ;
-
-
   /**
    * Look up the {@link RemoteMessageBoard} in the registry.
    *

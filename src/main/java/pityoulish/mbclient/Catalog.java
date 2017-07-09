@@ -3,7 +3,7 @@
  * terms of the Creative Commons CC0 1.0 Universal license.
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
-package pityoulish.jrmi.client;
+package pityoulish.mbclient;
 
 import pityoulish.i18n.CatalogHelper;
 import pityoulish.i18n.TextEntry;
@@ -14,17 +14,8 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
-   COMMAND_USAGE,
-
-   CMDLINE_BAD_LIMIT_1,
-
-   CONSOLE_MSG_LIST_HEADER,
-   CONSOLE_MESSAGES_MISSED,
-   CONSOLE_MESSAGE_ABOUT_2,
-   CONSOLE_MSG_LIST_FOOTER,
-   CONSOLE_MARKER_1,
-   CONSOLE_TICKET_1,
-   CONSOLE_DONE_0
+   BACKEND_ARGS_1,
+   CMDLINE_BAD_PORT_1
    ;
 
 

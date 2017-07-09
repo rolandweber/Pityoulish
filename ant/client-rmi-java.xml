@@ -46,6 +46,7 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
     <include name="pityoulish/jrmi/client/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/mbclient/*" />
     <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
   </patternset>
 
@@ -129,12 +130,14 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
       <include name="pityoulish/jrmi/outlet" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
+      <include name="pityoulish/mbclient" />
     </packageset>
     <group title="Remote API">
       <package name="pityoulish.jrmi.api" />
     </group>
     <group title="Message Board Client">
       <package name="pityoulish.jrmi.client" />
+      <package name="pityoulish.mbclient" />
     </group>
     <group title="Direct Messages">
       <package name="pityoulish.jrmi.outlet" />

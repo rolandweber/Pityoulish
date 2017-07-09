@@ -45,6 +45,7 @@ Exercise: Message Board Client with Sockets, in Java
     <include name="pityoulish/sockets/tlv/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/mbclient/*" />
     <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
   </patternset>
 
@@ -93,7 +94,19 @@ Exercise: Message Board Client with Sockets, in Java
       <include name="pityoulish/sockets/tlv" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
+      <include name="pityoulish/mbclient" />
     </packageset>
+    <group title="Message Board Client">
+      <package name="pityoulish.sockets.client" />
+      <package name="pityoulish.mbclient" />
+    </group>
+    <group title="Protocol">
+      <package name="pityoulish.sockets.tlv" />
+    </group>
+    <group title="Support">
+      <package name="pityoulish.cmdline" />
+      <package name="pityoulish.i18n" />
+    </group>
   </javadoc>
 
   <copy todir="${client-sockets-java.tmp}/jdoc">

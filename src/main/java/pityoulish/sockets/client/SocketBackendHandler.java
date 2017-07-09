@@ -8,32 +8,14 @@ package pityoulish.sockets.client;
 import java.io.IOException;
 import java.net.Socket;
 
-import pityoulish.cmdline.BackendHandler;
+import pityoulish.mbclient.HostPortBackendHandler;
 
 
 /**
  * Backend handler for connecting via sockets.
  */
-public interface SocketBackendHandler extends BackendHandler
+public interface SocketBackendHandler extends HostPortBackendHandler
 {
-  /**
-   * Obtains the hostname to connect to.
-   *
-   * @return the hostname, or <code>null</code> if not yet provided
-   */
-  public String getHostname()
-    ;
-
-
-  /**
-   * Obtains the port to connect to.
-   *
-   * @return the port number, or 0 if not yet provided
-   */
-  public int getPort()
-    ;
-
-
   /**
    * Connects to the backend.
    *

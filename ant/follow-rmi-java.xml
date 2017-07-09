@@ -42,6 +42,7 @@ Follow the Board with Java RMI
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/logutil/*" />
     <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/mbclient/*" />
   </patternset>
 
   <jar.pty destfile="${dir.target}/${follow-rmi-java.name}.jar">
