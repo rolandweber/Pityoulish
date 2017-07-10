@@ -14,8 +14,12 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
+   COMMAND_USAGE,
    BACKEND_ARGS_1,
-   CMDLINE_BAD_PORT_1
+
+   //CMDLINE_BAD_HOSTNAME_1,
+   CMDLINE_BAD_PORT_1,
+   CMDLINE_BAD_LIMIT_1
    ;
 
 

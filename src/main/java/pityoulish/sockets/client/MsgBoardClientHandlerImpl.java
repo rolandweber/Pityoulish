@@ -15,7 +15,8 @@ import pityoulish.sockets.tlv.MsgBoardTLV;
 
 
 /**
- * Implementation of {@link MsgBoardClientHandler} with blocking IO.
+ * Implementation of {@link pityoulish.mbclient.MsgBoardClientHandler}
+ * with blocking IO.
  */
 public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
 {

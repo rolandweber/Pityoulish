@@ -7,6 +7,8 @@ package pityoulish.sockets.client;
 
 import java.nio.ByteBuffer;
 
+import pityoulish.mbclient.MsgBoardClientHandler;
+
 
 /**
  * Suggested base class for implementing {@link MsgBoardClientHandler}.

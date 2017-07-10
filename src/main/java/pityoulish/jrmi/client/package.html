@@ -13,15 +13,10 @@ through the {@link pityoulish.jrmi.client.Main} class,
 the client looks up the RMI registry, then the relevant anchor object,
 performs one remote call to the server, reports the result,
 and finally ends.
-Two command-line arguments specify the server to contact,
-this information is passed to the
-{@link pityoulish.jrmi.client.RegistryBackendHandler}.
-Further command-line arguments specify the call to perform,
-this information is passed to the
-{@link pityoulish.jrmi.client.MsgBoardCommandDispatcher},
-which delegates to a
-{@link pityoulish.jrmi.client.MsgBoardClientHandler}.
-That's where the real action takes place.
+Utility classes from package {@link pityoulish.mbclient}
+are used for evaluating the command-line arguments.
+They eventually call an RMI-based implementation of
+{@link pityoulish.mbclient.MsgBoardClientHandler} here.
 </p>
 
 <p>

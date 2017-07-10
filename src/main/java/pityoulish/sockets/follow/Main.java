@@ -8,12 +8,11 @@ package pityoulish.sockets.follow;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import pityoulish.cmdline.ArgsInterpreter;
-import pityoulish.cmdline.BackendHandler;
-
 import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
-import pityoulish.sockets.client.MsgBoardClientHandler;
+import pityoulish.cmdline.ArgsInterpreter;
+import pityoulish.cmdline.BackendHandler;
+import pityoulish.mbclient.MsgBoardClientHandler;
 import pityoulish.sockets.client.MsgBoardClientHandlerImpl;
 import pityoulish.sockets.client.RequestBuilder;
 import pityoulish.sockets.client.ResponseParser;

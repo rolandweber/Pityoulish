@@ -14,10 +14,6 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
-   COMMAND_USAGE,
-
-   CMDLINE_BAD_LIMIT_1,
-
    CONSOLE_MSG_LIST_HEADER,
    CONSOLE_MESSAGES_MISSED,
    CONSOLE_MESSAGE_ABOUT_2,

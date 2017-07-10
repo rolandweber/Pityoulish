@@ -7,6 +7,8 @@ package pityoulish.jrmi.client;
 
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
+import pityoulish.mbclient.MsgBoardClientHandler;
+import pityoulish.mbclient.MsgBoardCommandDispatcher;
 
 
 /**

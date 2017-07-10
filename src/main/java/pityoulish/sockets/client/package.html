@@ -12,15 +12,10 @@ When called from the command line
 through the {@link pityoulish.sockets.client.Main} class,
 the client sends one request to the server,
 receives and processes the response, then ends.
-Two command-line arguments specify the server to contact,
-this information is passed to the
-{@link pityoulish.sockets.client.SocketBackendHandler}.
-Further command-line arguments specify the request to be sent,
-this information is passed to the
-{@link pityoulish.sockets.client.MsgBoardCommandDispatcher},
-which delegates to a
-{@link pityoulish.sockets.client.MsgBoardClientHandler}.
-That's where the real action takes place.
+Utility classes from package {@link pityoulish.mbclient}
+are used for evaluating the command-line arguments.
+They eventually call a sockets-based implementation of
+{@link pityoulish.mbclient.MsgBoardClientHandler} here.
 </p>
 
 <p>

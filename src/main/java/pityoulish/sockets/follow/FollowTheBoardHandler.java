@@ -10,7 +10,7 @@ import java.io.IOException;
 import pityoulish.cmdline.Command;
 import pityoulish.cmdline.SingleCommandHandlerBase;
 
-import pityoulish.sockets.client.MsgBoardClientHandler;
+import pityoulish.mbclient.MsgBoardClientHandler;
 
 
 /**

@@ -7,6 +7,8 @@ package pityoulish.sockets.client;
 
 import pityoulish.cmdline.ArgsInterpreter;
 import pityoulish.cmdline.BackendHandler;
+import pityoulish.mbclient.MsgBoardClientHandler;
+import pityoulish.mbclient.MsgBoardCommandDispatcher;
 
 
 /**
@@ -32,12 +34,12 @@ public class Main
     ResponseParser.Visitor rv = new FormattingVisitorImpl();
 
     // sbh connects to the backend, mbch sends requests and receives messages
-    SocketBackendHandler sbh = new SocketBackendHandlerImpl();
-    MsgBoardClientHandlerImpl mbchi =
+    SocketBackendHandler   sbh = new SocketBackendHandlerImpl();
+    MsgBoardClientHandler mbch =
       new MsgBoardClientHandlerImpl(sbh, rb, rp, rv, true);
 
     // mbcd interprets command-line arguments
-    MsgBoardCommandDispatcher mbcd = new MsgBoardCommandDispatcher(mbchi);
+    MsgBoardCommandDispatcher mbcd = new MsgBoardCommandDispatcher(mbch);
     ArgsInterpreter ai = new ArgsInterpreter(sbh, mbcd);
 
     int status = ai.handle(args);

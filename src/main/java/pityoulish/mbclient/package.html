@@ -9,10 +9,24 @@ Message Board Client utilities.
 
 <p>
 Some aspects of the Message Board clients do not depend on the transport
-used between client and server. For example, the server is identified by
-a hostname and a port number. Also, the list of commands supported by the
-clients is identical across exercises.
+used between client and server.
 This package is for code that implements these common aspects.
+For example, the server is identified by a hostname and a port number.
+</p>
+
+<p>
+Command-line clients support the operations listed in
+{@link pityoulish.mbclient.MsgBoardCommandDispatcher.MsgBoardCommand MsgBoardCommand}.
+The first two command-line arguments specify the server to contact,
+this information is passed to the
+{@link pityoulish.mbclient.HostPortBackendHandler}.
+Further command-line arguments specify the operation and its parameters.
+This information is evaluated by the
+{@link pityoulish.mbclient.MsgBoardCommandDispatcher},
+which delegates to a
+{@link pityoulish.mbclient.MsgBoardClientHandler}.
+That's where the real action takes place.
+Different clients will implement that interface differently.
 </p>
 
 </body>

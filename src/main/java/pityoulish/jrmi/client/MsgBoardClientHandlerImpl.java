@@ -8,11 +8,13 @@ package pityoulish.jrmi.client;
 import pityoulish.jrmi.api.MessageList;
 import pityoulish.jrmi.api.RemoteMessageBoard;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
+import pityoulish.mbclient.MsgBoardClientHandler;
 import pityoulish.outtake.Missing;
 
 
 /**
- * Default implementation of {@link MsgBoardClientHandler}.
+ * Default implementation of {@link pityoulish.mbclient.MsgBoardClientHandler}
+ * with Java RMI.
  */
 public class MsgBoardClientHandlerImpl
   implements MsgBoardClientHandler
