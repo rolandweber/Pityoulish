@@ -253,7 +253,7 @@ but those are not the topic of this exercise.
 There is one set of <a href="jdoc/index.html" target="_blank">JavaDocs</a>
 for both parts of the exercise. It is split into four groups.
 The last group comprises support packages which are already known from
-the Tutorial. The other three packages are briefly described here.
+the Tutorial. The other packages are briefly described here.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -261,7 +261,7 @@ the Tutorial. The other three packages are briefly described here.
 
 <p>
 The Remote API in <code>pityoulish.jrmi.api</code> defines the glue
-which keeps clients and the server, outlets and senders together.
+which keeps clients and server, outlets and senders together.
 There are four interfaces for remotely callable objects,
 they extend <code>java.rmi.Remote</code>.
 Three of them are named <code>Remote*</code>, their objects will be
@@ -284,7 +284,7 @@ to clearly distinguish Java RMI problems from application problems.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-MessageBoard"><span>Message Board</span></h3>
+<h3 id="code-MessageBoard"><span>Message Board Client</span></h3>
 
 <p>
 Package <code>pityoulish.jrmi.client</code>
@@ -293,13 +293,14 @@ From the Remote API, it relies on
 <code>RemoteMessageBoard</code>, <code>RemoteTicketIssuer</code>,
 and the data representation of
 <code>MessageList</code> and <code>MessageItem</code>.
-The <code>Main</code> class and <code>MsgBoardCommandDispatcher</code>
-are familiar from a previous exercise.
+Package <code>pityoulish.mbclient</code> is familiar from a previous exercise.
 Commands are delegated to a <code>MsgBoardClientHandler</code>,
-backend arguments interpreted by a <code>RegistryBackendHandler</code>.
+backend arguments recorded by a <code>HostPortBackendHandler</code>.
+The <code>.client</code> package extends the backend handler with
+some lookup methods.
 A <code>DataFormatter</code> is responsible for printing data
 obtained from the server.
-Each of these interfaces has a single implementation class.
+Each of the interfaces has a single implementation class.
 </p>
 
 
@@ -329,7 +330,7 @@ The commands supported by the program are delegated to a
 
 <p>
 Logically, Direct Messages require the same ticket-related operations as
-the Message Board client. To reduce code duplication, those commands which
+the Message Board client. To avoid code duplication, those commands which
 call the <code>RemoteTicketIssuer</code> are not implemented here again.
 Instead, use the Message Board client to obtain tickets.
 </p>
