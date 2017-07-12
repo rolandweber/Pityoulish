@@ -7,7 +7,9 @@ package pityoulish.jrmi.server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
+import java.util.logging.Logger;
 
+import pityoulish.logutil.Log;
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.UserMessageBoard;
 import pityoulish.tickets.Ticket;
@@ -27,6 +29,8 @@ import pityoulish.jrmi.api.RemoteMessageBoard;
 public class RemoteMessageBoardImpl extends RemoteObject
   implements RemoteMessageBoard
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   protected final UserMessageBoard msgBoard;
 
   protected final TicketManager ticketMgr;
@@ -92,12 +96,14 @@ public class RemoteMessageBoardImpl extends RemoteObject
        }
       else
        {
-         throw Catalog.TICKET_USED_UP_1.asApiX(tick.getToken());
+         throw Catalog.log(logger, "putMessage", Catalog.TICKET_USED_UP_1
+                           .asApiX(tick.getToken()));
        }
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
+         throw Catalog.log(logger, "putMessage", Catalog.TICKET_BAD_2
+                           .asApiX(tictok, tx.getLocalizedMessage()));
     }
   }
 

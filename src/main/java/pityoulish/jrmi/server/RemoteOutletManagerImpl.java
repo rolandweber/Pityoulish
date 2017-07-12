@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
 
+import pityoulish.logutil.Log;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
@@ -31,6 +33,8 @@ import pityoulish.jrmi.api.APIException;
 public class RemoteOutletManagerImpl extends RemoteObject
   implements RemoteOutletManager
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   /**
    * The map from usernames to outlets.
    * Access must be synchronized.
@@ -61,14 +65,16 @@ public class RemoteOutletManagerImpl extends RemoteObject
     //@@@ verify first argument... see issue #11
 
     if (outlet == null)
-       throw new NullPointerException("DirectMessageOutlet");
+       throw Catalog.log(logger, "publishOutlet",
+                         new NullPointerException("DirectMessageOutlet"));
 
     try {
       outlet.ping(); // make sure the outlet is reachable (wrong hostname?)
     } catch (RemoteException rx) {
       // RemoteException is a standard exception, so it should be
       // safe to wrap it, even when throwing to a remote caller.
-      throw Catalog.OUTLET_UNREACHABLE_1.asApiXWithCause(rx, outlet);
+       throw Catalog.log(logger, "publishOutlet", Catalog.OUTLET_UNREACHABLE_1
+                         .asApiXWithCause(rx, outlet));
     }
 
     Ticket tick = null;
@@ -76,11 +82,13 @@ public class RemoteOutletManagerImpl extends RemoteObject
       // Ticket and TicketManager are thread safe
       tick = ticketMgr.lookupTicket(tictok, null);
       if (!tick.punch())
-         throw Catalog.TICKET_USED_UP_1.asApiX(tick.getToken());
+         throw Catalog.log(logger, "publishOutlet", Catalog.TICKET_USED_UP_1
+                           .asApiX(tick.getToken()));
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
+      throw Catalog.log(logger, "publishOutlet", Catalog.TICKET_BAD_2
+                        .asApiX(tictok, tx.getLocalizedMessage()));
     }
     // at this point, the ticket is valid and already punched
     final String username = tick.getUsername();
@@ -100,7 +108,8 @@ public class RemoteOutletManagerImpl extends RemoteObject
        // the old one while it's being tested. That must be considered below.
        try {
          oldlet.ping();
-         throw Catalog.OUTLET_STILL_ALIVE_1.asApiX(oldlet);
+         throw Catalog.log(logger, "publishOutlet",
+                           Catalog.OUTLET_STILL_ALIVE_1.asApiX(oldlet));
 
        } catch (RemoteException expected) {
          // proceed, the exception indicates that the old outlet is dead
@@ -115,7 +124,9 @@ public class RemoteOutletManagerImpl extends RemoteObject
          // Restore the other outlet and fail this call. This happens inside
          // synchronized {}, so there is no other concurrent modification.
          username2outlet.put(username, replaced);
-         throw Catalog.OUTLET_CONCURRENTLY_PUBLISHED_1.asApiX(replaced);
+         throw Catalog.log(logger, "publishOutlet",
+                           Catalog.OUTLET_CONCURRENTLY_PUBLISHED_1
+                           .asApiX(replaced));
        }
     }
   } // publishOutlet
@@ -140,16 +151,19 @@ public class RemoteOutletManagerImpl extends RemoteObject
            removed = username2outlet.remove(username);
          }
          if (removed == null)
-            throw Catalog.OUTLET_NONE_1.asApiX(username);
+            throw Catalog.log(logger, "unpublishOutlet", Catalog.OUTLET_NONE_1
+                              .asApiX(username));
        }
       else
        {
-         throw Catalog.TICKET_USED_UP_1.asApiX(tick.getToken());
+         throw Catalog.log(logger, "unpublishOutlet", Catalog.TICKET_USED_UP_1
+                           .asApiX(tick.getToken()));
        }
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
+      throw Catalog.log(logger, "unpublishOutlet", Catalog.TICKET_BAD_2
+                        .asApiX(tictok, tx.getLocalizedMessage()));
     }
   }
 
@@ -172,7 +186,8 @@ public class RemoteOutletManagerImpl extends RemoteObject
     throws APIException
   {
     if (username == null)
-       throw new NullPointerException("username");
+       throw Catalog.log(logger, "getOutlet",
+                         new NullPointerException("username"));
     // further verification is pointless, the lookup just yields null
 
     DirectMessageOutlet outlet = null;
@@ -181,7 +196,8 @@ public class RemoteOutletManagerImpl extends RemoteObject
     }
 
     if (outlet == null)
-       throw Catalog.OUTLET_NONE_1.asApiX(username);
+       throw Catalog.log(logger, "getOutlet", Catalog.OUTLET_NONE_1
+                         .asApiX(username));
 
     return outlet;
   }

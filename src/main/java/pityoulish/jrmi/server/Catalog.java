@@ -5,8 +5,11 @@
  */
 package pityoulish.jrmi.server;
 
+import java.util.logging.Logger;
+
 import pityoulish.i18n.CatalogHelper;
 import pityoulish.i18n.TextEntry;
+import pityoulish.logutil.Log;
 
 import pityoulish.jrmi.api.APIException;
 
@@ -103,6 +106,34 @@ public enum Catalog implements TextEntry
    {
      String msg = format(params);
      return new APIException(msg, cause);
+   }
+
+
+   /**
+    * Logs an exception.
+    * A summary of the exception is also printed to the console.
+    * The exception is returned, so that the caller can throw it like:
+    * <pre>
+    *     throw Catalog.log(logger, "context", Catalog.asApiX(...));
+    * </pre>
+    *
+    * <b>Note:</b> This method has nothing to do with the catalog.
+    * But because the catalog already has methods to create APIExceptions,
+    * it makes sense to put the helper for logging them here as well.
+    * There is no implicit logging of the exceptions when they are created.
+    * Logging should be done at the point where the exception is thrown.
+    *
+    * @param l     where to log
+    * @param ctx   context information for the exception
+    * @param x     the exception to log
+    *
+    * @return the <code>x</code> argument
+    */
+   public final static <X extends Throwable> X log(Logger l, String ctx, X x)
+   {
+     Log.log(l, ctx, x);
+     System.out.println(x.toString());
+     return x;
    }
 
 

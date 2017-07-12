@@ -7,7 +7,9 @@ package pityoulish.jrmi.server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteObject;
+import java.util.logging.Logger;
 
+import pityoulish.logutil.Log;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
@@ -24,6 +26,8 @@ import pityoulish.jrmi.api.RemoteTicketIssuer;
 public class RemoteTicketIssuerImpl extends RemoteObject
   implements RemoteTicketIssuer
 {
+  protected final Logger logger = Log.getPackageLogger(this.getClass());
+
   protected final TicketManager ticketMgr;
 
 
@@ -57,7 +61,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_DENIED_2.asApiX(username, tx.getLocalizedMessage());
+      throw Catalog.log(logger, "obtainTicket", Catalog.TICKET_DENIED_2
+                        .asApiX(username, tx.getLocalizedMessage()));
     }
   }
 
@@ -77,7 +82,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_BAD_2.asApiX(tictok, tx.getLocalizedMessage());
+      throw Catalog.log(logger, "returnTicket", Catalog.TICKET_BAD_2
+                        .asApiX(tictok, tx.getLocalizedMessage()));
     }
   }
 
@@ -101,8 +107,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-      throw Catalog.TICKET_REPLACE_DENIED_2.asApiX(tictok,
-                                                   tx.getLocalizedMessage());
+      throw Catalog.log(logger, "replaceTicket",
+                        Catalog.TICKET_REPLACE_DENIED_2
+                        .asApiX(tictok, tx.getLocalizedMessage()));
     }
   }
 
