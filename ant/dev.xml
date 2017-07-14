@@ -128,6 +128,7 @@ Targets for development, for working with the (Java) code.
       <package name="pityoulish.i18n" />
       <package name="pityoulish.logutil" />
       <package name="pityoulish.mbclient" />
+      <package name="pityoulish.mbserver" />
       <package name="pityoulish.msgboard" />
       <package name="pityoulish.outtake" />
       <package name="pityoulish.tickets" />
