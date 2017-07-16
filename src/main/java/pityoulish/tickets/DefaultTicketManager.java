@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java.net.InetAddress;
 
 import pityoulish.logutil.Log;
+import pityoulish.mbserver.ProblemFactory;
 
 
 /**
@@ -43,6 +44,12 @@ public class DefaultTicketManager implements TicketManager
   }
 
 
+  public <P> TSanityChecker<P> newSanityChecker(ProblemFactory<P> pf)
+  {
+    return new DefaultTSanityChecker<P>(pf);
+  }
+
+
   public synchronized Ticket obtainTicket(String username,
                                           InetAddress address)
     throws TicketException
@@ -50,6 +57,7 @@ public class DefaultTicketManager implements TicketManager
     if (username == null)
        throw new NullPointerException("username");
 
+    //@@@ use TSanityChecker
     if (username.length() < 1)
        throw Log.log(logger, "obtainTicket", new TicketException
                      (Catalog.USERNAME_EMPTY.lookup()));
@@ -101,6 +109,7 @@ public class DefaultTicketManager implements TicketManager
     if (token == null)
        throw new NullPointerException("token");
 
+    //@@@ use TSanityChecker
     if (token.length() < 1)
        throw Log.log(logger, "lookupTicket", new TicketException
                      (Catalog.TOKEN_EMPTY.lookup()));

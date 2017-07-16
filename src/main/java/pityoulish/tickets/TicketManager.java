@@ -7,6 +7,8 @@ package pityoulish.tickets;
 
 import java.net.InetAddress;
 
+import pityoulish.mbserver.ProblemFactory;
+
 
 /**
  * Interface of a ticket manager.
@@ -17,6 +19,18 @@ import java.net.InetAddress;
  */
 public interface TicketManager
 {
+  /**
+   * Creates a sanity checker for this ticket manager.
+   * The returned sanity checker is thread safe if the problem factory is.
+   *
+   * @param pf   the problem factory to be used by the sanity checker
+   *
+   * @return a sanity checker for this ticket manager
+   *         which uses the argument factory to report problems
+   */
+  public <P> TSanityChecker<P> newSanityChecker(ProblemFactory<P> pf)
+    ;
+
 
   /**
    * Obtains a new ticket for a username.

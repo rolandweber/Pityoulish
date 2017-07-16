@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
+import pityoulish.mbserver.ProblemFactory;
+
 
 /**
  * An implementation of {@link MixedMessageBoard}.
@@ -99,10 +101,17 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   }
 
 
+  // non-javadoc, see interface UserMessageBoard
+  public <P> MSanityChecker<P> newSanityChecker(ProblemFactory<P> pf)
+  {
+    return new DefaultMSanityChecker<P>(pf);
+  }
+
 
   // non-javadoc, see interface MessageBoard
   public MessageBatch listMessages(int limit, String marker)
   {
+    //@@@ use MSanityChecker
     if (limit < 1)
        throw new IllegalArgumentException("limit "+limit);
     if ((marker != null) && !boardSequencer.isSane(marker))
@@ -155,6 +164,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface UserMessageBoard
   public Message putMessage(String originator, String text)
   {
+    //@@@ use MSanityChecker
+
     MTMsg msg = new MTMsg
       (originator, boardTimer.getTimestamp(), text, MT.USER);
 
@@ -167,6 +178,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface SystemMessageBoard
   public Message putSystemMessage(String slot, String text)
   {
+    //@@@ use MSanityChecker
+
     String originator = "_";
     if (slot != null)
      {
