@@ -12,6 +12,7 @@ import java.net.InetAddress;
 
 import pityoulish.logutil.Log;
 import pityoulish.mbserver.ProblemFactory;
+import pityoulish.mbserver.StringProblemFactory;
 
 
 /**
@@ -28,6 +29,7 @@ public class DefaultTicketManager implements TicketManager
   protected final static String RANDOM_TOKEN_CHARS =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._";
 
+  protected final TSanityChecker<String> sanityChecker;
 
   protected Map<String,TicketImpl>      ticketsByUsername;
   protected Map<InetAddress,TicketImpl> ticketsByAddress;
@@ -38,6 +40,8 @@ public class DefaultTicketManager implements TicketManager
 
   public DefaultTicketManager()
   {
+    sanityChecker = newSanityChecker(new StringProblemFactory());
+
     ticketsByUsername = new HashMap<String,TicketImpl>();
     ticketsByAddress  = new HashMap<InetAddress,TicketImpl>();
     ticketsByToken    = new HashMap<String,TicketImpl>();
@@ -54,13 +58,9 @@ public class DefaultTicketManager implements TicketManager
                                           InetAddress address)
     throws TicketException
   {
-    if (username == null)
-       throw new NullPointerException("username");
-
-    //@@@ use TSanityChecker
-    if (username.length() < 1)
-       throw Log.log(logger, "obtainTicket", new TicketException
-                     (Catalog.USERNAME_EMPTY.lookup()));
+    String problem = sanityChecker.checkUsername(username);
+    if (problem != null)
+       throw Log.log(logger, "obtainTicket", new TicketException(problem));
 
     final long now = System.currentTimeMillis();
 
@@ -106,13 +106,9 @@ public class DefaultTicketManager implements TicketManager
                                           InetAddress address)
     throws TicketException
   {
-    if (token == null)
-       throw new NullPointerException("token");
-
-    //@@@ use TSanityChecker
-    if (token.length() < 1)
-       throw Log.log(logger, "lookupTicket", new TicketException
-                     (Catalog.TOKEN_EMPTY.lookup()));
+    String problem = sanityChecker.checkToken(token);
+    if (problem != null)
+       throw Log.log(logger, "lookupTicket", new TicketException(problem));
 
     TicketImpl tick = ticketsByToken.get(token);
     if (tick == null)
