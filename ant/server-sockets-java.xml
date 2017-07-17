@@ -44,6 +44,7 @@ Instructions: Message Board with Sockets
     <include name="pityoulish/sockets/tlv/*" />
     <include name="pityoulish/msgboard/*" />
     <include name="pityoulish/tickets/*" />
+    <include name="pityoulish/mbserver/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/logutil/*" />
     <include name="pityoulish/i18n/*" />
