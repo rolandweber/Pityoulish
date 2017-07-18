@@ -18,7 +18,8 @@ public interface MessageBoard
   /**
    * Lists messages from this board.
    *
-   * @param limit       the maximum number of messages to list
+   * @param limit       the maximum number of messages to list,
+   *                    0 or negative to list all available messages
    * @param marker      the continuation {@link MessageBatch#getMarker marker}
    *                    from a preceding call, or
    *                    <code>null</code> to fetch the oldest messages

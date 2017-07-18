@@ -112,8 +112,6 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   public MessageBatch listMessages(int limit, String marker)
   {
     //@@@ use MSanityChecker
-    if (limit < 1)
-       throw new IllegalArgumentException("limit "+limit);
     if ((marker != null) && !boardSequencer.isSane(marker))
        throw new IllegalArgumentException("invalid marker '"+marker+"'");
 
@@ -125,14 +123,18 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
      {
        // list oldest messages
        iter  = boardMessages.entrySet().iterator();
-       count = Math.min(boardMessages.size(), limit);
+       count = boardMessages.size();
+       if (limit > 0)
+          count = Math.min(count, limit);
      }
     else
      {
        // list messages newer than marker
        NavigableMap<String,MTMsg>
          newerMessages = boardMessages.tailMap(marker, false);
-       count = Math.min(newerMessages.size(), limit);
+       count = newerMessages.size();
+       if (limit > 0)
+          count = Math.min(count, limit);
        iter = newerMessages.entrySet().iterator();
        discontinuous = (boardSequencer.getComparator().
                         compare(lastDroppedUserMessageID, marker) > 0);

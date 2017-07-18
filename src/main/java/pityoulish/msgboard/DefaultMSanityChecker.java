@@ -40,16 +40,6 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
 
 
   // non-javadoc, see interface
-  public P checkLimit(int limit)
-  {
-    // if (limit < 1)
-    //@@@ define in Catalog:   "invalid limit '"+limit+"'"
-
-    return null;
-  }
-
-
-  // non-javadoc, see interface
   public P checkText(String text)
   {
     if (text == null)

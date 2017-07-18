@@ -27,18 +27,6 @@ public interface MSanityChecker<P>
 
 
   /**
-   * Sanity-checks a batch size limit.
-   *
-   * @param limit   the limit to check
-   *
-   * @return <code>null</code> if the argument seems valid,
-   *         or a problem description otherwise
-   */
-  public P checkLimit(int limit)
-    ;
-
-
-  /**
    * Sanity-checks a message text.
    *
    * @param text   the message text to check

@@ -101,18 +101,6 @@ public class MixedMessageBoardImplTest
     MixedMessageBoardImpl board = new MixedMessageBoardImpl(3);
 
     try {
-      MessageBatch mb = board.listMessages(0, null);
-      fail("limit 0 not detected");
-    } catch (Exception expected) {
-    }
-
-    try {
-      MessageBatch mb = board.listMessages(-8, null);
-      fail("negative limit not detected");
-    } catch (Exception expected) {
-    }
-
-    try {
       MessageBatch mb = board.listMessages(8, "");
       fail("empty marker not detected");
     } catch (Exception expected) {
