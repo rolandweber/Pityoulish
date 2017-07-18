@@ -15,14 +15,21 @@ import pityoulish.mbserver.SanityCheckerBase;
 public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   implements MSanityChecker<P>
 {
+  /** The sequencer for checking markers. */
+  protected final Sequencer boardSequencer;
+
+
   /**
    * Creates a new sanity checker.
    *
    * @param pf   the problem factory to use
+   * @param seq  the sequencer for checking markers
    */
-  protected DefaultMSanityChecker(ProblemFactory<P> pf)
+  protected DefaultMSanityChecker(ProblemFactory<P> pf,
+                                  Sequencer seq)
   {
     super(pf);
+    boardSequencer = seq;
   }
 
 
@@ -32,8 +39,8 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
     if (marker == null)
        return null; // null marker is valid
 
-    //if (!boardSequencer.isSane(marker))
-    //@@@ define in Catalog:   "invalid marker '"+marker+"'"
+    if ((boardSequencer != null) && !boardSequencer.isSane(marker))
+       return problemFactory.newProblem(Catalog.INVALID_MARKER);
 
     return null;
   }
@@ -58,6 +65,9 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   {
     if (originator == null)
        throw new NullPointerException("originator");
+
+    //@@@ check originator for length and valid characters
+    //@@@ define problem messages in Catalog
 
     return null;
   }

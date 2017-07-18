@@ -14,6 +14,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import pityoulish.mbserver.ProblemFactory;
+import pityoulish.mbserver.StringProblemFactory;
 
 
 /**
@@ -60,6 +61,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   /** ID of the last dropped user message. */
   protected String lastDroppedUserMessageID;
 
+  protected final MSanityChecker<String> sanityChecker;
+
 
   /**
    * Creates a new message board.
@@ -76,6 +79,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
     boardTimer     = newTimestamper();
     boardMessages  = new TreeMap<>(boardSequencer.getComparator());
     lastDroppedUserMessageID = boardSequencer.createMessageID(); // dummy ID
+
+    sanityChecker  = newSanityChecker(new StringProblemFactory());
   }
 
 
@@ -104,16 +109,16 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface UserMessageBoard
   public <P> MSanityChecker<P> newSanityChecker(ProblemFactory<P> pf)
   {
-    return new DefaultMSanityChecker<P>(pf);
+    return new DefaultMSanityChecker<P>(pf, boardSequencer);
   }
 
 
   // non-javadoc, see interface MessageBoard
   public MessageBatch listMessages(int limit, String marker)
   {
-    //@@@ use MSanityChecker
-    if ((marker != null) && !boardSequencer.isSane(marker))
-       throw new IllegalArgumentException("invalid marker '"+marker+"'");
+    String problem = sanityChecker.checkMarker(marker);
+    if (problem != null)
+       throw new IllegalArgumentException(problem);
 
     Iterator<Map.Entry<String,MTMsg>> iter = null;
     int     count = 0;
@@ -166,7 +171,11 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface UserMessageBoard
   public Message putMessage(String originator, String text)
   {
-    //@@@ use MSanityChecker
+    String problem = sanityChecker.checkOriginator(originator);
+    if (problem == null)
+       problem = sanityChecker.checkText(text);
+    if (problem != null)
+       throw new IllegalArgumentException(problem);
 
     MTMsg msg = new MTMsg
       (originator, boardTimer.getTimestamp(), text, MT.USER);
@@ -180,7 +189,9 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface SystemMessageBoard
   public Message putSystemMessage(String slot, String text)
   {
-    //@@@ use MSanityChecker
+    String problem = sanityChecker.checkText(text);
+    if (problem != null)
+       throw new IllegalArgumentException(problem);
 
     String originator = "_";
     if (slot != null)
