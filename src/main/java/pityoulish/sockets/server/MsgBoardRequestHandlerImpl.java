@@ -11,9 +11,12 @@ import java.util.logging.Logger;
 import pityoulish.logutil.Log;
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.UserMessageBoard;
+import pityoulish.msgboard.MSanityChecker;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketManager;
 import pityoulish.tickets.TicketException;
+import pityoulish.tickets.TSanityChecker;
+import pityoulish.mbserver.StringProblemFactory;
 import pityoulish.sockets.server.MsgBoardRequest.ReqType;
 
 
@@ -27,6 +30,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
   protected final UserMessageBoard msgBoard;
 
   protected final TicketManager ticketMgr;
+
+  protected final MSanityChecker<String> mboardSanityChecker;
+
+  protected final TSanityChecker<String> ticketSanityChecker;
 
 
   /**
@@ -44,6 +51,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     msgBoard  = umb;
     ticketMgr = tm;
+
+    StringProblemFactory spf = new StringProblemFactory();
+    mboardSanityChecker = umb.newSanityChecker(spf);
+    ticketSanityChecker = tm.newSanityChecker(spf);
   }
 
 
@@ -63,6 +74,15 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
        throw new NullPointerException("InetAddress");
     // The value of adress is actually ignored, because no ticket is needed.
     // The address argument is mandatory anyway, might be used someday.
+
+    String problem = null;
+    if (mbreq.getMarker() != null) // optional
+       problem = mboardSanityChecker.checkMarker(mbreq.getMarker());
+    //@@@ sanity check for limit? Mustn't be zero or null.
+    //@@@ sanity check for address? Mustn't be null.
+    if (problem != null)
+       throw Log.log(logger, "listMessages", new ProtocolException(problem));
+    //@@@ issue #12: report without exception
 
     return msgBoard.listMessages(mbreq.getLimit(), mbreq.getMarker());
   }
@@ -84,6 +104,14 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     if (address == null)
        throw new NullPointerException("InetAddress");
 
+    String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
+    if (problem == null)
+       problem = mboardSanityChecker.checkText(mbreq.getText());
+    //@@@ sanity check for address? Mustn't be null.
+    if (problem != null)
+       throw Log.log(logger, "putMessage", new ProtocolException(problem));
+    //@@@ issue #12: report without exception
+
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
       if (tick.punch())
@@ -97,7 +125,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
          //@@@ Exception classname is automatically added to error response.
          //@@@ Define an extra exception class for "plain error" messages?
          //@@@ Return a status object that indicates Info/Error with msg?
-         //@@@ Generalize for all handler methods?
+         //@@@ Generalize for all handler methods.
          throw Log.log(logger, "putMessage",
                        Catalog.HANDLER_TICKET_USED_UP_1.asPX(tick.getToken()));
        }
@@ -124,6 +152,15 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     // other values in mbreq will be ignored
     if (address == null)
        throw new NullPointerException("InetAddress");
+
+    // The originator must pass multiple sanity checks.
+    String problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
+    if (problem == null)
+       problem = mboardSanityChecker.checkOriginator(mbreq.getOriginator());
+    //@@@ sanity check for address? Mustn't be null.
+    if (problem != null)
+       throw Log.log(logger, "obtainTicket", new ProtocolException(problem));
+    //@@@ issue #12: report without exception
 
     try {
       Ticket tick = ticketMgr.obtainTicket(mbreq.getOriginator(), address);
@@ -153,6 +190,12 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     if (address == null)
        throw new NullPointerException("InetAddress");
 
+    String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
+    //@@@ sanity check for address? Mustn't be null.
+    if (problem != null)
+       throw Log.log(logger, "returnTicket", new ProtocolException(problem));
+    //@@@ issue #12: report without exception
+
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
       ticketMgr.returnTicket(tick);
@@ -181,6 +224,12 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     // other values in mbreq will be ignored
     if (address == null)
        throw new NullPointerException("InetAddress");
+
+    String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
+    //@@@ sanity check for address? Mustn't be null.
+    if (problem != null)
+       throw Log.log(logger, "replaceTicket", new ProtocolException(problem));
+    //@@@ issue #12: report without exception
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
