@@ -48,7 +48,26 @@ public class DefaultTicketManagerTest
       // expected
     }
 
-    //@@@ add more tests: too short, too long, invalid characters
+    try {
+      Ticket t = manager.obtainTicket("me", address);
+      fail("short username not detected: "+t);
+    } catch (TicketException expected) {
+      // expected
+    }
+
+    try {
+      Ticket t = manager.obtainTicket("ExcessivelyLongUsername", address);
+      fail("long username not detected: "+t);
+    } catch (TicketException expected) {
+      // expected
+    }
+
+    try {
+      Ticket t = manager.obtainTicket("bad space", address);
+      fail("invalid username not detected: "+t);
+    } catch (TicketException expected) {
+      // expected
+    }
 
     // for reference: the good case
     Ticket t = manager.obtainTicket("username", address);
