@@ -54,7 +54,7 @@ public class DefaultTSanityCheckerTest
 
     try {
       DefaultTSanityChecker<String> checker =
-        new DefaultTSanityChecker<>(null, uminlen, -1, null);
+        new DefaultTSanityChecker<>(spf, uminlen, -1, null);
       fail("invalid maximum length not detected: "+checker);
     } catch (RuntimeException expected) {
       // expected
@@ -62,7 +62,7 @@ public class DefaultTSanityCheckerTest
 
     try {
       DefaultTSanityChecker<String> checker =
-        new DefaultTSanityChecker<>(null, umaxlen, uminlen, null);
+        new DefaultTSanityChecker<>(spf, umaxlen, uminlen, null);
       fail("invalid min/max length not detected: "+checker);
     } catch (RuntimeException expected) {
       // expected

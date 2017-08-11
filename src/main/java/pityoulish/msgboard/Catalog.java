@@ -14,7 +14,12 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
-   INVALID_MARKER
+   INVALID_MARKER,
+
+   ORIGINATOR_EMPTY,
+   ORIGINATOR_TOO_SHORT_1,
+   ORIGINATOR_TOO_LONG_1,
+   ORIGINATOR_BAD_CHARACTER
    ;
 
 

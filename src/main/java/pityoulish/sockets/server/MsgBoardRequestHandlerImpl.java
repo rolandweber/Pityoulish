@@ -153,10 +153,13 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     if (address == null)
        throw new NullPointerException("InetAddress");
 
-    // The originator must pass multiple sanity checks.
-    String problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
+    // The originator or username must pass multiple sanity checks.
+    // The ticket manager checks are stricter. Check with the message board
+    // first, to allow for problem reports from both sanity checkers.
+    String problem =
+      mboardSanityChecker.checkOriginator(mbreq.getOriginator());
     if (problem == null)
-       problem = mboardSanityChecker.checkOriginator(mbreq.getOriginator());
+       problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
        throw Log.log(logger, "obtainTicket", new ProtocolException(problem));
