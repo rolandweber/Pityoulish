@@ -42,7 +42,7 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
    * Also, originators of system messages are not valid usernames.
    */
   public final static
-    Pattern DEFAULT_ORIGINATOR_PATTERN = Pattern.compile("[A-Za-z0-9_.@-]+");
+    Pattern DEFAULT_ORIGINATOR_PATTERN = Pattern.compile("[A-Za-z0-9.@-]+");
 
   protected final int originatorMaxLength;
 

@@ -191,7 +191,17 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface SystemMessageBoard
   public Message putSystemMessage(String slot, String text)
   {
-    String problem = sanityChecker.checkText(text);
+    String problem = null;
+    if (slot != null)
+     {
+       // The originator check is applied on the slot name rather than the
+       // originator constructed from it below. That way, we can construct
+       // system originators that wouldn't be accepted by putMessage.
+       // Implementor's decision... could be handled differently as well.
+       problem = sanityChecker.checkOriginator(slot);
+     }
+    if (problem == null)
+       sanityChecker.checkText(text);
     if (problem != null)
        throw new IllegalArgumentException(problem);
 
