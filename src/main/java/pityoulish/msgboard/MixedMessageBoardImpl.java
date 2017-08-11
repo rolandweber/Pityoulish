@@ -116,7 +116,9 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
   // non-javadoc, see interface MessageBoard
   public MessageBatch listMessages(int limit, String marker)
   {
-    String problem = sanityChecker.checkMarker(marker);
+    String problem = null;
+    if (marker != null)
+       problem = sanityChecker.checkMarker(marker);
     if (problem != null)
        throw new IllegalArgumentException(problem);
 

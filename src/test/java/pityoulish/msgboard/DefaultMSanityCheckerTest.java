@@ -71,6 +71,47 @@ public class DefaultMSanityCheckerTest
   }
 
 
+  @Test public void checkMarker_null()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+
+    //@@@ TBD: exception or problem report when called with null? #11
+    try {
+      String problem = checker.checkMarker(null);
+      fail("missing marker not detected");
+    } catch (RuntimeException expected) {
+      // expected
+    }
+  }
+
+  @Test public void checkMarker_empty()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String problem = checker.checkMarker("");
+    assertNotNull("missing marker not detected", problem);
+  }
+
+  @Test public void checkMarker_invalid()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String problem = checker.checkMarker(".a");
+    assertNotNull("invalid marker not detected", problem);
+  }
+
+  @Test public void checkMarker_valid()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String marker = checker.boardSequencer.createMessageID();
+
+    String problem = checker.checkMarker(marker);
+    assertNull("valid marker rejected", problem);
+  }
+
+
   @Test public void checkOriginator_null()
     throws Exception
   {

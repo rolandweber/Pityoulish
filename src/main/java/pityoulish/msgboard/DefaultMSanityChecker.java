@@ -88,9 +88,8 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   // non-javadoc, see interface
   public P checkMarker(String marker)
   {
-    //@@@ marker is optional in the API, but make that the caller's decision
     if (marker == null)
-       return null; // null marker is valid
+       throw new NullPointerException("marker");
 
     if ((boardSequencer != null) && !boardSequencer.isSane(marker))
        return problemFactory.newProblem(Catalog.INVALID_MARKER);
