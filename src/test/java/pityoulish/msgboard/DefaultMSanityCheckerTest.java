@@ -17,7 +17,8 @@ public class DefaultMSanityCheckerTest
   {
     return new DefaultMSanityChecker<>(new StringProblemFactory(),
                                        new SimpleSequencerImpl(),
-                                       4, 16, null);
+                                       35, null, 16, null);
+    // max length of text (35) and originator (16)
   }
 
 
@@ -26,8 +27,8 @@ public class DefaultMSanityCheckerTest
   {
     final StringProblemFactory spf = new StringProblemFactory();
     final Sequencer seq = new SimpleSequencerImpl();
-    final int ominlen = 2;
-    final int omaxlen = 666;
+    final int tmaxlen = 666;
+    final int omaxlen = 62;
 
     try {
       DefaultMSanityChecker<String> checker =
@@ -39,7 +40,7 @@ public class DefaultMSanityCheckerTest
 
     try {
       DefaultMSanityChecker<String> checker =
-        new DefaultMSanityChecker<>(null, seq, ominlen, omaxlen, null);
+        new DefaultMSanityChecker<>(null, seq, tmaxlen, null, omaxlen, null);
       fail("missing problem factory not detected (5 args): "+checker);
     } catch (RuntimeException expected) {
       // expected
@@ -47,24 +48,16 @@ public class DefaultMSanityCheckerTest
 
     try {
       DefaultMSanityChecker<String> checker =
-        new DefaultMSanityChecker<>(spf, seq, -1, omaxlen, null);
-      fail("invalid minimum length not detected: "+checker);
+        new DefaultMSanityChecker<>(spf, seq, -1, null, omaxlen, null);
+      fail("invalid maximum text length not detected: "+checker);
     } catch (RuntimeException expected) {
       // expected
     }
 
     try {
       DefaultMSanityChecker<String> checker =
-        new DefaultMSanityChecker<>(spf, seq, ominlen, -1, null);
-      fail("invalid maximum length not detected: "+checker);
-    } catch (RuntimeException expected) {
-      // expected
-    }
-
-    try {
-      DefaultMSanityChecker<String> checker =
-        new DefaultMSanityChecker<>(spf, seq, omaxlen, ominlen, null);
-      fail("invalid min/max length not detected: "+checker);
+        new DefaultMSanityChecker<>(spf, seq, tmaxlen, null, -1, null);
+      fail("invalid maximum originator length not detected: "+checker);
     } catch (RuntimeException expected) {
       // expected
     }
@@ -101,7 +94,7 @@ public class DefaultMSanityCheckerTest
     assertNotNull("invalid marker not detected", problem);
   }
 
-  @Test public void checkMarker_valid()
+  @Test public void checkMarker_OK()
     throws Exception
   {
     DefaultMSanityChecker<String> checker = newChecker();
@@ -109,6 +102,58 @@ public class DefaultMSanityCheckerTest
 
     String problem = checker.checkMarker(marker);
     assertNull("valid marker rejected", problem);
+  }
+
+
+
+  @Test public void checkText_null()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+
+    //@@@ TBD: exception or problem report when called with null? #11
+    try {
+      String problem = checker.checkText(null);
+      fail("missing text not detected");
+    } catch (RuntimeException expected) {
+      // expected
+    }
+  }
+
+  @Test public void checkText_empty()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String problem = checker.checkText("");
+    assertNotNull("missing text not detected", problem);
+  }
+
+  @Test public void checkText_long()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String text = "Please stop talking, you are droning on!"; // exceeds 35
+
+    String problem = checker.checkText(text);
+    assertNotNull("long text not detected", problem);
+  }
+
+  @Test public void checkText_invalid()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String problem = checker.checkText("abc \u001f xyz");
+    assertNotNull("invalid text not detected", problem);
+  }
+
+  @Test public void checkText_OK()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String text = "Punctuation! 0-9\r\n \tUmlaut \u00e4!";
+
+    String problem = checker.checkText(text);
+    assertNull("valid text rejected", problem);
   }
 
 
@@ -134,14 +179,6 @@ public class DefaultMSanityCheckerTest
     assertNotNull("missing originator not detected", problem);
   }
 
-  @Test public void checkOriginator_short()
-    throws Exception
-  {
-    DefaultMSanityChecker<String> checker = newChecker();
-    String problem = checker.checkOriginator("foo");
-    assertNotNull("short originator not detected", problem);
-  }
-
   @Test public void checkOriginator_long()
     throws Exception
   {
@@ -156,6 +193,14 @@ public class DefaultMSanityCheckerTest
     DefaultMSanityChecker<String> checker = newChecker();
     String problem = checker.checkOriginator("user name");
     assertNotNull("whitespace in originator not detected", problem);
+  }
+
+  @Test public void checkOriginator_OK()
+    throws Exception
+  {
+    DefaultMSanityChecker<String> checker = newChecker();
+    String problem = checker.checkOriginator("somebody");
+    assertNull("valid originator rejected", problem);
   }
 
   @Test public void checkOriginator_rw()

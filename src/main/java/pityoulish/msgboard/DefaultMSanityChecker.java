@@ -17,6 +17,21 @@ import pityoulish.mbserver.SanityCheckerBase;
 public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   implements MSanityChecker<P>
 {
+  /** The sequencer for checking markers. */
+  protected final Sequencer boardSequencer;
+
+  /**
+   * The pattern for valid characters in texts.
+   * The length requirements are not encoded in the pattern.
+   * By checking length explicitly, we can provide better problem reports.
+   */
+  public final static
+    Pattern DEFAULT_TEXT_PATTERN = Pattern.compile("(?U)[\\p{Print}\\s]+");
+
+  protected final int textMaxLength;
+
+  protected final Pattern textPattern;
+
   /**
    * The pattern for valid characters in originators.
    * The length requirements for originators are not encoded in the pattern.
@@ -29,15 +44,10 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   public final static
     Pattern DEFAULT_ORIGINATOR_PATTERN = Pattern.compile("[A-Za-z0-9_.@-]+");
 
-  protected final int originatorMinLength;
-
   protected final int originatorMaxLength;
 
   protected final Pattern originatorPattern;
 
-
-  /** The sequencer for checking markers. */
-  protected final Sequencer boardSequencer;
 
 
   /**
@@ -46,26 +56,32 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
    * @param pf         the problem factory to use
    * @param seq        the sequencer for checking markers, or
    *                   <code>null</code> to allow all markers
-   * @param ominlen    the minimum length of a originator
-   * @param omaxlen    the maximum length of a originator
+   * @param tmaxlen    the maximum length of a originator
+   * @param tpattern   the regex checking for valid characters in texts,
+   *                   <code>null</code> for the
+   *                   {@link #DEFAULT_TEXT_PATTERN}
+   * @param omaxlen    the maximum length of an originator
    * @param opattern   the regex checking for valid characters in originators,
    *                   <code>null</code> for the
    *                   {@link #DEFAULT_ORIGINATOR_PATTERN}
    */
   protected DefaultMSanityChecker(ProblemFactory<P> pf, Sequencer seq,
-                                  int ominlen, int omaxlen, Pattern opattern)
+                                  int tmaxlen, Pattern tpattern,
+                                  int omaxlen, Pattern opattern)
   {
     super(pf);
 
-    if (ominlen < 1)
-       throw new IllegalArgumentException("ominlen");
     if (omaxlen < 1)
        throw new IllegalArgumentException("omaxlen");
-    if (omaxlen < ominlen)
-       throw new IllegalArgumentException("omaxlen < ominlen");
+    if (tmaxlen < 1)
+       throw new IllegalArgumentException("tmaxlen");
 
     boardSequencer = seq;
-    originatorMinLength = ominlen;
+
+    textMaxLength = tmaxlen;
+    textPattern =
+      (tpattern != null) ? tpattern : DEFAULT_TEXT_PATTERN;
+
     originatorMaxLength = omaxlen;
     originatorPattern =
       (opattern != null) ? opattern : DEFAULT_ORIGINATOR_PATTERN;
@@ -81,7 +97,7 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
   protected DefaultMSanityChecker(ProblemFactory<P> pf,
                                   Sequencer seq)
   {
-    this(pf, seq, 1, 16, null);
+    this(pf, seq, 170, null, 16, null);
   }
 
 
@@ -104,9 +120,15 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
     if (text == null)
        throw new NullPointerException("text");
 
-    //@@@ check text for length and valid characters
-    //@@@ max length and/or pattern as constructor arguments?
-    //@@@ define problem messages in Catalog
+    if (text.length() < 1)
+       return problemFactory.newProblem(Catalog.TEXT_EMPTY);
+
+    if (text.length() > textMaxLength)
+       return problemFactory.newProblem(Catalog.TEXT_TOO_LONG_1,
+                                        String.valueOf(textMaxLength));
+
+    if (!textPattern.matcher(text).matches())
+       return problemFactory.newProblem(Catalog.TEXT_BAD_CHARACTER);
 
     return null;
   }
@@ -124,10 +146,6 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
 
     if (originator.length() < 1)
        return problemFactory.newProblem(Catalog.ORIGINATOR_EMPTY);
-
-    if (originator.length() < originatorMinLength)
-       return problemFactory.newProblem(Catalog.ORIGINATOR_TOO_SHORT_1,
-                                        String.valueOf(originatorMinLength));
 
     if (originator.length() > originatorMaxLength)
        return problemFactory.newProblem(Catalog.ORIGINATOR_TOO_LONG_1,
