@@ -13,6 +13,7 @@ import pityoulish.logutil.Log;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
+import pityoulish.tickets.TSanityChecker;
 
 import pityoulish.jrmi.api.APIException;
 import pityoulish.jrmi.api.RemoteTicketIssuer;
@@ -30,6 +31,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
   protected final TicketManager ticketMgr;
 
+  protected final TSanityChecker<APIException> ticketSanityChecker;
+
 
   /**
    * Creates a new remote ticket issuer.
@@ -42,6 +45,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
        throw new NullPointerException("TicketManager");
 
     ticketMgr = tm;
+
+    APIProblemFactory apf = new APIProblemFactory();
+    ticketSanityChecker = tm.newSanityChecker(apf);
   }
 
 
@@ -49,7 +55,12 @@ public class RemoteTicketIssuerImpl extends RemoteObject
   public String obtainTicket(String username)
     throws APIException // does not throw RemoteException
   {
-    //@@@ verify argument... see issue #11
+    APIException apix = ticketSanityChecker.checkUsername(username);
+    // The ticket manager doesn't know about a message board, so
+    // it cannot check the username against restrictions there.
+    // Luckily, the ticket manager is stricter anyway.
+    if (apix != null)
+       throw Catalog.log(logger, "obtainTicket", apix);
 
     try {
       Ticket tick = ticketMgr.obtainTicket(username, null);
@@ -71,7 +82,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
   public void returnTicket(String tictok)
     throws APIException // does not throw RemoteException
   {
-    //@@@ verify argument... see issue #11
+    APIException apix = ticketSanityChecker.checkToken(tictok);
+    if (apix != null)
+       throw Catalog.log(logger, "returnTicket", apix);
 
     try {
       Ticket tick = ticketMgr.lookupTicket(tictok, null);
@@ -92,7 +105,9 @@ public class RemoteTicketIssuerImpl extends RemoteObject
   public String replaceTicket(String tictok)
     throws APIException // does not throw RemoteException
   {
-    //@@@ verify argument... see issue #11
+    APIException apix = ticketSanityChecker.checkToken(tictok);
+    if (apix != null)
+       throw Catalog.log(logger, "replaceTicket", apix);
 
     try {
       Ticket tick = ticketMgr.lookupTicket(tictok, null);

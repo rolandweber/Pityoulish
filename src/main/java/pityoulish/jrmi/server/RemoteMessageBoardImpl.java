@@ -12,9 +12,11 @@ import java.util.logging.Logger;
 import pityoulish.logutil.Log;
 import pityoulish.msgboard.MessageBatch;
 import pityoulish.msgboard.UserMessageBoard;
+import pityoulish.msgboard.MSanityChecker;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
+import pityoulish.tickets.TSanityChecker;
 
 import pityoulish.jrmi.api.APIException;
 import pityoulish.jrmi.api.MessageList;
@@ -35,6 +37,10 @@ public class RemoteMessageBoardImpl extends RemoteObject
 
   protected final TicketManager ticketMgr;
 
+  protected final MSanityChecker<APIException> mboardSanityChecker;
+
+  protected final TSanityChecker<APIException> ticketSanityChecker;
+
 
   /**
    * Creates a new remote message board.
@@ -51,6 +57,10 @@ public class RemoteMessageBoardImpl extends RemoteObject
 
     msgBoard  = umb;
     ticketMgr = tm;
+
+    APIProblemFactory apf = new APIProblemFactory();
+    mboardSanityChecker = umb.newSanityChecker(apf);
+    ticketSanityChecker = tm.newSanityChecker(apf);
   }
 
 
@@ -58,7 +68,12 @@ public class RemoteMessageBoardImpl extends RemoteObject
   public MessageList listMessages(int limit, String marker)
     throws APIException // does not throw RemoteException
   {
-    //@@@ verify arguments... see issue #11
+    APIException apix = null;
+    if (marker != null) // optional
+       apix = mboardSanityChecker.checkMarker(marker);
+    //@@@ verify the limit, see issue #53
+    if (apix != null)
+       throw Catalog.log(logger, "listMessages", apix);
 
     MessageBatch mb = null;
     synchronized (msgBoard) {
@@ -81,7 +96,11 @@ public class RemoteMessageBoardImpl extends RemoteObject
   public void putMessage(String tictok, String text)
     throws APIException // does not throw RemoteException
   {
-    //@@@ verify arguments... see issue #11
+    APIException apix = ticketSanityChecker.checkToken(tictok);
+    if (apix == null)
+       apix = mboardSanityChecker.checkText(text);
+    if (apix != null)
+       throw Catalog.log(logger, "putMessage", apix);
 
     try {
       // Ticket and TicketManager are thread safe, MessageBoard is not
@@ -102,8 +121,8 @@ public class RemoteMessageBoardImpl extends RemoteObject
 
     } catch (TicketException tx) {
       // clients couldn't deserialize class TicketException
-         throw Catalog.log(logger, "putMessage", Catalog.TICKET_BAD_2
-                           .asApiX(tictok, tx.getLocalizedMessage()));
+      throw Catalog.log(logger, "putMessage", Catalog.TICKET_BAD_2
+                        .asApiX(tictok, tx.getLocalizedMessage()));
     }
   }
 
