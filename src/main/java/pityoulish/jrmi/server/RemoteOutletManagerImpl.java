@@ -19,6 +19,7 @@ import pityoulish.logutil.Log;
 import pityoulish.tickets.Ticket;
 import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
+import pityoulish.tickets.TSanityChecker;
 
 import pityoulish.jrmi.api.DirectMessageOutlet;
 import pityoulish.jrmi.api.RemoteOutletManager;
@@ -43,6 +44,8 @@ public class RemoteOutletManagerImpl extends RemoteObject
 
   protected final TicketManager ticketMgr;
 
+  protected final TSanityChecker<APIException> ticketSanityChecker;
+
 
   /**
    * Creates a new remote outlet manager.
@@ -56,14 +59,19 @@ public class RemoteOutletManagerImpl extends RemoteObject
 
     username2outlet = new HashMap<>();
     ticketMgr = tm;
+
+    APIProblemFactory apf = new APIProblemFactory();
+    ticketSanityChecker = tm.newSanityChecker(apf);
   }
 
   // non-javadoc, see interface
   public void publishOutlet(String tictok, DirectMessageOutlet outlet)
     throws APIException
   {
-    //@@@ verify first argument... see issue #11
-
+    APIException apix = ticketSanityChecker.checkToken(tictok);
+    if (apix != null)
+       throw Catalog.log(logger, "publishOutlet", apix);
+    //@@@ issue #55: inconsistent logging of NullPointerException
     if (outlet == null)
        throw Catalog.log(logger, "publishOutlet",
                          new NullPointerException("DirectMessageOutlet"));
@@ -135,7 +143,9 @@ public class RemoteOutletManagerImpl extends RemoteObject
   public void unpublishOutlet(String tictok)
     throws APIException
   {
-    //@@@ verify first argument... see issue #11
+    APIException apix = ticketSanityChecker.checkToken(tictok);
+    if (apix != null)
+       throw Catalog.log(logger, "unpublishOutlet", apix);
 
     try {
       // Ticket and TicketManager are thread safe
@@ -185,6 +195,7 @@ public class RemoteOutletManagerImpl extends RemoteObject
   public DirectMessageOutlet getOutlet(String username)
     throws APIException
   {
+    //@@@ issue #55: inconsistent logging of NullPointerException
     if (username == null)
        throw Catalog.log(logger, "getOutlet",
                          new NullPointerException("username"));
