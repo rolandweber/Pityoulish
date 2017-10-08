@@ -62,6 +62,7 @@ public class TLVRequestBuilderImpl implements RequestBuilder
        // PYL:keep
        Missing.here("add a Marker to the List Messages request");
        // Refer to the specification of the Binary Protocol for details.
+       // Look around for other methods that add a string to their TLV.
        // PYL:cut
        param = request.appendTLV(MsgBoardType.MARKER);
        param.setTextValue(marker, "US-ASCII");
@@ -121,6 +122,7 @@ public class TLVRequestBuilderImpl implements RequestBuilder
     // PYL:keep
     Missing.here("build the Replace Ticket request");
     // Refer to the specification of the Binary Protocol for details.
+    // Look around for other methods that build request TLVs.
     // PYL:cut
     request = buildSingleStringRequest(0,
                                        MsgBoardType.REPLACE_TICKET,

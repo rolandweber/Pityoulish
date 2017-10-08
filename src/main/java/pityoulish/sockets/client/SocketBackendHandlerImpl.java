@@ -59,7 +59,8 @@ public class SocketBackendHandlerImpl extends HostPortBackendHandlerImpl
 
     // PYL:keep
     Missing.here("create and connect a socket");
-    // Have a look at the attributes provided by the base class.
+    // Connect to the host and port given on the command line.
+    // Look around, both values are readily accessible from here.
     // PYL:cut
     sock = new Socket(hostName, portNumber);
     // PYL:end

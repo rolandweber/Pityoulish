@@ -81,6 +81,7 @@ public class TLVResponseParserImpl implements ResponseParser
         // PYL:keep
         Missing.here("parse the Ticket Grant response");
         // Refer to the specification of the Binary Protocol for details.
+        // See the other cases on how to parse a single value from the TLV.
         // Watch out for the correct encoding of the ticket.
         // PYL:cut
         ticket = parseNestedStringValue(tlv, MsgBoardType.TICKET, "US-ASCII");
