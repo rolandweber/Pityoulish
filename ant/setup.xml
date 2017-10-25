@@ -68,9 +68,8 @@
      Targets: timestamps and cleanup
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<target name="_tstamps"
- description="defines timestamp properties"
- >
+<!-- defines timestamp properties -->
+<target name="_tstamps">
   <tstamp>
     <format property="build.time" pattern="yyyy-MM-dd_HH.mm.ss" />
   </tstamp>

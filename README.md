@@ -59,12 +59,52 @@ If you're interested, have a look at issues labeled ["help wanted"](https://gith
 * **effort medium**: It would take me more than an hour to implement, but could be done in a single session on a long afternoon or evening.
 * **effort high**: It would take me more than one programming session to implement. It's probably so complex that I'd like to sleep over the solution at least once before closing the issue.
 
-_Instructions for setting up a dev environment are still missing._
-As of 2016, all exercises are coded in Java. My build environment comprises a JDK, Ant, ant-contrib, and JUnit 4.
-Expect JMockit and maybe Hamcrest to appear in the dependency list during 2017.
+## Development
 
-My workflow is based on an editor, command line, and browser. Sometimes [grip](https://github.com/joeyespo/grip) for previewing markdown before committing. When building exercises, the Java sources are pre-processed with Ant to put in gaps that students have to fill. You might find it tricky to use an IDE for that step.
-The actual coding and unit-testing during development is done without pre-processing though. It will work smoothly with an IDE.
+As of 2017, all exercises are coded in Java.
+To set up a command-line based development environment, you will need:
+- a Java Software Development Kit, for example OpenJDK  
+  Linux distributions typically provide that through their package manager.
+- Command-line tools: `git`, `ant`  
+  Linux distributions typically provide these through their package manager.
+- Java libraries:
+  [`ant-contrib`](http://ant-contrib.sourceforge.net/),
+  [`junit4`](http://junit.org/junit4/),
+  [`hamcrest`](http://hamcrest.org/JavaHamcrest/)  
+  Linux distributions may provide some through their package manager.
+  Download the JAR files for the others.  
+  _Expect JMockit to appear in this list in the future._
+- _optional:_ [grip](https://github.com/joeyespo/grip)
+  for previewing markdown before committing
+
+My workflow is based on an editor, command line, and browser.
+When building exercises, the Java sources are pre-processed with Ant, to punch in the gaps that students have to fill. You might find it tricky to use an IDE for that step.
+The actual coding and unit-testing during development is done without pre-processing though. It should work smoothly with an IDE.
+
+To get started...
+1. Clone the [Pityoulish](https://github.com/rolandweber/pityoulish/) GitHub project.
+2. Make sure Ant has access to the ant-contrib tasks.
+3. Copy [`ant.local.template`](ant.local.template) to `ant.local`.
+   Edit the latter and specify the paths to the extra JAR files.
+   For example on my Linux workstation:
+   ```
+   junit4.jar = /usr/share/java/junit4.jar
+   hamcrest.jar = /usr/share/java/hamcrest-all.jar
+   ```
+4. In a terminal, change to the project directory and execute:
+   ```
+   ant _clean compile test jdoc
+   ```
+   This should pass without errors or warnings.
+   To see the main Ant targets, execute:
+   ```
+   ant -projecthelp
+   ```
+5. Point your browser to `src/main/prose/local-index.html` in the project directory.  
+   This page contains links to the test results and JavaDocs from the previous step, and more.
+
+Happy hacking!
+
 
 # Background
 I've been teaching a course on _Distributed Systems_ once a year, for over a decade now. It's mostly lectures and theory, so I tried to add some practice in the form of two programming exercises. Both implement basically the same client-server functionality, one with socket connections and a binary protocol, the other with Java RMI. I provided the server component, students could write their own client, and then I'd link the server to a projector and let the students try out their clients.
