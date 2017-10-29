@@ -39,9 +39,10 @@ public class RegistryBackendHandlerImpl extends HostPortBackendHandlerImpl
     if (rmiRegistry == null)
      {
        // PYL:keep
-       Missing.here("locate the RMI registry");
+       Missing.here("locate the RMI registry running on the server");
        // ...and store it in the rmiRegistry attribute.
-       // Have a look at the attributes provided by the base class.
+       // The host and port of the registry are given on the command line.
+       // Both values are provided by the base class.
        // PYL:cut
        // obtain a stub for the RMI registry on the server
        rmiRegistry = LocateRegistry.getRegistry(hostName, portNumber);
@@ -68,6 +69,7 @@ public class RegistryBackendHandlerImpl extends HostPortBackendHandlerImpl
     // PYL:keep
     Missing.here("look up the RemoteTicketIssuer");
     // ...and return it
+    // Look out for another lookup which you can use as a template.
     // PYL:cut
     rti = (RemoteTicketIssuer)
       ensureRegistry().lookup(RegistryNames.TICKET_ISSUER.lookupName);

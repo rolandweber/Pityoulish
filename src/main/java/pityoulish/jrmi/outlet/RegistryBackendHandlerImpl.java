@@ -38,7 +38,7 @@ public class RegistryBackendHandlerImpl extends HostPortBackendHandlerImpl
     if (rmiRegistry == null)
      {
        // PYL:keep
-       Missing.here("locate the RMI registry");
+       Missing.here("locate the RMI registry running on the server");
        // ...and store it in the rmiRegistry attribute.
        // That's the same piece of code which is missing from the client, too.
        // You didn't think you could copy it from here, did you?

@@ -88,16 +88,16 @@ public class MsgOutletHandlerImpl
       // PYL:end
     } finally {
       // PYL:keep
-      // The "Missing" exception could shadow other problems, for example
-      // an invalid ticket. Throw it only if there is no other problem.
-      // Please remove the 'noproblem' flag from the code when you fix it.
       if (noproblem)
          Missing.here("close the outlet for remote method invocations");
-      // At this point, the outlet should become unavailable. However,
-      // the RMI runtime is still ready to serve remote calls. You'll
-      // notice that the JVM keeps running if you don't clean up here.
-      // Calling System.exit would be cheating. Tell RMI to stop serving
-      // remote calls for the outlet, then the JVM terminates gracefully.
+      // At this point, the outlet is no longer published. But it could still
+      // be called if any client has a stub. The RMI runtime keeps the JVM
+      // running to serve possible calls. Unexport the outlet to let the
+      // JVM terminate gracefully. Calling System.exit would be cheating.
+
+      // Remove the 'noproblem' flag. It was needed because an unconditional
+      // MissingException would shadow other problems, like invalid tickets.
+      // When you fix the missing code, the flag becomes pointless.
       // PYL:cut
       UnicastRemoteObject.unexportObject(dmo, true);
       // PYL:end
@@ -118,10 +118,10 @@ public class MsgOutletHandlerImpl
     DirectMessageOutlet     stub = null;
 
     // PYL:keep
-    Missing.here("create a local outlet");
-    // The JavaDocs and signature of this method, along with
-    // the variables declared here, should be clear enough.
-    // An import from java.rmi.server is missing though.
+    Missing.here("create a local outlet and export it");
+    // Exporting is implemented by subclasses of java.rmi.server.RemoteServer.
+    // You'll need a typecast:  stub = (DirectMessageOutlet) ...whatever...
+    // To get around a StubNotFoundException, use a different export method.
     // PYL:cut
     dmoi = new DirectMessageOutletImpl();
     stub = (DirectMessageOutlet) UnicastRemoteObject.exportObject(dmoi, 0);
@@ -161,8 +161,10 @@ public class MsgOutletHandlerImpl
        System.out.println(Catalog.REPORT_SENDING_TO_1.format(username));
        // PYL:keep
        Missing.here("deliver the message to the outlet of '"+username+"'");
-       // ...and don't forget to handle errors. If the outlet is broken,
-       // the loop should deliver the message to the remaining users anyway.
+       // From where can you get the user's outlet?
+       // Print the outlet object... can you make sense of the output?
+       // Make sure to handle errors. If the outlet is broken, the loop
+       // should deliver the message to the remaining users anyway.
        // PYL:cut
        try {
          DirectMessageOutlet dmo = rom.getOutlet(username);
