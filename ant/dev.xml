@@ -154,14 +154,15 @@ Targets for development, for working with the (Java) code.
      JUnit tests and HTML test reports
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<target name="test" depends="run-tests,report-tests,check-tests"/>
+<target name="test" depends="run-tests,report-tests,check-tests"
+        description="run the Java test suite and generate a report" />
 
+<!-- description="compiles all Java tests" -->
 <!-- There is intentionally no dependency on 'compile' here.
      Running or compiling tests should not modify the test subject.
      Not even by rebuilding it.
 -->
-<target name="compile-tests"
-        description="compiles all Java tests">
+<target name="compile-tests">
   <jc destdir="${classes.test}">
     <src path="${src.test}" />
     <classpath>
@@ -172,8 +173,9 @@ Targets for development, for working with the (Java) code.
   </jc>
 </target>
 
-<target name="run-tests" depends="compile-tests"
-        description="runs the Java test suite">
+
+<!-- description="runs the Java test suite" -->
+<target name="run-tests" depends="compile-tests">
   <local name="test.output" />
   <property name="test.output" location="${dir.tmp}/testresult" />
 
@@ -208,8 +210,8 @@ Targets for development, for working with the (Java) code.
         message="Unit test suite failed."/>
 </target>
 
-<target name="report-tests"
-        description="generates a JUnit test report">
+<!-- description="generates a JUnit test report" -->
+<target name="report-tests">
   <junitreport todir="${dir.tmp}/testresult">
     <fileset  dir="${dir.tmp}/testresult" excludes="html/**" />
     <report todir="${dir.tmp}/testresult/html" />

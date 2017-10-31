@@ -14,10 +14,11 @@ This readme describes how to set up a development environment, how to build vari
 
 Table of Contents:
 - [Setup](#setup) - install your own build environment
+- [Ant Targets](#ant-targets) - use Ant to build exercises and related stuff
 - [Build Steps](#build-steps) - how the build process works
 
 
-## Setup
+# Setup
 
 To set up a command-line based development environment, you will need:
 - a Java Software Development Kit, for example OpenJDK  
@@ -53,7 +54,7 @@ To get started...
    ant _clean compile test jdoc
    ```
    This should pass without errors or warnings.
-   To see the main Ant targets, execute:
+   To see the main [Ant targets](#ant-targets), execute:
    ```
    ant -projecthelp
    ```
@@ -63,15 +64,51 @@ To get started...
 Happy hacking!
 
 
-## Build Steps
+# Ant Targets
+
+Run `ant -projecthelp` to list the main Ant targets.
+Targets without a hyphen (-) apply to the whole project, across exercises.
+This includes "compile", "test", and "jdoc" mentioned in [Setup](#setup) above.
+Ant targets specific to an exercise have at least one hyphen in their name, and an acronym in the description. For example:
+
+| Target | Acronym | Purpose |
+| ------ | ------- | ------- |
+| prep-java | tpj | Tutorial: Prepare for Java exercises |
+| client-sockets-java | xjs | Exercise: Java Sockets |
+| server-sockets-java | ijs | Instructions: Java Sockets |
+| follow-sockets-java | fjs | Follow the board: Java Sockets |
+| client-rmi-java | xjr | Exercise: Java RMI |
+| server-rmi-java | ijr | Instructions: Java RMI |
+| follow-rmi-java | fjr | Follow the board: Java RMI |
+
+The target for an Exercise or the Instructions will build a zip archive for students or instructors, respectively.
+This requires several sub-targets to be built. Ant prints these sub-targets while it executes.
+If you are working on a specific part of an exercise, you can build the respective sub-target directly to save time.
+For example, building the Tutorial with `prep-java` builds these sub-targets, among others:
+- `tpj-jar`   - The JAR file with bugs to fix, and another without the bugs.
+- `tpj-jdoc`  - JavaDocs just for the classes in the JAR file.
+- `tpj-prose` - The tutorial description in HTML.
+- `tpj-all`   - The zip archive comprising JAR, JavaDocs, and description.
+  Same as `prep-java` itself.
+
+
+
+# Build Steps
 
 The Java source code for all clients, servers, and other programs is in one combined source tree at [src/main/java/](src/main/java/).
 Unit tests are in a similar source tree at [src/test/java/](src/test/java/).
 For development, the source tree is compiled into one class tree, and different programs started by running <code>Main</code> from different packages.
 There is no packaging into subsets of classes for the different programs at this point.
 The unit tests are also compiled into one class tree.
+Some relevant Ant targets are:
 
-### PYL Preprocessing
+- `ant compile` compiles the main sources into classes
+- `ant compile-tests` compiles the unit tests into classes.
+  Requires the main sources to be compiled.
+- `ant compile-pitfill` preprocesses the sources and compiles the result.
+  See the next section about preprocessing.
+
+## PYL Preprocessing
 
 The code in the source tree is fully functional. For the exercises, selected parts are removed to introduce the bugs that students have to fix.
 This is achieved by processing the source code before compilation.
@@ -91,7 +128,7 @@ For development, this code is compiled as-is. The calls to class <code>Missing</
 To trigger a <code>MissingException</code> during development, call <code>Missing.here(null)</code>, without an argument string.
 
 The source code is pre-processed twice, into a <i>pitted</i> version from which to build student JARs (faulty), and into a <i>filled</i> version from which to build instructor JARs (good).
-The Ant tasks "preprocess" and "compile-pitfill" take care of preprocessing and of compiling the preprocessed sources, respectively.
+The Ant targets "preprocess" and "compile-pitfill" take care of preprocessing and of compiling the preprocessed sources, respectively.
 
 For the <i>pitted</i> version, the lines between PYL:keep and PYL:cut are retained, while the lines between PYL:cut and PYL:end get removed.
 In the faulty JARs built from these sources, calls to <code>Missing.here</code> raise an exception. This leads students directly to the point in the code where the functional lines have been removed.
