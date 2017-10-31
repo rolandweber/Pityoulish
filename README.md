@@ -17,7 +17,7 @@ Are you...
 * a [student](#students)
 * an [instructor](#instructors)
 * a [contributor](#contributors) to-be
-* a [developer](Developer.md) getting started
+* a [developer](Development.md) getting started
 * interested in the [background](Background.md) or [history](Background.md#history-and-lessons-learned)
 
 ## Notes for...
@@ -48,7 +48,7 @@ The current set of exercises comprises:
   Shows how convenient, yet limiting, it is to use an API with generated stubs and skeletons.
 
 As an instructor, I expect you to build the exercises and server components yourself.
-See the [Developer Readme](Developer.md) for details.
+See the [Development Readme](Development.md) for details.
 
 I'm considering various [enhancements](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) and additional exercises, both in class and at home.
 You're welcome to contribute, see just below :-)
@@ -63,5 +63,5 @@ If you're interested, have a look at issues labeled ["help wanted"](https://gith
 * **effort medium**: It would take me more than an hour to implement, but could be done in a single session on a long afternoon or evening.
 * **effort high**: It would take me more than one programming session to implement. It's probably so complex that I'd like to sleep over the solution at least once before closing the issue.
 
-See the [Developer Readme](Developer.md) for more information about working with the Pityoulish source code.
+See the [Development Readme](Development.md) for more information about working with the Pityoulish source code.
 

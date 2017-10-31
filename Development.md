@@ -1,4 +1,4 @@
-# Pityoulish Developer README
+# Development of Pityoulish Exercises
 
 As of 2017, all exercises are coded in Java.
 Each Pityoulish exercise comprises:
@@ -8,8 +8,8 @@ Each Pityoulish exercise comprises:
   [src/main/java/](src/main/java/)
 - JavaDocs, generated from the same source code
 
-All files for an exercise are packaged into a single zip archive.
-Instructors can also build notes and server-side JARs in a similar fashion.
+All student files for an exercise are packaged into a single zip archive.
+Instructors can build notes and server-side JARs in a similar fashion.
 This readme describes how to set up a development environment, how to build various components with Ant, and how the build process works.
 
 Table of Contents:
