@@ -1,0 +1,179 @@
+<html>
+<!-- 
+This work is released into the Public Domain under the
+terms of the Creative Commons CC0 1.0 Universal license.
+https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="pityoulish.css" />
+<title>Test and Fix </title>
+</head>
+<body>
+<h1 id="exercise" class="title">
+  <span>Test and Fix</span>
+</h1>
+<p class="abstract">
+These are your main activities during a classroom exercise.
+</br>
+The prepared bugs will take you to selected, relevant places in the code.
+</p>
+
+<div class="larger">
+<p>
+The classroom exercises challenge you to find and fix errors in a program,
+typically a Java client.
+The corresponding server is operated by the instructor.
+You manually execute a test sequence
+and overcome errors as you encounter them.
+This is the simplified version of a typical developer experience:
+Working with an unfamiliar codebase.
+You're pointed to some spot in the code, and have to make local changes
+without fully understanding what everything around it does.
+</p>
+
+
+<ol>
+<li>Find a <a href="#sequence">Test Sequence</a></li>
+<li><a href="#testfixbuild">Test, Fix, Build</a>, repeat</li>
+<li><a href="#cleanup">Clean Up</a></li>
+</ol>
+
+</div>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="sequence"><span>Find a Test Sequence</span></h2>
+
+<p>
+The programs in the exercises are invoked with arguments that
+tell them what to do.
+Each program implements a set of commands with different arguments.
+When a programm is called, it interprets the arguments,
+performs the requested command, and prints the output.
+Unless there is a problem, of course.
+</p>
+
+<p>
+Many commands require output from others as arguments.
+Sometimes, the output of a command depends on previous commands,
+for example when reading data from a server after sending it there.
+Testing the full program functionality therefore requires execution of all
+commands in a logical sequence. Commands with different possible arguments,
+or with different possible results, should be covered in all variations.
+</p>
+
+<p>
+In practice, defining test cases which thoroughly cover a program or API
+requires good knowledge of that program or API, and some experience.
+To get you on track right away, the exercises suggest a test sequence.
+That test sequence will cover the basic functionality of the program,
+and uncover all prepared bugs, in the intended order.
+Along the way, you will run into other problems,
+like giving wrong arguments to a command.
+That is part of the learning experience.
+Those problems can be overcome without fixing the code.
+</p>
+
+<p>
+The suggested test sequences cover all the commands, but
+only some of the error cases the programs might run into.
+They are probably also missing some of the good cases for the commands.
+If you can spare the attention, look out for gaps in the test coverage.
+If you are too occupied for that though, just following the test sequence
+lets you achieve the main objective of each exercise nevertheless.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="testfixbuild"><span>Test, Fix, Build, repeat</span></h2>
+
+<p>
+Start executing the test sequence, from the command line or your IDE.
+Be prepared to deal with problems such as typos in command-line arguments,
+incorrect usage of the program, network connectivity issues, and the like.
+Resolve them and move on with the test sequence, until you
+encounter a <code>pityoulish.outtake.Missing</code> exception.
+</p>
+
+<p>
+That exception marks an intentional omission from the code.
+Don't start fixing yet!
+The first time you encounter the exception, make sure to
+get a Code Overview from the JavaDocs before you dive into the sources.
+</p>
+
+<p>
+OK, you've got a general understanding of the packages and classes
+from the JavaDocs now. You found the classes from the stack trace there.
+It's time to hit the source code, which is included in the JAR.
+Locate where the exception is raised, where some code is missing.
+Then stop and <b
+title="If you invoke the auto-completion of your IDE and pick the
+first method with a comely name, you're doing something wrong."
+                >think</b>.
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Think!</span>
+</div></div>
+
+<ul>
+<li>
+What is the missing code supposed to do?
+There is an exception message, probably some comment in the source code,
+JavaDocs of the method.
+</li>
+<li>
+What result is expected?
+A value returned? An attribute initialized? A method called?
+Output written to the console?
+</li>
+<li>
+What data do you need? What data is available?
+Look at local variables, method arguments, object attributes,
+functions inherited from base classes.
+</li>
+<li>
+How can you solve the problem?
+Is there a standard API to use, or something in the program code?
+</li>
+<li>
+Where can you copy from?
+Are there other places in the program that do something similar?
+It's OK to re-use code snippets from there.
+</li>
+<li>
+<b>Keep it simple!</b>
+There's usually just one or two lines missing.
+An assignment, a method call, something like that.
+</li>
+</ul>
+
+<p>
+Remove the call that raises the exception and fill in the missing code.
+Compile the sources and build a new JAR that includes your fix.
+Repeat the failing step of the test sequence,
+and prerequisite steps if necessary.
+If your fix is good, proceed with the test sequence.
+If not, improve your fix.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="cleanup"><span>Clean Up</span></h2>
+
+<p>
+After completing the test sequence, perform the final cleanup.
+Delete the package <code>pityoulish.outtake</code>, both source and classes.
+Delete the <code>.class</code> files from all other packages.
+Then compile the whole program from source code again.
+Fix compilation problems, and then you're done.
+</p>
+
+
+</body>
+</html>
+
