@@ -20,9 +20,15 @@ implement a low-level protocol interface on top of socket connections.
 
 <div class="larger">
 <p>
-Your task is to find and fix errors in a Java client program.
-The client communicates with a <a href="message-board.html">Message Board</a>
-server using a <a href="protocol-tlv.html">Binary Protocol</a>.
+Your task is to <a href="test-fix-repeat.html">Test and Fix</a>
+a Java client program. The client communicates with a
+<a href="message-board.html"
+   title="high-level description of Message Board functionality"
+   >Message Board</a>
+server using a
+<a href="protocol-tlv.html"
+   title="low-level description of protocol data units"
+   >Binary Protocol</a>.
 The server is operated by the instructor.
 The client, when fixed, enables you to put messages on the board,
 and to read the messages others have put there.
@@ -30,16 +36,14 @@ and to read the messages others have put there.
 
 <p>
 A recipe for solving this task has been conveyed beforehand in a Tutorial.
-If you failed to complete the Tutorial, you're probably screwed now.
-Instructions below recap the major steps just briefly.
-The sections appear in chronological order, more or less:
+If you failed to work through the Tutorial, you're probably screwed now.
+Unless you have experience with programming and debugging.
 </p>
 
 <ol>
 <li><a href="#setup">Setup</a> before you begin</li>
-<li><a href="#sequence">Define</a> a test sequence</li>
-<li><a href="#testfixbuild">Test, Fix, Build</a>, repeat</li>
-<li><a href="#code">Code Overview</a> for fixing</li>
+<li><a href="#mbclient">Message Board Client</a> to exercise with</li>
+<li><a href="#code">Code Overview</a> to find your way</li>
 <li><a href="#learned">Lessons Learned</a> when done</li>
 </ol>
 
@@ -83,8 +87,8 @@ along with the following:
 </ul>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="client"><span>Client</span></h3>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="mbclient"><span>Message Board Client</span></h2>
 
 <div class="box-right">
 <dl>
@@ -99,7 +103,7 @@ along with the following:
 </div><!-- box-right -->
 
 <p>
-Download the client, <a href="mbclient-sockets-faulty.jar"
+Download the client program, <a href="mbclient-sockets-faulty.jar"
                         ><code>mbclient-sockets-faulty.jar</code></a>,
 and give it a decent filename.
 Remember how important it is to keep a positive mindset:
@@ -110,32 +114,24 @@ Start with the filename.
 <p>
 Run the client without arguments to obtain the usage instructions.
 Read and understand those.
-If you haven't done so already, read the high-level description
-of the <a href="message-board.html">Message Board</a> now.
-You will notice that the commands supported by the client
-match with the operations defined for a Message Board.
+Each command corresponds with an operation of the
+<a href="message-board.html"
+   title="high-level description of Message Board functionality"
+   >Message Board</a>.
 </p>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="sequence"><span>Define a Test Sequence</span></h2>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="client-sequence"><span>Test Sequence</span></h3>
 
 <p>
-Some commands of the client depend upon others.
-For example, putting a message on the board depends on obtaining a ticket.
-And listing messages starting at a marker depends on
-getting a marker from a previous listing.
-Testing the full client functionality therefore requires execution of all
-commands in a logical sequence. Commands with different possible arguments,
-or with different possible results, should be covered in all variations.
+As mentioned in <a href="test-fix-repeat.html#sequence"
+                   title="Find a Test Sequence"
+                   >Test and Fix</a>,
+finding a good test sequence requires some experience.
+The following will take you through this exercise:
 </p>
 
-<p>
-In practice, defining test cases which thoroughly cover a program or API
-requires good knowledge of that program or API, and some experience.
-To get you started with this exercise,
-you may use the following test sequence:
-</p>
 <ol>
 <li>
 List messages from the board, without marker.
@@ -160,96 +156,16 @@ Replace a ticket, before and after exhausting all operations.
 </ol>
 
 <p>
-That sequence covers only a few of the error cases, but that is sufficient
-for the exercise. You don't have to test for invalid arguments, for example.
-Not knowing for how long a ticket is valid, or how many operations it permits,
-will confront you with enough error situations to get into the spirit.
-</p>
+There are four problems to find and fix.
+Before hacking the code, get an
+<a href="#code"
+   title="Code Overview (below)"
+   >overview</a>.
+At some point, you will need a general understanding of nested
+<a href="protocol-tlv.html#tlv"
+   title="TLV section of the binary protocol"
+   >TLV structures</a>.
 
-<p>
-That sequence is also missing some good cases.
-You may encounter them perchance, but they are not enforced.
-See if you can spot those gaps in the test coverage throughout the exercise.
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="testfixbuild"><span>Test, Fix, Build, repeat</span></h2>
-
-<p>
-Start executing the test sequence, from the command line or your IDE.
-Be prepared to deal with problems such as typos in command-line arguments,
-incorrect usage of the client, network connectivity issues, and the like.
-Resolve them and move on with the test sequence, until you
-encounter a <code>pityoulish.outtake.Missing</code> exception.
-</p>
-
-<p>
-As you remember from the Tutorial, that exception marks an intentional
-omission from the code. Don't start fixing yet!
-The first time you encounter the exception, make sure to
-get a <a href="#code">Code Overview</a>
-from the <a href="jdoc/index.html" target="_blank">JavaDocs</a>
-before you dive into the sources.
-</p>
-
-<p>
-OK, you've got a general understanding of the packages and classes
-from the JavaDocs now. You found the classes from the stack trace there.
-It's time to hit the source code, which is included in the JAR.
-Locate where the exception is raised, where some code is missing.
-Then stop and <b
-title="If you invoke the auto-completion of your IDE and pick the
-first method with a comely name, you're doing something wrong."
-                >think</b>.
-</p>
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Think!</span>
-</div></div>
-
-<ul>
-<li>
-What is the missing code supposed to do?
-There is an exception message, maybe some comment in the source code,
-JavaDocs of the method.
-</li>
-<li>
-What data do you need? What data is available?
-Look at local variables, method arguments, object attributes,
-getters in the class hierarchy.
-</li>
-<li>
-If you have to generate or parse binary data for or from the server,
-refer to the <a href="protocol-tlv.html">Binary Protocol</a> specification.
-</li>
-<li>
-How can you solve the problem?
-Is there a standard API to use, or something in the client code?
-</li>
-<li>
-Where can you copy from?
-Are there other places in the client that do something similar?
-It's OK to re-use code snippets from there.
-</li>
-</ul>
-
-<p>
-Remove the call that raises the exception and fill in the missing code.
-Compile the sources and build a new JAR that includes your fix.
-Repeat the failing step of the test sequence,
-and prerequisite steps if necessary.
-If your fix is good, proceed with the test sequence.
-If not, improve your fix.
-</p>
-
-<p>
-After completing the test sequence, perform the final cleanup.
-Delete the package <code>pityoulish.outtake</code>, both source and classes.
-Delete the <code>.class</code> files from all other packages.
-Then compile the whole client from source code again.
-Fix compilation problems, and then you're done.
 </p>
 
 
@@ -354,7 +270,7 @@ If not, where or how did you lose time?
 </p>
 
 <p>
-Did you spot gaps in the suggested test sequence?
+Did you spot gaps in the test sequence?
 </p>
 
 <p>

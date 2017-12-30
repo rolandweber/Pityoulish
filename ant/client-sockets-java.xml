@@ -126,6 +126,7 @@ Exercise: Message Board Client with Sockets, in Java
     <fileset refid="prose.common.files" />
     <fileset dir="src/main/prose">
       <include name="xjs-*" />
+      <include name="test-fix-repeat.html" />
       <include name="message-board.html" />
       <include name="protocol-tlv.html" />
     </fileset>
