@@ -21,20 +21,26 @@ of remote method invocation.
 
 <div class="larger">
 <p>
-Your task is to find and fix errors in two Java programs.
-The first one is a <a href="message-board.html">Message Board</a> client
+Your task is to <a href="test-fix-repeat.html">Test and Fix</a>
+two Java programs. The first one is a
+<a href="message-board.html"
+   title="high-level description of Message Board functionality"
+   >Message Board</a> client
 using Java Remote Method Invocation.
 This allows for a direct comparison with the Message Board client
 using sockets from a previous exercise.
 The second program sends and receives
-<a href="direct-messages.html">Direct Messages</a>.
+<a href="direct-messages.html"
+   title="high-level description of Direct Message functionality"
+   >Direct Messages</a>.
 This exposes the callee side of remote invocations.
 </p>
 
 <p>
 A recipe for solving this task has been conveyed beforehand in a Tutorial.
 It was applied in a previous exercise with sockets in Java.
-The development steps are assumed to be known by now.
+If you missed both, you're probably screwed now.
+Unless you have experience with programming and debugging.
 </p>
 
 <ol>
@@ -91,10 +97,6 @@ along with the following:
 <h2 id="part1-mbclient"><span>Message Board Client</span></h2>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<h3 id="client-program"><span>Client</span></h3>
- -->
-
 <div class="box-right">
 <dl>
 <dt><a href="mbclient-jrmi-faulty.jar"
@@ -116,10 +118,11 @@ and give it a decent filename.
 <p>
 Run the client without arguments to obtain the usage instructions.
 Read and understand those.
-The high-level description of the
-<a href="message-board.html">Message Board</a>
-should be familiar from a previous exercise.
-The client supports exactly the same commands as the client with sockets.
+Each command corresponds with an operation of the
+<a href="message-board.html"
+   title="high-level description of Message Board functionality"
+   >Message Board</a>.
+This client supports exactly the same commands as the client with sockets.
 </p>
 
 
@@ -127,7 +130,7 @@ The client supports exactly the same commands as the client with sockets.
 <h3 id="client-sequence"><span>Test Sequence</span></h3>
 
 <p>
-You can re-use your test sequence from the previous exercise
+You can re-use the test sequence from the previous exercise
 about the Message Board Client with sockets.
 For example:
 </p>
@@ -156,6 +159,10 @@ Replace a ticket, before and after exhausting all operations.
 
 <p>
 There are three problems to find and fix.
+Before hacking the code, get an
+<a href="#code"
+   title="Code Overview (below)"
+   >overview</a>.
 </p>
 
 
@@ -209,9 +216,13 @@ and give it a decent filename.
 <p>
 Run the program without arguments to obtain the usage instructions.
 Read and understand those.
-Compare the supported operations with the high-level description
-of <a href="direct-messages.html">Direct Messages</a>.
-For obtaining tickets, use the Message Board client above.
+The commands correspond with operations for
+<a href="direct-messages.html"
+   title="high-level description of Direct Message functionality"
+   >Direct Messages</a>.
+</p>
+<p class="larger">
+To obtain tickets, use the Message Board client from above.
 </p>
 
 
@@ -264,6 +275,10 @@ Can you open more than one outlet at a time?
 There are four problems to fix in the code.
 There are numerous problems in the application architecture,
 but those are not the topic of this exercise.
+Before hacking the code, get an
+<a href="#code"
+   title="Code Overview (below)"
+   >overview</a>.
 </p>
 
 

@@ -160,6 +160,7 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
     <fileset refid="prose.common.files" />
     <fileset dir="src/main/prose">
       <include name="xjr-*" />
+      <include name="test-fix-repeat.html" />
       <include name="message-board.html" />
       <include name="direct-messages.html" />
     </fileset>
