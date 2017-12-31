@@ -264,6 +264,10 @@ div.box-right
     text-decoration: none;
   }
 
+  div.box-right div {
+    margin: 4px 0px;
+  }
+
   div.box-right a code {
     font-weight: bold;
   }
@@ -435,6 +439,12 @@ div.code {
 }
 } /* @media screen */
 
+div.back-link {
+    font-size: large;
+    margin-top: 2em;
+    margin-bottom: 17em;
+    border-bottom: 1px dashed #ccb69c;
+}
 
 .todo {
   font-style: italic;
