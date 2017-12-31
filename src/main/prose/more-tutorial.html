@@ -1,0 +1,183 @@
+<html>
+<!-- 
+This work is released into the Public Domain under the
+terms of the Creative Commons CC0 1.0 Universal license.
+https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="pityoulish.css" />
+<title>Details: Prepare for Java Exercises </title>
+</head>
+<body>
+<h1 id="tutorial" class="title">
+  <span>Details: Prepare for Java Exercises</span>
+</h1>
+<p class="abstract">
+...
+</p>
+
+<div class="larger">
+This page collects detailed descriptions and background information for
+some parts of the <a href="index.html">Tutorial</a>.
+You're not required to read and learn everything noted here.
+The Tutorial links to individual sections.
+You should <a onclick="history.back();">return</a>
+to the Tutorial after each section.
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="jar"><span>JAR Content</span></h2>
+
+<p>
+List the contents of the JAR file.
+Use the <code title="jar -tf">jar</code> utility of a JDK,
+or <code title="unzip -l">unzip</code>,
+or any other archive utility that is compatible with the zip format.
+The example output below shows only a subset of the files.
+</p>
+<div class="terminal">
+  <div class="input"><span>jar -tf tutorial.jar</span></div>
+  <div class="output"
+>META-INF/MANIFEST.MF
+pityoulish/cmdline/ArgsInterpreter.java
+...
+pityoulish/outtake/<span class="emph">Missing.java</span>
+pityoulish/tutorial/Main.java
+pityoulish/tutorial/TutorialCommandHandler.java
+pityoulish/tutorial/package.html
+pityoulish/cmdline/ArgsInterpreter.class
+...
+pityoulish/outtake/<span class="emph">Missing.class</span>
+pityoulish/tutorial/Main.class
+...
+pityoulish/tutorial/TutorialCommandHandler.class
+</div>
+</div>
+<p>
+On first glance, it seems as if classes are listed twice. Indeed,
+a closer look reveals that the JAR contains source code (.java)
+along with compiled classes (.class). The presence of 'package.html' files
+suggests that there might even be meaningful JavaDocs.
+It is always possible to generate JavaDocs from source code.
+But if the source code doesn't contain special JavaDoc comments,
+the generated docs are not necessarily useful. Alas, the mere presence of
+JavaDoc comments also doesn't ensure that they contain anything useful.
+Fortunately, this is a tutorial with well-documented source code.
+</p>
+
+<i>
+Mention .properties files and give some info on the manifest.
+</i>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h3>
+
+<p>
+Before you dive into the source code and get lost in its intricacies,
+you should get a high-level overview. Modern IDEs make it very easy to
+access context-specific information. For example, they can show the JavaDocs
+for a method as hover help, right there where the method is being called.
+At the same time, they beguile developers into neglecting the bigger context.
+Why bother with the class- or package-level JavaDocs, when the method-level
+is readily available? Never mind that the former might point out
+other classes or methods that would serve your purposes better, or
+provide valuable information that applies to all the methods of a class.
+To elude this pitfall, don't go into your IDE or editor just yet.
+</p>
+
+<p>
+Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a>
+in a new browser tab or window,
+so you can easily switch between them and this description.
+Check the list of packages. There are three of them,
+<code>pityoulish.cmdline</code>, <code>pityoulish.i18n</code>,
+and <code>pityoulish.tutorial</code>.
+In the main content frame, click on the first one. Now you see a list of
+interfaces and classes in that package. Glimpse at the names. They are
+about commands, handling, and arguments. The package description begins
+with "Utility classes". This indicates that the package does not contain
+the main functionality of the program, but supporting features.
+Are you interested in learning how the command-line arguments are interpreted?
+If so, write it down on your to-do list for later.
+Right now, the support functionality is not your concern.
+</p>
+
+<p>
+Move on to the next package, <code>pityoulish.i18n</code>.
+The funny abbreviation is explained in the JavaDocs. There are even links
+to external websites where you can do some background reading.
+But again, the package description begins with "Utility classes".
+So this is another item for your to-do list and a later time.
+What you should gather from the package description is that
+output strings are not hard-coded in the Java sources.
+Instead, they are looked up from properties files.
+Catalog enums define lookup keys and helper methods.
+</p>
+
+<p>
+Finally, access the JavaDocs for the <code>pityoulish.tutorial</code> package.
+There is a class <code>Main</code>, described as the main entry point.
+Now you know where to start. There is an enum with four constants,
+named like the four commands which <code>tutorial.jar</code> understands.
+And there is a handler class with methods named like the four commands.
+Could <code>handleLatinCmd</code> be the method which prints the umlauts
+for the 'latin' command? Yes, the description says so.
+Without even looking at the source code, you've learned where the
+important things are happening.
+</p>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="source-walk-through"><span>Source Code Walk-Through</span></h3>
+
+<p>
+Now it is time to browse the source code. If you didn't know already
+from the JavaDocs where to start, you would have to look into the file
+<code>META-INF/MANIFEST.MF</code>. It defines a property 'Main-Class',
+which tells <code>java -jar</code> about the entry point of the program.
+Unsurprisingly, the value is <code>pityoulish.tutorial.Main</code>.
+Open the source file for that class in your IDE or editor.
+</p>
+
+<p>
+The <code>main</code> method initializes an arg(ument)s interpreter,
+calls it with the command-line arguments, and is done.
+If you hadn't looked at the JavaDocs first, you would now probably
+follow the program execution and look into the args interpreter.
+However, you already know that it comes from a utility package, and that
+the commands are implemented in <code>TutorialCommandHandler</code>.
+An instance of that class is given to the args interpreter as a
+constructor argument. The other constructor argument is some kind of 'None',
+so probably not relevant here. The natural conclusion is that
+the args interpreter will call the command handler.
+Let's go directly to the latter, without wasting time on the former.
+</p>
+
+<p>
+Looking at <code>TutorialCommandHandler</code>, you see the enumeration of
+supported commands, a method that returns usage instructions, and a method
+with a <code>switch</code> statement on the enum. Each case of that statement
+calls a handler method for the respective command.
+Whatever else the args interpreter does, it calls here to execute a command.
+That's all you need to know about it to get started.
+</p>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+</body>
+</html>
+
