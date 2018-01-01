@@ -98,14 +98,40 @@ in a text file for copy&amp;paste.
 </dl>
 </div><!-- box-right -->
 
-<i>
-<ul>
-<li>download the program, change the filename</li>
-<li>run the program</li>
-<li>prepare for fixing it, with or without IDE</li>
-<li>inspect <a href="more-tutorial.html#jar">contents of the JAR</a></li>
-</ul>
-</i>
+<p>
+Download the file
+<a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a>
+and save it with a decent filename. In the remainder of this Tutorial,
+the name <code>tutorial.jar</code> is assumed.
+While the JAR is faulty now, it won't be when you're done with it.
+Using a filename without negative connotation supports
+a positive mindset right from the beginning.
+</p>
+
+<p>
+Run the program to verify the download.
+It is an executable JAR file, so you don't have to specify a class name.
+This should print usage instructions, which you will need later on:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar</span></div>
+</div>
+
+<p>
+If you're not familiar with JAR files, have a look at the content now.
+They are similar to zip archives, with some extra conventions for storing
+and executing Java classes. If you need more guidance, read the
+<a href="more-tutorial.html#jar">detailed description</a>
+of the JAR file content.
+</p>
+
+<p>
+The final step for setup is to prepare for changing the code
+and building your own version of the JAR file.
+<br/>
+How to do that depends on the IDE you are using, if any.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
