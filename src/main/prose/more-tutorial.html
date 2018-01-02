@@ -76,6 +76,74 @@ Mention .properties files and give some info on the manifest.
 </div>
 
 
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="jar-trouble"><span>Troubleshooting your JAR</span></h2>
+
+<p>
+This section explains some problems you might run into
+when building your own JAR.
+</p>
+
+<dl>
+<dt>JAR is not executable</dt>
+<dd>
+<p>
+The JAR file contains Java classes, properties files, and a manifest.
+The JAR is executable when its manifest specifies an entry point,
+which is a classname.
+If you are using an IDE, configure class <code>pityoulish.tutorial.Main</code>
+as the entry point in the manifest.
+If you are using a command line, the entry point is specified
+with option '<code>e</code>' of the <code>jar</code> command.
+</p>
+<p>
+When you create a project from a JAR file, your IDE should
+read the entry point from the manifest.
+But if you create a project from source code in the file system,
+your IDE generates a new manifest without an entry point.
+</p>
+<p>
+Instead of creating an executable JAR, you can also specify the classname
+when starting the program.
+The JAR then has to be put on the classpath with <code>-cp</code>
+rather than being executed with <code>-jar</code>:
+</p>
+<div class="terminal">
+  <div class="input"
+       ><span>java -cp tutorial.jar pityoulish.tutorial.Main</span></div>
+</div>
+</dd>
+
+<dt>Output contains <code>CatalogData</code> instead of expected text</dt>
+<dd>
+<p>
+Human-readable text for output is stored in properties files.
+These properties files can be translated into different languages
+without changing the source code and compiling new classes.
+The properties files must be packaged into the JAR file.
+If they are missing, the program will print lookup keys
+instead of the texts it cannot look up.
+</p>
+<p>
+Bundle the properties files from the source directory into the JAR file.
+It's OK to bundle all source files into the JAR file, if that is easier.
+</p>
+</dd>
+
+<!--
+<dt></dt>
+<dd>
+</dd>
+-->
+</dl>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h3>
 
