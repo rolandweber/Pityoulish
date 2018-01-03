@@ -127,7 +127,7 @@ of the JAR file content.
 </p>
 
 <p>
-The final step for setup is to prepare for changing the code
+The next step is to prepare for changing the code
 and building your own version of the JAR file.
 <br/>
 How to do that depends on the IDE you are using, if any.
@@ -159,6 +159,12 @@ If it doesn't, read the
 <a href="more-tutorial.html#jar-trouble">troubleshooting tips</a>.
 </p>
 
+<i>
+<ul>
+<li>Alternatively, run the program directly without building a JAR.</li>
+</ul>
+</i>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id=""><span>Command Line</span></h3>
@@ -172,7 +178,24 @@ If it doesn't, read the
 </ul>
 </i>
 
-<!-- @@@ java -jar tutorial.jar latin -->
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id=""><span>Character Encodings</span></h3>
+
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar latin</span></div>
+  <div class="input"><span>java -jar tutorial.jar latin <i>your input</i></span></div>
+</div>
+
+<i>
+<ul>
+<li>check that umlauts are displayed correctly</li>
+<li>check that non-ASCII input is echoed correctly</li>
+<li><a href="more-tutorial.html">troubleshooting tips</a></li>
+</ul>
+</i>
+
+
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
