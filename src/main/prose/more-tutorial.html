@@ -121,13 +121,16 @@ rather than being executed with <code>-jar</code>:
 Human-readable text for output is stored in properties files.
 These properties files can be translated into different languages
 without changing the source code and compiling new classes.
-The properties files must be packaged into the JAR file.
+The properties files are part of the source code and
+must be available at runtime.
 If they are missing, the program will print lookup keys
 instead of the texts it cannot look up.
 </p>
 <p>
-Bundle the properties files from the source directory into the JAR file.
-It's OK to bundle all source files into the JAR file, if that is easier.
+If you are running a JAR file, bundle the properties files into the JAR.
+<br/>
+If you are running the program directly from an IDE project,
+add the source directory to the classpath.
 </p>
 </dd>
 

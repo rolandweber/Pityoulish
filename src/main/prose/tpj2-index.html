@@ -133,9 +133,14 @@ and building your own version of the JAR file.
 How to do that depends on the IDE you are using, if any.
 </p>
 
+<p>
+Last but not least, verify that the program is using
+the correct character encoding for input and output.
+</p>
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>IDE</span></h3>
+<h3 id="setup-ide"><span>IDE</span></h3>
 
 <p class="abstract">
 How to perform the steps in this section depends on the IDE you have chosen.
@@ -159,28 +164,73 @@ If it doesn't, read the
 <a href="more-tutorial.html#jar-trouble">troubleshooting tips</a>.
 </p>
 
-<i>
-<ul>
-<li>Alternatively, run the program directly without building a JAR.</li>
-</ul>
-</i>
+<p>
+For development, you may also run the program directly from the IDE.
+The final result should be a JAR file though.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Command Line</span></h3>
+<h3 id="setup-cmdline"><span>Command Line</span></h3>
 
-<i>
-<ul>
-<li>extract the JAR</li>
-<li>create your own JAR</li>
-<li>run your own JAR</li>
-<li>Is your JAR executable? Are the properties files included?</li>
-</ul>
-</i>
+<p>
+Create a new directory to work in, for example <code>tutorial-project/</code>.
+Make sure that the name of your directory does <i>not</i> contain "faulty".
+<br/>
+Use <code>cd</code> to change there.
+All command-line examples assume that this is your current directory.
+</p>
+
+<p>
+Extract the contents of the downloaded JAR file:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>jar -xvf /path/to/tutorial.jar</span></div>
+</div>
+
+<p>
+Subdirectory <code>pityoulish/</code> contains the
+source code, properties files, and compiled classes.
+<br/>
+Subdirectory <code>META-INF/</code> can be ignored or deleted.
+</p>
+
+<p>
+After changing a Java source file, you have to recompile it.
+<br/>
+For example, after editing
+<code>pityoulish/tutorial/TutorialCommandHandler.java</code>,
+compile it with:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>javac pityoulish/tutorial/TutorialCommandHandler.java</span></div>
+</div>
+
+<p>
+Build a new JAR from your working directory:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>jar -cfe tutorial.jar pityoulish.tutorial.Main pityoulish/</span></div>
+</div>
+
+<p>
+Run your own JAR and verify that it prints the expected usage information.
+If it doesn't, read the
+<a href="more-tutorial.html#jar-trouble">troubleshooting tips</a>.
+</p>
+
+<p>
+You will have to compile a source file and build a new JAR several times.
+Either use the command line history to access previously executed commands,
+or prepare commands for copy&amp;paste in an editor.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Character Encodings</span></h3>
+<h3 id="setup-charset"><span>Character Encoding</span></h3>
 
 <div class="terminal">
   <div class="input"><span>java -jar tutorial.jar latin</span></div>
