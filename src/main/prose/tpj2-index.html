@@ -249,45 +249,105 @@ or prepare commands for copy&amp;paste in an editor.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id=""><span>Exercise</span></h2>
+<h2 id="exercise"><span>Exercise</span></h2>
+
+<p>
+The main loop of an exercise is to manually execute a test sequence
+and to overcome the problems you encounter.
+Some problems will be your own mistakes, like passing wrong arguments
+to a command or connecting to the wrong network.
+Some problems are intentional bugs in the code, which you have to fix.
+</p>
+
+<p>
+The information here is specific to this Tutorial.
+A general description for the exercises is in
+<a href="test-fix-repeat.html">Test and Fix</a>.
+</p>
+
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Test</span></h2>
+<h3 id="test-sequence"><span>Test</span></h3>
 
-<i>
+<p>
+The commands supported by the tutorial program are independent of eachother.
+You could test them in any order.
+<br/>
+The usage instructions suggest this sequence:
+</p>
+
+<ol>
+<li><code>local</code></li>
+<li><code>islocal</code></li>
+<li><code>lookup</code></li>
+</ol>
+
+<p>
+There are two problems to find and fix.
+<br/>
+The command <code>latin</code> is not part of the exercise.
+It is provided only for the setup in section
+<a href="#setup-charset">Character Encoding</a> above.
+</p>
+
+<p>
+Read the usage instructions for each command and try it out.
+If you encounter a <code>pityoulish.outtake.Missing</code> exception,
+you found one of the intentional bugs.
+All other problems originate from your environment or input.
+Solve those without changing code.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id=""><span>Think</span></h3>
+
+<p>
+The stack traces lead you directly to the bugs in the code.
+<br/>
+<b>But</b> you are not familiar with the codebase yet.
+<br/>
+Before you even look at the source code,
+get an <a href="#code">overview</a>.
+</p>
+
+<p>
+Once you have an overview, follow a stack trace
+to the point where some code is missing.
+</p>
 <ul>
-<li>commands are independent here, test them one by one</li>
-<li><code>MissingException</code> indicates a prepared problem,
-  everything else is your mistake</li>
-<li>just note which are failing, fix them later</li>
-<li>in classroom exercises, testing and fixing will be interleaved</li>
+<li>In which part of the codebase are you?</li>
+<li>What is supposed to happen at this point?</li>
+<li>What data is available here?</li>
 </ul>
-</i>
+
+<p>
+If you'd like more guidance, there are descriptions for
+interpreting <a href="java-refresher.html#stack-trace">stack traces</a>
+and for <a href="java-refresher.html#available-data">available data</a>
+at a point in the code.
+</p>
+
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Fix</span></h2>
+<h3 id=""><span>Fix</span></h3>
 
 <i>
 <ul>
-<li>First time: get an <a href="#code">overview</a> of the code!</li>
-<li>interpret the stack trace</li>
 <li>Think! What needs to be done?</li>
+<li>fix, compile, build a new JAR</li>
+<li>repeat until done</li>
 <li>links to detailed instructions for both prepared problems</li>
 </ul>
 </i>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Build</span></h2>
+<h3 id=""><span>Clean Up</span></h3>
 
-<i>
-<ul>
-<li>fix, compile, build a new JAR</li>
-<li>repeat until done</li>
-</ul>
-</i>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -325,6 +385,8 @@ or prepare commands for copy&amp;paste in an editor.
 <ul>
 <li><a href="message-board.html">Message Board</a></li>
 <li><a href="test-fix-repeat.html">Test and Fix</a></li>
+<li><a href="more-tutorial.html">Tutorial Details</a></li>
+<li><a href="java-refresher.html">Java Refresher</a></li>
 </ul>
 </i>
 
