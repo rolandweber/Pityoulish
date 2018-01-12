@@ -302,7 +302,7 @@ Solve those without changing code.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Think</span></h3>
+<h3 id="think"><span>Think</span></h3>
 
 <p>
 The stack traces lead you directly to the bugs in the code.
@@ -333,21 +333,76 @@ at a point in the code.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Fix</span></h3>
+<h3 id="fix"><span>Fix</span></h3>
 
-<i>
-<ul>
-<li>Think! What needs to be done?</li>
-<li>fix, compile, build a new JAR</li>
-<li>repeat until done</li>
-<li>links to detailed instructions for both prepared problems</li>
-</ul>
-</i>
+<p>
+Read the exception message and comments in the code.
+What is it you have to do?
+Initialize an attribute? Assign a variable? Modify a data structure?
+Return a value? Call a method? A combination of these?
+<a href="#think">Think!</a>
+</p>
+
+<p>
+Is there another method that does something similar?
+Go there, see how it's done, and copy shamelessly.
+</p>
+
+<p>
+Remove the calls to class <code>Missing</code> at the point of the problem.
+Put in your code snippet instead.
+Sometimes you can make the code prettier by combining your snippet
+with commands before or after. But it's not necessary.
+</p>
+
+<p>
+If you cannot figure out how to fix the prepared problems, there is help
+for <a href="more-tutorial.html#help-islocal"><code>islocal</code></a>
+and <a href="more-tutorial.html#help-lookup"><code>lookup</code></a>.
+</p>
+
+<p>
+Save your changes and compile the file.
+IDEs often do that automatically.
+When working with the command line, use the <code>javac</code> command
+as explained <a href="#setup-cmdline" title="Setup: Command Line">above</a>.
+Fix compiler errors.
+</p>
+
+<p>
+Create a new JAR and repeat your tests. If the command is fixed,
+proceed to the next until you have eliminated all intentional bugs.
+<!-- Finally, <a href="#clean-up">clean up</a> as described below. -->
+</p>
+
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id=""><span>Clean Up</span></h3>
+<h3 id="clean-up"><span>Clean Up</span></h3>
 
+<p>
+Once you've fixed the prepared problems, class <code>Missing</code>
+is no longer needed.
+It was just an artifice to lead you to the intentional bugs.
+That's why it was omitted from the generated
+<a href="jdoc/index.html" target="_blank">JavaDocs</a>.
+</p>
+
+<p>
+Delete the directory <code>pityoulish/outtake/</code> from your project,
+both source code and compiled class.
+Then recompile all remaining classes and fix compiler errors.
+This will detect unused imports of class <code>Missing</code>.
+</p>
+
+<p>
+Finally, create a new JAR.
+<p/>
+
+
+<p class="abstract">
+Splendid! You have successfully completed this tutorial.
+</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
