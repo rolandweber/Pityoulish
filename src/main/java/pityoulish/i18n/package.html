@@ -102,8 +102,8 @@ A web browser sends the user's preferred locale to the server.
 When the server generates output, it is expected to use the locale
 requested by the client. And worse:
 An error message might have to be sent to the client in the requested locale,
-but also written to a log file in the system locale.
-There isn't a single lookup at the place where the message originates.
+but also written to a log file in the server locale.
+There cannot be a single lookup at the place where the message originates.
 The originator has to return a lookup key,
 like {@link pityoulish.i18n.TextEntry},
 and the parameters to be formatted with it.
@@ -114,8 +114,9 @@ That way, each formatting of the message can use a different locale.
 
 <p>
 Even if you are implementing a standalone program, you might
-work with libraries that are also used for a server.
-On the plus side, doing it right means that you don't have to pass the
+work with libraries that are also used for a server,
+and therefore return lookup keys instead of formatted messages.
+On the plus side, when doing it right, you don't have to pass the
 client locale to every part of the server that might generate a message.
 </p>
 
