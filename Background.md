@@ -16,6 +16,24 @@ I'm teaching Distributed Systems from October through December each year. You ca
 
 ## History and Lessons Learned
 
+### 2017
+
+Feedback:
+[Tutorial #56](https://github.com/rolandweber/pityoulish/issues/56),
+[Sockets #57](https://github.com/rolandweber/pityoulish/issues/57),
+[Java RMI #60](https://github.com/rolandweber/pityoulish/issues/60)
+
+Using the classroom exercises as topic introductions worked. The additional guidance from interleaving explanations and coding also proved helpful. I still have to work on the details, how much to present in advance and inbetween the coding phases.
+I added an optional task to the RMI exercise, so that the faster programmers still have something to do. That worked quite well, so I've updated the Sockets exercise accordingly.
+The linear Tutorial is too wordy for students who already know must of the stuff. Still, having a Tutorial is important.
+The RMI exercise does not enough to introduce the concepts. Java has made remote calls too convenient. gRPC might be better for that purpose.
+
+For 2018, I'm going to refactor the Tutorial instructions. The main page should be lean, for experienced programmers. Details will be provided on extra pages, for those who need or want them.
+Exercise instructions must also become leaner. RMI got weeded out for this year, Sockets is prepared for next year.
+Maybe I'll also find time to update Instructor's Notes with the interleaved presentation model.
+Creating a new gRPC exercise will probably take longer.
+
+
 ### 2016
 
 Feedback:
