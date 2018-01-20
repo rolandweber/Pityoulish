@@ -336,7 +336,7 @@ at a point in the code.
 <h3 id="fix"><span>Fix</span></h3>
 
 <p>
-Read the exception message and comments in the code.
+Read the exception message, and the comments in the code.
 What is it you have to do?
 Initialize an attribute? Assign a variable? Modify a data structure?
 Return a value? Call a method? A combination of these?
@@ -352,7 +352,7 @@ Go there, see how it's done, and copy shamelessly.
 Remove the calls to class <code>Missing</code> at the point of the problem.
 Put in your code snippet instead.
 Sometimes you can make the code prettier by combining your snippet
-with commands before or after. But it's not necessary.
+with commands before or after. But that's not necessary.
 </p>
 
 <p>
@@ -364,15 +364,14 @@ and <a href="more-tutorial.html#help-lookup"><code>lookup</code></a>.
 <p>
 Save your changes and compile the file.
 IDEs often do that automatically.
-When working with the command line, use the <code>javac</code> command
+When working with the command line, use <code>javac</code>
 as explained <a href="#setup-cmdline" title="Setup: Command Line">above</a>.
 Fix compiler errors.
 </p>
 
 <p>
-Create a new JAR and repeat your tests. If the command is fixed,
-proceed to the next until you have eliminated all intentional bugs.
-<!-- Finally, <a href="#clean-up">clean up</a> as described below. -->
+Create a new JAR and repeat your tests. If the bug is fixed, continue
+with testing until you've found and eliminated all intentional bugs.
 </p>
 
 
@@ -384,7 +383,7 @@ proceed to the next until you have eliminated all intentional bugs.
 Once you've fixed the prepared problems, class <code>Missing</code>
 is no longer needed.
 It was just an artifice to lead you to the intentional bugs.
-That's why it was omitted from the generated
+That's why it was left out of the generated
 <a href="jdoc/index.html" target="_blank">JavaDocs</a>.
 </p>
 
