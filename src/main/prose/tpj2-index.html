@@ -92,7 +92,7 @@ in a text file for copy&amp;paste.
 <dt><a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a></dt>
 <dd>The program to test and fix. Usage instructions:
   <div><code>&nbsp;&nbsp;java -jar tutorial-faulty.jar</code></div>
-  Sources are in the jar,
+  Sources are in the JAR,
   <a href="jdoc/index.html" target="_blank">docs</a> here.
 </dd>
 </dl>
@@ -104,7 +104,7 @@ Download the file
 and save it with a decent filename. In the remainder of this Tutorial,
 the name <code>tutorial.jar</code> is assumed.
 While the JAR is faulty now, it won't be when you're done with it.
-Using a filename without negative connotation supports
+Using a filename without negative connotations supports
 a positive mindset right from the beginning.
 </p>
 
@@ -458,7 +458,7 @@ If you need more guidance, read the
 
 <p>
 JavaDocs show APIs and explain their purpose, usage, and important concepts.
-They hide the code, which is an advantage when striving for an overview.
+They hide the code, which is advantageous for getting an overview.
 When the description of a package tells you that it isn't relevant for
 the task at hand, don't waste time looking into the package.
 Likewise for interfaces, classes, and enums.
@@ -482,6 +482,7 @@ Imagine how they work together with the internal classes to implement the API.
 <li>
 This is how you get an overview.
 Details follow later.
+Once you have an overview, details will click into place.
 </li>
 </ol>
 
@@ -523,8 +524,8 @@ For a regular stream of bad examples, see
 </div>
 
 <p>
-IDEs also show lists of packages, classes, and methods.
-But they are designed to take you into the code, not to get an overview.
+IDEs, like JavaDocs, show lists of packages, classes, and methods.
+But they are designed to take you <i>into</i> the code, not to get an overview.
 When using an IDE, you're more likely to look at implementation details
 instead of thinking about modules, responsibilities, and concepts.
 It gets even worse if you step through the code with a source-level debugger.
@@ -557,51 +558,82 @@ If you need more guidance, read the
 </p>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id=""><span>Recipe</span></h2>
-
-<i>
-<ul>
-<li>summary of the main steps</li>
-<!--
-<li></li>
--->
-</ul>
-</i>
-
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id=""><span>Further Reading</span></h2>
+<h2 id="links"><span>Links</span></h2>
 
-<i>
-<ul>
-<li><a href="message-board.html">Message Board</a></li>
-<li><a href="test-fix-repeat.html">Test and Fix</a></li>
+<!-- linked in various places above...
 <li><a href="more-tutorial.html">Tutorial Details</a></li>
 <li><a href="java-refresher.html">Java Refresher</a></li>
-</ul>
-</i>
+-->
 
-<i>
-<p>external links...</p>
-<ul>
-<li>Pityoulish:
-  <a href="https://github.com/rolandweber/pityoulish/">GitHub</a>,
-<a href="https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3AFeedback">Feedback</a>
-</li>
-<li>OpenJDK?
-  From <a href="http://openjdk.java.net/install/index.html">package manager</a>
-  for most Linux distributions.
-  Community-built <a href="https://github.com/ojdkbuild/ojdkbuild"
-                     >installer for Windows</a>.
-  Don't know for OS X.
-</li>
-<li><a href="https://docs.oracle.com/javase/8/docs/api/"
-   >Java SE API</a> documentation of the Java version you are using.
-</li>
-</ul>
-</i>
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-java"><span>Java</span></h3>
+
+<dl>
+<dt>
+  <a href="https://docs.oracle.com/javase/8/docs/api/"
+     >Java SE 8 API</a>
+</dt>
+<dd>
+JavaDocs for the standard Java packages. Available online or as download,
+for different versions of the Java Standard Edition (SE).
+Many Linux distributions provide them from the package manager.
+</dd>
+
+<dt>
+  <a href="http://openjdk.java.net/install/index.html">OpenJDK</a>
+</dt>
+<dd>
+OpenJDK is a free software development kit for Java.
+Many Linux distributions provide it from the package manager.
+If you are using an IDE, that might come with a bundled JDK.
+<!--
+  OpenJDK provides JDK 9 binaries for Linux, Windows, and Mac.
+  Windows binaries for JDK 8 can be obtained here:
+  <a href="https://github.com/ojdkbuild/ojdkbuild">installer for Windows</a>
+-->
+</dd>
+</dl>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-exercises"><span>Classroom</span></h3>
+
+<dl>
+<dt><a href="message-board.html">Message Board</a></dt>
+<dd>
+High-level API of a simplistic Message Board.
+The classroom exercises are about implementations of this API
+with different technologies.
+You will fix a client, while your instructor is running the server.
+</dd>
+
+<dt><a href="test-fix-repeat.html">Test and Fix</a></dt>
+<dd>
+Recipe for solving the classroom exercises. It's a generalized version
+of the <a href="#exercise">Exercise</a> section above.
+</dd>
+</dl>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-github"><span>GitHub</span></h3>
+
+<dl>
+<dt><a href="https://github.com/rolandweber/pityoulish/">Pityoulish</a></dt>
+<dd>
+GitHub project for this Tutorial, the classroom exercises, and more.
+You are welcome to get involved!
+</dd>
+
+<dt><a href="https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3AFeedback">Feedback</a></dt>
+<dd>
+Provide feedback in GitHub issues.
+If there's no issue prepared, just create a new one.
+</dd>
+<dl>
 
 </body>
 </html>
