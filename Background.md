@@ -24,6 +24,8 @@ Feedback:
 [Java RMI #60](https://github.com/rolandweber/pityoulish/issues/60)
 
 Using the classroom exercises as topic introductions worked. The additional guidance from interleaving explanations and coding also proved helpful. I still have to work on the details, how much to present in advance and inbetween the coding phases.
+Several students asked about the marker in the high-level API at the end of the second (!) classroom session.
+
 I added an optional task to the RMI exercise, so that the faster programmers still have something to do. That worked quite well, so I've updated the Sockets exercise accordingly.
 The linear Tutorial is too wordy for students who already know must of the stuff. Still, having a Tutorial is important.
 The RMI exercise does not enough to introduce the concepts. Java has made remote calls too convenient. gRPC might be better for that purpose.
@@ -32,6 +34,8 @@ For 2018, I'm going to refactor the Tutorial instructions. The main page should 
 Exercise instructions must also become leaner. RMI got weeded out for this year, Sockets is prepared for next year.
 Maybe I'll also find time to update Instructor's Notes with the interleaved presentation model.
 Creating a new gRPC exercise will probably take longer.
+
+Between the Tutorial assignment and the first classroom exercise, I'm planning an extra session to present the high-level API of the Message Board. This can also be used to discuss problems encountered during the Tutorial. Students can help eachother with their IDE problems.
 
 
 ### 2016
