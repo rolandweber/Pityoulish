@@ -35,8 +35,68 @@ Experienced Java developers will not learn anything new here.
 <h2 id="stack-trace"><span>Stack Traces</span></h3>
 
 <p>
-<i>Sorry, not written yet.</i>
+<i>Sorry, not written yet. Old content for re-use:</i>
 </p>
+<p>
+Call the command again, to have a closer look at the error message
+and the stack trace. Details such as line numbers probably differ
+from the example output. Work with what you see in your command-line terminal,
+because that matches with the source code in your JAR.
+</p>
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar islocal localhost</span></div>
+  <div class="output"
+>Exception in thread "main" pityoulish.outtake.Missing: <span class="emph">bind a socket to a hostname</span>
+	at pityoulish.outtake.Missing.here(Missing.java:31)
+	at pityoulish.tutorial.TutorialCommandHandler.<span class="emph">handleIsLocalCmd(TutorialCommandHandler.java:159)</span>
+	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:92)
+	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:26)
+	at pityoulish.cmdline.CommandHandlerBase.handle(CommandHandlerBase.java:76)
+	at pityoulish.cmdline.ArgsInterpreter.handle(ArgsInterpreter.java:88)
+	at pityoulish.tutorial.Main.main(Main.java:27)
+</div>
+</div>
+
+
+<p>
+The first line reveals the class of the exception and the exception message.
+The class often indicates the type of problem, for example
+a <code>NullPointerException</code> or an <code>IOException</code>.
+In this case, some code is missing; you already know that.
+The message tells you what the missing code is supposed to do.
+We'll get to that later, once you've found the place where it is missing.
+</p>
+<p>
+The lines starting with "at" are the call stack.
+The program execution started at <code>main</code>, which is in the last line.
+<code>main</code> called <code>ArgsInterpreter.handle</code>,
+which called <code>CommandHandlerBase.handle</code>,
+which called something else, and so on,
+right up to <code>Missing.here</code> at the top of the stack.
+And there, the exception was thrown. In parenthesis, you see
+the source file name 'Missing.java' and a line number.
+Open the file and find the line indicated by your stack trace.
+If you executed the command from within an IDE,
+you probably just have to click a link in the output.
+Now what is wrong in <code>here</code>?
+</p>
+
+<p>
+Well, nothing is wrong in <code>Missing.here</code>.
+It is a helper method meant to throw an exception, and so it does.
+The caller must have found that something is wrong
+and raised an exception by invoking the helper.
+You need to find the code that called here.
+Luckily, the second line of the stack trace tells you exactly where that is.
+Load the file 'TutorialCommandHandler.java' and
+have a look at method <code>handleIsLocalCmd</code>,
+especially around the line number from your stack trace.
+There you'll see the following statements:
+</p>
+<div class="code">
+  Missing.here("bind a socket to a hostname");
+  Missing.pretend(IOException.class);
+</div>
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>

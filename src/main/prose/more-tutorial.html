@@ -250,13 +250,166 @@ That's all you need to know about it to get started.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="help-islocal"><span>Spoiler: Fixing <code>islocal</code></span></h2>
+<h2 id="test-local"><span>Testing <code>local</code></span></h2>
 
 <p>
 <i>
 Sorry, not written yet.
+Call the command, study the output.
+Try before and after connecting to a WLAN or VPN.
+That's it.
 </i>
 </p>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="test-islocal"><span>Testing <code>islocal</code></span></h2>
+
+<p>
+<i>
+Sorry, not written yet. Old content for re-use:
+</i>
+</p>
+
+<p>
+Finally, you're ready to test the <code>islocal</code> command with your
+changes. Try it with some IP addresses and hostnames that are printed by the
+<code>local</code> command. These should be recognized as local addresses.
+Try some other hostnames, such as 'example.com'. These should be recognized
+as non-local addresses.
+If either one is not the case, your code is buggy. Go back and fix it,
+compile, create a new JAR, and test again; until it works as expected.
+</p>
+
+<p>
+When the command is working as expected, play around some more. Can you
+find local hostnames that are not printed by the <code>local</code> command?
+For example, try your computer's name without a domain, or with
+domain '.local'. What about other IP addresses, like '127.0.0.8'?
+</p>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="test-lookup"><span>Testing <code>lookup</code></span></h2>
+
+<p>
+<i>
+Sorry, not written yet. Old content for re-use:
+</i>
+</p>
+
+<p>
+Create a JAR and test your brand new implementation of <code>lookup</code>.
+Below are some hostnames to try.
+Most of them require an internet connection for the lookup.
+</p>
+
+<ul>
+<li>localhost &nbsp;-&nbsp;
+  a subset of the output from the <code>local</code> command</li>
+
+<li>nowhere.invalid &nbsp;-&nbsp; no address at all</li>
+
+<!-- lookups performed on 2015-12-17: -->
+
+<li>gnu.org &nbsp;-&nbsp; a single IPv4 address</li>
+
+<li>apache.org &nbsp;-&nbsp; two different IPv4 addresses</li>
+
+<li>fsf.org &nbsp;-&nbsp; both an IPv4 and an IPv6 address</li>
+</ul>
+
+<p>
+Perform some more lookups of your own.
+</p>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="help-islocal"><span>Spoiler: Fixing <code>islocal</code></span></h2>
+
+<p>
+<i>
+Sorry, not written yet. Old content for re-use:
+</i>
+</p>
+
+<div class="code">
+  Missing.here("bind a socket to a hostname");
+  Missing.pretend(IOException.class);
+</div>
+
+<p>
+Before you can fix anything, you have to understand what is going on
+in that part of the code. The references to class <code>Missing</code>
+are exactly where you'll have to put in your own code. The message,
+'bind a socket to a hostname', tells you what is missing.
+But unless you are familiar with the socket API, this message is unclear.
+The call to <code>Missing.pretend</code> indicates that the missing code
+may throw an <code>IOException</code>.
+</p>
+
+<p>
+When a method is so small as <code>handleIsLocalCmd</code>, you should try
+to understand it fully. There is a description, which you can read in the
+source code as well as in the
+<a href="jdoc/index.html" target="_blank">JavaDocs</a>.
+The method is expected to return 0 if the argument is the local host,
+or -1 if it is not. In the method body, there is some error handling code.
+If the missing code runs through, the method returns 0.
+If it throws an <code>IOException</code>, the method returns -1.
+Before that, the string argument is converted into an
+<code>InetSocketAddress</code>.
+Let's summarize:
+</p>
+<ol>
+<li>You have a hostname,
+  already converted to <code>InetSocketAddress</code>.</li>
+<li>The missing code should run through if the hostname is local.</li>
+<li>The missing code should throw an <code>IOException</code>
+  if the hostname is not local.</li>
+<li>The missing code should 'bind' a 'socket' to the hostname.</li>
+</ol>
+
+<p>
+Now it is time to study the standard Java APIs. There are JavaDocs available:
+online, for download, or maybe already installed with your JDK or IDE.
+Pick whichever is most convenient for you.
+The <code>InetSocketAddress</code> is a place to start. Look for the
+import statements at the beginning of 'TutorialCommandHandler.java'.
+From which package is that class?
+What other classes are imported from there?
+Anything related to 'bind' or 'socket'?
+Bingo, there's an import of <code>java.net.Socket</code>.
+<a href="http://lmgtfy.com/?q=javadoc+InetSocketAddress+java.net.Socket"
+   class="covert"
+   >Search</a> and browse the JavaDocs for these two classes.
+Is there something about 'bind'?
+Can you do that with an <code>InetSocketAddress</code>?
+Does it make a difference whether the hostname is local?
+</p>
+
+<p>
+When you have found and assimilated that information, put in the missing code:
+<br/>
+Delete the calls to class <code>Missing</code>.
+Create an unconnected socket. Bind that socket to the hostname.
+That's it. <span class="emph">Maybe</span>.
+To be sure, you need to test your changes.
+</p>
+
+
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
@@ -268,8 +421,29 @@ Sorry, not written yet.
 
 <p>
 <i>
-Sorry, not written yet.
+Sorry, not written yet. Old content for re-use:
 </i>
+</p>
+
+<p>
+The helper expects objects of class <code>InetAddress</code>.
+From what package is that class? Browse its JavaDocs.
+Any hints on how to obtain such objects?
+From a hostname, which is the only input you have?
+There are different methods you could call, which is the right one?
+If you're not sure, go back to where the code is missing,
+read the description and comments again.
+</p>
+
+<p>
+OK, you've got all the pieces of the puzzle now. It is time to write code.
+Remove calls to class <code>Missing</code>.
+Put in code that looks up the internet addresses for the hostname.
+Implement a loop that prints them, using the helper method.
+
+Is there a problem when compiling?
+Handle the exception that might be thrown by the lookup.
+The user should know when that fails.
 </p>
 
 <div class="back-link">
