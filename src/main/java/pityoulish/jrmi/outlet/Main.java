@@ -22,11 +22,11 @@ public class Main
   public final static void main(String[] args)
     throws Exception
   {
-    // rbh deals with the registry, mbch calls the server remotely
     RegistryBackendHandler rbh = new RegistryBackendHandlerImpl();
-    MsgOutletHandler       moh = new MsgOutletHandlerImpl(rbh);
+    LocalOutletFactory     lof = new LocalOutletFactoryImpl();
+    MsgOutletHandler       moh = new MsgOutletHandlerImpl(rbh, lof);
+    // moh implements the commands
 
-    // mbcd interprets command-line arguments
     MsgOutletCommandDispatcher mocd = new MsgOutletCommandDispatcher(moh);
     ArgsInterpreter ai = new ArgsInterpreter(rbh, mocd);
 

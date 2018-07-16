@@ -5,16 +5,15 @@
  */
 package pityoulish.jrmi.outlet;
 
-// PYL:keep
-// PYL:cut
-import java.rmi.server.UnicastRemoteObject;
-// PYL:end
 import java.util.List;
 import java.util.Arrays;
 
 import pityoulish.jrmi.api.RemoteOutletManager;
 import pityoulish.jrmi.api.DirectMessageOutlet;
+// PYL:keep
 import pityoulish.outtake.Missing;
+// PYL:cut
+// PYL:end
 
 
 /**
@@ -24,6 +23,7 @@ public class MsgOutletHandlerImpl
   implements MsgOutletHandler
 {
   protected final RegistryBackendHandler regBackend;
+  protected final LocalOutletFactory  outletFactory;
 
 
   /**
@@ -31,12 +31,16 @@ public class MsgOutletHandlerImpl
    *
    * @param rbh   the backend handler
    */
-  public MsgOutletHandlerImpl(RegistryBackendHandler rbh)
+  public MsgOutletHandlerImpl(RegistryBackendHandler rbh,
+                              LocalOutletFactory     lof)
   {
     if (rbh == null)
        throw new NullPointerException("RegistryBackendHandler");
+    if (lof == null)
+       throw new NullPointerException("LocalOutletFactory");
 
     regBackend = rbh;
+    outletFactory = lof;
   }
 
 
@@ -61,15 +65,9 @@ public class MsgOutletHandlerImpl
   public void openOutlet(String ticket, int seconds)
     throws Exception
   {
-    checkForHostnameProperty();
-
     RemoteOutletManager rom = regBackend.getRemoteOutletManager();
-    DirectMessageOutlet dmo = createLocalOutlet();
+    DirectMessageOutlet dmo = outletFactory.openLocalOutlet();
 
-    // PYL:keep
-    boolean noproblem = false;
-    // PYL:cut
-    // PYL:end
     try {
       System.out.println(Catalog.REPORT_OPEN_PUBLISH_0.format());
       // It doesn't matter whether the object or its stub is published.
@@ -83,54 +81,21 @@ public class MsgOutletHandlerImpl
       rom.unpublishOutlet(ticket);
 
       // PYL:keep
-      noproblem = true;
+    } catch (Exception x) {
+      // The cleanup logic in the finally{} clause should always be called,
+      // but some code is missing there. The resulting MissingException
+      // shadows problems with publishing and unpublishing.
+      // Therefore, skip the cleanup if there was a problem.
+      dmo = null;
+      throw x;
       // PYL:cut
       // PYL:end
     } finally {
-      // PYL:keep
-      if (noproblem)
-         Missing.here("close the outlet for remote method invocations");
-      // At this point, the outlet is no longer published. But it could still
-      // be called if any client has a stub. The RMI runtime keeps the JVM
-      // running to serve possible calls. Unexport the outlet to let the
-      // JVM terminate gracefully. Calling System.exit would be cheating.
-
-      // Remove the 'noproblem' flag. It was needed because an unconditional
-      // MissingException would shadow other problems, like invalid tickets.
-      // When you fix the missing code, the flag becomes pointless.
-      // PYL:cut
-      UnicastRemoteObject.unexportObject(dmo, true);
-      // PYL:end
+      // If all went well, the outlet is no longer published. But it could
+      // still be called if any client has a stub. And the JVM keeps running.
+      // Closing the outlet allows the JVM to terminate gracefully.
+      outletFactory.closeLocalOutlet(dmo);
     }
-  }
-
-
-  /**
-   * Creates an outlet and makes it available for remote method invocations.
-   * Called from {@link #openOutlet}.
-   *
-   * @return    the outlet or its stub, it doesn't matter which
-   */
-  protected DirectMessageOutlet createLocalOutlet()
-    throws Exception
-  {
-    DirectMessageOutletImpl dmoi = null;
-    DirectMessageOutlet     stub = null;
-
-    // PYL:keep
-    Missing.here("create a local outlet and export it");
-    // Exporting is implemented by subclasses of java.rmi.server.RemoteServer.
-    // You'll need a typecast:  stub = (DirectMessageOutlet) ...whatever...
-    // To get around a StubNotFoundException, use a different export method.
-    // PYL:cut
-    dmoi = new DirectMessageOutletImpl();
-    stub = (DirectMessageOutlet) UnicastRemoteObject.exportObject(dmoi, 0);
-    // PYL:end
-
-    System.out.println(Catalog.REPORT_OPEN_OUTLET_1.format(dmoi));
-    System.out.println(Catalog.REPORT_OPEN_STUB_1.format(stub));
-
-    return dmoi;
   }
 
 
@@ -185,38 +150,6 @@ public class MsgOutletHandlerImpl
     RemoteOutletManager rom = regBackend.getRemoteOutletManager();
 
     rom.unpublishOutlet(ticket);
-  }
-
-
-  /**
-   * Checks for the system property that specifies the hostname for RMI.
-   * If that property is not set, stubs created by this JVM point to
-   * some version of localhost and are useless on other machines.
-   * This method prints a message to System.out, indicating whether the
-   * property is set or not.
-   *
-   * @return    <code>true</code> if the property is set and not empty,
-   *            <code>false</code> otherwise
-   */
-  public final static boolean checkForHostnameProperty()
-  {
-    final String name = "java.rmi.server.hostname";
-    final String value = System.getProperty(name, null);
-
-    final boolean ok = (value != null) && (value.length() > 0);
-    if (ok)
-     {
-       System.out.println(Catalog.REPORT_JRMI_HOSTNAME_1.format
-                          (value));
-     }
-    else
-     {
-       // Not a fatal problem, still good enough for local development.
-       System.out.println(Catalog.REPORT_JRMI_HOSTNAME_PROPERTY_1.format
-                          (name));
-     }
-
-    return ok;
   }
 
 }
