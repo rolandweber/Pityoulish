@@ -91,6 +91,10 @@ There are files of different types in the archive:
 </dd>
 <dt><code>...CatalogData*.properties</code></dt>
 <dd>
+  Output strings for different languages.
+  At runtime, the program uses the default locale of the JVM
+  to decide which language to display.
+<!--
   Strings for translating the program output into different languages.
   Properties files are used at runtime to look up strings or other values,
   by predefined lookup keys.
@@ -99,8 +103,7 @@ There are files of different types in the archive:
   These properties files can be translated into different languages,
   which are stored in properties files with a similar name that includes
   a language identifier, for example </code>_de</code>.
-  At runtime, the programs of the exercises use the default locale of the JVM
-  to decide which language to display.
+-->
 </dd>
 </dl>
 <p>
@@ -290,13 +293,13 @@ That's all you need to know about it to get started.
 <h2 id="test-local"><span>Testing <code>local</code></span></h2>
 
 <p>
-<i>
-Sorry, not written yet.
-Call the command, study the output.
-Try before and after connecting to a WLAN or VPN.
-That's it.
-</i>
+Execute the command and study the output:
 </p>
+<div><code>&nbsp;&nbsp;java -jar tutorial.jar local</code></div>
+<p>
+Connect your computer to different networks (wired, WiFi, VPN) and repeat.
+</p>
+
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
@@ -307,19 +310,24 @@ That's it.
 <h2 id="test-islocal"><span>Testing <code>islocal</code></span></h2>
 
 <p>
-<i>
-Sorry, not written yet. Old content for re-use:
-</i>
+Execute the command with different hostname arguments:
 </p>
-
+<div><code>&nbsp;&nbsp;java -jar tutorial.jar islocal <i>hostname</i></code></div>
 <p>
-Finally, you're ready to test the <code>islocal</code> command with your
-changes. Try it with some IP addresses and hostnames that are printed by the
-<code>local</code> command. These should be recognized as local addresses.
-Try some other hostnames, such as 'example.com'. These should be recognized
-as non-local addresses.
-If either one is not the case, your code is buggy. Go back and fix it,
-compile, create a new JAR, and test again; until it works as expected.
+Some arguments to try:
+</p>
+<ul>
+<li>
+  Hostnames and IP addresses printed by the <code>islocal</code> command.
+  These should be recognized as local addresses.
+</li>
+<li>
+  Hostnames of internet sites, such as 'example.com', or other computers.
+  These should be recognized as non-local addresses.
+</li>
+</ul>
+<p>
+If these arguments are not recognized as expected, your code is still buggy.
 </p>
 
 <p>
@@ -338,30 +346,21 @@ domain '.local'. What about other IP addresses, like '127.0.0.8'?
 <h2 id="test-lookup"><span>Testing <code>lookup</code></span></h2>
 
 <p>
-<i>
-Sorry, not written yet. Old content for re-use:
-</i>
+Execute the command with different hostname arguments:
 </p>
-
+<div><code>&nbsp;&nbsp;java -jar tutorial.jar lookup <i>hostname</i></code></div>
 <p>
-Create a JAR and test your brand new implementation of <code>lookup</code>.
-Below are some hostnames to try.
-Most of them require an internet connection for the lookup.
+Here are some arguments to try, with expected output.
+Some of them require an internet connection for the lookup.
 </p>
-
 <ul>
 <li>localhost &nbsp;-&nbsp;
   a subset of the output from the <code>local</code> command</li>
-
 <li>nowhere.invalid &nbsp;-&nbsp; no address at all</li>
-
-<!-- lookups performed on 2015-12-17: -->
-
-<li>gnu.org &nbsp;-&nbsp; a single IPv4 address</li>
-
+<li>numeric IPv4 and IPv6 addresses &nbsp;-&nbsp; the argument address
+<!-- lookups performed on 2018-09-20: -->
 <li>apache.org &nbsp;-&nbsp; two different IPv4 addresses</li>
-
-<li>fsf.org &nbsp;-&nbsp; both an IPv4 and an IPv6 address</li>
+<li>gnu.org &nbsp;-&nbsp; both an IPv4 and an IPv6 address</li>
 </ul>
 
 <p>
