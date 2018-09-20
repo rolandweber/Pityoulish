@@ -41,35 +41,72 @@ The example output below shows only a subset of the files.
   <div class="input"><span>jar -tf tutorial.jar</span></div>
   <div class="output"
 >META-INF/MANIFEST.MF
-pityoulish/cmdline/ArgsInterpreter.java
 ...
-pityoulish/outtake/<span class="emph">Missing.java</span>
-pityoulish/tutorial/Main.java
+pityoulish/tutorial/Catalog.java
+pityoulish/tutorial/CatalogData.properties
+pityoulish/tutorial/CatalogData_de.properties
+pityoulish/tutorial/<span class="emph">Main.java</span>
 pityoulish/tutorial/TutorialCommandHandler.java
 pityoulish/tutorial/package.html
-pityoulish/cmdline/ArgsInterpreter.class
 ...
-pityoulish/outtake/<span class="emph">Missing.class</span>
-pityoulish/tutorial/Main.class
+pityoulish/tutorial/Catalog.class
+pityoulish/tutorial/<span class="emph">Main.class</span>
 ...
-pityoulish/tutorial/TutorialCommandHandler.class
 </div>
 </div>
 <p>
-On first glance, it seems as if classes are listed twice. Indeed,
-a closer look reveals that the JAR contains source code (.java)
-along with compiled classes (.class). The presence of 'package.html' files
-suggests that there might even be meaningful JavaDocs.
-It is always possible to generate JavaDocs from source code.
-But if the source code doesn't contain special JavaDoc comments,
-the generated docs are not necessarily useful. Alas, the mere presence of
-JavaDoc comments also doesn't ensure that they contain anything useful.
-Fortunately, this is a tutorial with well-documented source code.
+There are files of different types in the archive:
 </p>
-
-<i>
-Mention .properties files and give some info on the manifest.
-</i>
+<dl>
+<dt><code>META-INF/MANIFEST.MF</code></dt>
+<dd>
+  The manifest.
+  The presence of this file tells the JVM that the archive is actually a JAR.
+  In an executable JAR, one entry in the manifest specifies the main class,
+  the entry point for the program.
+  <br/>
+  The <code>META-INF/</code> directory can also be used to store
+  non-standard meta information about the JAR, for example a build timestamp.
+</dd>
+<dt><code>.../*.class</code></dt>
+<dd>
+  Compiled Java classes.
+  The directories correspond to the package structure.
+</dd>
+<dt><code>.../*.java</code></dt>
+<dd>
+  Java source code.
+  JAR files do not have to contain source code, but those for the exercises do.
+  After all, it will be your task to fix bugs in the source code.
+</dd>
+<dt><code>.../package.html</code></dt>
+<dd>
+  JavaDoc package descriptions.
+  The presence of these files suggest that there might be useful JavaDocs.
+  It is always possible to generate JavaDocs from source code.
+  But if the source code doesn't contain special JavaDoc comments,
+  the generated docs are not necessarily useful. Alas, the mere presence of
+  JavaDoc comments also doesn't ensure that they contain anything useful.
+  Fortunately, this is a tutorial with well-documented source code.
+</dd>
+<dt><code>...CatalogData*.properties</code></dt>
+<dd>
+  Strings for translating the program output into different languages.
+  Properties files are used at runtime to look up strings or other values,
+  by predefined lookup keys.
+  A program that is enabled for translation does not contain output strings,
+  but lookup keys instead. The output strings are stored in properties files.
+  These properties files can be translated into different languages,
+  which are stored in properties files with a similar name that includes
+  a language identifier, for example </code>_de</code>.
+  At runtime, the programs of the exercises use the default locale of the JVM
+  to decide which language to display.
+</dd>
+</dl>
+<p>
+Programs or libraries can also add other resources to a JAR,
+for example images, HTML templates, and style sheets needed at runtime.
+</p>
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
