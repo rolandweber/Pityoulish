@@ -35,16 +35,14 @@ Experienced Java developers will not learn anything new here.
 <h2 id="stack-trace"><span>Stack Traces</span></h3>
 
 <p>
-<i>Sorry, not written yet. Old content for re-use:</i>
-</p>
-<p>
-Call the command again, to have a closer look at the error message
-and the stack trace. Details such as line numbers probably differ
-from the example output. Work with what you see in your command-line terminal,
-because that matches with the source code in your JAR.
+A stack trace is usually part of an exception.
+An exception indicates a problem or an error condition in the program flow.
+(If you're using exceptions for good cases, you're doing something ugly.)
+The stack trace shows where the problem was detected,
+and how the program execution got to that point.
+Consider this example from the Tutorial:
 </p>
 <div class="terminal">
-  <div class="input"><span>java -jar tutorial.jar islocal localhost</span></div>
   <div class="output"
 >Exception in thread "main" pityoulish.outtake.Missing: <span class="emph">bind a socket to a hostname</span>
 	at pityoulish.outtake.Missing.here(Missing.java:31)
@@ -57,46 +55,87 @@ because that matches with the source code in your JAR.
 </div>
 </div>
 
+<p>
+The first line provides information about the problem,
+the subsequent lines are the stack trace.
+The information in the first line is:
+</p>
+<ul>
+<li>The thread which encountered the problem.
+  The Java clients of the Pityoulish exercises are single-threaded,
+  so this will always be "main".
+</li>
+<li>The class of the exception.
+  Different classes are used for different types of problems.
+  <br/>
+  Class <code>pityoulish.outtake.Missing</code> indicates 
+  an intentional bug in the Pityoulish exercises,
+  an omission which you have to fill in.
+</li>
+<li>The exception message, which may be empty.
+  The intentional bugs come with a message that tells you what is missing.
+</li>
+</ul>
+<p>
+The subsequent lines, all starting with an indented "at", are the stack trace.
+Each method invocation in Java allocates some memory on the stack,
+a stack frame. The stack trace is a list of the methods which
+currently hold a stack frame:
+</p>
+<ol>
+<li>The exception in the example was created in
+  class <code>pityoulish.outtake.Missing</code>,
+  method <code>here</code>,
+  source file <code>Missing.java</code>, line 31.
+</li>
+<li>That method was called from
+  class <code>pityoulish.tutorial.TutorialCommandHandler</code>,
+  method <code>handleIsLocalCmd</code>,
+  source file <code>TutorialCommandHandler.java</code>, line 159.
+</li>
+<li>... <i>and so on</i> ...
+</li>
+<li>
+  Method <code>main</code> in class <code>pityoulish.tutorial.Main</code>
+  is the entry point of the program.
+</li>
+</ol>
+<p>
+The place where an exception is created can be different from where it
+gets thrown. And typically, neither of these are the actual location
+of the problem, but rather where the problem eventually surfaces.
+In the example, <code>Missing.here</code> is just a helper method for
+throwing the exception. Nothing is missing <i>there</i>.
+You need to look at the place where <code>Missing.here</code> gets called.
+<!--
+</p>
+<p>
+-->
+The line numbers you encounter are different from those in the example above.
+Always work with the line numbers that your program prints,
+because those match with the source code from which it was compiled.
+An IDE will quickly take you to the indicated locations in the source code.
+</p>
 
 <p>
-The first line reveals the class of the exception and the exception message.
-The class often indicates the type of problem, for example
-a <code>NullPointerException</code> or an <code>IOException</code>.
-In this case, some code is missing; you already know that.
-The message tells you what the missing code is supposed to do.
-We'll get to that later, once you've found the place where it is missing.
+When looking for the cause of an exception, start at the place where
+the exception was created, and work through the stack trace from there.
+It's a waste of time and effort to start at the main entry point,
+trying to follow the program flow all the way to the problem.
+<!--
 </p>
 <p>
-The lines starting with "at" are the call stack.
-The program execution started at <code>main</code>, which is in the last line.
-<code>main</code> called <code>ArgsInterpreter.handle</code>,
-which called <code>CommandHandlerBase.handle</code>,
-which called something else, and so on,
-right up to <code>Missing.here</code> at the top of the stack.
-And there, the exception was thrown. In parenthesis, you see
-the source file name 'Missing.java' and a line number.
-Open the file and find the line indicated by your stack trace.
-If you executed the command from within an IDE,
-you probably just have to click a link in the output.
-Now what is wrong in <code>here</code>?
+-->
+If you are familiar with the package structure of the source code,
+you can sometimes skip many lines in a stack trace.
+For example, if you encounter a <code>FileNotFoundException</code>,
+the stack trace starts in a package for accessing files,
+which may have been called from a library for parsing a file format,
+each with several stack frames. But if you are looking for
+the place in your program where the filename is computed,
+you can skip all packages that are not from your program.
 </p>
 
-<p>
-Well, nothing is wrong in <code>Missing.here</code>.
-It is a helper method meant to throw an exception, and so it does.
-The caller must have found that something is wrong
-and raised an exception by invoking the helper.
-You need to find the code that called here.
-Luckily, the second line of the stack trace tells you exactly where that is.
-Load the file 'TutorialCommandHandler.java' and
-have a look at method <code>handleIsLocalCmd</code>,
-especially around the line number from your stack trace.
-There you'll see the following statements:
-</p>
-<div class="code">
-  Missing.here("bind a socket to a hostname");
-  Missing.pretend(IOException.class);
-</div>
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
@@ -111,12 +150,13 @@ There you'll see the following statements:
 <i>Sorry, not written yet.</i>
 </p>
 
+<!-- <hr style="margin-top:8em;"/> -->
 <i>
 <ul>
-<li>method arguments</li>
 <li>local variables</li>
+<li>method arguments</li>
 <li>object attributes/getters</li>
-<li>base class attributes/getters</li>
+<li>base class attributes/getters, recursively</li>
 <li>global data</li>
 <!--
 <li></li>
