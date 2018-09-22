@@ -147,22 +147,101 @@ you can skip all packages that are not from your program.
 <h2 id="available-data"><span>Available Data</span></h3>
 
 <p>
-<i>Sorry, not written yet.</i>
+When you jump into unfamiliar code and are required to make changes at
+a particular location, you need to understand what data you have available
+at that location.
+In an ungraded exercise, you might get away with hard-coding a hostname
+instead of using the value passed as command-line argument.
+But that is not the way in which you should tackle problems,
+and taking such shortcuts will compromise your learning.
+</p>
+<p>
+Here is a selection of data that your code can access, sorted by
+increasing "distance" from where you have to make a change.
+IDEs may provide lists of accessible attributes and methods
+through auto-completion, but don't rely exclusively on that.
 </p>
 
-<!-- <hr style="margin-top:8em;"/> -->
-<i>
-<ul>
-<li>local variables</li>
-<li>method arguments</li>
-<li>object attributes/getters</li>
-<li>base class attributes/getters, recursively</li>
-<li>global data</li>
+<dl>
+<dt>Local variables and method arguments</dt>
+<dd>
+  Scroll up to the method signature. Look for arguments passed to the method,
+  and for local variables initialized within the method.
+  Existing code might already look up or compute relevant data.
+</dd>
+
+<dt>Object attributes, getters, and constructor arguments</dt>
+<dd>
+  Look at the attributes and getter methods defined by the class.
+  If the method is static, you can only access and call static attributes
+  and methods. Otherwise, your method is part of an object and can access
+  and call all members of the class.
+  Object attributes can be initialized from constructor arguments, for example.
+</dd>
+
+<dt>Interface constants and methods, recursively</dt>
+<dd>
+  Look at the interfaces of your class, and of its base class,
+  and the base interfaces of these interfaces, and so on.
 <!--
-<li></li>
+  Look at the interfaces of your class, and of your base classes,
+  and the base interfaces of these interfaces.
 -->
-</ul>
-</i>
+  An interface cannot define attributes, but it can define useful constants,
+  and getters for attributes in implementation classes.
+</dd>
+
+<dt>Base class attributes and getters, recursively</dt>
+<dd>
+  Look at the base class of your class, and its base class, and so on.
+  Your code can access public and protected members of these.
+</dd>
+
+
+<div class="box-center">
+<span class="header">
+<span class="title">Warning</span>
+<span class="abstract"
+      >Don't get lost!</span>
+</span><!-- header -->
+<span class="content">
+Focus on the problem you have to solve,
+look only for the data required to solve it.
+Don't get distracted by things not relevant to your problem,
+no matter how interesting they seem to be.
+In simple classes, start with the local variables, method arguments,
+object attributes, constructor arguments.
+Look further only if you need to.
+In complicated classes, even that might be too much.
+</span>
+</div>
+
+
+<dt>Package</dt>
+<dd>
+  The package of your class may define classes with static methods,
+  or with a singleton instance, and interfaces with useful constants.
+</dd>
+
+<dt>Referenced Objects</dt>
+<dd>
+  Some objects just represent values, like strings or numbers.
+  Other objects may provide public getter methods or attributes of their own,
+  as defined by their interfaces and classes.
+  Look at the import statements in your class, then in its interfaces and
+  base classes. These are the most likely candidates.
+</dd>
+
+<dt>Imported Packages</dt>
+<dd>
+  Similar to the package of your class, other packages of may define
+  classes with static methods, or with a singleton instance,
+  and interfaces with useful constants.
+  Look at the import statements in the interfaces and classes of your package.
+  These are the most likely candidates.
+</dd>
+
+</dl>
 
 
 <div class="back-link">
