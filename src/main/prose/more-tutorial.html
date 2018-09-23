@@ -322,7 +322,11 @@ Some arguments to try:
   These should be recognized as local addresses.
 </li>
 <li>
-  Hostnames of internet sites, such as 'example.com', or other computers.
+  Hostnames of internet sites, such as 'example.com'.
+  These should be recognized as non-local addresses.
+</li>
+<li>
+  Hostnames and IP addresses of other computers in the local network.
   These should be recognized as non-local addresses.
 </li>
 </ul>
@@ -333,8 +337,9 @@ If these arguments are not recognized as expected, your code is still buggy.
 <p>
 When the command is working as expected, play around some more. Can you
 find local hostnames that are not printed by the <code>local</code> command?
-For example, try your computer's name without a domain, or with
+For example, try the name of your computer without a domain, or with
 domain '.local'. What about other IP addresses, like '127.0.0.8'?
+Have you tried '::1'?
 </p>
 
 <div class="back-link">
