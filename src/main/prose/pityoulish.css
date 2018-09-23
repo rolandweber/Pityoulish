@@ -208,6 +208,10 @@ ul span.title {
   font-weight: bold;
 }
 
+.spoiler-steps > li {
+  margin-bottom: 0.8em;
+}
+
 .tlv-type.request::after
 {
   content: " (\21d2) ";

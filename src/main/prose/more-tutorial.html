@@ -409,7 +409,7 @@ If you think you know what to do,
 proceed without further guidance instead of following the next step.
 </i></p>
 
-<ol>
+<ol class="spoiler-steps">
 <li>
 The exception message and the comment say "bind a socket".
 <br/>
@@ -487,34 +487,116 @@ but they are completely different operations.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="help-lookup"><span>Spoiler: Fixing <code>lookup</code></span></h2>
 
-<p>
-<i>
-Sorry, not written yet. Old content for re-use:
-</i>
-</p>
-
-<!--hr style="margin-top:3em;"/-->
 
 <p>
-The helper expects objects of class <code>InetAddress</code>.
-From what package is that class? Browse its JavaDocs.
-Any hints on how to obtain such objects?
-From a hostname, which is the only input you have?
-There are different methods you could call, which is the right one?
-If you're not sure, go back to where the code is missing,
-read the description and comments again.
+The method is almost empty.
+At the place of the omission, you will find these lines:
 </p>
+<div class="code">
+  Missing.here("look up the InetAddress(es) of a hostname");
+  // Use formatInetAddress below to print all the addresses.
+  // Also handle the case when the hostname has no address at all.
+</div>
 
 <p>
-OK, you've got all the pieces of the puzzle now. It is time to write code.
-Remove calls to class <code>Missing</code>.
-Put in code that looks up the internet addresses for the hostname.
-Implement a loop that prints them, using the helper method.
-
-Is there a problem when compiling?
-Handle the exception that might be thrown by the lookup.
-The user should know when that fails.
+<code>Missing.here</code> triggers the exception that takes you there.
+<br/>
+You have to remove that line
+and insert your own code instead.
 </p>
+
+<p><i>
+Follow the steps below.
+Pause after each step.
+Make sure you've understood it.
+<br/>
+If you think you know what to do,
+proceed without further guidance instead of following the next step.
+</i></p>
+
+<ol class="spoiler-steps">
+<li>
+The exception message says "look up ... a hostname",
+JavaDocs for the method say "DNS lookup".
+<br/>
+Do you understand what that means?
+If not, start an internet search and find out.
+</li>
+
+<li>
+A comment mentions the helper method <code>formatInetAddress</code>.
+<br/>
+Look at the JavaDoc comment and method signature of that helper, NOTHING MORE!
+<br/>
+What does it do?
+You don't need to read or understand the code of the helper to use it.
+</li>
+
+<li>
+The helper expects a single address.
+The comment about using the helper says "all the addresses".
+<br/>
+You will have to implement a loop.
+</li>
+
+<li>
+The helper expects an <code>InetAddress</code>.
+<br/>
+Check the imports. Access the relevant JavaDocs.
+<!-- java.net.InetAddress -->
+</li>
+
+<li>
+How do you create <code>InetAddress</code> objects?
+<br/>
+Are there constructors?
+Methods for creating or obtaining instances?
+<br/>
+If not in the class itself, somewhere else in the package?
+</li>
+
+<li>
+The missing code is expected to perform a DNS lookup for the argument hostname.
+<br/>
+Have you found a method that performs DNS lookups?
+Do you need an object on which to call the method?
+<br/>
+Do you need to convert the hostname argument?
+Do you need to convert the lookup results?
+<!-- InetAddress.getAllByName(String host)
+  The method static, no object needed for calling it.
+  Neither argument nor results need to be converted.
+-->
+</li>
+
+<li>
+Write code to perform the DNS lookup, to loop over the results,
+and to call the helper method for each item.
+<!-- The code will not compile at this stage unless you implement
+     a try-catch block or declare an exception to be thrown by the method.
+-->
+</li>
+
+<li>
+The second comment line mentions hostnames without an address.
+<br/>
+What does the lookup return in that case?
+<code>null</code>, an empty list or array, something else?
+<!-- it does not return anything, but throws an exception instead -->
+<br/>
+Change your code to handle this case.
+The method should reach its <code>return</code> statement,
+not throw an exception.
+<!-- catch java.net.UnknownHostException -->
+<br/>
+Tell the user explicitly when there is no address for the hostname.
+<!-- Print the exception, or a corresponding message.
+     Printing the exception does not require a new entry in the Catalog.
+     A hard-coded message would be inconsistent with the rest of the code.
+ -->
+</li>
+</ol>
+
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
