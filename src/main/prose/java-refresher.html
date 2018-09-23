@@ -113,8 +113,9 @@ You need to look at the place where <code>Missing.here</code> gets called.
 -->
 The line numbers you encounter are different from those in the example above.
 Always work with the line numbers that your program prints,
-because those match with the source code from which it was compiled.
-An IDE will quickly take you to the indicated locations in the source code.
+because those match with the source code bundled in the JAR,
+or with your modifications to that.
+An IDE will quickly take you to the indicated line in the source file.
 </p>
 
 <p>
@@ -127,13 +128,13 @@ trying to follow the program flow all the way to the problem.
 <p>
 -->
 If you are familiar with the package structure of the source code,
-you can sometimes skip many lines in a stack trace.
+you can often skip many lines in a stack trace.
 For example, if you encounter a <code>FileNotFoundException</code>,
 the stack trace starts in a package for accessing files,
-which may have been called from a library for parsing a file format,
-each with several stack frames. But if you are looking for
-the place in your program where the filename is computed,
-you can skip all packages that are not from your program.
+which may have been called from a library for parsing a file format.
+But if you are looking for the place in your program where
+the filename is computed, you can skip all foreign stack frames,
+until you reach one from a package of your program.
 </p>
 
 
