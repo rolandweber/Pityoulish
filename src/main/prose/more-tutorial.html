@@ -381,75 +381,102 @@ Perform some more lookups of your own.
 <h2 id="help-islocal"><span>Spoiler: Fixing <code>islocal</code></span></h2>
 
 <p>
-<i>
-Sorry, not written yet. Old content for re-use:
-</i>
+The method is small enough to understand it entirely, so strive for that.
+At the place of the omission, you will find these lines:
 </p>
-
 <div class="code">
+  // if the address is local, we can bind a socket to it
   Missing.here("bind a socket to a hostname");
   Missing.pretend(IOException.class);
 </div>
-
 <p>
-Before you can fix anything, you have to understand what is going on
-in that part of the code. The references to class <code>Missing</code>
-are exactly where you'll have to put in your own code. The message,
-'bind a socket to a hostname', tells you what is missing.
-But unless you are familiar with the socket API, this message is unclear.
-The call to <code>Missing.pretend</code> indicates that the missing code
-may throw an <code>IOException</code>.
+<code>Missing.here</code> triggers the exception that takes you there.
+<br/>
+<code>Missing.pretend</code> tells the compiler that
+an <code>IOException</code> could be raised.
+That's because the missing code might do that.
+<br/>
+You have to remove both lines with <code>Missing</code>
+and insert your own code instead.
 </p>
 
-<p>
-When a method is so small as <code>handleIsLocalCmd</code>, you should try
-to understand it fully. There is a description, which you can read in the
-source code as well as in the
-<a href="jdoc/index.html" target="_blank">JavaDocs</a>.
-The method is expected to return 0 if the argument is the local host,
-or -1 if it is not. In the method body, there is some error handling code.
-If the missing code runs through, the method returns 0.
-If it throws an <code>IOException</code>, the method returns -1.
-Before that, the string argument is converted into an
-<code>InetSocketAddress</code>.
-Let's summarize:
-</p>
+<p><i>
+Follow the steps below.
+Pause after each step.
+Make sure you've understood it.
+<br/>
+If you think you know what to do,
+proceed without further guidance instead of following the next step.
+</i></p>
+
 <ol>
-<li>You have a hostname,
-  already converted to <code>InetSocketAddress</code>.</li>
-<li>The missing code should run through if the hostname is local.</li>
-<li>The missing code should throw an <code>IOException</code>
-  if the hostname is not local.</li>
-<li>The missing code should 'bind' a 'socket' to the hostname.</li>
+<li>
+The exception message and the comment say "bind a socket".
+<br/>
+Do you understand what that means?
+If not, start an internet search and find out.
+</li>
+
+<li>
+The method is meant to tell whether a hostname is local or not.
+What does that have to do with binding a socket?
+<br/>
+Look at the source code.
+When will it return "local", when "not local"?
+<!--
+  Returns 0 (local) if binding succeeds,
+  or -1 (not local) if binding throws an IOException.
+-->
+</li>
+
+<li>
+What is the Java API for working with sockets?
+<br/>
+Check the imports. Access the relevant JavaDocs.
+<!-- package java.net, specifically class java.net.Socket -->
+</li>
+
+<li>
+What method do you have to call for binding a socket?
+<!-- java.net.Socket.bind(SocketAddress) -->
+<br/>
+Do you have the required arguments for calling it?
+<!-- Yes, InetSocketAddress isa -->
+<i>
+  (see also <a href="java-refresher.html#available-data">Available Data</a>)
+</i>
+<br/>
+Do you have an object on which to call the method?
+If not, how can you create one?
+<!-- Socket sock = new Socket() -->
+<br/>
+Is there a convenience constructor for combining both operations?
+<!-- No. -->
+</li>
+
+<li>
+Insert code as required for the following:
+<ol type="a">
+  <li>Create a socket to bind, if required.</li>
+  <!-- Required. Create an unconnected Socket. -->
+  <li>Convert the hostname to the expected format, if required.</li>
+  <!-- Not required, the conversion is already implemented. -->
+  <li>Bind the socket to the hostname, if required.</li>
+  <!-- Required, there is no convenience constructor that binds. -->
+  <li>Clean up afterwards, if required.</li>
+  <!-- Not required, because no connection is opened.
+       The Socket will be garbage-collected. -->
+</ol>
+<i>Hint:</i> You will need two of those.
+</li>
 </ol>
 
-<p>
-Now it is time to study the standard Java APIs. There are JavaDocs available:
-online, for download, or maybe already installed with your JDK or IDE.
-Pick whichever is most convenient for you.
-The <code>InetSocketAddress</code> is a place to start. Look for the
-import statements at the beginning of 'TutorialCommandHandler.java'.
-From which package is that class?
-What other classes are imported from there?
-Anything related to 'bind' or 'socket'?
-Bingo, there's an import of <code>java.net.Socket</code>.
-<a href="http://lmgtfy.com/?q=javadoc+InetSocketAddress+java.net.Socket"
-   class="covert"
-   >Search</a> and browse the JavaDocs for these two classes.
-Is there something about 'bind'?
-Can you do that with an <code>InetSocketAddress</code>?
-Does it make a difference whether the hostname is local?
-</p>
 
 <p>
-When you have found and assimilated that information, put in the missing code:
-<br/>
-Delete the calls to class <code>Missing</code>.
-Create an unconnected socket. Bind that socket to the hostname.
-That's it. <span class="emph">Maybe</span>.
-To be sure, you need to test your changes.
+Don't mix up <i>binding</i> a socket with <i>connecting</i> a socket.
+Both require a hostname or IP address,
+but they are completely different operations.
 </p>
-
 
 
 <div class="back-link">
@@ -465,6 +492,8 @@ To be sure, you need to test your changes.
 Sorry, not written yet. Old content for re-use:
 </i>
 </p>
+
+<!--hr style="margin-top:3em;"/-->
 
 <p>
 The helper expects objects of class <code>InetAddress</code>.
