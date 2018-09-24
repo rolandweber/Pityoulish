@@ -14,21 +14,58 @@ https://creativecommons.org/publicdomain/zero/1.0/
   <span>Tutorial: Prepare for Java Exercises</span>
 </h1>
 <p class="abstract">
-...
+In this tutorial, you will practice the development procedures
+needed for the upcoming Java classroom exercises.
+Use your preferred IDE or command-line environment to fix the planted bugs.
 </p>
 
 <div class="larger">
-<i>
-<p>objectives:</p>
-<ul>
-<li>set up the development environment</li>
-<li>learn how to navigate an unfamiliar codebase</li>
-<li>practice the steps for fixing a program</li>
-<li>avoid common pitfalls</li>
-</ul>
-</i>
 <p>
-If you're an experienced Java developer, all of this will be familiar to you.
+In the upcoming classroom exercises, you will have to fix intentional bugs
+in a client program. The objective of this tutorial is to familiarize you
+with the development procedures and to establish a minimal routine.
+During the classroom exercises, you should be able to focus on the code and
+the bugs, rather than figure out how to compile sources and build a JAR.
+The most common pitfall though is to get lost in the details of
+an unfamiliar codebase, and distracted from the implementation target.
+One tutorial is not enough to protect against that, but I'll do what I can.
+</p>
+<p>
+The Tutorial is organized into the following sections:
+<ol>
+<li>
+  <a href="#prereqs">Prerequisites</a>
+  -
+  Install the required tools, and desired ones as well
+</li>
+<li>
+  <a href="#setup">Setup</a>
+  -
+  Create a project and build a JAR
+</li>
+<li>
+  <a href="#exercise">Exercise</a>
+  -
+  Find and fix the planted bugs
+</li>
+<li>
+  <a href="#code">Code Overview</a>
+  -
+  Navigate the code, from JavaDocs to source code
+</li>
+<li>
+  <a href="#links">Links</a>
+  -
+  Downloads, further reading, feedback
+</li>
+</ol>
+</p>
+</div>
+
+<div>
+<p>
+If you're an experienced Java developer,
+the development procedures will already be familiar to you.
 But many students in my classes are not. This tutorial establishes a baseline
 of required tools and skills for the classroom exercises.
 </p>
@@ -43,7 +80,8 @@ To work through the exercises from the command line, you need a web browser,
 a text editor, and a Java Development Kit (JDK).
 If available for your platform, you can use the OpenJDK.
 Beware of the Oracle Java installers for Windows and OS X, they have a
-reputation for installing adware along with the Java browser plug-in.
+reputation for installing adware along with the Java browser plug-in,
+which you don't need.
 </p>
 <p>
 Execute the following commands to verify that a JDK is available:
@@ -294,7 +332,7 @@ It is provided only for the setup in section
 <p>
 Read the usage instructions for each command and try it out.
 If you encounter a <code>pityoulish.outtake.Missing</code> exception,
-you found one of the intentional bugs.
+you found one of the planted bugs.
 All other problems originate from your environment or input.
 Solve those without changing code.
 </p>
@@ -395,7 +433,7 @@ with testing until you've found and eliminated all intentional bugs.
 <p>
 Once you've fixed the prepared problems, class <code>Missing</code>
 is no longer needed.
-It was just an artifice to lead you to the intentional bugs.
+It was just an artifice to lead you to the planted bugs.
 That's why it was left out of the generated
 <a href="jdoc/index.html" target="_blank">JavaDocs</a>.
 </p>
