@@ -37,7 +37,7 @@ public class TutorialCommandHandler
    */
   public enum TutorialCommand implements Command
   {
-    LATIN(0,0), LOCAL(0,0), ISLOCAL(1,1), LOOKUP(1,1);
+    LATIN(0,80), LOCAL(0,0), ISLOCAL(1,1), LOOKUP(1,1);
 
     public final int minArgs;
     public final int maxArgs;
@@ -74,7 +74,7 @@ public class TutorialCommandHandler
     int status = 0;
     switch(cmd)
      {
-      case LATIN:   status = handleLatinCmd(); break;
+      case LATIN:   status = handleLatinCmd(args); break;
       case LOCAL:   status = handleLocalCmd(); break;
       case ISLOCAL: status = handleIsLocalCmd(args[0]); break;
       case LOOKUP:  status = handleLookupCmd(args[0]); break;
@@ -91,11 +91,17 @@ public class TutorialCommandHandler
    * Use this to verify that your environment settings are correct.
    * If necessary, specify the default character set as a Java system property
    * when starting the program.
+   *
+   * @param args   additional strings to echo.
+   *               Use this to test the input encoding.
    */
-  protected int handleLatinCmd()
+  protected int handleLatinCmd(String... args)
     throws Exception
    {
      System.out.println(Catalog.LATIN_SAMPLE.lookup());
+
+     for (String arg : args)
+        System.out.println(arg);
 
      return 0;
    }
