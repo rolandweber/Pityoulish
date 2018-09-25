@@ -102,6 +102,8 @@ Tutorial: Prepare for Java development.
     <fileset refid="prose.common.files" />
     <fileset dir="src/main/prose">
       <include name="tpj-*" />
+      <include name="java-refresher.html" />
+      <include name="test-fix-repeat.html" />
       <include name="message-board.html" />
     </fileset>
   </copy>

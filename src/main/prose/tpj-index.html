@@ -14,346 +14,535 @@ https://creativecommons.org/publicdomain/zero/1.0/
   <span>Tutorial: Prepare for Java Exercises</span>
 </h1>
 <p class="abstract">
-After completing this tutorial, you are familiar with the structure of the
-upcoming Java classroom exercises. You know how to perform the required
-development procedures in your preferred development environment.
+In this tutorial, you will practice the development procedures
+needed for the upcoming Java classroom exercises.
+Use your preferred IDE or command-line environment to fix the planted bugs.
 </p>
 
 <div class="larger">
-This tutorial comprises three phases:
-<dl>
-  <dt>1. <a href="#run-jar">Run the JAR</a></dt>
-  <dd>
-    You execute the provided, runnable JAR to understand
-    what it is supposed to do, and what is wrong with it.
-  </dd>
+<p>
+In the upcoming classroom exercises, you will have to fix intentional bugs
+in a client program. The objective of this tutorial is to familiarize you
+with the development procedures and to establish a minimal routine.
+During the classroom exercises, you should be able to focus on the code and
+the bugs, rather than figure out how to compile sources and build a JAR.
+The most common pitfall though is to get lost in the details of
+an unfamiliar codebase, and distracted from the implementation target.
+One tutorial is not enough to protect against that, but I'll do what I can.
+</p>
+<p>
+The Tutorial is organized into the following sections:
+<ol>
+<li>
+  <a href="#prereqs">Prerequisites</a>
+  -
+  Install the required tools, and desired ones as well
+</li>
+<li>
+  <a href="#setup">Setup</a>
+  -
+  Create a project and build a JAR
+</li>
+<li>
+  <a href="#exercise">Exercise</a>
+  -
+  Find and fix the planted bugs
+</li>
+<li>
+  <a href="#code">Code Overview</a>
+  -
+  Navigate the code, from JavaDocs to source code
+</li>
+<li>
+  <a href="#links">Links</a>
+  -
+  Downloads, further reading, feedback
+</li>
+</ol>
+</p>
+</div>
 
-  <dt>2. <a href="#study-source">Study the Sources</a></dt>
-  <dd>
-    You look at the provided JavaDocs and source files
-    to find your way through the code.
-  </dd>
-
-  <dt>3. <a href="#fix-problems">Fix the Problems</a></dt>
-  <dd>
-    You fix the source code and build your own, working JAR from it.
-  </dd>
-</dl>
-
-The <a href="#recipe">recipe</a> outlines the steps to follow
-when working on a Java classroom exercise.
-You practice most of these steps in the tutorial.
-
-Last but not least, there is some information about the
-<a href="#msgboard">upcoming</a> exercises.
-Reading it before the first classroom exercise gives you a head start.
+<div>
+<p>
+If you're an experienced Java developer,
+the development procedures will already be familiar to you.
+But many students in my classes are not. This tutorial establishes a baseline
+of required tools and skills for the classroom exercises.
+</p>
 </div>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="run-jar"><span>Run the JAR</span></h2>
-
-<div class="box-right">
-<dl>
-<dt><a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a></dt>
-<dd>The program to test and fix. Usage instructions:
-  <br/><code>&nbsp;&nbsp;java -jar tutorial-faulty.jar</code><br/>
-  Sources are in the jar,
-  <a href="jdoc/index.html" target="_blank">docs</a> here.
-</dd>
-</dl>
-</div><!-- box-right -->
+<h2 id="prereqs"><span>Prerequisites</span></h2>
 
 <p>
-First verify that a Java Virtual Machine (JVM) or
-Java Development Kit (JDK) is available on your computer.
-Open a command line and enter:
+To work through the exercises from the command line, you need a web browser,
+a text editor, and a Java Development Kit (JDK).
+If available for your platform, you can use the OpenJDK.
+Beware of the Oracle Java installers for Windows and OS X, they have a
+reputation for installing adware along with the Java browser plug-in,
+which you don't need.
+</p>
+<p>
+Execute the following commands to verify that a JDK is available:
 </p>
 <div class="terminal">
   <div class="input"><span>java -version</span></div>
-</div>
-<p>
-Version 1.7 or later is needed. If the <code>java</code> command is not found,
-you have to investigate why. Most likely it is just missing from the
-search path. Locate an installed JVM or JDK and add its <code>bin</code>
-directory to the <code>PATH</code> environment variable,
-or use the full path to run <code>java</code> and related utilities.
-If there is neither JVM nor JDK, install a JDK. You'll need it later anyway.
-How to do that depends on your operating system and the JDK you want to use.
-<!-- @@@ TODO: warn about the adware installed by Oracle on Windows? -->
-<!-- @@@ TODO: Extra page with instructions for installing a JDK? -->
-</p>
-
-<p>
-Now download the file
-<a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a>
-to your machine. Change to the directory where you saved it and enter:
-</p>
-<div class="terminal">
-  <div class="input"><span>java -jar tutorial-faulty.jar</span></div>
-</div>
-<p>
-This tells <code>java</code> to run the program contained in the JAR file.
-Without further arguments, that program just prints usage instructions.
-Take a minute to read those.
-</p>
-<p>
-Seriously, read them. <!-- Now! -->
-</p>
-
-<p>
-So, the program understands several different commands.
-Use <code>latin</code> to check whether your environment is ready
-to display characters from the ISO Latin 1 character set.
-</p>
-<div class="terminal">
-  <div class="input"><span>java -jar tutorial-faulty.jar latin</span></div>
-</div>
-<p>
-If the output contains umlauts, you're all set. If it contains garbage, or
-question marks in unexpected places, you need to do something. The default
-character encoding of the JVM does not match that of your command line.
-This is a common problem with <code>cmd.exe</code> on Windows.
-You can use a different command line, for example the PowerShell,
-or figure out how to
-<a href="http://illegalargumentexception.blogspot.co.uk/2009/04/i18n-unicode-at-windows-command-prompt.html"
-   >fix the problem</a>.
-</p>
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="test-commands"><span>Test the Commands</span></h3>
-
-<p>
-The downloaded JAR supports three more commands besides <code>latin</code>.
-They cover the technical content of this tutorial: IP addresses and hostnames.
-Let's try them one after another, starting with <code>local</code>.
-</p>
-<div class="terminal">
-  <div class="input"><span>java -jar tutorial-faulty.jar local</span></div>
-  <div class="output"
->Network Interface 'wlan0'
-   fe80:0:0:0:fc5a:73ee:fe85:733c%3
-   10.223.123.161
-Network Interface 'lo'
-   0:0:0:0:0:0:0:1%1   ip6-localhost
-   127.0.0.1   localhost</div>
-</div>
-<p>
-The output depends on the network configuration and available connections.
-In the example, the machine is connected to a WLAN, 'wlan0'.
-The local interface, 'lo', is always present. It enables programs
-that run on the same machine to communicate with eachother, even if
-there is no actual network connection. The machine from the example
-has both an IPv4 and an IPv6 address on either network interface.
-Does yours?
-</p>
-
-<p>
-The remaining two commands expect an argument, which can be a hostname or
-an IP address. The usage instructions only mention hostnames, but all
-operating systems are smart enough to handle IP addresses as well.
-Let's try both commands with 'localhost' as the argument.
-</p>
-<div class="terminal">
-  <div class="input"><span>java -jar tutorial-faulty.jar islocal localhost</span></div>
-  <div class="output"
->Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: bind a socket to a hostname
-	at ...</div>
-  <div class="input"><span>java -jar tutorial-faulty.jar lookup localhost</span></div>
-  <div class="output"
->Looking up 'localhost'...
-Exception in thread "main" <span class="emph">pityoulish.outtake.Missing</span>: look up the InetAddress(es) of a hostname
-	at ...</div>
+  <div class="input"><span>javac -version</span></div>
 </div>
 
 <p>
-Dang! Both commands are broken. Well, there had to be a reason why the JAR
-is called 'faulty'. The class of the exception,
-<code>pityoulish.outtake.Missing</code>, indicates that something was
-intentionally left out of the program. And you are expected to fill it in.
-If you see a different exception, there is a problem.
-Read the exception message. At best, it's just a typo in the command line.
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="study-source"><span>Study the Sources</span></h2>
-
-<p>
-Before you proceed, rename the downloaded JAR to <code>tutorial.jar</code>
-or some other name without negative connotation.
-While it is faulty now, it won't be when you're done with it.
-Renaming the file supports a positive mindset right from the beginning.
-</p>
-
-<p>
-List the contents of the JAR file.
-Use the <code title="jar -tf">jar</code> utility of a JDK,
-or <code title="unzip -l">unzip</code>,
-or any other archive utility that is compatible with the zip format.
-The example output below shows only a subset of the files.
-</p>
-<div class="terminal">
-  <div class="input"><span>jar -tf tutorial.jar</span></div>
-  <div class="output"
->META-INF/MANIFEST.MF
-pityoulish/cmdline/ArgsInterpreter.java
-...
-pityoulish/outtake/<span class="emph">Missing.java</span>
-pityoulish/tutorial/Main.java
-pityoulish/tutorial/TutorialCommandHandler.java
-pityoulish/tutorial/package.html
-pityoulish/cmdline/ArgsInterpreter.class
-...
-pityoulish/outtake/<span class="emph">Missing.class</span>
-pityoulish/tutorial/Main.class
-...
-pityoulish/tutorial/TutorialCommandHandler.class
-</div>
-</div>
-<p>
-On first glance, it seems as if classes are listed twice. Indeed,
-a closer look reveals that the JAR contains source code (.java)
-along with compiled classes (.class). The presence of 'package.html' files
-suggests that there might even be meaningful JavaDocs.
-It is always possible to generate JavaDocs from source code.
-But if the source code doesn't contain special JavaDoc comments,
-the generated docs are not necessarily useful. Alas, the mere presence of
-JavaDoc comments also doesn't ensure that they contain anything useful.
-Fortunately, this is a tutorial with well-documented source code.
-</p>
-
-<p>
-If you plan to use an Integrated Development Environment (IDE) for coding,
-now is a good time to import <code>tutorial.jar</code> as a new project.
-There are many IDEs that support Java development, for example
+If you prefer to code with an Integrated Development Environment (IDE),
+there are several that support Java development.
+<br/>
+For example
 <a href="https://www.jetbrains.com/idea/"
    title="IntelliJ IDEA - Community Edition"
    >IntelliJ</a>,
 <a href="https://www.eclipse.org/downloads/"
    title="Eclipse IDE for Java Developers"
    >Eclipse</a>,
-<a href="https://code.visualstudio.com/"
+<a href="https://code.visualstudio.com/docs/languages/java"
    title="Visual Studio Code"
    >Visual Studio Code</a>, or
 <a href="https://netbeans.org/downloads/index.html"
    title="NetBeans - Java SE"
    >NetBeans</a>.
-
-However, you don't need an IDE to complete this tutorial,
-or the upcoming programming exercises.
-Just use the archiver from above to extract the files from the JAR, and your
-<a href="https://en.wikipedia.org/wiki/Editor_war" class="covert"
-   >favorite editor</a>
-to browse them.
-Make sure to maintain the directory structure when extracting though.
 </p>
-<!-- doesn't add much value and looks crappy above the h3
+
+
+<p>
+For convenience, bookmark the
+<a href="https://docs.oracle.com/javase/8/docs/api/"
+   >Java SE API</a> documentation of the Java version you are using.
+<br/>
+When working from the command line, collect frequently used commands
+in a text file for copy&amp;paste.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="setup"><span>Setup</span></h2>
+
+<div class="box-right">
+<dl>
+<dt><a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a></dt>
+<dd>The program to test and fix. Usage instructions:
+  <div><code>&nbsp;&nbsp;java -jar tutorial-faulty.jar</code></div>
+  Sources are in the JAR,
+  <a href="jdoc/index.html" target="_blank">docs</a> here.
+</dd>
+</dl>
+</div><!-- box-right -->
+
+<p>
+Download the file
+<a href="tutorial-faulty.jar"><code>tutorial-faulty.jar</code></a>
+and save it with a decent filename. In the remainder of this Tutorial,
+the name <code>tutorial.jar</code> is assumed.
+While the JAR is faulty now, it won't be when you're done with it.
+Using a filename without negative connotations supports
+a positive mindset right from the beginning.
+</p>
+
+<p>
+Run the program to verify the download.
+It is an executable JAR file, so you don't have to specify a class name.
+This should print usage instructions, which you will need later on:
+</p>
+
 <div class="terminal">
-  <div class="input"><span>jar -xf tutorial.jar</span></div>
+  <div class="input"><span>java -jar tutorial.jar</span></div>
 </div>
--->
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h3>
 
 <p>
-Before you dive into the source code and get lost in its intricacies,
-you should get a high-level overview. Modern IDEs make it very easy to
-access context-specific information. For example, they can show the JavaDocs
-for a method as hover help, right there where the method is being called.
-At the same time, they beguile developers into neglecting the bigger context.
-Why bother with the class- or package-level JavaDocs, when the method-level
-is readily available? Never mind that the former might point out
-other classes or methods that would serve your purposes better, or
-provide valuable information that applies to all the methods of a class.
-To elude this pitfall, don't go into your IDE or editor just yet.
+If you're not familiar with JAR files, have a look at the content now.
+They are similar to zip archives, with some extra conventions for storing
+and executing Java classes. If you need more guidance, read the
+<a href="tpj-details.html#jar">detailed description</a>
+of the JAR file content.
 </p>
 
 <p>
-Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a>
-in a new browser tab or window,
-so you can easily switch between them and this description.
-Check the list of packages. There are three of them,
-<code>pityoulish.cmdline</code>, <code>pityoulish.i18n</code>,
-and <code>pityoulish.tutorial</code>.
-In the main content frame, click on the first one. Now you see a list of
-interfaces and classes in that package. Glimpse at the names. They are
-about commands, handling, and arguments. The package description begins
-with "Utility classes". This indicates that the package does not contain
-the main functionality of the program, but supporting features.
-Are you interested in learning how the command-line arguments are interpreted?
-If so, write it down on your to-do list for later.
-Right now, the support functionality is not your concern.
+The next step is to prepare for changing the code
+and building your own version of the JAR file.
+<br/>
+How to do that depends on the IDE you are using, if any.
 </p>
 
 <p>
-Move on to the next package, <code>pityoulish.i18n</code>.
-The funny abbreviation is explained in the JavaDocs. There are even links
-to external websites where you can do some background reading.
-But again, the package description begins with "Utility classes".
-So this is another item for your to-do list and a later time.
-What you should gather from the package description is that
-output strings are not hard-coded in the Java sources.
-Instead, they are looked up from properties files.
-Catalog enums define lookup keys and helper methods.
-</p>
-
-<p>
-Finally, access the JavaDocs for the <code>pityoulish.tutorial</code> package.
-There is a class <code>Main</code>, described as the main entry point.
-Now you know where to start. There is an enum with four constants,
-named like the four commands which <code>tutorial.jar</code> understands.
-And there is a handler class with methods named like the four commands.
-Could <code>handleLatinCmd</code> be the method which prints the umlauts
-for the 'latin' command? Yes, the description says so.
-Without even looking at the source code, you've learned where the
-important things are happening.
+Last but not least, verify that the program is using
+the correct character encoding for input and output.
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="source-walk-through"><span>Source Code Walk-Through</span></h3>
+<h3 id="setup-ide"><span>IDE</span></h3>
 
-<p>
-Now it is time to browse the source code. If you didn't know already
-from the JavaDocs where to start, you would have to look into the file
-<code>META-INF/MANIFEST.MF</code>. It defines a property 'Main-Class',
-which tells <code>java -jar</code> about the entry point of the program.
-Unsurprisingly, the value is <code>pityoulish.tutorial.Main</code>.
-Open the source file for that class in your IDE or editor.
+<p class="abstract">
+How to perform the steps in this section depends on the IDE you have chosen.
+<br/>
+You're welcome to contribute specific instructions
+for other users of your IDE.
 </p>
 
 <p>
-The <code>main</code> method initializes an arg(ument)s interpreter,
-calls it with the command-line arguments, and is done.
-If you hadn't looked at the JavaDocs first, you would now probably
-follow the program execution and look into the args interpreter.
-However, you already know that it comes from a utility package, and that
-the commands are implemented in <code>TutorialCommandHandler</code>.
-An instance of that class is given to the args interpreter as a
-constructor argument. The other constructor argument is some kind of 'None',
-so probably not relevant here. The natural conclusion is that
-the args interpreter will call the command handler.
-Let's go directly to the latter, without wasting time on the former.
+Create a project from the downloaded JAR file.
+Not from extracted sources, but from the JAR itself.
+<br/>
+Make sure that the name of your project does <i>not</i> contain "faulty".
 </p>
 
 <p>
-Looking at <code>TutorialCommandHandler</code>, you see the enumeration of
-supported commands, a method that returns usage instructions, and a method
-with a <code>switch</code> statement on the enum. Each case of that statement
-calls a handler method for the respective command.
-Whatever else the args interpreter does, it calls here to execute a command.
-That's all you need to know about it to get started.
+Build or export a new JAR file from your project.
+<br/>
+Run your own JAR and verify that it prints the expected usage information.
+If it doesn't, read the
+<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
 </p>
+
+<p>
+For development, you may also run the program directly from the IDE.
+The final result should be a JAR file though.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="setup-cmdline"><span>Command Line</span></h3>
+
+<p>
+Create a new directory to work in, for example <code>tutorial-project/</code>.
+Make sure that the name of your directory does <i>not</i> contain "faulty".
+<br/>
+Use <code>cd</code> to change there.
+All command-line examples assume that this is your current directory.
+</p>
+
+<p>
+Extract the contents of the downloaded JAR file:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>jar -xvf /path/to/tutorial.jar</span></div>
+</div>
+
+<p>
+Subdirectory <code>pityoulish/</code> contains the
+source code, properties files, and compiled classes.
+<br/>
+Subdirectory <code>META-INF/</code> can be ignored or deleted.
+</p>
+
+<p>
+After changing a Java source file, you have to recompile it.
+<br/>
+For example, after editing
+<code>pityoulish/tutorial/TutorialCommandHandler.java</code>,
+compile it with:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>javac pityoulish/tutorial/TutorialCommandHandler.java</span></div>
+</div>
+
+<p>
+Build a new JAR from your working directory:
+</p>
+
+<div class="terminal">
+  <div class="input"><span>jar -cfe tutorial.jar pityoulish.tutorial.Main pityoulish/</span></div>
+</div>
+
+<p>
+Run your own JAR and verify that it prints the expected usage information.
+If it doesn't, read the
+<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
+</p>
+
+<p>
+You will have to compile a source file and build a new JAR several times.
+Either use the command line history to access previously executed commands,
+or prepare commands for copy&amp;paste in an editor.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="setup-charset"><span>Character Encoding</span></h3>
+
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar latin</span></div>
+  <div class="input"><span>java -jar tutorial.jar latin <i>your input</i></span></div>
+</div>
+
+<i>
+<ul>
+<li>check that umlauts are displayed correctly</li>
+<li>check that non-ASCII input is echoed correctly</li>
+<li><a href="tpj-details.html">troubleshooting tips</a></li>
+</ul>
+</i>
+
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="exercise"><span>Exercise</span></h2>
+
+<p>
+The main loop of an exercise is to manually execute a test sequence
+and to overcome the problems you encounter.
+Some problems will be your own mistakes, like passing wrong arguments
+to a command or connecting to the wrong network.
+Some problems are intentional bugs in the code, which you have to fix.
+</p>
+
+<p>
+The information here is specific to this Tutorial.
+A general description for the exercises is in
+<a href="test-fix-repeat.html">Test and Fix</a>.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="test-sequence"><span>Test</span></h3>
+
+<p>
+The commands supported by the tutorial program are independent of eachother.
+You could test them in any order.
+<br/>
+The usage instructions suggest this sequence:
+</p>
+
+<ol>
+<li><code>local</code></li>
+<li><code>islocal</code></li>
+<li><code>lookup</code></li>
+</ol>
+
+<p>
+There are two problems to find and fix.
+<br/>
+The command <code>latin</code> is not part of the exercise.
+It is provided only for the setup in section
+<a href="#setup-charset">Character Encoding</a> above.
+</p>
+
+<p>
+Read the usage instructions for each command and try it out.
+If you encounter a <code>pityoulish.outtake.Missing</code> exception,
+you found one of the planted bugs.
+All other problems originate from your environment or input.
+Solve those without changing code.
+</p>
+
+<p>
+If you'd like more guidance, read the suggestions for testing
+<a href="tpj-details.html#test-local"><code>local</code></a>,
+<a href="tpj-details.html#test-islocal"><code>islocal</code></a>, and
+<a href="tpj-details.html#test-lookup"><code>lookup</code></a>.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="think"><span>Think</span></h3>
+
+<p>
+The stack traces lead you directly to the bugs in the code.
+<br/>
+<b>But</b> you are not familiar with the codebase yet.
+<br/>
+Before you even look at the source code,
+get an <a href="#code">overview</a>.
+</p>
+
+<p>
+Once you have an overview, follow a stack trace
+to the point where some code is missing.
+</p>
+<ul>
+<li>In which part of the codebase are you?</li>
+<li>What is supposed to happen at this point?</li>
+<li>What data is available here?</li>
+</ul>
+
+<p>
+If you'd like more guidance, there are descriptions for
+interpreting <a href="java-refresher.html#stack-trace">stack traces</a>
+and for <a href="java-refresher.html#available-data">available data</a>
+at a point in the code.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="fix"><span>Fix</span></h3>
+
+<p>
+Read the exception message, and the comments in the code.
+What is it you have to do?
+Initialize an attribute? Assign a variable? Modify a data structure?
+Return a value? Call a method? A combination of these?
+<a href="#think">Think!</a>
+</p>
+
+<p>
+Is there another method that does something similar?
+Go there, see how it's done, and copy shamelessly.
+<i>Sorry, not in this Tutorial. But in some exercises.</i>
+</p>
+
+<p>
+Remove the calls to class <code>Missing</code> at the point of the problem.
+Put in your code snippet instead.
+Remove comments that no longer apply.
+</p>
+
+<p>
+Sometimes you can make the code prettier by combining your snippet
+with commands before or after.
+<i>Not in this Tutorial. And it's not necessary in the exercises.</i>
+</p>
+
+<p>
+If you cannot figure out how to fix the prepared problems, there is help
+for <a href="tpj-details.html#help-islocal"><code>islocal</code></a>
+and <a href="tpj-details.html#help-lookup"><code>lookup</code></a>.
+</p>
+
+<p>
+Save your changes and compile the file.
+IDEs often do that automatically.
+When working with the command line, use <code>javac</code>
+as explained <a href="#setup-cmdline" title="Setup: Command Line">above</a>.
+Fix compiler errors.
+</p>
+
+<p>
+Create a new JAR and repeat your tests. If the bug is fixed, continue
+with testing until you've found and eliminated all intentional bugs.
+</p>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="clean-up"><span>Clean Up</span></h3>
+
+<p>
+Once you've fixed the prepared problems, class <code>Missing</code>
+is no longer needed.
+It was just an artifice to lead you to the planted bugs.
+That's why it was left out of the generated
+<a href="jdoc/index.html" target="_blank">JavaDocs</a>.
+</p>
+
+<p>
+Delete the directory <code>pityoulish/outtake/</code> from your project,
+both source code and compiled class.
+Then recompile all remaining classes and fix compiler errors.
+This will detect unused imports of class <code>Missing</code>.
+</p>
+
+<p>
+Finally, create a new JAR.
+<p/>
+
+
+<p class="abstract">
+Splendid! You have successfully completed this tutorial.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="code"><span>Code Overview</span></h2>
+
+<p class="larger">
+Do <b>not</b> look at the source code!
+It's too easy to get lost in it.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="code-jdoc"><span>JavaDocs</span></h3>
+
+<p>
+Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a> in the browser.
+There's a short description for each package.
+Read the package name and description.
+<br/>
+Optionally, select the package and start reading the long description.
+Do you need to know more to solve the problem at hand?
+</p>
+
+<p>
+Select a package you're interested in, in the main frame.
+<br/>
+Read enough of the description to grasp what the purpose of this package is.
+</p>
+
+<p>
+Look at the lists of interfaces, classes, and enums in the package.
+<br/>
+Read the names and short descriptions.
+Do you need to know more to solve the problem at hand?
+</p>
+
+<p>
+Select an interface, class, or enum you're interested in, in the main frame.
+<br/>
+Read the description.
+Optionally, look at the lists of methods, attributes, or constants.
+<br/>
+Optionally, select one of those and read its description.
+</p>
+
+<p>
+If you need more guidance, read the
+<a href="tpj-details.html#jdoc-walk-through">JavaDoc Walk-Through</a>.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="code-abstract"><span>Understanding</span></h3>
+
+<p>
+JavaDocs show APIs and explain their purpose, usage, and important concepts.
+They hide the code, which is advantageous for getting an overview.
+When the description of a package tells you that it isn't relevant for
+the task at hand, don't waste time looking into the package.
+Likewise for interfaces, classes, and enums.
+More often than not, knowing what they are about is enough.
+</p>
+
+<ol>
+<li>
+Understand the purpose of the packages, imagine how they work together.
+Then pick the package most relevant to your task.
+</li>
+<li>
+Looking into a package, locate the most important interfaces and classes.
+Separate the external API of the package from internal classes.
+The API is more important than implementation details.
+</li>
+<li>
+Understand the purpose of the API interfaces and classes.
+Imagine how they work together with the internal classes to implement the API.
+</li>
+<li>
+This is how you get an overview.
+Details follow later.
+Once you have an overview, details will click into place.
+</li>
+</ol>
 
 
 <div class="box-center">
 <span class="header">
 <span class="title">Word of Advice</span>
 <span class="abstract"
-      >Badly structured code invalidates natural conclusions.</span>
+      >Badly structured code obstructs understanding.</span>
 </span><!-- header -->
 <span class="content">
 When you are diving into any codebase of significant size, it is
@@ -385,417 +574,117 @@ For a regular stream of bad examples, see
 </span>
 </div>
 
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="fix-problems"><span>Fix the Problems</span></h2>
-
 <p>
-There are two broken commands to fix in this tutorial.
-The following instructions for the <a href="#fix-islocal">first</a>
-are very detailed.
-Those for the <a href="#fix-lookup">second</a> remain brief,
-so you can apply what you learned.
-Finally, you should <a href="#clean-up">clean up</a>.
+IDEs, like JavaDocs, show lists of packages, classes, and methods.
+But they are designed to take you <i>into</i> the code, not to get an overview.
+When using an IDE, you're more likely to look at implementation details
+instead of thinking about modules, responsibilities, and concepts.
+It gets even worse if you step through the code with a source-level debugger.
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="fix-islocal"><span>Fix the <code>islocal</code> Command</span></h3>
+<h3 id="code-sources"><span>Source Code</span></h3>
 
 <p>
-Call the command again, to have a closer look at the error message
-and the stack trace. Details such as line numbers probably differ
-from the example output. Work with what you see in your command-line terminal,
-because that matches with the source code in your JAR.
-</p>
-<div class="terminal">
-  <div class="input"><span>java -jar tutorial.jar islocal localhost</span></div>
-  <div class="output"
->Exception in thread "main" pityoulish.outtake.Missing: <span class="emph">bind a socket to a hostname</span>
-	at pityoulish.outtake.Missing.here(Missing.java:31)
-	at pityoulish.tutorial.TutorialCommandHandler.<span class="emph">handleIsLocalCmd(TutorialCommandHandler.java:159)</span>
-	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:92)
-	at pityoulish.tutorial.TutorialCommandHandler.handleCommand(TutorialCommandHandler.java:26)
-	at pityoulish.cmdline.CommandHandlerBase.handle(CommandHandlerBase.java:76)
-	at pityoulish.cmdline.ArgsInterpreter.handle(ArgsInterpreter.java:88)
-	at pityoulish.tutorial.Main.main(Main.java:27)
-</div>
-</div>
-
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Interpret the Stack Trace</span>
-</div></div>
-
-<p>
-The first line reveals the class of the exception and the exception message.
-The class often indicates the type of problem, for example
-a <code>NullPointerException</code> or an <code>IOException</code>.
-In this case, some code is missing; you already know that.
-The message tells you what the missing code is supposed to do.
-We'll get to that later, once you've found the place where it is missing.
-</p>
-<p>
-The lines starting with "at" are the call stack.
-The program execution started at <code>main</code>, which is in the last line.
-<code>main</code> called <code>ArgsInterpreter.handle</code>,
-which called <code>CommandHandlerBase.handle</code>,
-which called something else, and so on,
-right up to <code>Missing.here</code> at the top of the stack.
-And there, the exception was thrown. In parenthesis, you see
-the source file name 'Missing.java' and a line number.
-Open the file and find the line indicated by your stack trace.
-If you executed the command from within an IDE,
-you probably just have to click a link in the output.
-Now what is wrong in <code>here</code>?
+Sooner or later, you have to look at the source code to fix problems.
+A stack trace can take you right to the problem.
+When looking around at that point, remember the overview
+and avoid studying incidental code.
+Look at JavaDocs to learn what a method does, not at the source code.
 </p>
 
 <p>
-Well, nothing is wrong in <code>Missing.here</code>.
-It is a helper method meant to throw an exception, and so it does.
-The caller must have found that something is wrong
-and raised an exception by invoking the helper.
-You need to find the code that called here.
-Luckily, the second line of the stack trace tells you exactly where that is.
-Load the file 'TutorialCommandHandler.java' and
-have a look at method <code>handleIsLocalCmd</code>,
-especially around the line number from your stack trace.
-There you'll see the following statements:
-</p>
-<div class="code">
-  Missing.here("bind a socket to a hostname");
-  Missing.pretend(IOException.class);
-</div>
-
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Analyze the Problem</span>
-</div></div>
-
-<p>
-Before you can fix anything, you have to understand what is going on
-in that part of the code. The references to class <code>Missing</code>
-are exactly where you'll have to put in your own code. The message,
-'bind a socket to a hostname', tells you what is missing.
-But unless you are familiar with the socket API, this message is unclear.
-The call to <code>Missing.pretend</code> indicates that the missing code
-may throw an <code>IOException</code>.
+Sometimes, it is necessary to understand the program flow.
+You might start at the main entry point, which is
+specified in the JAR manifest for all exercises.
+You can also look at a stack trace, which tells you
+how the program got to the point of a problem.
+Again, remember the overview and avoid studying incidental code.
 </p>
 
 <p>
-When a method is so small as <code>handleIsLocalCmd</code>, you should try
-to understand it fully. There is a description, which you can read in the
-source code as well as in the
-<a href="jdoc/index.html" target="_blank">JavaDocs</a>.
-The method is expected to return 0 if the argument is the local host,
-or -1 if it is not. In the method body, there is some error handling code.
-If the missing code runs through, the method returns 0.
-If it throws an <code>IOException</code>, the method returns -1.
-Before that, the string argument is converted into an
-<code>InetSocketAddress</code>.
-Let's summarize:
-</p>
-<ol>
-<li>You have a hostname,
-  already converted to <code>InetSocketAddress</code>.</li>
-<li>The missing code should run through if the hostname is local.</li>
-<li>The missing code should throw an <code>IOException</code>
-  if the hostname is not local.</li>
-<li>The missing code should 'bind' a 'socket' to the hostname.</li>
-</ol>
-
-<p>
-Now it is time to study the standard Java APIs. There are JavaDocs available:
-online, for download, or maybe already installed with your JDK or IDE.
-Pick whichever is most convenient for you.
-The <code>InetSocketAddress</code> is a place to start. Look for the
-import statements at the beginning of 'TutorialCommandHandler.java'.
-From which package is that class?
-What other classes are imported from there?
-Anything related to 'bind' or 'socket'?
-Bingo, there's an import of <code>java.net.Socket</code>.
-<a href="http://lmgtfy.com/?q=javadoc+InetSocketAddress+java.net.Socket"
-   class="covert"
-   >Search</a> and browse the JavaDocs for these two classes.
-Is there something about 'bind'?
-Can you do that with an <code>InetSocketAddress</code>?
-Does it make a difference whether the hostname is local?
+If you need more guidance, read the
+<a href="tpj-details.html#source-walk-through">Source Code Walk-Through</a>.
 </p>
 
-<p>
-When you have found and assimilated that information, put in the missing code:
-<br/>
-Delete the calls to class <code>Missing</code>.
-Create an unconnected socket. Bind that socket to the hostname.
-That's it. <span class="emph">Maybe</span>.
-To be sure, you need to test your changes.
-</p>
-
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Build the JAR</span>
-</div></div>
-
-<p>
-If you are using an IDE, it compiles modified source files automatically.
-IDEs also provide an option to export your project as a JAR file. But
-you have to check whether that JAR file can be run with <code>java -jar</code>.
-If not, look for options to specify the property 'Main-Class' of the manifest.
-If all else fails, you can still run your code by spelling out the classname.
-It's less convenient, but works just as well.
-These two commands are equivalent, both print the usage instructions:
-</p>
-<div class="terminal">
-  <div class="input"
-       ><span>java -jar tutorial.jar</span></div>
-  <div class="input"
-       ><span>java -cp tutorial.jar pityoulish.tutorial.Main</span></div>
-</div>
-
-<p>
-Without an IDE, you have to call the compiler and build the JAR explicitly.
-Assuming that you extracted the JAR into the current working directory,
-use the following commands:
-</p>
-<div class="terminal">
-  <div class="input"
-       ><span>javac pityoulish/tutorial/TutorialCommandHandler.java</span></div>
-  <div class="input"
-       ><span>jar -cfe tutorial.jar pityoulish.tutorial.Main pityoulish/</span></div>
-</div>
-
-<p>
-The first command calls the Java compiler, <code>javac</code>. The argument is
-the source file to compile. You can specify more than one, or use wildcards to
-select all the source files you modify. Without other arguments, the compiler
-puts the compiled .class files into the same directory as the source files.
-The second command, <code>jar</code>, creates ('c') a new
-JAR file ('f') named 'tutorial.jar' and
-sets the entry point ('e') to class <code>pityoulish.tutorial.Main</code>.
-The JAR file contains everything from directory 'pityoulish',
-including all subdirectories.
-</p>
-
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Test the Fix</span>
-</div></div>
-
-<p>
-Finally, you're ready to test the <code>islocal</code> command with your
-changes. Try it with some IP addresses and hostnames that are printed by the
-<code>local</code> command. These should be recognized as local addresses.
-Try some other hostnames, such as 'example.com'. These should be recognized
-as non-local addresses.
-If either one is not the case, your code is buggy. Go back and fix it,
-compile, create a new JAR, and test again; until it works as expected.
-</p>
-
-<p>
-When the command is working as expected, play around some more. Can you
-find local hostnames that are not printed by the <code>local</code> command?
-For example, try your computer's name without a domain, or with
-domain '.local'. What about other IP addresses, like '127.0.0.8'?
-It's OK to play for a while, you've earned it!
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="fix-lookup"><span>Fix the <code>lookup</code> Command</span></h3>
-
-<p>
-Call the <code>lookup</code> command of your JAR.
-Interpret the stack trace and locate where the code is missing.
-Take in the surroundings. What input data do you have?
-What should the missing code do?
-There are descriptions and hints in the source code.
-What data will you need?
-</p>
-
-<p>
-The comments point to a helper method you can use.
-Read the description of the helper.
-What arguments does it expect? What output does it provide?
-Don't bother with its implementation now, stay focused on the problem.
-Search for places where the helper is already used,
-to see how it is done there.
-</p>
-
-<p>
-The helper expects objects of class <code>InetAddress</code>.
-From what package is that class? Browse its JavaDocs.
-Any hints on how to obtain such objects?
-From a hostname, which is the only input you have?
-There are different methods you could call, which is the right one?
-If you're not sure, go back to where the code is missing,
-read the description and comments again.
-</p>
-
-<p>
-OK, you've got all the pieces of the puzzle now. It is time to write code.
-Remove calls to class <code>Missing</code>.
-Put in code that looks up the internet addresses for the hostname.
-Implement a loop that prints them, using the helper method.
-
-Is there a problem when compiling?
-Handle the exception that might be thrown by the lookup.
-The user should know when that fails.
-</p>
-
-<p>
-Create a JAR and test your brand new implementation of <code>lookup</code>.
-Below are some hostnames to try.
-Most of them require an internet connection for the lookup.
-</p>
-
-<ul>
-<li>localhost &nbsp;-&nbsp;
-  a subset of the output from the <code>local</code> command</li>
-
-<li>nowhere.invalid &nbsp;-&nbsp; no address at all</li>
-
-<!-- lookups performed on 2015-12-17: -->
-
-<li>gnu.org &nbsp;-&nbsp; a single IPv4 address</li>
-
-<li>apache.org &nbsp;-&nbsp; two different IPv4 addresses</li>
-
-<li>fsf.org &nbsp;-&nbsp; both an IPv4 and an IPv6 address</li>
-</ul>
-
-<p>
-Perform some more lookups of your own.
-If everything works, go back to your code once more.
-Read it again. Then clean it up.
-Is the code properly formatted?
-Are there leftover comments from before, which no longer make sense?
-Will somebody else understand what you've written,
-or do you have to add comments of your own?
-In the latter case, consider rewriting your code
-so that it can be understood without comments.
-</p>
-
-<p>
-Congratulations, you fixed the <code>lookup</code> command all by yourself.
-Good job!
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="clean-up"><span>Clean Up</span></h3>
-
-<p>
-The class <code>Missing</code> is just an artifice to mark the places
-where you have to insert code. That's why it does not appear in the generated
-<a href="jdoc/index.html" target="_blank">JavaDocs</a> for this tutorial.
-Now that you have fixed both of the broken commands,
-<code>Missing</code> is no longer needed.
-</p>
-
-<p>
-Delete both the source file and the compiled class from your project.
-If you are using an editor rather than an IDE, delete the directory
-'pityoulish/outtake/' and everything within. Then re-compile the classes
-in package <code>pityoulish.tutorial</code> and create a new JAR.
-There might be an unused import statement that you have to remove.
-</p>
-
-<p>
-Splendid! You have successfully completed this tutorial.
-</p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h1 id="recipe"><span>Recipe</span></h1>
+<h2 id="links"><span>Links</span></h2>
 
-<p>
-The Java classroom exercises adhere to a common pattern. The following recipe
-for solving them comprises the development procedures established above.
-After completing this tutorial, you are well prepared for the classroom.
-</p>
-
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Understand &amp; Plan</span>
-</div></div>
-
-<p>
-Read the exercise description.
-Download the JAR and read the usage instructions.
-There is a set of commands with a common topic.
-Unlike in the tutorial, those commands are not independent.
-Some of them require the output of an other as input.
-Prepare a sequence in which you can execute the commands.
-Think of it as a user session, a typical scenario for using the JAR.
-If necessary, prepare different sequences for different groups of commands.
-The exercise description might help you with that.
-</p>
-
-<p>
-Study the JavaDocs provided with the exercise.
-Can you spot the classes which implement the commands?
-Which packages and classes contain the 'real' functionality?
-Which contain only utility stuff and supporting functions?
-Don't dive into the source code yet, just get an overview.
-</p>
-
-<p>
-Give the JAR a decent name.
-Create a project in your IDE or simply extract the JAR.
-</p>
-
-<!-- ............................................................ -->
-<div class="side-note"><div class="content">
-<span>Test &amp; Fix</span>
-</div></div>
-
-<p>
-Execute your command sequence until you encounter a <code>Missing</code>
-exception. Interpret the stack trace and find where the code is missing.
-Take in the surroundings. What should the missing code do?
-Should it print something, initialize attributes, perform IO?
-What input data do you have available, from arguments or stored in attributes?
-</p>
-
-<p>
-What APIs can you use to solve the problem?
-What APIs are already in use? Read their JavaDocs.
-Does the standard Java API provide what you need?
-Are there helpers in the code of the programming exercise?
-Are there other commands that do something similar?
-Can you re-use ideas or code snippets from those?
-</p>
-
-<p>
-Insert the missing code. Compile it and create a new JAR.
-Test the changes. Does the command now work as expected?
-Consider error cases, too.
-If the command works, clean up your code before you move on.
-The instructor might come around and ask to see it.
-</p>
-
-<p>
-Continue with the command sequence until you can execute it
-all the way through. When you're done with all the command sequences,
-delete class <code>Missing</code>.
-This is the ultimate check that you didn't overlook something.
-</p>
+<!-- linked in various places above...
+<li><a href="tpj-details.html">Tutorial Details</a></li>
+<li><a href="java-refresher.html">Java Refresher</a></li>
+-->
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h1 id="msgboard"><span>Coming up...</span></h1>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-java"><span>Java</span></h3>
 
-<p>
-  In the classroom exercises, you'll be facing a server which
-  implements the <a href="message-board.html">Message Board</a>.
-  Now is a good time to read the description.
-  It will save you time during the first classroom exercise.
-</p>
+<dl>
+<dt>
+  <a href="https://docs.oracle.com/javase/8/docs/api/"
+     >Java SE 8 API</a>
+</dt>
+<dd>
+JavaDocs for the standard Java packages. Available online or as download,
+for different versions of the Java Standard Edition (SE).
+Many Linux distributions provide them from the package manager.
+</dd>
+
+<dt>
+  <a href="http://openjdk.java.net/install/index.html">OpenJDK</a>
+</dt>
+<dd>
+OpenJDK is a free software development kit for Java.
+Many Linux distributions provide it from the package manager.
+If you are using an IDE, that might come with a bundled JDK.
+<!--
+  OpenJDK provides JDK 9 binaries for Linux, Windows, and Mac.
+  Windows binaries for JDK 8 can be obtained here:
+  <a href="https://github.com/ojdkbuild/ojdkbuild">installer for Windows</a>
+-->
+</dd>
+</dl>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-exercises"><span>Classroom</span></h3>
+
+<dl>
+<dt><a href="message-board.html">Message Board</a></dt>
+<dd>
+High-level API of a simplistic Message Board.
+The classroom exercises are about implementations of this API
+with different technologies.
+You will fix a client, while your instructor is running the server.
+</dd>
+
+<dt><a href="test-fix-repeat.html">Test and Fix</a></dt>
+<dd>
+Recipe for solving the classroom exercises. It's a generalized version
+of the <a href="#exercise">Exercise</a> section above.
+</dd>
+</dl>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="links-github"><span>GitHub</span></h3>
+
+<dl>
+<dt><a href="https://github.com/rolandweber/pityoulish/">Pityoulish</a></dt>
+<dd>
+GitHub project for this Tutorial, the classroom exercises, and more.
+You are welcome to get involved!
+</dd>
+
+<dt><a href="https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3AFeedback">Feedback</a></dt>
+<dd>
+Provide feedback in GitHub issues.
+If there's no issue prepared, just create a new one.
+</dd>
+<dl>
 
 </body>
 </html>
