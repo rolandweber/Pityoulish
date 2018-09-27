@@ -270,18 +270,35 @@ or prepare commands for copy&amp;paste in an editor.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="setup-charset"><span>Character Encoding</span></h3>
 
+<p>
+Call the <code>latin</code> command of the JAR.
+It will print a message that contains umlauts.
+Check whether these are displayed correctly.
+<br/>
+If not, the Java interpreter uses the wrong character encoding for output.
+</p>
+
 <div class="terminal">
   <div class="input"><span>java -jar tutorial.jar latin</span></div>
-  <div class="input"><span>java -jar tutorial.jar latin <i>your input</i></span></div>
 </div>
 
-<i>
-<ul>
-<li>check that umlauts are displayed correctly</li>
-<li>check that non-ASCII input is echoed correctly</li>
-<li><a href="tpj-details.html">troubleshooting tips</a></li>
-</ul>
-</i>
+<p>
+Pass additional arguments to the <code>latin</code> command.
+Use words that contain special characters, like umlauts
+or the Euro symbol &euro;.
+<br/>
+If the default message is displayed correctly, but your arguments are not,
+the Java interpreter uses the wrong character encoding for input.
+</p>
+
+<div class="terminal">
+  <div class="input"><span>java -jar tutorial.jar latin Wörter &euro;uro</span></div>
+</div>
+
+<p>
+If characters are not displayed correctly, read the
+<a href="tpj-details.html#encoding-trouble">troubleshooting tips</a>.
+</p>
 
 
 

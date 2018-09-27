@@ -194,6 +194,77 @@ add the source directory to the classpath.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h2 id="encoding-trouble"><span>Troubleshooting Character Encodings</span>
+<a href="#encoding-trouble" class="here-link">&para;</a></h2>
+
+<p>
+Internally, Java stores strings as
+<a href="https://unicode.org/standard/WhatIsUnicode.html">Unicode</a>
+with 16 bit per character
+(<a href="http://unicode.org/faq/utf_bom.html">UTF-16</a>).
+When writing strings as output, or reading strings as input,
+they often have to be converted to or from other character encodings,
+such as US-ASCII, Latin-15, or UTF-8.
+Some of these can only represent a subset of the Unicode characters.
+The last example simply uses a different representation for the characters.
+</p>
+
+<p>
+A terminal or other software for displaying strings expects those in a
+particular encoding. It uses a font with graphic representations of some
+or all Unicode characters to render the string. If output appears garbled,
+there are a plenty of things that might have gone wrong:
+</p>
+<ul>
+<li>
+  The font does not have a graphic representation for the character.
+  Sometimes, a square box is displayed as a replacement.
+</li>
+<li>
+  The output encoding does not have a representation for the character.
+  Sometimes, a replacement character such as the question mark (?)
+  is displayed to represent the unrepresentable character.
+</li>
+<li>
+  The program uses a different output encoding than is expected
+  by the terminal. This can result in totally garbled output.
+  However, many character encodings have US-ASCII as a common subset.
+  In that case, plain characters and numbers will appear correctly,
+  but non-ASCII characters such as umlauts are garbled.
+  <br/>
+  This can be fixed by adjusting the encoding of when writing the output.
+  For strings written to the standard output and error streams,
+  Java uses its default encoding.
+</li>
+<li>
+  The string representation in the JVM is wrong, because input was received
+  in a different encoding than expected by the JVM.
+  <br/>
+  This can be fixed by adjusting the encoding when reading the input.
+  For strings read from the standard input stream,
+  Java uses its default encoding.
+  For command-line arguments, the terminal has to provide the correct
+  character representation when launching Java.
+</li>
+</ul>
+
+<hr/>
+<i>
+<ul>
+<li><code>file.encoding</code></li>
+<li><code>JAVA_TOOLS_OPTION</code></li>
+<li>Ways to adjust input encoding and output encoding separately?</li>
+<li>Something special for Linux and Mac? <code>LANG=de_DE.UTF-8</code></li>
+<li>Something special for Windows? <code>chcp</code></li>
+</ul>
+</i>
+
+<div class="back-link">
+<a onclick="history.back();">Back to the Tutorial</a>
+</div>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h2>
 
 <p>
