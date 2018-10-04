@@ -223,7 +223,7 @@ there are a plenty of things that might have gone wrong:
 <li>
   The output encoding does not have a representation for the character.
   Sometimes, a replacement character such as the question mark (?)
-  is displayed to represent the unrepresentable character.
+  takes the place of the unrepresentable character.
 </li>
 <li>
   The program uses a different output encoding than is expected
@@ -248,16 +248,44 @@ there are a plenty of things that might have gone wrong:
 </li>
 </ul>
 
-<hr/>
-<i>
-<ul>
-<li><code>file.encoding</code></li>
-<li><code>JAVA_TOOLS_OPTION</code></li>
-<li>Ways to adjust input encoding and output encoding separately?</li>
-<li>Something special for Linux and Mac? <code>LANG=de_DE.UTF-8</code></li>
-<li>Something special for Windows? <code>chcp</code></li>
-</ul>
-</i>
+<p>
+Some things to try if characters are not displayed correctly:
+</p>
+<ol>
+<li>
+  The default encoding of the JVM can be changed by setting the property
+  <code>file.encoding</code>. Either specify it as a command-line option
+  when starting the Java program, or in the environment variable
+  <code>JAVA_TOOLS_OPTION</code>. For example:
+  <div class="terminal">
+    <div class="input"
+         ><span>java -Dfile.encoding=utf-8 -jar tutorial.jar latin</span></div>
+  </div>
+</li>
+<li>
+  On Linux and Unix, the language and character encoding used by the terminal
+  can be set with the environment variable <code>LANG</code>.
+  The JVM will pick up these settings. For example:
+  <div class="terminal">
+    <div class="input"
+         ><span>export LANG=de_DE.UTF-8</span></div>
+    <div class="input"
+         ><span>java -jar tutorial.jar latin</span></div>
+  </div>
+</li>
+<li>
+  On Windows, the character encoding used by the terminal can be checked
+  and set with the program
+  <a href="https://ss64.com/nt/chcp.html"><code>chcp.com</code></a>,
+  <i>CHange Code Page</i>.
+  "Code Page" is another term for character encoding.
+</li>
+<li>
+  If you need to change the font used by the terminal, please consult
+  the documentation for your terminal or operating system.
+</li>
+</ol>
+
 
 <div class="back-link">
 <a onclick="history.back();">Back to the Tutorial</a>
