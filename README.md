@@ -1,7 +1,7 @@
 # Pityoulish
 A collection of programming or debugging exercises to support a course on _Distributed Systems_.
 The focus is on classroom debugging exercises that can be completed in less than two hours.
-(not there yet)
+(_not there yet_)
 
 The Pityoulish exercises revolve around a common topic:
 A server implements a Message Board which holds a limited number of messages.
@@ -25,7 +25,7 @@ Are you...
 If you are a student working on an exercise, this is the wrong repository. Check with your instructor on how to access your current exercise.
 This repository contains _all_ exercises, and is missing the gaps you are supposed to fill in. Furthermore, it contains the code for clients and servers, while the exercises are about the clients.
 
-If you are a student cheating on an exercises, this is the right repository.
+If you are a student cheating on an exercise, this is the right repository.
 It contains the code for _all_ exercises, and is missing the gaps you are supposed to fill in. But what's the point of cheating on these exercises? You're not getting graded for them, are you?
 
 Consider becoming a [contributor](#contributors), too. After the exercise, of course :-)
@@ -38,7 +38,7 @@ You may fork this project and put in your own omissions, to better match the top
 The current set of exercises comprises:
 * Tutorial - IP addresses and hostnames.
   The Tutorial is for preparation at home. It explains how to debug the Java command-line programs of the classroom exercises.
-  It takes between one and two hours to complete, depending on each student's fluency in Java programming.
+  It takes between 30 minutes and two hours to complete, depending on each student's fluency in Java programming.
 * Classroom - Java Sockets and TLVs.
   It's about socket connections and binary messages (PDUs) which need to be created, sent, received, and parsed.
   Shows how tedious it is to implement a protocol.
