@@ -101,6 +101,23 @@ the response parser kept in the base class with its own response visitor
 to get back to the application layer.
 </p>
 
+
+
+<h2>Roll Your Own</h2>
+
+<p>
+When you implement a different client program, for example one that
+runs permanently and executes requests periodically,
+you can re-use some of these classes.
+However, you can also substitute different implementations.
+For example, a different visitor to process response data.
+Or a different client handler that uses asynchronous NIO and
+connects to multiple Message Board servers at the same time.
+</p>
+
+
+<h3>Replacing the Message Layer</h3>
+
 <p>
 If the message format should be changed, for example from TLV to JSON,
 the application layer classes could be re-used without changes.
@@ -119,20 +136,6 @@ The reason for not implementing it this way in the first place
 is a design principle called
 <a href="https://wolfgang-ziegler.com/blog/yagni">YAGNI</a>:
 <i>You Ain't Gonna Need It</i>.
-</p>
-
-
-
-<h2>Roll Your Own</h2>
-
-<p>
-When you implement a different client program, for example one that
-runs permanently and executes requests periodically,
-you can re-use some of these classes.
-However, you can also substitute different implementations.
-For example, a different visitor to process response data.
-Or a different client handler that uses asynchronous NIO and
-connects to multiple Message Board servers at the same time.
 </p>
 
 </body>

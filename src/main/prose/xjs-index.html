@@ -52,7 +52,6 @@ Unless you have experience with programming and debugging.
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h2 id="setup"><span>Setup</span></h2>
-<!--h2 id="prepare"><span>Prepare</span></h2-->
 
 <p>
 You already set up a Java development environment in the Tutorial.
@@ -224,7 +223,25 @@ That's all you need to know about the package at this point.
 
 <p>
 Move on to package <code>pityoulish.sockets.client</code>
-and look at the interfaces.
+and look at the package description.
+It talks about protocol layers and briefly describes those.
+There are pointers to classes for each layer,
+and a distinction between sending and receiving.
+
+When you reach the heading "Roll Your Own", stop reading.
+You're not going to roll your own client now.
+The package description did point to a base class and an implementation class
+for the <code>MsgBoardClientHandler</code> interface,
+so you know how the packages tie together.
+That's enough for an overview.
+</p>
+
+
+<!-- Move this to an extra "Details" page? Or just forget about it?
+
+<p>
+If the package didn't have a useful description, the next step would be
+to look at the interfaces (but not yet the classes) of the package.
 <code>SocketBackendHandler</code> extends <code>HostPortBackendHandler</code>,
 adding socket-specific methods.
 The purposes of <code>RequestBuilder</code> and <code>ResponseParser</code>
@@ -234,7 +251,7 @@ Never mind that detail now - you must get an <i>Overview</i>.
 </p>
 
 <p>
-Now look at where the handlers are implemented.
+Now look where the handlers are implemented.
 There is a single class for <code>SocketBackendHandler</code>, that's easy.
 For <code>MsgBoardClientHandler</code>, there is a <code>Base</code> and
 an <code>Impl</code> class.
@@ -249,9 +266,7 @@ Those expect a socket as argument, so here you have found the IO logic.
 </p>
 
 <p>
-That's enough for an overview.
-The package-level JavaDocs provide more details, in case you need them.
-But from these brief observations, you already know that different classes
+From these brief observations, you know that different classes
 are responsible for building requests, parsing responses, and
 communicating over socket connections.
 The client handler base class ties the helpers together.
@@ -259,6 +274,7 @@ The call path from the <code>Main</code> class through
 packages <code>pityoulish.cmdline</code> and <code>pityoulish.mbclient</code>
 into the client handler is of little interest.
 </p>
+-->
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

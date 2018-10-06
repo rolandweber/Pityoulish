@@ -100,7 +100,7 @@ Exercise: Message Board Client with Sockets, in Java
       <package name="pityoulish.sockets.client" />
       <package name="pityoulish.mbclient" />
     </group>
-    <group title="Protocol">
+    <group title="Protocol Data Format">
       <package name="pityoulish.sockets.tlv" />
     </group>
     <group title="Support">
