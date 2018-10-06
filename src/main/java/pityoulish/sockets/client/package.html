@@ -16,40 +16,119 @@ Utility classes from package {@link pityoulish.mbclient}
 are used for evaluating the command-line arguments.
 They eventually call a sockets-based implementation of
 {@link pityoulish.mbclient.MsgBoardClientHandler} here.
-</p>
-
-<p>
-Implementations of the client handler interface should be derived from
-{@link pityoulish.sockets.client.MsgBoardClientHandlerBase}.
-This base class calls a {@link pityoulish.sockets.client.RequestBuilder}
-to turn command-line arguments into a request.
-The implementation then sends that request to the server and receives
-the response.
-{@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}
-uses traditional, blocking IO for communication.
-After receiving the response, the implementation feeds it to a
-{@link pityoulish.sockets.client.ResponseParser}, which calls a
-{@link pityoulish.sockets.client.ResponseParser.Visitor}
-to process the received data.
-</p>
-
-<p>
-{@link pityoulish.sockets.client.TLVRequestBuilderImpl} and
-{@link pityoulish.sockets.client.TLVResponseParserImpl}
-build and parse the TLV structures specified by the Binary Protocol.
-The {@link pityoulish.sockets.client.FormattingVisitorImpl}
-prints response data to the console.
-{@link pityoulish.sockets.client.SocketBackendHandlerImpl}
-opens the connection to the server. Sending and receiving data
-is left to the client handler implementation, as mentioned above.
-</p>
-
-<p>
 The {@link pityoulish.sockets.client.Main} class instantiates
-the various handlers and helpers to execute a single request.
-When you implement a different client, for example one that
+the various handlers and helpers described below.
+</p>
+
+<h2>Protocol Layers</h2>
+<p>
+In this client, the message board protocol materializes
+on different layers of abstraction:
+</p>
+<ol>
+<li>Application Layer - operations, arguments, results</li>
+<li>Message Layer - TLV structures</li>
+<li>Transport Layer - connections, byte buffers</li>
+</ol>
+
+<h3>Application Layer</h3>
+<p>
+On the sending side,
+class {@link pityoulish.sockets.client.MsgBoardClientHandlerBase}
+provides one method for each operation supported by the protocol.
+Arguments like username, ticket or a limit
+are passed in as Java strings or numbers.
+On the receiving side,
+interface {@link pityoulish.sockets.client.ResponseParser.Visitor}
+has methods for the different response types.
+The information in the results is also represented with Java types,
+in this case strings and booleans. The implementation
+class {@link pityoulish.sockets.client.FormattingVisitorImpl}
+simply prints the response data to the console. 
+</p>
+
+<h3>Transport Layer</h3>
+<p>
+The transport layer sends and receives byte buffers over socket connections.
+Class {@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}
+has one method for sending a request and one for receiving a response.
+The required socket is created and connected in
+class {@link pityoulish.sockets.client.SocketBackendHandlerImpl}.
+The backend handler allows for blocking or non-blocking IO on the socket.
+The client handler implementation uses traditional, blocking IO.
+</p>
+<p>
+The transport layer needs some minimal knowledge about the message format,
+to decide when the incoming data contains a complete message.
+For this purpose, it interprets the length of the top-level TLV,
+without looking at the value.
+</p>
+
+
+<h3>Message Layer</h3>
+<p>
+The message layer translates between the application layer
+and the transport layer.
+On the sending side,
+class {@link pityoulish.sockets.client.TLVRequestBuilderImpl}
+provides one method for each operation. It expects the arguments as
+Java data types, as provided by the application layer,
+and returns the fully encoded TLV request as a byte buffer.
+On the receiving side,
+class {@link pityoulish.sockets.client.TLVResponseParserImpl}
+is given a byte buffer to parse and an application-layer visitor
+to call with the parsed information.
+</p>
+
+
+<h3>Stacking the Layers</h3>
+<p>
+The base class {@link pityoulish.sockets.client.MsgBoardClientHandlerBase}
+implements the sending side of the application layer.
+It gets initialized with two message-layer helpers,
+a request builder and a response parser. Of these,
+it uses the request builder to generate a transport layer byte buffer,
+which it passes to the abstract <code>fireRequest</code> method.
+<br/>
+The derived implementation class
+{@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}
+implements the transport layer for the sending and receiving side,
+called through <code>fireRequest</code>.
+The class gets initialized with a third helper,
+an application-layer response visitor.
+When a response has been received, the client handler implementation uses
+the response parser kept in the base class with its own response visitor
+to get back to the application layer.
+</p>
+
+<p>
+If the message format should be changed, for example from TLV to JSON,
+the application layer classes could be re-used without changes.
+On the message layer, new helpers for building and parsing JSON
+instead of TLV are needed.
+And the transport layer requires some changes on the receiving side,
+to detect when a JSON message rather than a TLV message is complete.
+<br/>
+The separation of the protocol layers could be improved by refactoring.
+The logic to determine when an incoming message is complete could be
+moved into the response parser helper, with some effort
+(<a href="https://github.com/rolandweber/pityoulish/issues/13">issue #13</a>).
+Then the message layer could be replaced without changing the application
+or transport layer at all.
+The reason for not implementing it this way in the first place
+is a design principle called
+<a href="https://wolfgang-ziegler.com/blog/yagni">YAGNI</a>:
+<i>You Ain't Gonna Need It</i>.
+</p>
+
+
+
+<h2>Roll Your Own</h2>
+
+<p>
+When you implement a different client program, for example one that
 runs permanently and executes requests periodically,
-you can re-use some of those classes.
+you can re-use some of these classes.
 However, you can also substitute different implementations.
 For example, a different visitor to process response data.
 Or a different client handler that uses asynchronous NIO and
