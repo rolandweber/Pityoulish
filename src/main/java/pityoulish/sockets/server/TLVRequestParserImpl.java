@@ -187,9 +187,9 @@ public class TLVRequestParserImpl implements RequestParser
    *
    * @throws ProtocolException  in case of a problem
    */
-      protected MsgBoardRequest parseGeneric(MsgBoardRequest.ReqType retype,
-                                             MsgBoardTLV reqtlv,
-                                             EnumSet<MsgBoardType> expected)
+  protected MsgBoardRequest parseGeneric(MsgBoardRequest.ReqType retype,
+                                         MsgBoardTLV reqtlv,
+                                         EnumSet<MsgBoardType> expected)
     throws ProtocolException
   {
     EnumMap<MsgBoardType,String> params = new EnumMap<>(MsgBoardType.class);

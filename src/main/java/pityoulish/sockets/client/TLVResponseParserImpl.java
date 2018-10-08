@@ -49,13 +49,10 @@ public class TLVResponseParserImpl implements ResponseParser
     if (visitor == null)
        throw new NullPointerException("ResponseParser.Visitor");
 
-    MsgBoardTLV tlv = new MsgBoardTLV
-      (response.array(), response.position()+response.arrayOffset());
+    MsgBoardTLV tlv = getResponseTLV(response);
 
     if (beVerbose)
        System.out.println(tlv.toFullString());
-
-    //@@@ while parsing, make sure we don't reach beyond the buffer limit!
 
     switch (tlv.getType())
      {
@@ -98,6 +95,46 @@ public class TLVResponseParserImpl implements ResponseParser
 
 
   /**
+   * Creates the top-level TLV and performs some validations.
+   *
+   * @param response  buffer holding the response to parse.
+   *                  The buffer must be backed by an array.
+   *
+   * @return    the constructed TLV representing the response,
+   *            never <code>null</code>
+   *
+   * @throws Exception  in case of invalid response data
+   */
+  protected MsgBoardTLV getResponseTLV(ByteBuffer response)
+    throws Exception
+  {
+    // need at least 4 bytes for a valid MsgBoardTLV
+    if (response.limit() < 4)
+       throw new Exception("response.limit="+response.limit());
+
+    MsgBoardTLV result = null;
+
+    try {
+      result = new MsgBoardTLV
+        (response.array(), response.position()+response.arrayOffset());
+
+    } catch (RuntimeException rtx) {
+      throw new Exception
+        (Catalog.INVALID_TOP_TLV_HEADER_0.format());
+    }
+
+    if (result.getEnd() > response.limit() + response.arrayOffset())
+       throw new Exception
+         (Catalog.INVALID_TOP_TLV_LENGTH_0.format());
+
+    // We could check for a valid type here. But the caller is going to
+    // switch on the type anyway, so it's simpler to check it there.
+
+    return result;
+  }
+
+
+  /**
    * Parses a TLV with a single string value.
    *
    * @param parent  the TLV of which to parse the content
@@ -125,7 +162,10 @@ public class TLVResponseParserImpl implements ResponseParser
          (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
                                           nested.getStart(),
                                           expect));
-    //@@@ check for end of data!
+    if (nested.getEnd() > parent.getEnd())
+       throw new Exception
+         (Catalog.OVERLONG_TLV_2.format(nested.getType(),
+                                        nested.getStart()));
 
     return parseStringValue(nested, enc);
   }
@@ -181,6 +221,10 @@ public class TLVResponseParserImpl implements ResponseParser
          (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
                                           nested.getStart(),
                                           MsgBoardType.MARKER));
+    if (nested.getEnd() > mbtlv.getEnd())
+       throw new Exception
+         (Catalog.OVERLONG_TLV_2.format(nested.getType(),
+                                        nested.getStart()));
     String marker = parseStringValue(nested, "US-ASCII");
 
     boolean missed = false;
@@ -200,7 +244,10 @@ public class TLVResponseParserImpl implements ResponseParser
             (Catalog.UNEXPECTED_TLV_3.format(nested.getType(),
                                              nested.getStart(),
                                              MsgBoardType.MESSAGE));
-       //@@@ check for end of data!
+       if (nested.getEnd() > mbtlv.getEnd())
+          throw new Exception
+            (Catalog.OVERLONG_TLV_2.format(nested.getType(),
+                                           nested.getStart()));
 
        parseMessage(nested, visitor);
        nested = nested.getNextTLV(mbtlv.getEnd());
@@ -221,8 +268,6 @@ public class TLVResponseParserImpl implements ResponseParser
   protected void parseMessage(MsgBoardTLV msgtlv, Visitor visitor)
     throws Exception
   {
-    //System.out.println("@@@ parsing MESSAGE at "+msgtlv.getStart());
-
     // The order of elements within the message is not specified.
     // Parse them as they come, then check if something is missing.
     String originator = null;
@@ -232,9 +277,11 @@ public class TLVResponseParserImpl implements ResponseParser
     MsgBoardTLV nested = msgtlv.getNestedTLV();
     while (nested != null)
      {
-       //System.out.println("@@@ found "+nested.getType());
+       if (nested.getEnd() > msgtlv.getEnd())
+          throw new Exception
+            (Catalog.OVERLONG_TLV_2.format(nested.getType(),
+                                           nested.getStart()));
 
-       //@@@ check for end of data!
        switch (nested.getType())
         {
          case ORIGINATOR:
