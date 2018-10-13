@@ -67,7 +67,9 @@ public final class Main
 
     RequestParser   reqp = new TLVRequestParserImpl();
     ResponseBuilder rspb = new TLVResponseBuilderImpl();
-    RequestHandler  rh   = new RequestHandlerImpl(reqp, mbrh, rspb);
+
+    Expositor       ex = new ConsoleExpositorImpl();
+    RequestHandler  rh = new RequestHandlerImpl(reqp, mbrh, rspb, ex);
 
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
