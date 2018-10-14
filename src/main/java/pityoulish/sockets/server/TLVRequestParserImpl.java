@@ -210,13 +210,13 @@ public class TLVRequestParserImpl implements RequestParser
        switch (nested.getType())
         {
          case TEXT:
-           value = parseStringValue(nested, "US-ASCII");
+           value = parseStringValue(nested, "UTF-8");
            break;
 
          case ORIGINATOR:
          case MARKER:
          case TICKET:
-           value = parseStringValue(nested, "UTF-8");
+           value = parseStringValue(nested, "US-ASCII");
            break;
 
            // LIMIT is not a string value
