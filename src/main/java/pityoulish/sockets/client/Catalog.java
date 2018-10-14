@@ -14,8 +14,6 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
-   COMMAND_USAGE,
-
    INVALID_TOP_TLV_HEADER_0,
    INVALID_TOP_TLV_TYPE_1,
    INVALID_TOP_TLV_LENGTH_0,
@@ -41,8 +39,6 @@ public enum Catalog implements TextEntry
    RECEIVE_TOO_LONG_2,
    RECEIVE_INCOMPLETE_0,
    RECEIVE_EXCESS_DATA_2,
-
-   CMDLINE_BAD_LIMIT_1,
 
    CONSOLE_INFO_TEXT_1,
    CONSOLE_ERROR_TEXT_1,

@@ -14,7 +14,6 @@ import pityoulish.i18n.TextEntry;
  */
 public enum Catalog implements TextEntry
  {
-   BACKEND_ARGS_1,
    COMMAND_USAGE,
 
    CMDLINE_BAD_INTERVAL_1,
