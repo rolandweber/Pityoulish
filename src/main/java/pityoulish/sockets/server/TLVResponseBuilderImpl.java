@@ -153,7 +153,7 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
            break;
 
          case TEXT:
-           appendString(msgtlv, mbt, msg.getText(), false);
+           appendString(msgtlv, mbt, msg.getText(), true);
            break;
         }
      }
