@@ -345,21 +345,23 @@ Each of the interfaces has a single implementation class.
 <p>
 Package <code>pityoulish.jrmi.outlet</code>
 contains the logic for sending and receiving Direct Messages.
-From the Remote API, it relies on
-<code>RemoteOutletManager</code> and <code>DirectMessageOutlet</code>.
-The former is provided by the server,
-the latter both implemented and called by this package.
+It relies on two interfaces of the Remote API.
+<code>RemoteOutletManager</code> is provided by the server.
+<code>DirectMessageOutlet</code> is both implemented and called
+by this package.
 <code>Main</code>, <code>MsgOutletCommandDispatcher</code>,
 and <code>RegistryBackendHandler</code>
 are similar to the Message Board client above.
 </p>
 
 <p>
-<code>DirectMessageOutletImpl</code> is a simple implementation of an outlet.
-Besides argument checking, it merely prints invocations and their arguments
-to the console.
-The commands supported by the program are delegated to a
-<code>MsgOutletHandler</code>, which has a single implementation class.
+The commands supported by the program are delegated to
+<code>MsgOutletHandler</code>.
+The handler uses <code>LocalOutletFactory</code> to open and close
+a local <code>DirectMessageOutlet</code>.
+All three interfaces have a single implementation class.
+The outlet implementation simply checks arguments and
+prints method invocations to the console.
 </p>
 
 
