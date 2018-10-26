@@ -3,7 +3,10 @@
 # https://creativecommons.org/publicdomain/zero/1.0/
 
 language: java
-#dist: xenial
+
+dist: xenial
+before_install:
+  - sudo apt-get install -y ant ant-contrib junit4
 
 branches:
   only:
