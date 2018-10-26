@@ -8,10 +8,33 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="pityoulish.css" />
 <title>Exercise: Message Board Client with Java RMI </title>
+<style type="text/css">/* move to pityoulish.css after next release @@@ */
+a.here-link {
+  visibility: hidden;
+  text-decoration: none;
+}
+@media screen {
+  h1 a.here-link {
+    color: #473331;
+  }
+  h2 a.here-link, h3 a.here-link {
+    color: #ccb69c;
+  }
+  h1:hover > a.here-link, h2:hover > a.here-link, h3:hover > a.here-link {
+    visibility: visible;
+  }
+/*
+  h1:hover > a.here-link, h2:hover > a.here-link, h3:hover > a.here-link {
+    visibility: visible;
+  }
+*/
+}
+</style>
 </head>
 <body>
 <h1 id="exercise" class="title">
   <span>Exercise: Message Board Client with Java RMI</span>
+  <a href="#exercise" class="here-link">&para;</a>
 </h1>
 <p class="abstract">
 During this exercise, you will enjoy the convenience,
@@ -55,7 +78,10 @@ Unless you have experience with programming and debugging.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="setup"><span>Setup</span></h2>
+<h2 id="setup">
+  <span>Setup</span>
+  <a href="#setup" class="here-link">&para;</a>
+</h2>
 <!--h2 id="prepare"><span>Prepare</span></h2-->
 
 <p>
@@ -74,7 +100,10 @@ Where to find the standard JavaDocs depends on the network setup.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="connectivity"><span>Network</span></h3>
+<h3 id="connectivity">
+  <span>Network</span>
+  <a href="#connectivity" class="here-link">&para;</a>
+</h3>
 
 <p>
 Connect your computer to the network with the server, if you have not
@@ -92,7 +121,10 @@ along with the following:
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="part1-mbclient"><span>Message Board Client</span></h2>
+<h2 id="part1-mbclient">
+  <span>Message Board Client</span>
+  <a href="#part1-mbclient" class="here-link">&para;</a>
+</h2>
 
 
 <div class="box-right">
@@ -125,7 +157,10 @@ This client supports exactly the same commands as the client with sockets.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="client-sequence"><span>Test Sequence</span></h3>
+<h3 id="client-sequence">
+  <span>Test Sequence</span>
+  <a href="#client-sequence" class="here-link">&para;</a>
+</h3>
 
 <p>
 You can re-use the test sequence from the previous exercise
@@ -165,7 +200,10 @@ Before hacking the code, get an
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="client-challenge"><span>Extra Challenge</span></h3>
+<h3 id="client-challenge">
+  <span>Extra Challenge</span>
+  <a href="#client-challenge" class="here-link">&para;</a>
+</h3>
 
 <p>
 If you completed the test sequence with time to spare,
@@ -187,11 +225,11 @@ Return the token.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="part2-dmoutlet"><span>Direct Message Outlet</span></h2>
+<h2 id="part2-dmoutlet">
+  <span>Direct Message Outlet</span>
+  <a href="#part2-dmoutlet" class="here-link">&para;</a>
+</h2>
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<h3 id="outlet-program"><span>Outlet</span></h3>
--->
 
 <div class="box-right">
 <dl>
@@ -225,7 +263,10 @@ To obtain tickets, use the Message Board client from above.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="outlet-sequence"><span>Test Sequence</span></h3>
+<h3 id="outlet-sequence">
+  <span>Test Sequence</span>
+  <a href="#outlet-sequence" class="here-link">&para;</a>
+</h3>
 
 <p>
 The outlet program supports two modes of operation.
@@ -282,7 +323,10 @@ Before hacking the code, get an
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="code"><span>Code Overview</span></h2>
+<h2 id="code">
+  <span>Code Overview</span>
+  <a href="#code" class="here-link">&para;</a>
+</h2>
 
 <p>
 There is one set of <a href="jdoc/index.html" target="_blank">JavaDocs</a>
@@ -292,7 +336,10 @@ the Tutorial. The other packages are briefly described here.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-RemoteAPI"><span>Remote API</span></h3>
+<h3 id="code-RemoteAPI">
+  <span>Remote API</span>
+  <a href="#code-RemoteAPI" class="here-link">&para;</a>
+</h3>
 
 <p>
 The Remote API in <code>pityoulish.jrmi.api</code> defines the glue
@@ -319,7 +366,10 @@ to clearly distinguish Java RMI problems from application problems.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-MessageBoard"><span>Message Board Client</span></h3>
+<h3 id="code-MessageBoard">
+  <span>Message Board Client</span>
+  <a href="#code-MessageBoard" class="here-link">&para;</a>
+</h3>
 
 <p>
 Package <code>pityoulish.jrmi.client</code>
@@ -340,7 +390,10 @@ Each of the interfaces has a single implementation class.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-DirectMessages"><span>Direct Messages</span></h3>
+<h3 id="code-DirectMessages">
+  <span>Direct Messages</span>
+  <a href="#code-DirectMessages" class="here-link">&para;</a>
+</h3>
 
 <p>
 Package <code>pityoulish.jrmi.outlet</code>
@@ -374,7 +427,10 @@ Instead, use the Message Board client to obtain tickets.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="learned"><span>Lessons Learned</span></h2>
+<h2 id="learned">
+  <span>Lessons Learned</span>
+  <a href="#learned" class="here-link">&para;</a>
+</h2>
 
 <p>
 Did you get through both test sequences in time?
@@ -393,7 +449,10 @@ Should those be addressed by the application, or by Java RMI?
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="gimme-more"><span>Want some more?</span></h3>
+<h3 id="gimme-more">
+  <span>Want some more?</span>
+  <a href="#gimme-more" class="here-link">&para;</a>
+</h3>
 
 <!--
 Is there a sensible programming task in this context?
