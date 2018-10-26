@@ -4,14 +4,17 @@
 
 language: java
 
-dist: xenial
-before_install:
-  - sudo apt-get install -y ant ant-contrib junit4
-
 branches:
   only:
   - travis-ci
 
+dist: xenial
+before_install:
+  - sudo apt-get install -y ant ant-contrib junit4 libhamcrest-java
+
 install:
-  - cp -v .travis.ant.local ant.local
-  - ls -lF /usr/share/java/
+- cp -v .travis.ant.local ant.local
+- ls -lF /usr/share/java/
+
+script:
+- ant compile test jdoc
