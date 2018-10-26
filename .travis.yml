@@ -12,4 +12,6 @@ branches:
   only:
   - travis-ci
 
-# install: ant prereqs
+install:
+  - cp -v .travis.ant.local ant.local
+  - ls -lF /usr/share/java/
