@@ -55,7 +55,7 @@ public class AbstractTLVTest
     assertSame("wrong data", data, tlv.getData());
 
     assertEquals("wrong size", 5, tlv.getSize());
-    assertEquals("wrong type", new Byte(TAG), tlv.getType());
+    assertEquals("wrong type", Byte.valueOf(TAG), tlv.getType());
     assertEquals("wrong length", 3, tlv.getLength());
 
     assertEquals("wrong start", 0, tlv.getStart());
@@ -78,7 +78,7 @@ public class AbstractTLVTest
     assertSame("wrong data", data, tlv.getData());
 
     assertEquals("wrong size", 5, tlv.getSize());
-    assertEquals("wrong type", new Byte(TAG), tlv.getType());
+    assertEquals("wrong type", Byte.valueOf(TAG), tlv.getType());
     assertEquals("wrong length", 3, tlv.getLength());
 
     assertEquals("wrong start", 2, tlv.getStart());
@@ -130,7 +130,7 @@ public class AbstractTLVTest
 
     JUnitTLV tlv = new JUnitTLV(data, 0);
     assertEquals("wrong size before update", 6, tlv.getSize());
-    assertEquals("wrong type before update", new Byte(TAG1), tlv.getType());
+    assertEquals("wrong type before update", Byte.valueOf(TAG1),tlv.getType());
     assertEquals("wrong length before update", 4, tlv.getLength());
     assertEquals("wrong end before update", 6, tlv.getEnd());
 
@@ -139,7 +139,7 @@ public class AbstractTLVTest
     tlv.update();
 
     assertEquals("wrong size after update", 8, tlv.getSize());
-    assertEquals("wrong type after update", new Byte(TAG2), tlv.getType());
+    assertEquals("wrong type after update", Byte.valueOf(TAG2), tlv.getType());
     assertEquals("wrong length after update", 6, tlv.getLength());
     assertEquals("wrong end after update", 8, tlv.getEnd());
   }

@@ -120,7 +120,7 @@ public class TLVRequestParserImpl implements RequestParser
          case LIMIT:
            if (limit != null)
               throw failDuplicateTLV(nested);
-           limit = new Integer(parseLimit(nested));
+           limit = Integer.valueOf(parseLimit(nested));
            break;
 
          case MARKER:
