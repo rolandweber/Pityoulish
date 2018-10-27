@@ -50,6 +50,7 @@
            debug="${jc.debug}" optimize="${jc.optmz}" deprecation="${jc.dprct}"
            encoding="ISO-8859-15"
            >
+      <compilerarg value="-Werror"/>
       <compilerarg value="-Xlint:unchecked"/>
       <jc-elements />
     </javac>
