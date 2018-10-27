@@ -36,7 +36,8 @@ public class RequestHandlerImplTest
       (new TLVRequestParserImpl(),
        new MsgBoardRequestHandlerImpl(new MixedMessageBoardImpl(8),
                                       new DefaultTicketManager()),
-       new TLVResponseBuilderImpl()
+       new TLVResponseBuilderImpl(),
+       new ConsoleExpositorImpl()
        );
     byte[] reqpdu = new byte[]{
       MsgBoardType.LIST_MESSAGES.typeByte,
