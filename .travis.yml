@@ -5,8 +5,8 @@
 language: java
 
 branches:
-  only:
-  - travis-ci
+  except:
+  - /^prose-.*$/
 
 dist: xenial
 addons:
