@@ -9,12 +9,18 @@ branches:
   - travis-ci
 
 dist: xenial
-before_install:
-  - sudo apt-get install -y ant ant-contrib ant-optional junit4 libhamcrest-java
+addons:
+  apt:
+    update: true
+    packages:
+    - ant
+    - ant-contrib
+    - ant-optional
+    - junit4
+    - libhamcrest-java
 
 install:
 - cp -v .travis.ant.local ant.local
-- ls -lF /usr/share/java/
 
 script:
 - ant compile test jdoc
