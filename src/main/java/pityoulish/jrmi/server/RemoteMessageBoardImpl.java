@@ -69,9 +69,10 @@ public class RemoteMessageBoardImpl extends RemoteObject
     throws APIException // does not throw RemoteException
   {
     APIException apix = null;
+    if ((limit < 1) || (limit > MAX_LIMIT))
+       apix = Catalog.LIMIT_OUT_OF_RANGE_1.asApiX(limit);
     if (marker != null) // optional
        apix = mboardSanityChecker.checkMarker(marker);
-    //@@@ verify the limit, see issue #53
     if (apix != null)
        throw Catalog.log(logger, "listMessages", apix);
 
