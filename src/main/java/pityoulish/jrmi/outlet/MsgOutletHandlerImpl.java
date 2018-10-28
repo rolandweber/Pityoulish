@@ -30,6 +30,7 @@ public class MsgOutletHandlerImpl
    * Creates a new outlet handler implementation.
    *
    * @param rbh   the backend handler
+   * @param lof   the outlet factory
    */
   public MsgOutletHandlerImpl(RegistryBackendHandler rbh,
                               LocalOutletFactory     lof)
