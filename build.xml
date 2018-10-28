@@ -22,4 +22,6 @@ support a course on "Distributed Systems"
 
 <target name="default" depends="compile,compile-pitfill" />
 
+<target name="travis" depends="compile,test,compile-pitfill,jdoc" />
+
 </project>

@@ -16,6 +16,9 @@ public enum UnitTestCatalog implements TextEntry
      PATTERN_2,
      TEXT_A,
      TEXT_B,
+     EMPTY,
+     EMPTY_0,
+     EMPTY_1,
      OBJECT;
 
    private final static String
