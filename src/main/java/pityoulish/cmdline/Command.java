@@ -14,12 +14,16 @@ public interface Command
 {
   /**
    * The minimum number of command-specific arguments.
+   *
+   * @return minimum number of command-specific arguments
    */
   public int getMinArgs()
     ;
 
   /**
    * The maximum number of command-specific arguments.
+   *
+   * @return maximum number of command-specific arguments
    */
   public int getMaxArgs()
     ;

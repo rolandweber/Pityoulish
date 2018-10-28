@@ -14,7 +14,11 @@ public class StatusCode
 {
   public int code;
 
-  /** Creates a new status code with the given value. */
+  /**
+   * Creates a new status code object with the given value.
+   *
+   * @param sc   the status code value
+   */
   public StatusCode(int sc)
   {
     code = sc;
