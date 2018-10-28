@@ -17,6 +17,8 @@ public interface LocalOutletFactory
    * Creates an outlet and makes it available for remote method invocations.
    *
    * @return    the outlet or its stub, it doesn't matter which
+   *
+   * @throws Exception  in case of a problem
    */
   public DirectMessageOutlet openLocalOutlet()
     throws Exception
@@ -27,6 +29,8 @@ public interface LocalOutletFactory
    * Makes an outlet unavailable for remote method invocations.
    *
    * @param outlet   the outlet to dispose of
+   *
+   * @throws Exception  in case of a problem
    */
   public void closeLocalOutlet(DirectMessageOutlet outlet)
     throws Exception

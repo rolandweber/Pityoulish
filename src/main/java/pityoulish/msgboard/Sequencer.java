@@ -66,7 +66,7 @@ import java.util.Comparator;
  *     a discrete, unique timestamp. Message boards can sort by IDs,
  *     and compare them to detect discontinuity.
  *     The downside is that this complects an ordering with the identity.
- *     <br/>
+ *     <br>
  *     Twitter would never use a message ID for chronological sorting.
  *     They store meta data like timestamps along with the messages.
  *     But they don't drop messages, like a {@link MessageBoard} does.

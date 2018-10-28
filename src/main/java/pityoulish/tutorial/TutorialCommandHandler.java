@@ -94,6 +94,10 @@ public class TutorialCommandHandler
    *
    * @param args   additional strings to echo.
    *               Use this to test the input encoding.
+   *
+   * @return status code, 0 for success
+   *
+   * @throws Exception  in case of a problem
    */
   protected int handleLatinCmd(String... args)
     throws Exception
@@ -109,6 +113,10 @@ public class TutorialCommandHandler
 
   /**
    * Prints the local IP addresses for all network interfaces.
+   *
+   * @return status code, 0 for success
+   *
+   * @throws Exception  in case of a problem
    */
   protected int handleLocalCmd()
     throws Exception
@@ -134,8 +142,6 @@ public class TutorialCommandHandler
    * @param hostname    the hostname or string-encoded IP address to check
    *
    * @return    0 if the argument is the local host, -1 if it isn't
-   *
-   * @throws Exception  in case of a problem
    */
   protected int handleIsLocalCmd(String hostname)
    {
@@ -173,6 +179,8 @@ public class TutorialCommandHandler
    *
    * @param hostname    the hostname or string-encoded IP address
    *                    for which to perform a DNS lookup
+   *
+   * @return status code, 0 for success
    */
   protected int handleLookupCmd(String hostname)
    {
@@ -199,6 +207,10 @@ public class TutorialCommandHandler
 
   /**
    * Formats an {@link InetAddress} into a readable string.
+   *
+   * @param ina   an internet address object
+   *
+   * @return a human-readable description of the argument
    */
   public static String formatInetAddress(InetAddress ina)
    {

@@ -17,13 +17,13 @@ public interface BuildTLV<T> extends TLV<T>
    * Updates the length of this TLV.
    * Call this after constructing a new value in the underlying array,
    * to specify the length of the complete value.
-   * <br/>
+   * <br>
    * <b>Warning:</b> Actually, this is not as simple as it may seem.
    * In general, the length field of a TLV is of variable size.
    * Therefore, setting the length may require relocation of the value
    * in the array. The binary protocol for Message Boards specifies
    * a fixed-size encoding for the length to avoid that.
-   * <br/>
+   * <br>
    * For a general-purpose TLV implementation, it would also make sense
    * to determine and specify the length of the value <i>before</i>
    * actually constructing it. To support both use cases, the method would
@@ -41,7 +41,7 @@ public interface BuildTLV<T> extends TLV<T>
    * The argument delta is added to the current length.
    * Call this after appending a TLV to the value in the underlying array,
    * to add the length of that TLV.
-   * <br/>
+   * <br>
    * See {@link #setLength} for a word about variable-size length encodings.
    *
    * @param delta       the change of length, typically positive
@@ -70,7 +70,7 @@ public interface BuildTLV<T> extends TLV<T>
    * Creates a new TLV immediately after this one.
    * Its position in the underlying array depends on the current length
    * of this TLV. The new TLV is initially empty.
-   * <br/>
+   * <br>
    * The length of <code>this</code> TLV remains unchanged.
    * You can create sequences of TLVs this way.
    * If you want to add the new TLV to the value of this TLV,

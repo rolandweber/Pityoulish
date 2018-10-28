@@ -79,6 +79,7 @@ Tutorial: Prepare for Java development.
   <mkdir  dir="${prep-java.tmp}/jdoc" />
 
   <javadoc destdir="${prep-java.tmp}/jdoc"
+    failonerror="true"
     access="protected"
     windowtitle="Tutorial: Prepare for Java Exercises"
     nohelp="true"

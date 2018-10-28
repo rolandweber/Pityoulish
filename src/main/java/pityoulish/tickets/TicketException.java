@@ -17,7 +17,7 @@ package pityoulish.tickets;
  *     too. This cleanly separates the ticketing module from the remote API.
  *     The only tie between the two is in the module that uses ticketing
  *     to implement the remote API.
- *     <br/>
+ *     <br>
  *     This is the cleanest solution from a design perspective, compared to
  *     the options below.
  *     But it requires ugly exception handling code in the implementation.
@@ -31,7 +31,7 @@ package pityoulish.tickets;
  *     remote API and makes it harder to use in a different context.
  *     At least this option would drag in additional classes that are
  *     not really meant for a different context.
- *     <br/>
+ *     <br>
  *     While this would be enough to let the solution compile and work in
  *     the good cases, it would also introduce an undesirable trait.
  *     When the {@link TicketException} is throw on the server side and
@@ -46,7 +46,7 @@ package pityoulish.tickets;
  *     that the ticketing module is used on the server side.
  *     It explicitly requires the exception class to be present on the client
  *     side, although the ticketing module is not meant for client-side use.
- *     <br/>
+ *     <br>
  *     Compared to the previous option, this makes the dependency on the
  *     implementation class explicitly visible. But it will not even allow
  *     the good cases to execute without the {@link TicketException}

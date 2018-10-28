@@ -88,6 +88,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
    * Creates the sequencer for this board.
    * Called by the constructor.
    * Override this method to use a different sequencer implementation.
+   *
+   * @return a new sequential marker generator
    */
   protected Sequencer newSequencer()
   {
@@ -99,6 +101,8 @@ public class MixedMessageBoardImpl implements MixedMessageBoard
    * Creates the timestamp generator for this board.
    * Called by the constructor.
    * Override this method to use a different timestamp format.
+   *
+   * @return a new timestamp generator
    */
   protected Timestamper newTimestamper()
   {

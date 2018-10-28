@@ -36,6 +36,8 @@ public final class Main
    * Main entry point.
    *
    * @param args        the command line arguments
+   *
+   * @throws Exception  in case of a problem
    */
   public static void main(String[] args)
     throws Exception
@@ -106,6 +108,8 @@ public final class Main
    * @param port   the port on which the registry should listen
    *
    * @return the new, local registry
+   *
+   * @throws RemoteException  in case of a <i>local</i> problem
    */
   public static Registry createDefaultRegistry(int port)
     throws RemoteException

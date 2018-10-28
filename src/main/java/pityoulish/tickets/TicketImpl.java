@@ -38,6 +38,10 @@ public class TicketImpl implements Ticket
   /**
    * Creates a new ticket.
    *
+   * @param creator     the manager creating this ticket
+   * @param username    the username
+   * @param address     the client address, or <code>null</code>
+   * @param token       the token representing this ticket
    * @param expiry      the time at which this ticket expires. To be compared
    *    with {@link System#currentTimeMillis System.currentTimeMillis()}
    * @param actions     the number of actions to allow with this ticket

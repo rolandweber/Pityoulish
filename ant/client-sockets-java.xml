@@ -84,6 +84,7 @@ Exercise: Message Board Client with Sockets, in Java
   <mkdir  dir="${client-sockets-java.tmp}/jdoc" />
 
   <javadoc destdir="${client-sockets-java.tmp}/jdoc"
+    failonerror="true"
     access="protected"
     windowtitle="Exercise: Message Board Client with Sockets"
     nohelp="true"

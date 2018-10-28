@@ -27,6 +27,13 @@ public class MsgBoardRequestImpl implements MsgBoardRequest
 
   /**
    * Creates a new request object.
+   *
+   * @param rt    the request type
+   * @param lim   the limit, or <code>null</code>
+   * @param mark  the marker, or <code>null</code>
+   * @param tick  the ticket token, or <code>null</code>
+   * @param txt   the message text, or <code>null</code>
+   * @param orig  the originator, or <code>null</code>
    */
   public MsgBoardRequestImpl(ReqType rt,
                              Integer lim,

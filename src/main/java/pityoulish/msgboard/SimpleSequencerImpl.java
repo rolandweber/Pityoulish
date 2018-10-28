@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * This implementation satisfies all of the MUST requirements,
  * and one of the SHOULD requirements. It rejects IDs from
  * other sequencer instances, with a certain probability.
- * <br/>
+ * <br>
  * The messages are internally numbered. The number is translated into
  * an alphabetic sequence instead of digits. A single-letter prefix,
  * chosen at random, distinguishes up to 26 different sequencers.

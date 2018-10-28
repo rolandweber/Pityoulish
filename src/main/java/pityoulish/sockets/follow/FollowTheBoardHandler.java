@@ -91,6 +91,8 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   /**
    * Polls for messages, forever.
    * Actually, until an exception is thrown, for whatever reason.
+   *
+   * @throws Exception  in case of a problem
    */
   protected void pollForMessages()
     throws Exception
@@ -112,6 +114,8 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
    * Lists as many messages as are available.
    * If {@link #listMarker} is set, messages are listed from there.
    * The marker is updated here, for subsequent calls.
+   *
+   * @throws Exception  in case of a problem
    */
   protected void listAvailableMessages()
     throws Exception

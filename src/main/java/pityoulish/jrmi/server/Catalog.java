@@ -96,7 +96,7 @@ public enum Catalog implements TextEntry
     *
     *
     * @param cause      the root cause, or <code>null</code>.
-    * <br/><b>Note:</b> The client side might be missing classes necessary
+    * <br><b>Note:</b>  The client side might be missing classes necessary
     *                   to deserialize the root cause!
     * @param params     the parameters for formatting
     *

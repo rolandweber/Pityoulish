@@ -117,6 +117,7 @@ Targets for development, for working with the (Java) code.
 <target name="jdoc" description="builds JavaDocs from all Java sources">
   <mkdir dir="${dir.jdoc}" />
   <javadoc destdir="${dir.jdoc}"
+    failonerror="true"
     sourcepath="${src.main}"
     access="protected"
     windowtitle="Pityoulish: Programming Exercises"

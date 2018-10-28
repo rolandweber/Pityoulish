@@ -19,6 +19,8 @@ public interface MsgBoardClientHandler
    * @param limit       the maximum batch size
    * @param marker      the marker where to start, or
    *                    <code>null</code> for the oldest available messages
+   *
+   * @throws Exception  in case of a problem
    */
   public void listMessages(int limit, String marker)
     throws Exception
@@ -30,6 +32,8 @@ public interface MsgBoardClientHandler
    *
    * @param ticket      the ticket that permits the operation
    * @param text        the text to put on the board
+   *
+   * @throws Exception  in case of a problem
    */
   public void putMessage(String ticket, String text)
     throws Exception
@@ -41,6 +45,8 @@ public interface MsgBoardClientHandler
    *
    * @param username    the name for which to get the ticket.
    *                    It will appear as the originator of messages.
+   *
+   * @throws Exception  in case of a problem
    */
   public void obtainTicket(String username)
     throws Exception
@@ -51,6 +57,8 @@ public interface MsgBoardClientHandler
    * Returns a ticket for the board.
    *
    * @param ticket      the ticket to return
+   *
+   * @throws Exception  in case of a problem
    */
   public void returnTicket(String ticket)
     throws Exception
@@ -61,6 +69,8 @@ public interface MsgBoardClientHandler
    * Replaces a ticket for the board.
    *
    * @param ticket      the ticket to replace
+   *
+   * @throws Exception  in case of a problem
    */
   public void replaceTicket(String ticket)
     throws Exception

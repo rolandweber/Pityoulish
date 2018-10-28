@@ -57,7 +57,7 @@ public interface TicketManager
    * If the ticket is no longer valid, the lookup fails.
    * If access to the ticket is denied for other reasons,
    * like a mismatching address, the lookup also fails.
-   * <br/>
+   * <br>
    * Note that a ticket for which there are no more actions left
    * can still be valid.
    * Ticket expiry is checked only at the time of the lookup. If the

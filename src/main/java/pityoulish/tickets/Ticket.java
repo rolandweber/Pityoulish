@@ -17,6 +17,8 @@ public interface Ticket
 {
   /**
    * Obtains the username of this ticket.
+   *
+   * @return the username, never <code>null</code>
    */
   public String getUsername()
     ;
@@ -24,6 +26,8 @@ public interface Ticket
 
   /**
    * Obtains the token for this ticket.
+   *
+   * @return the ticket token, never <code>null</code>
    */
   public String getToken()
     ;

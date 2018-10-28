@@ -10,7 +10,7 @@ package pityoulish.sockets.tlv;
  * Represents a TLV structure to be parsed.
  * This interface provides convenience methods to iterate over the values
  * of constructed TLVs:
- * <pre><br/>
+ * <pre><br>
  *     ParseTLV&lt;T&gt; constructedTLV = ...;
  *     for (ParseTLV&lt;T&gt; nestedTLV = constructedTLV.getNestedTLV();
  *          nestedTLV != null;

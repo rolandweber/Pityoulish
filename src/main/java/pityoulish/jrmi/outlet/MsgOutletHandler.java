@@ -15,6 +15,8 @@ public interface MsgOutletHandler
 {
   /**
    * Lists the usernames for which an outlet is published.
+   *
+   * @throws Exception  in case of a problem
    */
   public void listUsernames()
     throws Exception
@@ -28,6 +30,8 @@ public interface MsgOutletHandler
    *
    * @param ticket      the ticket that permits the operation
    * @param seconds     how long to keep open
+   *
+   * @throws Exception  in case of a problem
    */
   public void openOutlet(String ticket, int seconds)
     throws Exception
@@ -41,6 +45,8 @@ public interface MsgOutletHandler
    * @param text         the content of the message
    * @param recipients   the recipients of the message,
    *                     "*" for all published outlets
+   *
+   * @throws Exception  in case of a problem
    */
   public void sendMessage(String originator, String text, String... recipients)
     throws Exception
@@ -52,6 +58,8 @@ public interface MsgOutletHandler
    * The username is implicitly specified by the ticket.
    *
    * @param ticket      the ticket that permits the operation
+   *
+   * @throws Exception  in case of a problem
    */
   public void unpublishOutlet(String ticket)
     throws Exception

@@ -216,6 +216,9 @@ public abstract class AbstractTLV<T> implements TLV<T>
   /**
    * Appends the hex dump of a byte to a string builder.
    * This has nothing to do with TLVs.
+   *
+   * @param sb   where to append to
+   * @param b    what to append
    */
   public final static void appendHex(StringBuilder sb, byte b)
   {

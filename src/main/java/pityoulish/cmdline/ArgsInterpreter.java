@@ -130,7 +130,14 @@ public class ArgsInterpreter
   } // handle
 
 
-  /** Generates a usage message. */
+  /**
+   * Generates a usage message.
+   *
+   * @return a localized usage message
+   *
+   * @throws java.io.IOException  never,
+   *         but there's an interface which declares it
+   */
   public final String getUsage()
     throws java.io.IOException
   {
