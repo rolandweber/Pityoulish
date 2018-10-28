@@ -28,8 +28,12 @@ public class UnitTestCatalogData extends ListResourceBundle
   public final static String textB =
     "Boo!";
 
+  public final static String empty =
+    "";
+
   public final static Object obj =
     new Object();
+
 
   protected Object[][] getContents()
   {
@@ -40,6 +44,9 @@ public class UnitTestCatalogData extends ListResourceBundle
       { "PATTERN_2", pattern2 },
       { "TEXT_A",    textA },
       { "TEXT_B",    textB },
+      { "EMPTY",     empty },
+      { "EMPTY_0",   empty },
+      { "EMPTY_1",   empty },
       { "OBJECT",    obj }
     };
   }

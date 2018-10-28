@@ -53,6 +53,27 @@ public class CatalogHelperTest
     assertEquals("wrong text", UnitTestCatalogData.textB, text);
   }
 
+  @Test public void lookup_EMPTY()
+    throws Exception
+  {
+    String text = UnitTestCatalog.EMPTY.lookup();
+    assertEquals("wrong text", "", text);
+  }
+
+  @Test public void lookup_EMPTY_0()
+    throws Exception
+  {
+    String text = UnitTestCatalog.EMPTY_0.lookup();
+    assertEquals("wrong text", "", text);
+  }
+
+  @Test public void lookup_EMPTY_1()
+    throws Exception
+  {
+    String text = UnitTestCatalog.EMPTY_1.lookup();
+    assertEquals("wrong text", "", text);
+  }
+
   @Test public void lookup_OBJECT()
     throws Exception
   {
@@ -127,6 +148,28 @@ public class CatalogHelperTest
     } catch (IllegalArgumentException iax) {
       // expected
     }
+  }
+
+
+  @Test public void format_EMPTY_0()
+    throws Exception
+  {
+    // expect fallback behavior when the format is empty
+    String text = UnitTestCatalog.EMPTY_0.format();
+    assertEquals("wrong text",
+                 "pityoulish.i18n.UnitTestCatalogData::EMPTY_0", text);
+  }
+
+
+  @Test public void format_EMPTY_1()
+    throws Exception
+  {
+    // expect fallback behavior when the format is empty
+    String text = UnitTestCatalog.EMPTY_1.format("ArgUment");
+    assertTrue("missing entry name",
+               text.indexOf("UnitTestCatalogData::EMPTY_1") >= 0);
+    assertTrue("missing parameter",
+               text.indexOf("ArgUment") >= 0);
   }
 
 

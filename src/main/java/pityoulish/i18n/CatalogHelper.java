@@ -58,28 +58,47 @@ public final class CatalogHelper
       ResourceBundle bundle = getBundle(tref);
       String pattern = bundle.getString(tref.getKey());
 
-      // This call parses the pattern. If patterns are used frequently, they
-      // should be parsed only once and the resulting MessageFormat cached.
-      // That's not necessary for the programming exercises though.
-      result = MessageFormat.format(pattern, params);
+      if (pattern.length() > 0)
+       {
+         // This call parses the pattern. If patterns are used frequently, they
+         // should be parsed only once and the resulting MessageFormat cached.
+         // That's not necessary for the programming exercises though.
+         result = MessageFormat.format(pattern, params);
+       }
+      else
+       {
+         // an empty pattern is an invalid catalog entry, provide a fallback
+         result = fallbackFormat(tref, params);
+       }
 
     } catch (MissingResourceException mre) {
       // the lookup failed, provide a fallback
-
-      StringBuilder sb = new StringBuilder(80);
-      sb.append(tref.getBundleName()).append("::").append(tref.getKey());
-      for(Object param : params)
-         sb.append(" \"").append(param).append("\"");
-
-      result = sb.toString();
+      result = fallbackFormat(tref, params);
     }
-    // ClassCastException intentionally not handled here,
+    // ClassCastException from bundle.getString intentionally not handled here,
     // because TextRef should always refer to a text.
     // IllegalArgumentException intentionally not handled here,
     // because it indicates a bad resource or a mismatch
     // between resource bundle and code.
 
     return result;
+  }
+
+
+  /**
+   * Formats parameters in case a pattern is missing.
+   *
+   * @param tref        text ref of the missing pattern
+   * @param params      parameters to format
+   */
+  protected static final String fallbackFormat(TextRef tref, Object... params)
+  {
+    StringBuilder sb = new StringBuilder(80);
+    sb.append(tref.getBundleName()).append("::").append(tref.getKey());
+    for(Object param : params)
+       sb.append(" \"").append(param).append("\"");
+
+    return sb.toString();
   }
 
 
@@ -104,7 +123,7 @@ public final class CatalogHelper
       // the lookup failed, provide a fallback
       result = tref.getBundleName()+"::"+tref.getKey();
     }
-    // ClassCastException intentionally not handled here,
+    // ClassCastException from bundle.getString intentionally not handled here,
     // because TextRef should always refer to a text
 
     return result;
