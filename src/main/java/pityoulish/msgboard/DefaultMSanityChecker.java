@@ -36,7 +36,7 @@ public class DefaultMSanityChecker<P> extends SanityCheckerBase<P>
    * The pattern for valid characters in originators.
    * The length requirements for originators are not encoded in the pattern.
    * By checking length explicitly, we can provide better problem reports.
-   * <br/>
+   * <br>
    * This pattern intentionally allows characters that the ticket manager
    * would not accept in a username. This allows for more error scenarios.
    * Also, originators of system messages are not valid usernames.

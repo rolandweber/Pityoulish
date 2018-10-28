@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  * Expects binary request data as input,
  * provides binary response data as output.
  * Sending and receiving is left to the caller.
- * <br/>
+ * <br>
  * Compare with {@link MsgBoardRequestHandler}, which
  * handles requests on the application level.
  */

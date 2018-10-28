@@ -12,7 +12,7 @@ package pityoulish.msgboard;
  * Each caller that periodically fetches new messages from the board
  * sees the same stream of user messages, but interspersed with
  * possibly different system messages.
- * <br/>
+ * <br>
  * A batch that misses a user message is discontinuous.
  * A batch that misses a system message which has been updated or removed
  * is still continuous.

@@ -89,7 +89,7 @@ It gets initialized with two message-layer helpers,
 a request builder and a response parser. Of these,
 it uses the request builder to generate a transport layer byte buffer,
 which it passes to the abstract <code>fireRequest</code> method.
-<br/>
+<br>
 The derived implementation class
 {@link pityoulish.sockets.client.MsgBoardClientHandlerImpl}
 implements the transport layer for the sending and receiving side,
@@ -125,7 +125,7 @@ On the message layer, new helpers for building and parsing JSON
 instead of TLV are needed.
 And the transport layer requires some changes on the receiving side,
 to detect when a JSON message rather than a TLV message is complete.
-<br/>
+<br>
 The separation of the protocol layers could be improved by refactoring.
 The logic to determine when an incoming message is complete could be
 moved into the response parser helper, with some effort

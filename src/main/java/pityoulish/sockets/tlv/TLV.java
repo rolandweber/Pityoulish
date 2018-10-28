@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * The TLV does not necessarily begin at the first byte in the array.
  * Types are represented by a class, typically <!-- pun intended -->
  * an enumeration.
- * <br/>
+ * <br>
  * Implementations of this interface may cache information about
  * the type and length of the TLV.
  * If the TLV is changed through API methods of derived interfaces or classes,

@@ -16,7 +16,7 @@ public interface TextEntry extends TextRef
    * <code>this</code> must be an entry for formatting,
    *  with non-negative parameter count.
    * See <code>java.text.MessageFormat</code> for formatting rules.
-   * <br/>
+   * <br>
    * In case of a lookup problem, some fallback formatting is applied.
    * An exception is only thrown if there is a problem with formatting
    * the parameters.
@@ -38,7 +38,7 @@ public interface TextEntry extends TextRef
 
   /**
    * Looks up the text and returns it.
-   * <br/>
+   * <br>
    * In case of a lookup problem, some fallback text is returned.
    *
    * @return the looked-up text
