@@ -120,6 +120,7 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
   <mkdir  dir="${client-rmi-java.tmp}/jdoc" />
 
   <javadoc destdir="${client-rmi-java.tmp}/jdoc"
+    failonerror="true"
     access="protected"
     windowtitle="Exercise: Message Board Client with Java RMI"
     nohelp="true"

@@ -28,14 +28,11 @@
 
 <!-- Compiler and other tool settings (defaults)
         jc.*    = javac
-        jdoc.*  = javadoc
   -->
 <property name="jc.debug" value="true"/><!-- line numbers in stack traces -->
 <property name="jc.optmz" value="true"/>
 <property name="jc.dprct" value="true"/>
 
-<property name="jdoc.visibility" value="package" />
-<property name="jdoc.verbose" value="false" />
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Macros and Tasks
