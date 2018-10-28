@@ -118,15 +118,15 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   {
     RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
 
-    final int BATCH_SIZE = 127;
+    final int batchsize = RemoteMessageBoard.MAX_LIMIT;
 
     boolean more = true;
     while (more)
      {
-       MessageList msglist = rmb.listMessages(BATCH_SIZE, listMarker);
+       MessageList msglist = rmb.listMessages(batchsize, listMarker);
        userOutput.printMessageList(msglist);
 
-       more = (msglist.getMessages().size() >= BATCH_SIZE);
+       more = (msglist.getMessages().size() >= batchsize);
        listMarker = msglist.getMarker();
      }
   }

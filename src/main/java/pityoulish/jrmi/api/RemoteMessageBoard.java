@@ -14,6 +14,10 @@ import java.rmi.RemoteException;
  */
 public interface RemoteMessageBoard extends Remote
 {
+  /** The maximum <code>limit</code> allowed in {@link #listMessages}. */
+  public final static int MAX_LIMIT = 127;
+
+
   /**
    * Lists messages from this board.
    *
