@@ -137,11 +137,20 @@ public enum MsgBoardType
    public final byte typeByte;
    private MsgBoardType(byte tb) { typeByte = tb; }
 
-   /** Obtains the <code>type</code> byte for this TLV type. */
+   /**
+    * Obtains the <code>type</code> byte for this TLV type.
+    *
+    * @return the type, as a byte
+    */
    public final byte getTypeByte() { return typeByte; }
 
 
-   /** Indicates whether this is a primitive TLV type. */
+   /**
+    * Indicates whether this is a primitive TLV type.
+    *
+    * @return <code>true</code> if this is a primitive TLV type,
+    *         <code>false</code> otherwise
+    */
    public final boolean isPrimitive()
    {
      return (typeByte & 0xE0) == 0xC0;

@@ -53,22 +53,34 @@ public interface TLV<T>
     ;
 
 
-  /** Obtains the underlying data array. */
+  /**
+   * Obtains the underlying data array.
+   * @return the underlying data array
+   */
   public byte[] getData()
     ;
 
 
-  /** Obtains the index of the first byte of this TLV. */
+  /**
+   * Obtains the index of the first byte of this TLV.
+   * @return the index of this TLV in the {@link #getData data array}
+   */
   public int getStart()
     ;
 
 
-  /** Obtains the index of the first byte of the value. */
+  /**
+   * Obtains the index of the first byte of the value.
+   * @return the index of the value in the {@link #getData data array}
+   */
   public int getValueStart()
     ;
 
 
-  /** Obtains the index after the last byte of this TLV. */
+  /**
+   * Obtains the index after the last byte of this TLV.
+   * @return  the index after this TLV in the {@link #getData data array}
+   */
   public int getEnd()
     ;
 
@@ -80,6 +92,8 @@ public interface TLV<T>
 
   /**
    * Copies the value of this TLV into a new byte array.
+   *
+   * @return new byte array with a copy of the value
    */
   public byte[] copyValue()
     ;
@@ -87,6 +101,8 @@ public interface TLV<T>
 
   /**
    * Copies this TLV into a new byte array.
+   *
+   * @return new byte array with a copy of this TLV
    */
   public byte[] copyTLV()
     ;
@@ -107,6 +123,8 @@ public interface TLV<T>
   /**
    * Generates an extended string representation of this TLV, including data.
    * Intended for debug output.
+   *
+   * @return a human-readable string describing this TLV
    */
   public String toFullString()
     ;
