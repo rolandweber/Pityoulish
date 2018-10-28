@@ -134,8 +134,6 @@ public class TutorialCommandHandler
    * @param hostname    the hostname or string-encoded IP address to check
    *
    * @return    0 if the argument is the local host, -1 if it isn't
-   *
-   * @throws Exception  in case of a problem
    */
   protected int handleIsLocalCmd(String hostname)
    {
