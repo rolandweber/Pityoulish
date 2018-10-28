@@ -23,4 +23,4 @@ install:
 - cp -v .travis.ant.local ant.local
 
 script:
-- ant compile test jdoc
+- ant travis
