@@ -90,6 +90,8 @@ public final class CatalogHelper
    *
    * @param tref        text ref of the missing pattern
    * @param params      parameters to format
+   *
+   * @return the arguments in fallback format
    */
   protected static final String fallbackFormat(TextRef tref, Object... params)
   {
