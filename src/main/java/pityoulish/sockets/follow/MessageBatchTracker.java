@@ -14,12 +14,16 @@ public interface MessageBatchTracker
 {
   /**
    * Obtains the continuation marker for the batch.
+   *
+   * @return the continuation marker
    */
   public String getMarker()
     ;
 
   /**
    * Obtains the number of messages in the batch.
+   *
+   * @return the batch size
    */
   public int getSize()
     ;

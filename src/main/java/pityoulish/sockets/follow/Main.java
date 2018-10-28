@@ -34,6 +34,8 @@ public class Main
    * Main entry point.
    *
    * @param args        the command-line arguments
+   *
+   * @throws Exception  in case of a problem
    */
   public final static void main(String[] args)
     throws Exception
