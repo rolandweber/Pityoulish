@@ -10,7 +10,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <title>Direct Messages - Functional Description</title>
 </head>
 <body>
-<h1 id="direct" class="title"><span>Direct Messages</span></h1>
+<h1 id="direct" class="title">
+  <span>Direct Messages</span>
+  <a href="#direct" class="here-link">&para;</a>
+</h1>
 <p class="abstract">
 Direct Messages complement the Message Board.
 Each user can create a personal outlet for receiving direct messages.
@@ -26,10 +29,16 @@ Tickets are the same as for the <a href="message-board.html">Message Board</a>.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="outlets"><span>Outlets</span></h2>
+<h2 id="outlets">
+  <span>Outlets</span>
+  <a href="#outlets" class="here-link">&para;</a>
+</h2>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="message-data"><span>Data</span></h3>
+<h3 id="message-data">
+  <span>Data</span>
+  <a href="#message-data" class="here-link">&para;</a>
+</h3>
 
 <p>
 A direct message comprises...
@@ -54,7 +63,10 @@ The receiver may generate a timestamp if desired.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="message-ops"><span>Operations</span></h3>
+<h3 id="message-ops">
+  <span>Operations</span>
+  <a href="#message-ops" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt id="Open">(open)</dt>
@@ -86,7 +98,10 @@ The receiver may generate a timestamp if desired.
 </dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="manager"><span>Outlet Manager</span></h2>
+<h2 id="manager">
+  <span>Outlet Manager</span>
+  <a href="#manager" class="here-link">&para;</a>
+</h2>
 <p>
 The outlet manager maintains a directory of published outlets.
 Publishing or unpublishing an outlet requires a valid ticket.
@@ -96,7 +111,10 @@ for putting up a message.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="ticket-data"><span>Data</span></h3>
+<h3 id="ticket-data">
+  <span>Data</span>
+  <a href="#ticket-data" class="here-link">&para;</a>
+</h3>
 
 <p>
 The directory is a map from usernames to outlets.
@@ -107,7 +125,10 @@ The username is taken from the ticket when publishing or unpublishing.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="ticket-ops"><span>Operations</span></h3>
+<h3 id="ticket-ops">
+  <span>Operations</span>
+  <a href="#ticket-ops" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt id="PublishOutlet">Publish Outlet</dt>

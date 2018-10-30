@@ -10,7 +10,10 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <title>Message Board - Binary Protocol</title>
 </head>
 <body>
-<h1 class="title"><span>Binary Protocol</span></h1>
+<h1 id="protocol" class="title">
+  <span>Binary Protocol</span>
+  <a href="#protocol" class="here-link">&para;</a>
+</h1>
 <p class="abstract">
 A protocol for implementing the Message Board with
 TLV-encoded binary messages exchanged over socket connections.
@@ -34,7 +37,10 @@ The format makes use of TLV structures, as defined by
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="connections"><span>Connections</span></h2>
+<h2 id="connections">
+  <span>Connections</span>
+  <a href="#connections" class="here-link">&para;</a>
+</h2>
 
 <p>
 Clients and servers exchange protocol data units over TCP/IP connections.
@@ -66,7 +72,10 @@ as uppercase keywords, the terms are used here in the spirit of the RFC.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="tlv"><span>TLV</span></h2>
+<h2 id="tlv">
+  <span>TLV</span>
+  <a href="#tlv" class="here-link">&para;</a>
+</h2>
 
 <p>
 TLV stands for Type - Length - Value, or sometimes Tag - Length - Value.
@@ -117,7 +126,10 @@ Type  Length  |~~~~~~~~                 Value                       ~~~~~~~~|
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="primitive-tlv"><span>Primitive TLV</span></h3>
+<h3 id="primitive-tlv">
+  <span>Primitive TLV</span>
+  <a href="#primitive-tlv" class="here-link">&para;</a>
+</h3>
 
 <dl>
 
@@ -184,7 +196,10 @@ Type  Length  |~~~~~~~~                 Value                       ~~~~~~~~|
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="constructed-tlv"><span>Constructed TLV</span></h3>
+<h3 id="constructed-tlv">
+  <span>Constructed TLV</span>
+  <a href="#constructed-tlv" class="here-link">&para;</a>
+</h3>
 
 <dl>
 
@@ -294,7 +309,10 @@ Type  Length  |~~~~~~~~                 Value                       ~~~~~~~~|
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="notes"><span>Explanatory Notes</span></h2>
+<h2 id="notes">
+  <span>Explanatory Notes</span>
+  <a href="#notes" class="here-link">&para;</a>
+</h2>
 
 <p>
 In their binary encoding, TLVs are convenient to parse.
