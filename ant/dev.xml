@@ -119,6 +119,7 @@ Targets for development, for working with the (Java) code.
   <javadoc destdir="${dir.jdoc}"
     failonerror="true"
     sourcepath="${src.main}"
+    stylesheetfile="src/main/prose/pityoulish-jdocs.css"
     access="protected"
     windowtitle="Pityoulish: Programming Exercises"
     nohelp="true"

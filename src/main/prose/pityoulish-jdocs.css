@@ -1,0 +1,125 @@
+/*
+ * This work is released into the Public Domain under the
+ * terms of the Creative Commons CC0 1.0 Universal license.
+ * https://creativecommons.org/publicdomain/zero/1.0/
+ */
+
+body {
+  font-family: sans-serif;
+  color: #000000;
+  background-color: #fffcfb;
+}
+
+
+div.topNav, div.bottomNav {
+  background-color: #eeeeee;
+}
+
+div.subNav {
+  background-color: #cccccc;
+}
+
+ul.navList {
+  display: inline-block;
+  margin: 0.1em;
+}
+
+ul.navList li {
+  display: inline-block;
+  padding: 0.1em 1em;
+}
+
+ul.navList li.navBarCell1Rev {
+  background-color: #cceecc;
+}
+
+
+ul.subNavList {
+  display: inline-block;
+  margin: 0.1em;
+}
+
+ul.subNavList li {
+  display: inline-block;
+  padding: 0;
+}
+
+
+div.header {
+  background-color: #dddddd;
+}
+
+div.contentContainer {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #cccccc;
+}
+
+table.overviewSummary, table.packageSummary {
+  background-color: #f8f8f8;
+}
+
+table.overviewSummary caption,
+table.packageSummary caption {
+  background-color: #cceecc;
+}
+
+li.blockList {
+  list-style-type: none;
+  margin-bottom: 1em;
+}
+
+
+div.summary {
+  background-color: #ddddee;
+}
+
+
+
+div.indexHeader a, h1.bar a {
+  color: #473331;  /* show as visited by default */
+  text-decoration: none;
+  padding: 1px 1px;
+  border-radius: 8px;
+}
+div.indexHeader a:hover, h1.bar a:hover {
+  text-decoration: underline;
+  background-color: #e6e3e2;
+}
+
+div.indexContainer a {
+  color: #762208;
+  text-decoration: none;
+  padding: 1px 1px;
+  border-radius: 8px;
+}
+div.indexContainer a:hover {
+  text-decoration: underline;
+  background-color: #e6e3e2;
+}
+div.indexContainer a:visited {
+  color: #473331;
+}
+
+
+div.indexContainer ul {
+  list-style-type: none;
+  padding: 3px;
+}
+
+div.indexContainer ul li {
+  margin-left: 0;
+}
+
+div.indexContainer h2 {
+  font-size: 105%;
+  color: #473331;
+  background-color: #ccb69c;
+  border-radius: 17px;
+  padding: 3px 17px;
+}
+
+h1.bar {
+  font-size: 105%;
+  color: #473331;
+}
