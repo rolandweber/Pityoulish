@@ -55,14 +55,71 @@ div.contentContainer {
 }
 
 table.overviewSummary, table.packageSummary {
-  background-color: #f8f8f8;
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
 }
 
 table.overviewSummary caption,
 table.packageSummary caption {
-  background-color: #cceecc;
+  font-size: 110%;
+  font-weight: bold;
+  text-align: left;
+  color: #473331;
+  background-color: #ccb69c;
+  border-radius: 17px;
+  padding: 3px 17px;
+  margin-bottom: 0.2em;
 }
 
+
+table.overviewSummary th,
+table.packageSummary th {
+  color: #ccb69c;
+  font-weight: normal;
+}
+table.packageSummary th {
+  padding-left: 17px;
+}
+
+table.overviewSummary,
+table.packageSummary {
+  border-collapse: collapse;
+}
+
+table.overviewSummary td,
+table.packageSummary td {
+  border: 1px solid #ccb69c;
+  padding: 3px 0.4em;
+}
+
+/*
+table.overviewSummary td.colFirst,
+table.packageSummary td.colFirst {
+  padding-right: 1em;
+}
+
+table.overviewSummary td.colLast,
+table.packageSummary td.colLast {
+  padding-left: 0.4em;
+}
+*/
+
+table.overviewSummary td.colFirst a,
+table.packageSummary td.colFirst a {
+  font-weight: bold;
+  color: #b45216;
+}
+
+table.overviewSummary td.colFirst a:visited,
+table.packageSummary td.colFirst a:visited {
+  color: #762208;
+}
+
+
+
+ul.blockList {
+  padding: 0px;
+}
 li.blockList {
   list-style-type: none;
   margin-bottom: 1em;
