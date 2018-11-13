@@ -46,12 +46,56 @@ ul.subNavList li {
 
 
 div.header {
-  background-color: #dddddd;
+  padding: 0.1em 0.4em;
+}
+
+div.header h1.title, div.header h2.title {
+  /* h1: package, h2: class */ 
+  font-size: 130%;
+  color: #473331;
+  display: inline-block;
+  border: 3px solid #ccb69c;
+  border-radius: 17px;
+  padding: 3px 17px;
+}
+div.header div.subTitle {
+  /* package name before class title */
+  display: inline-block;
+  font-family: monospace;
+}
+
+div.header a {
+  color: #762208;  /* show as visited by default */
+  text-decoration: none;
+  padding: 1px 1px;
+  border-radius: 8px;
+}
+div.header a:hover {
+  text-decoration: underline;
+  background-color: #e6e3e2;
+}
+
+div.header > p {
+  margin-bottom: 0px;
 }
 
 div.contentContainer {
-  margin: 1em 0em;
+  margin: 0.2em 0em;
   padding: 0.1em 0.4em;
+}
+
+div.contentContainer pre {
+  font-size: large;
+  padding-bottom: 1em;
+}
+
+div.contentContainer code {
+  font-size: large;
+}
+div.contentContainer code strong {
+  font-size: 105%;
+  display: inline-block;
+  padding-bottom: 0.8em;
 }
 
 table.overviewSummary, table.packageSummary {
@@ -66,11 +110,11 @@ table.packageSummary caption {
   text-align: left;
   color: #473331;
   background-color: #ccb69c;
+  /* border-bottom: 2px solid #ccb69c; */
   border-radius: 17px;
   padding: 3px 17px;
   margin-bottom: 0.2em;
 }
-
 
 table.overviewSummary th,
 table.packageSummary th {
@@ -91,18 +135,9 @@ table.packageSummary td {
   border: 1px solid #ccb69c;
   padding: 3px 0.4em;
 }
-
-/*
-table.overviewSummary td.colFirst,
-table.packageSummary td.colFirst {
-  padding-right: 1em;
+table.overviewSummary td {
+  vertical-align: top;
 }
-
-table.overviewSummary td.colLast,
-table.packageSummary td.colLast {
-  padding-left: 0.4em;
-}
-*/
 
 table.overviewSummary td.colFirst a,
 table.packageSummary td.colFirst a {
@@ -116,19 +151,91 @@ table.packageSummary td.colFirst a:visited {
 }
 
 
+ul.inheritance {
+  list-style-type: none;
+  font-family: monospace;
+  font-size: large;
+  padding-left: 0em;
+}
+ul.inheritance li {
+  margin-left: 2em;
+}
 
-ul.blockList {
+div.contentContainer > ul.inheritance {
+  margin-top: 0px;
+}
+
+div.contentContainer dl {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+div.contentContainer dt {
+  font-style: italic;
+  padding-top: 0.4em;
+}
+div.contentContainer dt strong {
+  /* for "Specified by:" */
+  font-weight: normal;
+}
+div.contentContainer div.block > strong {
+  /* for "Description copied from class:" */
+  font-weight: normal;
+  font-style: italic;
+  font-size: small;
+  display: block;
+  margin-top: -1em;
+  padding: 0em 2em 2em 2em;
+}
+div.contentContainer dd {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+div.contentContainer dd code {
+  font-size: large;
+}
+
+
+ul.blockList, ul.blockListLast {
   padding: 0px;
 }
-li.blockList {
+li.blockList, li.blockListLast {
   list-style-type: none;
   margin-bottom: 1em;
 }
 
 
 div.summary {
-  background-color: #ddddee;
+  margin-top: 0px;
+  padding-top: 0px;
 }
+
+
+div.contentContainer h3 {
+  /* heading for summary and details sections */
+  /* make sufficiently distinct from table caption */
+  font-size: 110%;
+  font-weight: bold;
+  text-align: left;
+  color: #473331;
+  /*background-color: #ccb69c;*/
+  border: 2px solid #ccb69c;
+  border-radius: 17px;
+  padding: 3px 17px;
+  margin-bottom: 0.8em;
+}
+
+div.contentContainer h4 {
+  /* field or method name in details */
+  display: inline-block;
+/*
+  border-top: 2px solid #ccb69c;
+  border-bottom: 2px solid #ccb69c;
+*/
+  background-color: #ccb69c;
+  border-radius: 17px;
+  padding: 3px 17px;
+}
+
 
 
 div.contentContainer a {
@@ -162,6 +269,7 @@ div.contentContainer dt {
 /* ========================== frames on the left ========================== */
 
 div.indexHeader a, h1.bar a {
+  font-size: smaller;
   color: #473331;  /* show as visited by default */
   text-decoration: none;
   padding: 1px 1px;
@@ -173,6 +281,7 @@ div.indexHeader a:hover, h1.bar a:hover {
 }
 
 div.indexContainer a {
+  font-size: smaller;
   color: #762208;
   text-decoration: none;
   padding: 1px 1px;
@@ -197,7 +306,7 @@ div.indexContainer ul li {
 }
 
 div.indexContainer h2 {
-  font-size: 105%;
+  font-size: 100%;
   color: #473331;
   background-color: #ccb69c;
   border-radius: 17px;
@@ -205,6 +314,6 @@ div.indexContainer h2 {
 }
 
 h1.bar {
-  font-size: 105%;
+  font-size: 100%;
   color: #473331;
 }
