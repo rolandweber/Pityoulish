@@ -97,6 +97,13 @@ div.contentContainer code strong {
   display: inline-block;
   padding-bottom: 0.8em;
 }
+div.contentContainer div.description div.block,
+div.contentContainer div.description div.block code,
+div.header div.docSummary div.block,
+div.header div.docSummary div.block code {
+  font-size: large;
+}
+
 
 table.overviewSummary, table.packageSummary {
   margin-top: 0.8em;
