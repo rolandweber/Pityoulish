@@ -8,42 +8,15 @@ body {
   font-family: sans-serif;
   color: #000000;
   background-color: #fffcfb;
+  margin: 0;
+}
+
+body > div {
+  margin: 2px 8px;
 }
 
 
-div.topNav, div.bottomNav {
-  background-color: #eeeeee;
-}
-
-div.subNav {
-  background-color: #cccccc;
-}
-
-ul.navList {
-  display: inline-block;
-  margin: 0.1em;
-}
-
-ul.navList li {
-  display: inline-block;
-  padding: 0.1em 1em;
-}
-
-ul.navList li.navBarCell1Rev {
-  background-color: #cceecc;
-}
-
-
-ul.subNavList {
-  display: inline-block;
-  margin: 0.1em;
-}
-
-ul.subNavList li {
-  display: inline-block;
-  padding: 0;
-}
-
+/* header section is below the top navigation */
 
 div.header {
   padding: 0.1em 0.4em;
@@ -286,6 +259,68 @@ div.header ul.horizontal {
 
 div.header ul.horizontal li {
   display: inline-block;
+}
+
+
+
+/* ================= top and bottom navigation, main frame ================= */
+
+div.topNav {
+  margin: 0;
+  padding: 2px 0px;
+  background-color: #e0d0bc;
+}
+
+div.bottomNav {
+  margin: 3em 0 0 0;
+  padding: 2px 0;
+  background-color: #e0d0bc;
+}
+
+div.subNav {
+  margin: 0;
+  padding: 2px 0px;
+  font-size: smaller;
+}
+
+div.topNav a, div.bottomNav a, div.subNav a {
+  color: #473331;
+  font-style: italic;
+  text-decoration: none;
+  padding: 1px 1px;
+}
+div.topNav a:hover, div.bottomNav a:hover, div.subNav a:hover {
+  text-decoration: underline;
+}
+
+ul.navList {
+  display: inline-block;
+  margin: 0.1em;
+}
+
+ul.navList li {
+  display: inline-block;
+  padding: 0.1em 1em;
+}
+
+ul.navList li.navBarCell1Rev {
+  border: 1px solid #fffcfb;
+  border-radius: 8px;
+  background-color: #fffcfb;
+}
+
+div.topNav ul.navList li.navBarCell1Rev {
+  margin-bottom: 3px;
+}
+
+ul.subNavList {
+  display: inline-block;
+  margin: 0.1em;
+}
+
+ul.subNavList li {
+  display: inline-block;
+  padding: 0;
 }
 
 
