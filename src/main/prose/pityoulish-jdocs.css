@@ -120,6 +120,7 @@ table.packageSummary caption {
   /* border-bottom: 2px solid #ccb69c; */
   border-radius: 17px;
   padding: 3px 17px;
+  margin-top: 0.8em;
   margin-bottom: 0.2em;
 }
 
@@ -270,6 +271,21 @@ div.contentContainer h2.title {
 
 div.contentContainer dt {
   margin-top: 3px;
+}
+
+
+/* "Package Hierarchies" section in Tree view */
+div.header span.strong {
+  display: table; /* https://css-tricks.com/injecting-line-break/ */
+}
+
+div.header ul.horizontal {
+  font-size: smaller;
+  list-style-type: none;
+}
+
+div.header ul.horizontal li {
+  display: inline-block;
 }
 
 
