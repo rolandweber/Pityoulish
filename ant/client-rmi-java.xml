@@ -119,13 +119,9 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
   <delete dir="${client-rmi-java.tmp}/jdoc" quiet="true" />
   <mkdir  dir="${client-rmi-java.tmp}/jdoc" />
 
-  <javadoc destdir="${client-rmi-java.tmp}/jdoc"
-    failonerror="true"
-    access="protected"
-    windowtitle="Exercise: Message Board Client with Java RMI"
-    nohelp="true"
-    encoding="ISO-8859-1"
-    >
+  <jdoc.pty destdir="${client-rmi-java.tmp}/jdoc"
+            windowtitle="Exercise: Message Board Client with Java RMI"
+            >
     <packageset dir="${src.pitted}">
       <include name="pityoulish/jrmi/api" />
       <include name="pityoulish/jrmi/client" />
@@ -148,7 +144,7 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
       <package name="pityoulish.cmdline" />
       <package name="pityoulish.i18n" />
     </group>
-  </javadoc>
+  </jdoc.pty>
 </target>
 
 

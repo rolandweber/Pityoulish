@@ -78,19 +78,15 @@ Tutorial: Prepare for Java development.
   <delete dir="${prep-java.tmp}/jdoc" quiet="true" />
   <mkdir  dir="${prep-java.tmp}/jdoc" />
 
-  <javadoc destdir="${prep-java.tmp}/jdoc"
-    failonerror="true"
-    access="protected"
-    windowtitle="Tutorial: Prepare for Java Exercises"
-    nohelp="true"
-    encoding="ISO-8859-1"
-    >
+  <jdoc.pty destdir="${prep-java.tmp}/jdoc"
+            windowtitle="Tutorial: Prepare for Java Exercises"
+            >
     <packageset dir="${src.pitted}">
       <include name="pityoulish/tutorial" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
     </packageset>
-  </javadoc>
+  </jdoc.pty>
 </target>
 
 

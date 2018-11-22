@@ -116,14 +116,10 @@ Targets for development, for working with the (Java) code.
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <target name="jdoc" description="builds JavaDocs from all Java sources">
   <mkdir dir="${dir.jdoc}" />
-  <javadoc destdir="${dir.jdoc}"
-    failonerror="true"
-    sourcepath="${src.main}"
-    access="protected"
-    windowtitle="Pityoulish: Programming Exercises"
-    nohelp="true"
-    encoding="ISO-8859-1"
-    >
+  <jdoc.pty destdir="${dir.jdoc}"
+            sourcepath="${src.main}"
+            windowtitle="Pityoulish: Programming Exercises"
+            >
     <group title="Common">
       <package name="pityoulish.cmdline" />
       <package name="pityoulish.i18n" />
@@ -143,7 +139,7 @@ Targets for development, for working with the (Java) code.
     <group title="Message Board with Java RMI">
       <package name="pityoulish.jrmi.*" />
     </group>
-  </javadoc>
+  </jdoc.pty>
   <copy todir="${dir.jdoc}">
     <fileset dir="${src.main}" includes="**/HowTo*.java" />
     <globmapper from="*" to="*.txt"/>

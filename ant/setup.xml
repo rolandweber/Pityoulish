@@ -62,6 +62,17 @@
 </presetdef>
 
 
+<presetdef name="jdoc.pty">
+  <javadoc failonerror="true"
+           access="protected"
+           stylesheetfile="src/main/prose/pityoulish-jdocs.css"
+           nohelp="true"
+           encoding="ISO-8859-1"
+           >
+  </javadoc>
+</presetdef>
+
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Targets: timestamps and cleanup
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
