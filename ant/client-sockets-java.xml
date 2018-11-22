@@ -83,13 +83,9 @@ Exercise: Message Board Client with Sockets, in Java
   <delete dir="${client-sockets-java.tmp}/jdoc" quiet="true" />
   <mkdir  dir="${client-sockets-java.tmp}/jdoc" />
 
-  <javadoc destdir="${client-sockets-java.tmp}/jdoc"
-    failonerror="true"
-    access="protected"
-    windowtitle="Exercise: Message Board Client with Sockets"
-    nohelp="true"
-    encoding="ISO-8859-1"
-    >
+  <jdoc.pty destdir="${client-sockets-java.tmp}/jdoc"
+            windowtitle="Exercise: Message Board Client with Sockets"
+            >
     <packageset dir="${src.pitted}">
       <include name="pityoulish/sockets/client" />
       <include name="pityoulish/sockets/tlv" />
@@ -108,7 +104,7 @@ Exercise: Message Board Client with Sockets, in Java
       <package name="pityoulish.cmdline" />
       <package name="pityoulish.i18n" />
     </group>
-  </javadoc>
+  </jdoc.pty>
 
   <copy todir="${client-sockets-java.tmp}/jdoc">
     <fileset dir="${src.pitted}"
