@@ -36,6 +36,9 @@ div.header div.subTitle {
   display: inline-block;
   font-family: monospace;
 }
+div.header div.subTitle:after {
+  content: ".";
+}
 
 div.header a {
   color: #762208;  /* show as visited by default */
@@ -62,11 +65,14 @@ div.contentContainer pre {
   padding-bottom: 1em;
 }
 
-div.contentContainer code {
+div.contentContainer code,
+span.memberNameLink {
   font-size: large;
 }
-div.contentContainer code strong {
+div.contentContainer code strong,
+span.memberNameLink {
   font-size: 105%;
+  font-weight: bold;
   display: inline-block;
   padding-bottom: 0.8em;
 }
@@ -78,13 +84,10 @@ div.header div.docSummary div.block code {
 }
 
 
-table.overviewSummary, table.packageSummary {
-  margin-top: 0.8em;
-  margin-bottom: 0.8em;
-}
-
 table.overviewSummary caption,
-table.packageSummary caption {
+table.packageSummary caption,
+table.typeSummary caption,
+table.memberSummary caption {
   font-size: 110%;
   font-weight: bold;
   text-align: left;
@@ -96,32 +99,54 @@ table.packageSummary caption {
   margin-top: 0.8em;
   margin-bottom: 0.2em;
 }
+table.memberSummary caption span.tabEnd {
+  display: inline-block;
+  width: 0;
+  margin: 0 1em;
+}
 
 table.overviewSummary th,
-table.packageSummary th {
+table.packageSummary th,
+table.typeSummary th,
+table.memberSummary th {
   color: #ccb69c;
   font-weight: normal;
+  font-size: small;
 }
-table.packageSummary th {
+table.packageSummary th,
+table.typeSummary th {
   padding-left: 17px;
+}
+table.memberSummary th {
+  padding-left: 17px;
+  padding-right: 17px;
 }
 
 table.overviewSummary,
-table.packageSummary {
+table.packageSummary,
+table.typeSummary,
+table.memberSummary {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
   border-collapse: collapse;
 }
 
 table.overviewSummary td,
-table.packageSummary td {
+table.packageSummary td,
+table.typeSummary td,
+table.memberSummary td {
   border: 1px solid #ccb69c;
   padding: 3px 0.4em;
 }
-table.overviewSummary td {
+table.overviewSummary td,
+table.memberSummary td {
   vertical-align: top;
 }
 
 table.overviewSummary td.colFirst a,
-table.packageSummary td.colFirst a {
+table.packageSummary td.colFirst a,
+table.typeSummary td.colFirst a,
+table.memberSummary td.colFirst a {
   font-weight: bold;
   color: #b45216;
 }
@@ -158,7 +183,8 @@ div.contentContainer dt strong {
   /* for "Specified by:" */
   font-weight: normal;
 }
-div.contentContainer div.block > strong {
+div.contentContainer div.block > strong,
+span.descfrmTypeLabel {
   /* for "Description copied from class:" */
   font-weight: normal;
   font-style: italic;
@@ -248,7 +274,8 @@ div.contentContainer dt {
 
 
 /* "Package Hierarchies" section in Tree view */
-div.header span.strong {
+div.header span.strong,
+span.packageHierarchyLabel {
   display: table; /* https://css-tricks.com/injecting-line-break/ */
 }
 
@@ -264,6 +291,10 @@ div.header ul.horizontal li {
 
 
 /* ================= top and bottom navigation, main frame ================= */
+
+div.skipNav {
+  display: none;
+}
 
 div.topNav {
   margin: 0;
@@ -379,4 +410,9 @@ div.indexContainer h2 {
 h1.bar {
   font-size: 100%;
   color: #473331;
+}
+
+
+span.interfaceName {
+  font-style: italic;
 }
