@@ -179,8 +179,9 @@ public class TLVResponseBuilderImplTest
       Arrays.asList(new MessageImpl("me", "now", "silence"));
     String   marker = "pin";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, true);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -216,8 +217,9 @@ public class TLVResponseBuilderImplTest
     List<? extends Message> msgs = Arrays.<Message> asList();
     String   marker = "here";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, false);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -248,8 +250,9 @@ public class TLVResponseBuilderImplTest
                     );
     String   marker = "arrow";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, false);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -273,6 +276,27 @@ public class TLVResponseBuilderImplTest
     assertCount(MsgBoardType.ORIGINATOR, pdu, msgs.size());
     assertCount(MsgBoardType.TIMESTAMP,  pdu, msgs.size());
     assertCount(MsgBoardType.TEXT,       pdu, msgs.size());
+  }
+
+
+  @Test public void buildMessageBatch_bad()
+  {
+    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<MessageBatch> rsp =
+      new MsgBoardResponseImpl.BatchError(msg);
+
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
   }
 
 

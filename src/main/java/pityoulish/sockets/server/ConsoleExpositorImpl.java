@@ -35,13 +35,19 @@ public class ConsoleExpositorImpl implements Expositor
   }
 
 
-  public void describeMessageBatch(MessageBatch mb)
+  public void describeMessageBatch(MsgBoardResponse<MessageBatch> response)
   {
-    System.out.println(Catalog.DESCRIBE_MESSAGE_BATCH_2
-                       .format(String.valueOf(mb.getMessages().size()),
-                               mb.getMarker()));
-    // Using String.valueOf on the number avoids locale-specific formatting.
-    // For example, it will print "1234" instead of "1,234" or "1.234".
+    if (response.isOK())
+     {
+       MessageBatch mb = response.getResult();
+       System.out.println(Catalog.DESCRIBE_MESSAGE_BATCH_2
+                          .format(String.valueOf(mb.getMessages().size()),
+                                  mb.getMarker()));
+       // Using String.valueOf on the number avoids locale-specific formatting.
+       // For example, it will print "1234" instead of "1,234" or "1.234".
+     }
+    else
+       System.out.println(response.getProblem()); // is a catalog message
   }
 
 

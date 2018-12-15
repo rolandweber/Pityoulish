@@ -55,11 +55,12 @@ public interface ResponseBuilder
   /**
    * Builds a response with a message batch.
    *
-   * @param msgbatch   the message batch
+   * @param response    the response, holding either
+   *                    a message batch or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildMessageBatch(MessageBatch msgbatch)
+  public ByteBuffer buildMessageBatch(MsgBoardResponse<MessageBatch> response)
     ;
 
 

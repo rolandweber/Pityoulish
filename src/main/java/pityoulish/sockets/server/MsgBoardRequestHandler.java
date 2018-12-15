@@ -35,11 +35,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#LIST_MESSAGES LIST_MESSAGES}
    * @param address     the network address of the client
    *
-   * @return the batch of listed messages
+   * @return response holding a batch of listed messages or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public MessageBatch listMessages(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<MessageBatch>
+    listMessages(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 

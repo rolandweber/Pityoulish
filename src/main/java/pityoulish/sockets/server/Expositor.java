@@ -29,9 +29,10 @@ public interface Expositor
   /**
    * Describe an outgoing message batch.
    *
-   * @param mb   the message batch to describe
+   * @param response    the response to describe,
+   *                    either message batch or error
    */
-  public void describeMessageBatch(MessageBatch mb)
+  public void describeMessageBatch(MsgBoardResponse<MessageBatch> response)
     ;
 
 

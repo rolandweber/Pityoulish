@@ -37,8 +37,11 @@ public class MsgBoardRequestHandlerImplTest
       (new MixedMessageBoardImpl(8), new DefaultTicketManager());
 
 
-    MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
+    MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
+    assertNotNull("no response", rsp);
+    assertTrue("no success", rsp.isOK());
 
+    MessageBatch result = rsp.getResult();
     assertNotNull("no result", result);
     assertEquals("wrong number of messages", 0, result.getMessages().size());
     assertNotNull("no marker", result.getMarker());
@@ -49,7 +52,8 @@ public class MsgBoardRequestHandlerImplTest
   }
 
 
-  @Test public void listMessages_bad()
+  // test error cases reported as exceptions
+  @Test public void listMessages_illegal()
     throws Exception
   {
     //@@@ use JMockit for prereq objects, instead of creating default impls
@@ -59,16 +63,16 @@ public class MsgBoardRequestHandlerImplTest
 
     try {
       MsgBoardRequest mbreq = null;
-      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
-      fail("missing request not detected: " + result);
+      MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
+      fail("missing request not detected: " + rsp);
     } catch (RuntimeException expected) {
       // expected
     }
 
     try {
       MsgBoardRequest mbreq = MsgBoardRequestImpl.newObtainTicket("un1t");
-      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
-      fail("wrong request type detected: " + result);
+      MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
+      fail("wrong request type not detected: " + rsp);
     } catch (RuntimeException expected) {
       // expected
     }
@@ -76,12 +80,30 @@ public class MsgBoardRequestHandlerImplTest
     try {
       MsgBoardRequest mbreq = new MsgBoardRequestImpl
         (ReqType.LIST_MESSAGES, null, null, null, null, null);
-      MessageBatch result = mbrh.listMessages(mbreq, ADDRESS);
-      fail("missing mandatory value not detected: " + result);
+      MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
+      fail("missing mandatory value not detected: " + rsp);
     } catch (RuntimeException expected) {
       // expected
     }
   }
+
+
+  // test error cases reported as error responses
+  @Test public void listMessages_bad()
+    throws Exception
+  {
+    //@@@ use JMockit for prereq objects, instead of creating default impls
+    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl
+      (new MixedMessageBoardImpl(8), new DefaultTicketManager());
+
+    MsgBoardRequest mbreq = new MsgBoardRequestImpl
+      (ReqType.LIST_MESSAGES, 8, "_marker_", null, null, null);
+    MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
+    if (rsp.isOK())
+       fail("bad marker not detected: " + rsp);
+
+  }
+
 
   //@@@ test other handler methods as well
 }

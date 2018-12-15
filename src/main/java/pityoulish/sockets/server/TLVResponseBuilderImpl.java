@@ -232,10 +232,12 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public ByteBuffer buildMessageBatch(MessageBatch msgbatch)
+  public ByteBuffer buildMessageBatch(MsgBoardResponse<MessageBatch> response)
   {
-    if (msgbatch == null)
-       throw new NullPointerException("MessageBatch");
+    if (!response.isOK())
+       return buildErrorResponse(response.getProblem());
+
+    final MessageBatch msgbatch = response.getResult();
 
     int estimate = 8; // response TLV and nested marker
     estimate += msgbatch.getMarker().length(); // marker is ASCII
@@ -245,29 +247,29 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
        estimate += estimateLength(msg);
 
     byte[] data = new byte[estimate];
-    MsgBoardTLV response =
+    MsgBoardTLV rsptlv =
       new MsgBoardTLV(MsgBoardType.MESSAGE_BATCH, data, 0);
 
     // The order of nested elements is specified by the protocol:
     // Marker, Missed (optional), Messages
 
-    appendString(response, MsgBoardType.MARKER, msgbatch.getMarker(), false);
+    appendString(rsptlv, MsgBoardType.MARKER, msgbatch.getMarker(), false);
 
     if (msgbatch.isDiscontinuous())
      {
-       MsgBoardTLV content = response.appendTLV(MsgBoardType.MISSED);
+       MsgBoardTLV content = rsptlv.appendTLV(MsgBoardType.MISSED);
        // value is empty
-       response.addToLength(content.getSize());
+       rsptlv.addToLength(content.getSize());
      }
 
     for (Message msg: msgbatch.getMessages())
      {
-       appendMessage(response, msg);
+       appendMessage(rsptlv, msg);
      }
 
-    //System.out.println("@@@ "+response.toFullString());
+    //System.out.println("@@@ "+rsptlv.toFullString());
 
-    return response.toBuffer();
+    return rsptlv.toBuffer();
   }
 
 

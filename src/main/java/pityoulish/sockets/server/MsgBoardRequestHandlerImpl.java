@@ -60,7 +60,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
 
   // non-javadoc, see interface
-  public MessageBatch listMessages(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<MessageBatch>
+    listMessages(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -82,10 +83,13 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     //@@@ sanity check for limit? Mustn't be zero or null.
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "listMessages", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.BatchError(problem);
+     }
 
-    return msgBoard.listMessages(mbreq.getLimit(), mbreq.getMarker());
+    return new MsgBoardResponseImpl.Batch
+      (msgBoard.listMessages(mbreq.getLimit(), mbreq.getMarker()));
   }
 
     

@@ -5,6 +5,8 @@
  */
 package pityoulish.sockets.server;
 
+import pityoulish.msgboard.MessageBatch;
+
 
 /**
  * Default implementation of {@link MsgBoardResponse}.
@@ -75,6 +77,25 @@ public class MsgBoardResponseImpl<R> implements MsgBoardResponse<R>
       super(tictok);
     }
   }
+
+
+  public static class Batch extends MsgBoardResponseImpl<MessageBatch>
+  {
+    public Batch(MessageBatch mb)
+    {
+      super(mb);
+    }
+  }
+
+
+  public static class BatchError extends MsgBoardResponseImpl<MessageBatch>
+  {
+    public BatchError(String problem)
+    {
+      super(MessageBatch.class, problem);
+    }
+  }
+
 
 
   // non-javadoc, see interface

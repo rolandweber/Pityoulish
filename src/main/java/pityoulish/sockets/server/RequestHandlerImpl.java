@@ -110,9 +110,10 @@ public class RequestHandlerImpl implements RequestHandler
      switch (mbreq.getReqType())
       {
        case LIST_MESSAGES: {
-         MessageBatch mb = mbrHandler.listMessages(mbreq, address);
-         rhExpositor.describeMessageBatch(mb);
-         result = rspBuilder.buildMessageBatch(mb);
+         MsgBoardResponse<MessageBatch> response =
+           mbrHandler.listMessages(mbreq, address);
+         rhExpositor.describeMessageBatch(response);
+         result = rspBuilder.buildMessageBatch(response);
        } break;
 
        case PUT_MESSAGE: {
