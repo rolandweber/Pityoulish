@@ -140,48 +140,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     
   // non-javadoc, see interface
-  public String obtainTicket(MsgBoardRequest mbreq, InetAddress address)
-    throws ProtocolException
-  {
-    if (mbreq == null)
-       throw new NullPointerException("MsgBoardRequest");
-    if (mbreq.getReqType() != ReqType.OBTAIN_TICKET)
-       throw new IllegalArgumentException
-         ("MsgBoardRequest.getReqType()="+mbreq.getReqType());
-    if (mbreq.getOriginator() == null)
-       throw new NullPointerException("MsgBoardRequest.getOriginator()");
-    // other values in mbreq will be ignored
-    if (address == null)
-       throw new NullPointerException("InetAddress");
-
-    // The originator or username must pass multiple sanity checks.
-    // The ticket manager checks are stricter. Check with the message board
-    // first, to allow for problem reports from both sanity checkers.
-    String problem =
-      mboardSanityChecker.checkOriginator(mbreq.getOriginator());
-    if (problem == null)
-       problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
-    //@@@ sanity check for address? Mustn't be null.
-    if (problem != null)
-       throw Log.log(logger, "obtainTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
-
-    try {
-      Ticket tick = ticketMgr.obtainTicket(mbreq.getOriginator(), address);
-
-      return tick.getToken();
-
-    } catch (TicketException tx) {
-      throw Log.log(logger, "obtainTicket",
-                    Catalog.HANDLER_TICKET_DENIED_2.asPXwithCause
-                    (tx, mbreq.getOriginator(), tx.getLocalizedMessage()));
-    }
-  }
-
-    
-  // non-javadoc, see interface
   public MsgBoardResponse<String>
-    obtainTicket2(MsgBoardRequest mbreq, InetAddress address)
+    obtainTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)

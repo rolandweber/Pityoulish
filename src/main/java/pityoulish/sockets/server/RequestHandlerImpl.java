@@ -122,9 +122,16 @@ public class RequestHandlerImpl implements RequestHandler
        } break;
 
        case OBTAIN_TICKET: {
-         String tictok = mbrHandler.obtainTicket(mbreq, address);
-         rhExpositor.describeTicketGrant(tictok);
-         result = rspBuilder.buildTicketGrant(tictok);
+         MsgBoardResponse<String> response =
+           mbrHandler.obtainTicket(mbreq, address);
+         rhExpositor.describeTicketGrant(response);
+         if (response.isOK()) {
+           String tictok = response.getResult();
+           result = rspBuilder.buildTicketGrant(tictok);
+         } else {
+           String problem = response.getProblem();
+           result = rspBuilder.buildErrorResponse(problem);
+         }
        } break;
 
        case RETURN_TICKET: {

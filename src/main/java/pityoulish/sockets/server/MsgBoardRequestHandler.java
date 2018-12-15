@@ -67,11 +67,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#OBTAIN_TICKET OBTAIN_TICKET}
    * @param address     the network address of the client
    *
-   * @return the ticket token
+   * @return response holding the ticket token or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String obtainTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    obtainTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 

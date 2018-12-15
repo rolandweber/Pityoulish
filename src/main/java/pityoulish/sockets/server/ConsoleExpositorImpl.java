@@ -51,6 +51,16 @@ public class ConsoleExpositorImpl implements Expositor
   }
 
 
+  public void describeTicketGrant(MsgBoardResponse<String> response)
+  {
+    if (response.isOK())
+       System.out.println(Catalog.DESCRIBE_TICKET_GRANT_1
+                          .format(response.getResult()));
+    else
+       System.out.println(response.getProblem()); // is a catalog message
+  }
+
+
   public void describeInfoResponse(String info)
   {
     // "OK" is implied

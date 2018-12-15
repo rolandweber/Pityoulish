@@ -45,6 +45,15 @@ public interface Expositor
 
 
   /**
+   * Describe a ticket grant response.
+   *
+   * @param response    the response to describe, ticket grant or error
+   */
+  public void describeTicketGrant(MsgBoardResponse<String> response)
+    ;
+
+
+  /**
    * Describe an informational response.
    *
    * @param info   the information being returned to a client
