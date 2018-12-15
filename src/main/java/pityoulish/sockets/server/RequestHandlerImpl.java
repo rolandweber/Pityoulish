@@ -110,33 +110,38 @@ public class RequestHandlerImpl implements RequestHandler
      switch (mbreq.getReqType())
       {
        case LIST_MESSAGES: {
-         MessageBatch mb = mbrHandler.listMessages(mbreq, address);
-         rhExpositor.describeMessageBatch(mb);
-         result = rspBuilder.buildMessageBatch(mb);
+         MsgBoardResponse<MessageBatch> response =
+           mbrHandler.listMessages(mbreq, address);
+         rhExpositor.describeMessageBatch(response);
+         result = rspBuilder.buildMessageBatch(response);
        } break;
 
        case PUT_MESSAGE: {
-         String info = mbrHandler.putMessage(mbreq, address);
-         rhExpositor.describeInfoResponse(info);
-         result = rspBuilder.buildInfoResponse(info);
+         MsgBoardResponse<String> response =
+           mbrHandler.putMessage(mbreq, address);
+         rhExpositor.describeInfoResponse(response);
+         result = rspBuilder.buildInfoResponse(response);
        } break;
 
        case OBTAIN_TICKET: {
-         String tictok = mbrHandler.obtainTicket(mbreq, address);
-         rhExpositor.describeTicketGrant(tictok);
-         result = rspBuilder.buildTicketGrant(tictok);
+         MsgBoardResponse<String> response =
+           mbrHandler.obtainTicket(mbreq, address);
+         rhExpositor.describeTicketGrant(response);
+         result = rspBuilder.buildTicketGrant(response);
        } break;
 
        case RETURN_TICKET: {
-         String info = mbrHandler.returnTicket(mbreq, address);
-         rhExpositor.describeInfoResponse(info);
-         result = rspBuilder.buildInfoResponse(info);
+         MsgBoardResponse<String> response =
+           mbrHandler.returnTicket(mbreq, address);
+         rhExpositor.describeInfoResponse(response);
+         result = rspBuilder.buildInfoResponse(response);
        } break;
 
        case REPLACE_TICKET: {
-         String tictok = mbrHandler.replaceTicket(mbreq, address);
-         rhExpositor.describeTicketGrant(tictok);
-         result = rspBuilder.buildTicketGrant(tictok);
+         MsgBoardResponse<String> response =
+           mbrHandler.replaceTicket(mbreq, address);
+         rhExpositor.describeTicketGrant(response);
+         result = rspBuilder.buildTicketGrant(response);
        } break;
 
         //@@@ default case might be invoked after adding more request types
@@ -144,13 +149,6 @@ public class RequestHandlerImpl implements RequestHandler
 
      return result;
    }
-
-
-  // non-javadoc, see interface
-  public ByteBuffer buildErrorResponse(String msg)
-  {
-    return rspBuilder.buildErrorResponse(msg);
-  }
 
 
   // non-javadoc, see interface

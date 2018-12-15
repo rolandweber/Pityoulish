@@ -35,11 +35,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#LIST_MESSAGES LIST_MESSAGES}
    * @param address     the network address of the client
    *
-   * @return the batch of listed messages
+   * @return response holding a batch of listed messages or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public MessageBatch listMessages(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<MessageBatch>
+    listMessages(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 
@@ -51,11 +52,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#PUT_MESSAGE PUT_MESSAGE}
    * @param address     the network address of the client
    *
-   * @return an informational text
+   * @return response holding an informational text or error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String putMessage(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    putMessage(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 
@@ -67,11 +69,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#OBTAIN_TICKET OBTAIN_TICKET}
    * @param address     the network address of the client
    *
-   * @return the ticket token
+   * @return response holding the ticket token or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String obtainTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    obtainTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 
@@ -83,11 +86,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#RETURN_TICKET RETURN_TICKET}
    * @param address     the network address of the client
    *
-   * @return an informational text
+   * @return response holding an informational text or error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String returnTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    returnTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 
@@ -99,11 +103,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#REPLACE_TICKET REPLACE_TICKET}
    * @param address     the network address of the client
    *
-   * @return the ticket token
+   * @return response holding the ticket token or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String replaceTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    replaceTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
     

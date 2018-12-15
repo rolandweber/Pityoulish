@@ -6,6 +6,7 @@
 package pityoulish.sockets.server;
 
 import java.net.InetAddress;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import pityoulish.logutil.Log;
@@ -59,7 +60,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
 
   // non-javadoc, see interface
-  public MessageBatch listMessages(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<MessageBatch>
+    listMessages(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -81,15 +83,19 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     //@@@ sanity check for limit? Mustn't be zero or null.
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "listMessages", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.BatchError(problem);
+     }
 
-    return msgBoard.listMessages(mbreq.getLimit(), mbreq.getMarker());
+    return new MsgBoardResponseImpl.Batch
+      (msgBoard.listMessages(mbreq.getLimit(), mbreq.getMarker()));
   }
 
     
   // non-javadoc, see interface
-  public String putMessage(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    putMessage(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -109,15 +115,16 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
        problem = mboardSanityChecker.checkText(mbreq.getText());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "putMessage", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
       if (tick.punch())
        {
          msgBoard.putMessage(tick.getUsername(), mbreq.getText());
-         return Catalog.HANDLER_INFO_OK.lookup();
        }
       else
        {
@@ -135,11 +142,14 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
                     Catalog.HANDLER_BAD_TICKET_2.asPXwithCause
                     (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
+
+    return new MsgBoardResponseImpl.Info(Catalog.HANDLER_INFO_OK.lookup());
   }
 
     
   // non-javadoc, see interface
-  public String obtainTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    obtainTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -162,13 +172,15 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
        problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "obtainTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.obtainTicket(mbreq.getOriginator(), address);
 
-      return tick.getToken();
+      return new MsgBoardResponseImpl.Ticket(tick.getToken());
 
     } catch (TicketException tx) {
       throw Log.log(logger, "obtainTicket",
@@ -177,9 +189,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     }
   }
 
-    
+
   // non-javadoc, see interface
-  public String returnTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    returnTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -196,8 +209,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "returnTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
@@ -209,12 +224,13 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
                     (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
 
-    return Catalog.HANDLER_INFO_OK.lookup();
+    return new MsgBoardResponseImpl.Info(Catalog.HANDLER_INFO_OK.lookup());
   }
 
     
   // non-javadoc, see interface
-  public String replaceTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    replaceTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -231,8 +247,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "replaceTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
@@ -240,7 +258,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
       tick = ticketMgr.obtainTicket(tick.getUsername(), address);
 
-      return tick.getToken();
+      return new MsgBoardResponseImpl.Ticket(tick.getToken());
 
     } catch (TicketException tx) {
       throw Log.log(logger, "returnTicket",

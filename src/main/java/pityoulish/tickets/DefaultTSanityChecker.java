@@ -109,6 +109,9 @@ public class DefaultTSanityChecker<P> extends SanityCheckerBase<P>
     if (token.length() < 1)
        return problemFactory.newProblem(Catalog.TOKEN_EMPTY);
 
+    //@@@ check whether the token contains @, username before, something after?
+    //@@@ generic "invalid token format" report if anything is wrong
+
     return null;
   }
 

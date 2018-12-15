@@ -84,12 +84,13 @@ public class TLVResponseBuilderImplTest
 
 
 
-  @Test public void buildInfoResponse_text()
+  @Test public void buildInfoResponse_good()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String msg = "H\u00e4ppy!"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Info(msg);
 
-    ByteBuffer buf = rb.buildInfoResponse(msg);
+    ByteBuffer buf = rb.buildInfoResponse(rsp);
     byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
@@ -104,9 +105,30 @@ public class TLVResponseBuilderImplTest
   }
 
 
-  @Test public void buildErrorResponse_text()
+  @Test public void buildInfoResponse_bad()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Error(msg);
+
+    ByteBuffer buf = rb.buildInfoResponse(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildErrorResponse_text()
+  {
+    // tested method has been removed from ResponseBuilder interface
+    TLVResponseBuilderImpl rb = new TLVResponseBuilderImpl();
     String msg = "b\u00e4d"; // a-umlaut
 
     ByteBuffer buf = rb.buildErrorResponse(msg);
@@ -158,8 +180,9 @@ public class TLVResponseBuilderImplTest
       Arrays.asList(new MessageImpl("me", "now", "silence"));
     String   marker = "pin";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, true);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -195,8 +218,9 @@ public class TLVResponseBuilderImplTest
     List<? extends Message> msgs = Arrays.<Message> asList();
     String   marker = "here";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, false);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -227,8 +251,9 @@ public class TLVResponseBuilderImplTest
                     );
     String   marker = "arrow";
     MessageBatch mb = new MessageBatchImpl(msgs, marker, false);
+    MsgBoardResponse<MessageBatch> rsp = new MsgBoardResponseImpl.Batch(mb);
 
-    ByteBuffer buf = rb.buildMessageBatch(mb);
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
     byte[]     pdu = toBytes(buf);
 
     // the order of immediately nested TLVs is specified
@@ -255,12 +280,34 @@ public class TLVResponseBuilderImplTest
   }
 
 
-  @Test public void buildTicketGrant()
+  @Test public void buildMessageBatch_bad()
+  {
+    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<MessageBatch> rsp =
+      new MsgBoardResponseImpl.BatchError(msg);
+
+    ByteBuffer buf = rb.buildMessageBatch(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildTicketGrant_good()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String tictok = "tIckEt35";
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Ticket(tictok);
 
-    ByteBuffer buf = rb.buildTicketGrant(tictok);
+    ByteBuffer buf = rb.buildTicketGrant(rsp);
     byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
@@ -270,6 +317,26 @@ public class TLVResponseBuilderImplTest
       MsgBoardType.TICKET.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x08,
       (byte)'t', (byte)'I', (byte)'c', (byte)'k',
       (byte)'E', (byte)'t', (byte)'3', (byte)'5'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildTicketGrant_bad()
+  {
+    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Error(msg);
+
+    ByteBuffer buf = rb.buildTicketGrant(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
     };
     assertArrayEquals("wrong PDU", expected, pdu);
   }

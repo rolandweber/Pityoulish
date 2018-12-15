@@ -29,27 +29,30 @@ public interface Expositor
   /**
    * Describe an outgoing message batch.
    *
-   * @param mb   the message batch to describe
+   * @param response    the response to describe,
+   *                    either message batch or error
    */
-  public void describeMessageBatch(MessageBatch mb)
+  public void describeMessageBatch(MsgBoardResponse<MessageBatch> response)
     ;
 
 
   /**
-   * Describe a granted ticket.
+   * Describe a ticket grant response.
    *
-   * @param tictok   the token representing the ticket
+   * @param response    the response to describe,
+   *                    either ticket grant or error
    */
-  public void describeTicketGrant(String tictok)
+  public void describeTicketGrant(MsgBoardResponse<String> response)
     ;
 
 
   /**
    * Describe an informational response.
    *
-   * @param info   the information being returned to a client
+   * @param response    the response to describe,
+   *                    either informational message or error
    */
-  public void describeInfoResponse(String info)
+  public void describeInfoResponse(MsgBoardResponse<String> response)
     ;
 
 

@@ -21,22 +21,12 @@ public interface ResponseBuilder
   /**
    * Builds a response with an informational message.
    *
-   * @param msg   the info message
+   * @param response    the response, holding either
+   *                    an info or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildInfoResponse(String msg)
-    ;
-
-
-  /**
-   * Builds a response with an error message.
-   *
-   * @param msg   the error message
-   *
-   * @return a buffer containing the response PDU, backed by an array
-   */
-  public ByteBuffer buildErrorResponse(String msg)
+  public ByteBuffer buildInfoResponse(MsgBoardResponse<String> response)
     ;
 
 
@@ -54,22 +44,25 @@ public interface ResponseBuilder
   /**
    * Builds a response with a message batch.
    *
-   * @param msgbatch   the message batch
+   * @param response    the response, holding either
+   *                    a message batch or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildMessageBatch(MessageBatch msgbatch)
+  public ByteBuffer buildMessageBatch(MsgBoardResponse<MessageBatch> response)
     ;
 
 
   /**
    * Builds a response with a ticket grant.
    *
-   * @param tictok  the ticket {@link pityoulish.tickets.Ticket#getToken token}
+   * @param response    the response, holding either ticket
+   *                    {@link pityoulish.tickets.Ticket#getToken token}
+   *                    or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildTicketGrant(String tictok)
+  public ByteBuffer buildTicketGrant(MsgBoardResponse<String> response)
     ;
 
 

@@ -35,25 +35,38 @@ public class ConsoleExpositorImpl implements Expositor
   }
 
 
-  public void describeMessageBatch(MessageBatch mb)
+  public void describeMessageBatch(MsgBoardResponse<MessageBatch> response)
   {
-    System.out.println(Catalog.DESCRIBE_MESSAGE_BATCH_2
-                       .format(String.valueOf(mb.getMessages().size()),
-                               mb.getMarker()));
-    // Using String.valueOf on the number avoids locale-specific formatting.
-    // For example, it will print "1234" instead of "1,234" or "1.234".
+    if (response.isOK())
+     {
+       MessageBatch mb = response.getResult();
+       System.out.println(Catalog.DESCRIBE_MESSAGE_BATCH_2
+                          .format(String.valueOf(mb.getMessages().size()),
+                                  mb.getMarker()));
+       // Using String.valueOf on the number avoids locale-specific formatting.
+       // For example, it will print "1234" instead of "1,234" or "1.234".
+     }
+    else
+       System.out.println(response.getProblem()); // is a catalog message
   }
 
 
-  public void describeTicketGrant(String tictok)
+  public void describeTicketGrant(MsgBoardResponse<String> response)
   {
-    System.out.println(Catalog.DESCRIBE_TICKET_GRANT_1.format(tictok));
+    if (response.isOK())
+       System.out.println(Catalog.DESCRIBE_TICKET_GRANT_1
+                          .format(response.getResult()));
+    else
+       System.out.println(response.getProblem()); // is a catalog message
   }
 
 
-  public void describeInfoResponse(String info)
+  public void describeInfoResponse(MsgBoardResponse<String> response)
   {
-    // "OK" is implied
+    if (response.isOK())
+       ; // "OK" is implied
+    else
+       System.out.println(response.getProblem()); // is a catalog message
   }
 
 
