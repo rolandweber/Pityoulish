@@ -28,6 +28,15 @@ body > p, body > div, body > dl, body > .main
   margin: 8px 10px;
 }
 
+a.here-link {
+  visibility: hidden;
+  text-decoration: none;
+}
+h1:hover > a.here-link, h2:hover > a.here-link, h3:hover > a.here-link {
+  visibility: visible;
+}
+
+
 @media screen {
   body {
     color: #000000;
@@ -42,6 +51,10 @@ body > p, body > div, body > dl, body > .main
     color: #473331;
     background-color: #ccb69c;
     border-radius: 17px;
+    margin-top: 0px;
+  }
+  h1 a.here-link {
+    color: #473331;
   }
 
   a {
@@ -117,6 +130,9 @@ h2 > span {
     color: #473331;
     background-color: #ccb69c;
   }
+  h2 a.here-link {
+    color: #ccb69c;
+  }
 } /* @media screen */
 
 @media print {
@@ -144,6 +160,9 @@ h3 > span {
   h3, h3 > span {
     color: #473331;
     border-color: #ccb69c;
+  }
+  h3 a.here-link {
+    color: #ccb69c;
   }
 } /* @media screen */
 

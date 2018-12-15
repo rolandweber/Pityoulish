@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <!-- 
 This work is released into the Public Domain under the
@@ -10,7 +11,9 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <title>Message Board - Functional Description</title>
 </head>
 <body>
-<h1 id="board" class="title"><span>Message Board</span></h1>
+<h1 id="board" class="title">
+  <span>Message Board</span>
+</h1>
 <p class="abstract">
 The programming exercises revolve around the Message Board.
 Its functionality remains the same, regardless of the
@@ -27,10 +30,16 @@ Old messages eventually drop off the board.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="messages"><span>Messages</span></h2>
+<h2 id="messages">
+  <span>Messages</span>
+  <a href="#messages" class="here-link">&para;</a>
+</h2>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="message-data"><span>Data</span></h3>
+<h3 id="message-data">
+  <span>Data</span>
+  <a href="#message-data" class="here-link">&para;</a>
+</h3>
 
 <p>
 Each message on the board comprises...
@@ -56,7 +65,10 @@ Each message on the board comprises...
 </ul>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="message-ops"><span>Operations</span></h3>
+<h3 id="message-ops">
+  <span>Operations</span>
+  <a href="#message-ops" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt id="ListMessages">List Messages</dt>
@@ -83,7 +95,10 @@ Each message on the board comprises...
 </dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="tickets"><span>Tickets</span></h2>
+<h2 id="tickets">
+  <span>Tickets</span>
+  <a href="#tickets" class="here-link">&para;</a>
+</h2>
 <p>
 A ticket authorizes certain operations, such as putting a message on the board.
 Tickets are issued to users. A user can hold only one ticket at a time.
@@ -95,7 +110,10 @@ even if the number of operations is exhausted.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="ticket-data"><span>Data</span></h3>
+<h3 id="ticket-data">
+  <span>Data</span>
+  <a href="#ticket-data" class="here-link">&para;</a>
+</h3>
 
 <ul>
 <li><span class="title">Username:</span>
@@ -112,7 +130,10 @@ even if the number of operations is exhausted.
 </ul>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="ticket-ops"><span>Operations</span></h3>
+<h3 id="ticket-ops">
+  <span>Operations</span>
+  <a href="#ticket-ops" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt id="ObtainTicket">Obtain Ticket</dt>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <!-- 
 This work is released into the Public Domain under the
@@ -44,7 +45,7 @@ The Tutorial is organized into the following sections:
   Create a project and build a JAR
 </li>
 <li>
-  <a href="#exercise">Exercise</a>
+  <a href="#exercise">Tutorial Exercise</a>
   -
   Find and fix the planted bugs
 </li>
@@ -73,7 +74,10 @@ of required tools and skills for the classroom exercises.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="prereqs"><span>Prerequisites</span></h2>
+<h2 id="prereqs">
+  <span>Prerequisites</span>
+  <a href="#prereqs" class="here-link">&para;</a>
+</h2>
 
 <p>
 To work through the exercises from the command line, you need a web browser,
@@ -94,7 +98,7 @@ Execute the following commands to verify that a JDK is available:
 <p>
 If you prefer to code with an Integrated Development Environment (IDE),
 there are several that support Java development.
-<br/>
+<br>
 For example
 <a href="https://www.jetbrains.com/idea/"
    title="IntelliJ IDEA - Community Edition"
@@ -115,7 +119,7 @@ For example
 For convenience, bookmark the
 <a href="https://docs.oracle.com/javase/8/docs/api/"
    >Java SE API</a> documentation of the Java version you are using.
-<br/>
+<br>
 When working from the command line, collect frequently used commands
 in a text file for copy&amp;paste.
 </p>
@@ -123,7 +127,10 @@ in a text file for copy&amp;paste.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="setup"><span>Setup</span></h2>
+<h2 id="setup">
+  <span>Setup</span>
+  <a href="#setup" class="here-link">&para;</a>
+</h2>
 
 <div class="box-right">
 <dl>
@@ -167,7 +174,7 @@ of the JAR file content.
 <p>
 The next step is to prepare for changing the code
 and building your own version of the JAR file.
-<br/>
+<br>
 How to do that depends on the IDE you are using, if any.
 </p>
 
@@ -178,43 +185,15 @@ the correct character encoding for input and output.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="setup-ide"><span>IDE</span></h3>
-
-<p class="abstract">
-How to perform the steps in this section depends on the IDE you have chosen.
-<br/>
-You're welcome to contribute specific instructions
-for other users of your IDE.
-</p>
-
-<p>
-Create a project from the downloaded JAR file.
-Not from extracted sources, but from the JAR itself.
-<br/>
-Make sure that the name of your project does <i>not</i> contain "faulty".
-</p>
-
-<p>
-Build or export a new JAR file from your project.
-<br/>
-Run your own JAR and verify that it prints the expected usage information.
-If it doesn't, read the
-<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
-</p>
-
-<p>
-For development, you may also run the program directly from the IDE.
-The final result should be a JAR file though.
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="setup-cmdline"><span>Command Line</span></h3>
+<h3 id="setup-cmdline">
+  <span>Command Line</span>
+  <a href="#setup-cmdline" class="here-link">&para;</a>
+</h3>
 
 <p>
 Create a new directory to work in, for example <code>tutorial-project/</code>.
 Make sure that the name of your directory does <i>not</i> contain "faulty".
-<br/>
+<br>
 Use <code>cd</code> to change there.
 All command-line examples assume that this is your current directory.
 </p>
@@ -230,13 +209,13 @@ Extract the contents of the downloaded JAR file:
 <p>
 Subdirectory <code>pityoulish/</code> contains the
 source code, properties files, and compiled classes.
-<br/>
+<br>
 Subdirectory <code>META-INF/</code> can be ignored or deleted.
 </p>
 
 <p>
 After changing a Java source file, you have to recompile it.
-<br/>
+<br>
 For example, after editing
 <code>pityoulish/tutorial/TutorialCommandHandler.java</code>,
 compile it with:
@@ -268,13 +247,106 @@ or prepare commands for copy&amp;paste in an editor.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="setup-charset"><span>Character Encoding</span></h3>
+<h3 id="setup-ide">
+  <span>IDE</span>
+  <a href="#setup-ide" class="here-link">&para;</a>
+</h3>
+
+<p class="abstract">
+How to perform the steps in this section depends on the IDE you have chosen.
+<br>
+You're welcome to contribute specific instructions
+for other users of your IDE.
+<br>
+Available online:
+<a href="https://github.com/rolandweber/pityoulish/issues/71"
+   target="_blank">Eclipse</a>
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Editing</span>
+</div></div>
+
+<p>
+Create a Java or JAR project.
+Make sure that the name of your project does <i>not</i> contain "faulty".
+<br>
+Import the downloaded JAR into the project.
+</p>
+
+<p>
+The IDE has created a directory structure for the project
+and stored the source code there.
+<br>
+Locate that directory, then use the <a href="#setup-cmdline">command line</a>
+for compiling sources and building the JAR.
+<br>
+Edit the sources and navigate with your IDE,
+but switch to the command line for testing.
+</p>
+
+<p>
+In theory, an IDE can run your code as well as build the JAR.
+In practice, many students have wasted countless hours,
+at home and in the classroom, while trying to get this to work.
+Spare yourself a lot of trouble and frustration: Use the IDE only for editing.
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note" style="margin-top: 2em;"><div class="content">
+<span>Testing</span>
+</div></div>
+
+<p>
+If you insist on running the code from your IDE, you must set up the classpath.
+The IDE automatically puts compiled classes into the classpath.
+But you have to add the source directory as well, so that the running code
+can load the properties files from there.
+Alternatively, it might be possible to let the IDE copy all properties files
+from the source directory to the compiled classes.
+</p>
+
+<p>
+The entry point for the Tutorial code is class
+<code>pityoulish.tutorial.Main</code>.
+<br>
+Run the program without arguments and verify that it prints usage information.
+If it doesn't, fix the classpath.
+</p>
+
+<p>
+For testing the code, you have to specify command-line arguments.
+An IDE typically provides a dialog for that purpose.
+</p>
+
+<p>
+The final results of this Tutorial and the exercises
+should be an executable JAR file.
+The JAR has to include the properties files from the source code
+along with the compiled classes.
+The entry point of the program must be defined in the manifest of the JAR.
+An IDE will provide one or more dialogs for these settings.
+</p>
+
+<p>
+Run your own JAR without arguments and verify that it prints
+usage information. If it doesn't, read the
+<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="setup-charset">
+  <span>Character Encoding</span>
+  <a href="#setup-charset" class="here-link">&para;</a>
+</h3>
 
 <p>
 Call the <code>latin</code> command of the JAR.
 It will print a message that contains umlauts.
 Check whether these are displayed correctly.
-<br/>
+<br>
 If not, the Java interpreter uses the wrong character encoding for output.
 </p>
 
@@ -286,7 +358,7 @@ If not, the Java interpreter uses the wrong character encoding for output.
 Pass additional arguments to the <code>latin</code> command.
 Use words that contain special characters, like umlauts
 or the Euro symbol &euro;.
-<br/>
+<br>
 If the default message is displayed correctly, but your arguments are not,
 the Java interpreter uses the wrong character encoding for input.
 </p>
@@ -304,7 +376,10 @@ If characters are not displayed correctly, read the
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="exercise"><span>Exercise</span></h2>
+<h2 id="exercise">
+  <span>Tutorial Exercise</span>
+  <a href="#exercise" class="here-link">&para;</a>
+</h2>
 
 <p>
 The main loop of an exercise is to manually execute a test sequence
@@ -323,12 +398,15 @@ A general description for the exercises is in
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="test-sequence"><span>Test</span></h3>
+<h3 id="test-sequence">
+  <span>Test</span>
+  <a href="#test-sequence" class="here-link">&para;</a>
+</h3>
 
 <p>
 The commands supported by the tutorial program are independent of eachother.
 You could test them in any order.
-<br/>
+<br>
 The usage instructions suggest this sequence:
 </p>
 
@@ -340,7 +418,7 @@ The usage instructions suggest this sequence:
 
 <p>
 There are two problems to find and fix.
-<br/>
+<br>
 The command <code>latin</code> is not part of the exercise.
 It is provided only for the setup in section
 <a href="#setup-charset">Character Encoding</a> above.
@@ -364,13 +442,16 @@ If you'd like more guidance, read the suggestions for testing
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="think"><span>Think</span></h3>
+<h3 id="think">
+  <span>Think</span>
+  <a href="#think" class="here-link">&para;</a>
+</h3>
 
 <p>
 The stack traces lead you directly to the bugs in the code.
-<br/>
+<br>
 <b>But</b> you are not familiar with the codebase yet.
-<br/>
+<br>
 Before you even look at the source code,
 get an <a href="#code">overview</a>.
 </p>
@@ -395,7 +476,10 @@ at a point in the code.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="fix"><span>Fix</span></h3>
+<h3 id="fix">
+  <span>Fix</span>
+  <a href="#fix" class="here-link">&para;</a>
+</h3>
 
 <p>
 Read the exception message, and the comments in the code.
@@ -445,7 +529,10 @@ with testing until you've found and eliminated all intentional bugs.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="clean-up"><span>Clean Up</span></h3>
+<h3 id="clean-up">
+  <span>Clean Up</span>
+  <a href="#clean-up" class="here-link">&para;</a>
+</h3>
 
 <p>
 Once you've fixed the prepared problems, class <code>Missing</code>
@@ -464,7 +551,7 @@ This will detect unused imports of class <code>Missing</code>.
 
 <p>
 Finally, create a new JAR.
-<p/>
+</p>
 
 
 <p class="abstract">
@@ -473,7 +560,10 @@ Splendid! You have successfully completed this tutorial.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="code"><span>Code Overview</span></h2>
+<h2 id="code">
+  <span>Code Overview</span>
+  <a href="#code" class="here-link">&para;</a>
+</h2>
 
 <p class="larger">
 Do <b>not</b> look at the source code!
@@ -482,36 +572,39 @@ It's too easy to get lost in it.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-jdoc"><span>JavaDocs</span></h3>
+<h3 id="code-jdoc">
+  <span>JavaDocs</span>
+  <a href="#code-jdoc" class="here-link">&para;</a>
+</h3>
 
 <p>
 Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a> in the browser.
 There's a short description for each package.
 Read the package name and description.
-<br/>
+<br>
 Optionally, select the package and start reading the long description.
 Do you need to know more to solve the problem at hand?
 </p>
 
 <p>
 Select a package you're interested in, in the main frame.
-<br/>
+<br>
 Read enough of the description to grasp what the purpose of this package is.
 </p>
 
 <p>
 Look at the lists of interfaces, classes, and enums in the package.
-<br/>
+<br>
 Read the names and short descriptions.
 Do you need to know more to solve the problem at hand?
 </p>
 
 <p>
 Select an interface, class, or enum you're interested in, in the main frame.
-<br/>
+<br>
 Read the description.
 Optionally, look at the lists of methods, attributes, or constants.
-<br/>
+<br>
 Optionally, select one of those and read its description.
 </p>
 
@@ -522,7 +615,10 @@ If you need more guidance, read the
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-abstract"><span>Understanding</span></h3>
+<h3 id="code-abstract">
+  <span>Understanding</span>
+  <a href="#code-abstract" class="here-link">&para;</a>
+</h3>
 
 <p>
 JavaDocs show APIs and explain their purpose, usage, and important concepts.
@@ -574,7 +670,7 @@ you would expect from their names or descriptions. This is called the
    >Principle of Least Astonishment (POLA)</a>.
 It greatly simplifies the task of getting to know a codebase
 and reduces the time you need to become productive.
-<br/>
+<br>
 
 In ill-structured code, such assumptions will not hold.
 Classes or modules do things you wouldn't expect, and
@@ -601,7 +697,10 @@ It gets even worse if you step through the code with a source-level debugger.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-sources"><span>Source Code</span></h3>
+<h3 id="code-sources">
+  <span>Source Code</span>
+  <a href="#code-sources" class="here-link">&para;</a>
+</h3>
 
 <p>
 Sooner or later, you have to look at the source code to fix problems.
@@ -628,7 +727,10 @@ If you need more guidance, read the
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="links"><span>Links</span></h2>
+<h2 id="links">
+  <span>Links</span>
+  <a href="#links" class="here-link">&para;</a>
+</h2>
 
 <!-- linked in various places above...
 <li><a href="tpj-details.html">Tutorial Details</a></li>
@@ -637,7 +739,10 @@ If you need more guidance, read the
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="links-java"><span>Java</span></h3>
+<h3 id="links-java">
+  <span>Java</span>
+  <a href="#links-java" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt>
@@ -667,7 +772,10 @@ If you are using an IDE, that might come with a bundled JDK.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="links-exercises"><span>Classroom</span></h3>
+<h3 id="links-exercises">
+  <span>Classroom</span>
+  <a href="#links-exercises" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt><a href="message-board.html">Message Board</a></dt>
@@ -687,7 +795,10 @@ of the <a href="#exercise">Exercise</a> section above.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="links-github"><span>GitHub</span></h3>
+<h3 id="links-github">
+  <span>GitHub</span>
+  <a href="#links-github" class="here-link">&para;</a>
+</h3>
 
 <dl>
 <dt><a href="https://github.com/rolandweber/pityoulish/">Pityoulish</a></dt>

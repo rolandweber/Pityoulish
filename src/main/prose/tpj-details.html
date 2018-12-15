@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <!-- 
 This work is released into the Public Domain under the
@@ -16,7 +17,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 <p class="abstract">
 Descriptions, background information, and guidance for the Tutorial.
-<br/>
+<br>
 You're not expected to read everything here.
 </p>
 
@@ -34,7 +35,10 @@ Return to the Tutorial after each section.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="jar"><span>JAR Content</span></h2>
+<h2 id="jar">
+  <span>JAR Content</span>
+  <a href="#jar" class="here-link">&para;</a>
+</h2>
 
 <p>
 List the contents of the JAR file.
@@ -70,7 +74,7 @@ There are files of different types in the archive:
   The presence of this file tells the JVM that the archive is actually a JAR.
   In an executable JAR, one entry in the manifest specifies the main class,
   the entry point for the program.
-  <br/>
+  <br>
   The <code>META-INF/</code> directory can also be used to store
   non-standard meta information about the JAR, for example a build timestamp.
 </dd>
@@ -124,7 +128,10 @@ for example images, HTML templates, and style sheets needed at runtime.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="jar-trouble"><span>Troubleshooting your JAR</span></h2>
+<h2 id="jar-trouble">
+  <span>Troubleshooting your JAR</span>
+  <a href="#jar-trouble" class="here-link">&para;</a>
+</h2>
 
 <p>
 This section explains some problems you might run into
@@ -174,7 +181,7 @@ instead of the texts it cannot look up.
 </p>
 <p>
 If you are running a JAR file, bundle the properties files into the JAR.
-<br/>
+<br>
 If you are running the program directly from an IDE project,
 add the source directory to the classpath.
 </p>
@@ -194,8 +201,10 @@ add the source directory to the classpath.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="encoding-trouble"><span>Troubleshooting Character Encodings</span>
-<a href="#encoding-trouble" class="here-link">&para;</a></h2>
+<h2 id="encoding-trouble">
+  <span>Troubleshooting Character Encodings</span>
+  <a href="#encoding-trouble" class="here-link">&para;</a>
+</h2>
 
 <p>
 Internally, Java stores strings as
@@ -231,7 +240,7 @@ there are a plenty of things that might have gone wrong:
   However, many character encodings have US-ASCII as a common subset.
   In that case, plain characters and numbers will appear correctly,
   but non-ASCII characters such as umlauts are garbled.
-  <br/>
+  <br>
   This can be fixed by adjusting the encoding of when writing the output.
   For strings written to the standard output and error streams,
   Java uses its default encoding.
@@ -239,7 +248,7 @@ there are a plenty of things that might have gone wrong:
 <li>
   The string representation in the JVM is wrong, because input was received
   in a different encoding than expected by the JVM.
-  <br/>
+  <br>
   This can be fixed by adjusting the encoding when reading the input.
   For strings read from the standard input stream,
   Java uses its default encoding.
@@ -293,7 +302,10 @@ Some things to try if characters are not displayed correctly:
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="jdoc-walk-through"><span>JavaDoc Walk-Through</span></h2>
+<h2 id="jdoc-walk-through">
+  <span>JavaDoc Walk-Through</span>
+  <a href="#jdoc-walk-through" class="here-link">&para;</a>
+</h2>
 
 <p>
 Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a>
@@ -342,7 +354,10 @@ important things are happening.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="source-walk-through"><span>Source Code Walk-Through</span></h2>
+<h2 id="source-walk-through">
+  <span>Source Code Walk-Through</span>
+  <a href="#source-walk-through" class="here-link">&para;</a>
+</h2>
 
 <p>
 You know from studying the JavaDocs,
@@ -382,7 +397,10 @@ That's all you need to know about it to get started.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="test-local"><span>Testing <code>local</code></span></h2>
+<h2 id="test-local">
+  <span>Testing <code>local</code></span>
+  <a href="#test-local" class="here-link">&para;</a>
+</h2>
 
 <p>
 Execute the command and study the output:
@@ -399,7 +417,10 @@ Connect your computer to different networks (wired, WiFi, VPN) and repeat.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="test-islocal"><span>Testing <code>islocal</code></span></h2>
+<h2 id="test-islocal">
+  <span>Testing <code>islocal</code></span>
+  <a href="#test-islocal" class="here-link">&para;</a>
+</h2>
 
 <p>
 Execute the command with different hostname arguments:
@@ -440,7 +461,10 @@ Have you tried '::1'?
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="test-lookup"><span>Testing <code>lookup</code></span></h2>
+<h2 id="test-lookup">
+  <span>Testing <code>lookup</code></span>
+  <a href="#test-lookup" class="here-link">&para;</a>
+</h2>
 
 <p>
 Execute the command with different hostname arguments:
@@ -470,7 +494,10 @@ Perform some more lookups of your own.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="help-islocal"><span>Spoiler: Fixing <code>islocal</code></span></h2>
+<h2 id="help-islocal">
+  <span>Spoiler: Fixing <code>islocal</code></span>
+  <a href="#help-islocal" class="here-link">&para;</a>
+</h2>
 
 <p>
 The method is small enough to understand it entirely, so strive for that.
@@ -483,11 +510,11 @@ At the place of the omission, you will find these lines:
 </div>
 <p>
 <code>Missing.here</code> triggers the exception that takes you there.
-<br/>
+<br>
 <code>Missing.pretend</code> tells the compiler that
 an <code>IOException</code> could be raised.
 That's because the missing code might do that.
-<br/>
+<br>
 You have to remove both lines with <code>Missing</code>
 and insert your own code instead.
 </p>
@@ -496,7 +523,7 @@ and insert your own code instead.
 Follow the steps below.
 Pause after each step.
 Make sure you've understood it.
-<br/>
+<br>
 If you think you know what to do,
 proceed without further guidance instead of following the next step.
 </i></p>
@@ -504,7 +531,7 @@ proceed without further guidance instead of following the next step.
 <ol class="spoiler-steps">
 <li>
 The exception message and the comment say "bind a socket".
-<br/>
+<br>
 Do you understand what that means?
 If not, start an internet search and find out.
 </li>
@@ -512,7 +539,7 @@ If not, start an internet search and find out.
 <li>
 The method is meant to tell whether a hostname is local or not.
 What does that have to do with binding a socket?
-<br/>
+<br>
 Look at the source code.
 When will it return "local", when "not local"?
 <!--
@@ -523,7 +550,7 @@ When will it return "local", when "not local"?
 
 <li>
 What is the Java API for working with sockets?
-<br/>
+<br>
 Check the imports. Access the relevant JavaDocs.
 <!-- package java.net, specifically class java.net.Socket -->
 </li>
@@ -531,17 +558,17 @@ Check the imports. Access the relevant JavaDocs.
 <li>
 What method do you have to call for binding a socket?
 <!-- java.net.Socket.bind(SocketAddress) -->
-<br/>
+<br>
 Do you have the required arguments for calling it?
 <!-- Yes, InetSocketAddress isa -->
 <i>
   (see also <a href="java-refresher.html#available-data">Available Data</a>)
 </i>
-<br/>
+<br>
 Do you have an object on which to call the method?
 If not, how can you create one?
 <!-- Socket sock = new Socket() -->
-<br/>
+<br>
 Is there a convenience constructor for combining both operations?
 <!-- No. -->
 </li>
@@ -577,7 +604,10 @@ but they are completely different operations.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="help-lookup"><span>Spoiler: Fixing <code>lookup</code></span></h2>
+<h2 id="help-lookup">
+  <span>Spoiler: Fixing <code>lookup</code></span>
+  <a href="#help-lookup" class="here-link">&para;</a>
+</h2>
 
 
 <p>
@@ -592,7 +622,7 @@ At the place of the omission, you will find these lines:
 
 <p>
 <code>Missing.here</code> triggers the exception that takes you there.
-<br/>
+<br>
 You have to remove that line
 and insert your own code instead.
 </p>
@@ -601,7 +631,7 @@ and insert your own code instead.
 Follow the steps below.
 Pause after each step.
 Make sure you've understood it.
-<br/>
+<br>
 If you think you know what to do,
 proceed without further guidance instead of following the next step.
 </i></p>
@@ -610,16 +640,16 @@ proceed without further guidance instead of following the next step.
 <li>
 The exception message says "look up ... a hostname",
 JavaDocs for the method say "DNS lookup".
-<br/>
+<br>
 Do you understand what that means?
 If not, start an internet search and find out.
 </li>
 
 <li>
 A comment mentions the helper method <code>formatInetAddress</code>.
-<br/>
+<br>
 Look at the JavaDoc comment and method signature of that helper, NOTHING MORE!
-<br/>
+<br>
 What does it do?
 You don't need to read or understand the code of the helper to use it.
 </li>
@@ -627,32 +657,32 @@ You don't need to read or understand the code of the helper to use it.
 <li>
 The helper expects a single address.
 The comment about using the helper says "all the addresses".
-<br/>
+<br>
 You will have to implement a loop.
 </li>
 
 <li>
 The helper expects an <code>InetAddress</code>.
-<br/>
+<br>
 Check the imports. Access the relevant JavaDocs.
 <!-- java.net.InetAddress -->
 </li>
 
 <li>
 How do you create <code>InetAddress</code> objects?
-<br/>
+<br>
 Are there constructors?
 Methods for creating or obtaining instances?
-<br/>
+<br>
 If not in the class itself, somewhere else in the package?
 </li>
 
 <li>
 The missing code is expected to perform a DNS lookup for the argument hostname.
-<br/>
+<br>
 Have you found a method that performs DNS lookups?
 Do you need an object on which to call the method?
-<br/>
+<br>
 Do you need to convert the hostname argument?
 Do you need to convert the lookup results?
 <!-- InetAddress.getAllByName(String host)
@@ -671,16 +701,16 @@ and to call the helper method for each item.
 
 <li>
 The second comment line mentions hostnames without an address.
-<br/>
+<br>
 What does the lookup return in that case?
 <code>null</code>, an empty list or array, something else?
 <!-- it does not return anything, but throws an exception instead -->
-<br/>
+<br>
 Change your code to handle this case.
 The method should reach its <code>return</code> statement,
 not throw an exception.
 <!-- catch java.net.UnknownHostException -->
-<br/>
+<br>
 Tell the user explicitly when there is no address for the hostname.
 <!-- Print the exception, or a corresponding message.
      Printing the exception does not require a new entry in the Catalog.
