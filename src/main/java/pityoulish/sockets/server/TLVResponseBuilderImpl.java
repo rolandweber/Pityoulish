@@ -196,6 +196,21 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
   }
 
 
+  /**
+   * Builds a response with an error message.
+   *
+   * @param msg   the error message
+   *
+   * @return a buffer containing the response PDU, backed by an array
+   */
+  protected ByteBuffer buildErrorResponse(String msg)
+  {
+    return buildSimpleResponsePDU(MsgBoardType.ERROR_RESPONSE,
+                                  MsgBoardType.TEXT,
+                                  msg, true);
+  }
+
+
   // non-javadoc, see interface
   public ByteBuffer buildInfoResponse(MsgBoardResponse<String> response)
   {
@@ -209,15 +224,6 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
        pdu = buildErrorResponse(response.getProblem());
 
     return pdu;
-  }
-
-
-  // non-javadoc, see interface
-  public ByteBuffer buildErrorResponse(String msg)
-  {
-    return buildSimpleResponsePDU(MsgBoardType.ERROR_RESPONSE,
-                                  MsgBoardType.TEXT,
-                                  msg, true);
   }
 
 

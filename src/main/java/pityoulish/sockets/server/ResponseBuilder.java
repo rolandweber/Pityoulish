@@ -31,17 +31,6 @@ public interface ResponseBuilder
 
 
   /**
-   * Builds a response with an error message.
-   *
-   * @param msg   the error message
-   *
-   * @return a buffer containing the response PDU, backed by an array
-   */
-  public ByteBuffer buildErrorResponse(String msg)
-    ;
-
-
-  /**
    * Builds a response with an error message, from an exception.
    *
    * @param cause   the exception

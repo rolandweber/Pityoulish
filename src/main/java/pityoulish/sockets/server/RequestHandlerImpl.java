@@ -152,13 +152,6 @@ public class RequestHandlerImpl implements RequestHandler
 
 
   // non-javadoc, see interface
-  public ByteBuffer buildErrorResponse(String msg)
-  {
-    return rspBuilder.buildErrorResponse(msg);
-  }
-
-
-  // non-javadoc, see interface
   public ByteBuffer buildErrorResponse(Throwable cause)
   {
     return rspBuilder.buildErrorResponse(cause);

@@ -35,18 +35,6 @@ public interface RequestHandler
 
 
   /**
-   * Builds a response with an error message.
-   * See also {@link ResponseBuilder#buildErrorResponse(String)}.
-   *
-   * @param msg   the error message
-   *
-   * @return a buffer containing the response data, backed by an array
-   */
-  public ByteBuffer buildErrorResponse(String msg)
-    ;
-
-
-  /**
    * Builds a response with an error message, from an exception.
    * See also {@link ResponseBuilder#buildErrorResponse(Throwable)}.
    *

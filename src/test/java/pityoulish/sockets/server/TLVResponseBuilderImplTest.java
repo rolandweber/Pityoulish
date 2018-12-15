@@ -127,7 +127,8 @@ public class TLVResponseBuilderImplTest
 
   @Test public void buildErrorResponse_text()
   {
-    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    // tested method has been removed from ResponseBuilder interface
+    TLVResponseBuilderImpl rb = new TLVResponseBuilderImpl();
     String msg = "b\u00e4d"; // a-umlaut
 
     ByteBuffer buf = rb.buildErrorResponse(msg);
