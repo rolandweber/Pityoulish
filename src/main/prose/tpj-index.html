@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <!-- 
 This work is released into the Public Domain under the
@@ -97,7 +98,7 @@ Execute the following commands to verify that a JDK is available:
 <p>
 If you prefer to code with an Integrated Development Environment (IDE),
 there are several that support Java development.
-<br/>
+<br>
 For example
 <a href="https://www.jetbrains.com/idea/"
    title="IntelliJ IDEA - Community Edition"
@@ -118,7 +119,7 @@ For example
 For convenience, bookmark the
 <a href="https://docs.oracle.com/javase/8/docs/api/"
    >Java SE API</a> documentation of the Java version you are using.
-<br/>
+<br>
 When working from the command line, collect frequently used commands
 in a text file for copy&amp;paste.
 </p>
@@ -173,7 +174,7 @@ of the JAR file content.
 <p>
 The next step is to prepare for changing the code
 and building your own version of the JAR file.
-<br/>
+<br>
 How to do that depends on the IDE you are using, if any.
 </p>
 
@@ -192,7 +193,7 @@ the correct character encoding for input and output.
 <p>
 Create a new directory to work in, for example <code>tutorial-project/</code>.
 Make sure that the name of your directory does <i>not</i> contain "faulty".
-<br/>
+<br>
 Use <code>cd</code> to change there.
 All command-line examples assume that this is your current directory.
 </p>
@@ -208,13 +209,13 @@ Extract the contents of the downloaded JAR file:
 <p>
 Subdirectory <code>pityoulish/</code> contains the
 source code, properties files, and compiled classes.
-<br/>
+<br>
 Subdirectory <code>META-INF/</code> can be ignored or deleted.
 </p>
 
 <p>
 After changing a Java source file, you have to recompile it.
-<br/>
+<br>
 For example, after editing
 <code>pityoulish/tutorial/TutorialCommandHandler.java</code>,
 compile it with:
@@ -253,10 +254,10 @@ or prepare commands for copy&amp;paste in an editor.
 
 <p class="abstract">
 How to perform the steps in this section depends on the IDE you have chosen.
-<br/>
+<br>
 You're welcome to contribute specific instructions
 for other users of your IDE.
-<br/>
+<br>
 Available online:
 <a href="https://github.com/rolandweber/pityoulish/issues/71"
    target="_blank">Eclipse</a>
@@ -270,17 +271,17 @@ Available online:
 <p>
 Create a Java or JAR project.
 Make sure that the name of your project does <i>not</i> contain "faulty".
-<br/>
+<br>
 Import the downloaded JAR into the project.
 </p>
 
 <p>
 The IDE has created a directory structure for the project
 and stored the source code there.
-<br/>
+<br>
 Locate that directory, then use the <a href="#setup-cmdline">command line</a>
 for compiling sources and building the JAR.
-<br/>
+<br>
 Edit the sources and navigate with your IDE,
 but switch to the command line for testing.
 </p>
@@ -309,7 +310,7 @@ from the source directory to the compiled classes.
 <p>
 The entry point for the Tutorial code is class
 <code>pityoulish.tutorial.Main</code>.
-<br/>
+<br>
 Run the program without arguments and verify that it prints usage information.
 If it doesn't, fix the classpath.
 </p>
@@ -345,7 +346,7 @@ usage information. If it doesn't, read the
 Call the <code>latin</code> command of the JAR.
 It will print a message that contains umlauts.
 Check whether these are displayed correctly.
-<br/>
+<br>
 If not, the Java interpreter uses the wrong character encoding for output.
 </p>
 
@@ -357,7 +358,7 @@ If not, the Java interpreter uses the wrong character encoding for output.
 Pass additional arguments to the <code>latin</code> command.
 Use words that contain special characters, like umlauts
 or the Euro symbol &euro;.
-<br/>
+<br>
 If the default message is displayed correctly, but your arguments are not,
 the Java interpreter uses the wrong character encoding for input.
 </p>
@@ -405,7 +406,7 @@ A general description for the exercises is in
 <p>
 The commands supported by the tutorial program are independent of eachother.
 You could test them in any order.
-<br/>
+<br>
 The usage instructions suggest this sequence:
 </p>
 
@@ -417,7 +418,7 @@ The usage instructions suggest this sequence:
 
 <p>
 There are two problems to find and fix.
-<br/>
+<br>
 The command <code>latin</code> is not part of the exercise.
 It is provided only for the setup in section
 <a href="#setup-charset">Character Encoding</a> above.
@@ -448,9 +449,9 @@ If you'd like more guidance, read the suggestions for testing
 
 <p>
 The stack traces lead you directly to the bugs in the code.
-<br/>
+<br>
 <b>But</b> you are not familiar with the codebase yet.
-<br/>
+<br>
 Before you even look at the source code,
 get an <a href="#code">overview</a>.
 </p>
@@ -550,7 +551,7 @@ This will detect unused imports of class <code>Missing</code>.
 
 <p>
 Finally, create a new JAR.
-<p/>
+</p>
 
 
 <p class="abstract">
@@ -580,30 +581,30 @@ It's too easy to get lost in it.
 Open the <a href="jdoc/index.html" target="_blank">JavaDocs</a> in the browser.
 There's a short description for each package.
 Read the package name and description.
-<br/>
+<br>
 Optionally, select the package and start reading the long description.
 Do you need to know more to solve the problem at hand?
 </p>
 
 <p>
 Select a package you're interested in, in the main frame.
-<br/>
+<br>
 Read enough of the description to grasp what the purpose of this package is.
 </p>
 
 <p>
 Look at the lists of interfaces, classes, and enums in the package.
-<br/>
+<br>
 Read the names and short descriptions.
 Do you need to know more to solve the problem at hand?
 </p>
 
 <p>
 Select an interface, class, or enum you're interested in, in the main frame.
-<br/>
+<br>
 Read the description.
 Optionally, look at the lists of methods, attributes, or constants.
-<br/>
+<br>
 Optionally, select one of those and read its description.
 </p>
 
@@ -669,7 +670,7 @@ you would expect from their names or descriptions. This is called the
    >Principle of Least Astonishment (POLA)</a>.
 It greatly simplifies the task of getting to know a codebase
 and reduces the time you need to become productive.
-<br/>
+<br>
 
 In ill-structured code, such assumptions will not hold.
 Classes or modules do things you wouldn't expect, and

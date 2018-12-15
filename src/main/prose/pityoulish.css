@@ -51,6 +51,7 @@ h1:hover > a.here-link, h2:hover > a.here-link, h3:hover > a.here-link {
     color: #473331;
     background-color: #ccb69c;
     border-radius: 17px;
+    margin-top: 0px;
   }
   h1 a.here-link {
     color: #473331;
