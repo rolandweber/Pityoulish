@@ -184,40 +184,6 @@ the correct character encoding for input and output.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="setup-ide">
-  <span>IDE</span>
-  <a href="#setup-ide" class="here-link">&para;</a>
-</h3>
-
-<p class="abstract">
-How to perform the steps in this section depends on the IDE you have chosen.
-<br/>
-You're welcome to contribute specific instructions
-for other users of your IDE.
-</p>
-
-<p>
-Create a project from the downloaded JAR file.
-Not from extracted sources, but from the JAR itself.
-<br/>
-Make sure that the name of your project does <i>not</i> contain "faulty".
-</p>
-
-<p>
-Build or export a new JAR file from your project.
-<br/>
-Run your own JAR and verify that it prints the expected usage information.
-If it doesn't, read the
-<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
-</p>
-
-<p>
-For development, you may also run the program directly from the IDE.
-The final result should be a JAR file though.
-</p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <h3 id="setup-cmdline">
   <span>Command Line</span>
   <a href="#setup-cmdline" class="here-link">&para;</a>
@@ -276,6 +242,96 @@ If it doesn't, read the
 You will have to compile a source file and build a new JAR several times.
 Either use the command line history to access previously executed commands,
 or prepare commands for copy&amp;paste in an editor.
+</p>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<h3 id="setup-ide">
+  <span>IDE</span>
+  <a href="#setup-ide" class="here-link">&para;</a>
+</h3>
+
+<p class="abstract">
+How to perform the steps in this section depends on the IDE you have chosen.
+<br/>
+You're welcome to contribute specific instructions
+for other users of your IDE.
+<br/>
+Available online:
+<a href="https://github.com/rolandweber/pityoulish/issues/71"
+   target="_blank">Eclipse</a>
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note"><div class="content">
+<span>Editing</span>
+</div></div>
+
+<p>
+Create a Java or JAR project.
+Make sure that the name of your project does <i>not</i> contain "faulty".
+<br/>
+Import the downloaded JAR into the project.
+</p>
+
+<p>
+The IDE has created a directory structure for the project
+and stored the source code there.
+<br/>
+Locate that directory, then use the <a href="#setup-cmdline">command line</a>
+for compiling sources and building the JAR.
+<br/>
+Edit the sources and navigate with your IDE,
+but switch to the command line for testing.
+</p>
+
+<p>
+In theory, an IDE can run your code as well as build the JAR.
+In practice, many students have wasted countless hours,
+at home and in the classroom, while trying to get this to work.
+Spare yourself a lot of trouble and frustration: Use the IDE only for editing.
+</p>
+
+<!-- ............................................................ -->
+<div class="side-note" style="margin-top: 2em;"><div class="content">
+<span>Testing</span>
+</div></div>
+
+<p>
+If you insist on running the code from your IDE, you must set up the classpath.
+The IDE automatically puts compiled classes into the classpath.
+But you have to add the source directory as well, so that the running code
+can load the properties files from there.
+Alternatively, it might be possible to let the IDE copy all properties files
+from the source directory to the compiled classes.
+</p>
+
+<p>
+The entry point for the Tutorial code is class
+<code>pityoulish.tutorial.Main</code>.
+<br/>
+Run the program without arguments and verify that it prints usage information.
+If it doesn't, fix the classpath.
+</p>
+
+<p>
+For testing the code, you have to specify command-line arguments.
+An IDE typically provides a dialog for that purpose.
+</p>
+
+<p>
+The final results of this Tutorial and the exercises
+should be an executable JAR file.
+The JAR has to include the properties files from the source code
+along with the compiled classes.
+The entry point of the program must be defined in the manifest of the JAR.
+An IDE will provide one or more dialogs for these settings.
+</p>
+
+<p>
+Run your own JAR without arguments and verify that it prints
+usage information. If it doesn't, read the
+<a href="tpj-details.html#jar-trouble">troubleshooting tips</a>.
 </p>
 
 
