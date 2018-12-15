@@ -218,7 +218,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     
   // non-javadoc, see interface
-  public String replaceTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    replaceTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -235,8 +236,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "replaceTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
@@ -244,7 +247,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
       tick = ticketMgr.obtainTicket(tick.getUsername(), address);
 
-      return tick.getToken();
+      return new MsgBoardResponseImpl.Ticket(tick.getToken());
 
     } catch (TicketException tx) {
       throw Log.log(logger, "returnTicket",

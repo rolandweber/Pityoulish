@@ -125,13 +125,7 @@ public class RequestHandlerImpl implements RequestHandler
          MsgBoardResponse<String> response =
            mbrHandler.obtainTicket(mbreq, address);
          rhExpositor.describeTicketGrant(response);
-         if (response.isOK()) {
-           String tictok = response.getResult();
-           result = rspBuilder.buildTicketGrant(tictok);
-         } else {
-           String problem = response.getProblem();
-           result = rspBuilder.buildErrorResponse(problem);
-         }
+         result = rspBuilder.buildTicketGrant(response);
        } break;
 
        case RETURN_TICKET: {
@@ -141,9 +135,10 @@ public class RequestHandlerImpl implements RequestHandler
        } break;
 
        case REPLACE_TICKET: {
-         String tictok = mbrHandler.replaceTicket(mbreq, address);
-         rhExpositor.describeTicketGrant(tictok);
-         result = rspBuilder.buildTicketGrant(tictok);
+         MsgBoardResponse<String> response =
+           mbrHandler.replaceTicket(mbreq, address);
+         rhExpositor.describeTicketGrant(response);
+         result = rspBuilder.buildTicketGrant(response);
        } break;
 
         //@@@ default case might be invoked after adding more request types

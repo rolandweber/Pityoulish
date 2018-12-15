@@ -100,11 +100,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#REPLACE_TICKET REPLACE_TICKET}
    * @param address     the network address of the client
    *
-   * @return the ticket token
+   * @return response holding the ticket token or an error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String replaceTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    replaceTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
     

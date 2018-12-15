@@ -265,11 +265,18 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public ByteBuffer buildTicketGrant(String tictok)
+  public ByteBuffer buildTicketGrant(MsgBoardResponse<String> response)
   {
-    return buildSimpleResponsePDU(MsgBoardType.TICKET_GRANT,
-                                  MsgBoardType.TICKET,
-                                  tictok, false);
+    ByteBuffer pdu = null;
+
+    if (response.isOK())
+       pdu = buildSimpleResponsePDU(MsgBoardType.TICKET_GRANT,
+                                    MsgBoardType.TICKET,
+                                    response.getResult(), false);
+    else
+       pdu = buildErrorResponse(response.getProblem());
+
+    return pdu;
   }
 
 }

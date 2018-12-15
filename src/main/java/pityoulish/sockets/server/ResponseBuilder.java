@@ -65,11 +65,13 @@ public interface ResponseBuilder
   /**
    * Builds a response with a ticket grant.
    *
-   * @param tictok  the ticket {@link pityoulish.tickets.Ticket#getToken token}
+   * @param response    the response, holding either ticket
+   *                    {@link pityoulish.tickets.Ticket#getToken token}
+   *                    or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildTicketGrant(String tictok)
+  public ByteBuffer buildTicketGrant(MsgBoardResponse<String> response)
     ;
 
 
