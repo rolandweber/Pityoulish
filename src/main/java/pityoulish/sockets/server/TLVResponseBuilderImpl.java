@@ -197,11 +197,18 @@ public class TLVResponseBuilderImpl implements ResponseBuilder
 
 
   // non-javadoc, see interface
-  public ByteBuffer buildInfoResponse(String msg)
+  public ByteBuffer buildInfoResponse(MsgBoardResponse<String> response)
   {
-    return buildSimpleResponsePDU(MsgBoardType.INFO_RESPONSE,
-                                  MsgBoardType.TEXT,
-                                  msg, true);
+    ByteBuffer pdu = null;
+
+    if (response.isOK())
+       pdu = buildSimpleResponsePDU(MsgBoardType.INFO_RESPONSE,
+                                    MsgBoardType.TEXT,
+                                    response.getResult(), true);
+    else
+       pdu = buildErrorResponse(response.getProblem());
+
+    return pdu;
   }
 
 

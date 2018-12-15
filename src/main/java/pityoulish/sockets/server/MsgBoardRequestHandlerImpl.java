@@ -90,7 +90,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     
   // non-javadoc, see interface
-  public String putMessage(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    putMessage(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -110,15 +111,16 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
        problem = mboardSanityChecker.checkText(mbreq.getText());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "putMessage", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
       if (tick.punch())
        {
          msgBoard.putMessage(tick.getUsername(), mbreq.getText());
-         return Catalog.HANDLER_INFO_OK.lookup();
        }
       else
        {
@@ -136,6 +138,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
                     Catalog.HANDLER_BAD_TICKET_2.asPXwithCause
                     (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
+
+    return new MsgBoardResponseImpl.Info(Catalog.HANDLER_INFO_OK.lookup());
   }
 
     
@@ -183,7 +187,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
 
   // non-javadoc, see interface
-  public String returnTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    returnTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
   {
     if (mbreq == null)
@@ -200,8 +205,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     String problem = ticketSanityChecker.checkToken(mbreq.getTicket());
     //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
-       throw Log.log(logger, "returnTicket", new ProtocolException(problem));
-    //@@@ issue #12: report without exception
+     {
+       logger.log(Level.WARNING, problem);
+       return new MsgBoardResponseImpl.Error(problem);
+     }
 
     try {
       Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
@@ -213,7 +220,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
                     (tx, mbreq.getTicket(), tx.getLocalizedMessage()));
     }
 
-    return Catalog.HANDLER_INFO_OK.lookup();
+    return new MsgBoardResponseImpl.Info(Catalog.HANDLER_INFO_OK.lookup());
   }
 
     

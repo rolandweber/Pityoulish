@@ -51,11 +51,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#PUT_MESSAGE PUT_MESSAGE}
    * @param address     the network address of the client
    *
-   * @return an informational text
+   * @return response holding an informational text or error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String putMessage(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    putMessage(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 
@@ -84,11 +85,12 @@ public interface MsgBoardRequestHandler
    *       {@link MsgBoardRequest.ReqType#RETURN_TICKET RETURN_TICKET}
    * @param address     the network address of the client
    *
-   * @return an informational text
+   * @return response holding an informational text or error message
    *
    * @throws ProtocolException  in case of a problem
    */
-  public String returnTicket(MsgBoardRequest mbreq, InetAddress address)
+  public MsgBoardResponse<String>
+    returnTicket(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
     ;
 

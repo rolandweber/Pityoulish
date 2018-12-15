@@ -84,12 +84,13 @@ public class TLVResponseBuilderImplTest
 
 
 
-  @Test public void buildInfoResponse_text()
+  @Test public void buildInfoResponse_good()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String msg = "H\u00e4ppy!"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Info(msg);
 
-    ByteBuffer buf = rb.buildInfoResponse(msg);
+    ByteBuffer buf = rb.buildInfoResponse(rsp);
     byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
@@ -99,6 +100,26 @@ public class TLVResponseBuilderImplTest
       MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x07,
       (byte)'H', (byte)0xc3, (byte)0xa4,
       (byte)'p', (byte)'p', (byte)'y', (byte)'!'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildInfoResponse_bad()
+  {
+    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Error(msg);
+
+    ByteBuffer buf = rb.buildInfoResponse(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
     };
     assertArrayEquals("wrong PDU", expected, pdu);
   }
@@ -255,12 +276,13 @@ public class TLVResponseBuilderImplTest
   }
 
 
-  @Test public void buildTicketGrant()
+  @Test public void buildTicketGrant_good()
   {
     ResponseBuilder rb = new TLVResponseBuilderImpl();
     String tictok = "tIckEt35";
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Ticket(tictok);
 
-    ByteBuffer buf = rb.buildTicketGrant(tictok);
+    ByteBuffer buf = rb.buildTicketGrant(rsp);
     byte[]     pdu = toBytes(buf);
 
     byte[] expected = new byte[]{
@@ -270,6 +292,26 @@ public class TLVResponseBuilderImplTest
       MsgBoardType.TICKET.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x08,
       (byte)'t', (byte)'I', (byte)'c', (byte)'k',
       (byte)'E', (byte)'t', (byte)'3', (byte)'5'
+    };
+    assertArrayEquals("wrong PDU", expected, pdu);
+  }
+
+
+  @Test public void buildTicketGrant_bad()
+  {
+    ResponseBuilder rb = new TLVResponseBuilderImpl();
+    String msg = "b\u00e4d"; // a-umlaut
+    MsgBoardResponse<String> rsp = new MsgBoardResponseImpl.Error(msg);
+
+    ByteBuffer buf = rb.buildTicketGrant(rsp);
+    byte[]     pdu = toBytes(buf);
+
+    byte[] expected = new byte[]{
+      MsgBoardType.ERROR_RESPONSE.getTypeByte(),
+      (byte)0x82, (byte)0x00, (byte)0x08,
+
+      MsgBoardType.TEXT.getTypeByte(), (byte)0x82, (byte)0x00, (byte)0x04,
+      (byte)'b', (byte)0xc3, (byte)0xa4, (byte)'d'
     };
     assertArrayEquals("wrong PDU", expected, pdu);
   }

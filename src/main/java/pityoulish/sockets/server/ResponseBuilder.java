@@ -21,11 +21,12 @@ public interface ResponseBuilder
   /**
    * Builds a response with an informational message.
    *
-   * @param msg   the info message
+   * @param response    the response, holding either
+   *                    an info or an error message
    *
    * @return a buffer containing the response PDU, backed by an array
    */
-  public ByteBuffer buildInfoResponse(String msg)
+  public ByteBuffer buildInfoResponse(MsgBoardResponse<String> response)
     ;
 
 

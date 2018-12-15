@@ -36,18 +36,10 @@ public interface Expositor
 
 
   /**
-   * Describe a granted ticket.
-   *
-   * @param tictok   the token representing the ticket
-   */
-  public void describeTicketGrant(String tictok)
-    ;
-
-
-  /**
    * Describe a ticket grant response.
    *
-   * @param response    the response to describe, ticket grant or error
+   * @param response    the response to describe,
+   *                    either ticket grant or error
    */
   public void describeTicketGrant(MsgBoardResponse<String> response)
     ;
@@ -56,9 +48,10 @@ public interface Expositor
   /**
    * Describe an informational response.
    *
-   * @param info   the information being returned to a client
+   * @param response    the response to describe,
+   *                    either informational message or error
    */
-  public void describeInfoResponse(String info)
+  public void describeInfoResponse(MsgBoardResponse<String> response)
     ;
 
 

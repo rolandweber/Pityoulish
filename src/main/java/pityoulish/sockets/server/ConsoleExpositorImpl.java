@@ -45,12 +45,6 @@ public class ConsoleExpositorImpl implements Expositor
   }
 
 
-  public void describeTicketGrant(String tictok)
-  {
-    System.out.println(Catalog.DESCRIBE_TICKET_GRANT_1.format(tictok));
-  }
-
-
   public void describeTicketGrant(MsgBoardResponse<String> response)
   {
     if (response.isOK())
@@ -61,9 +55,12 @@ public class ConsoleExpositorImpl implements Expositor
   }
 
 
-  public void describeInfoResponse(String info)
+  public void describeInfoResponse(MsgBoardResponse<String> response)
   {
-    // "OK" is implied
+    if (response.isOK())
+       ; // "OK" is implied
+    else
+       System.out.println(response.getProblem()); // is a catalog message
   }
 
 

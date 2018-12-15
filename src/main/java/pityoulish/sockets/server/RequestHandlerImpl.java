@@ -116,9 +116,10 @@ public class RequestHandlerImpl implements RequestHandler
        } break;
 
        case PUT_MESSAGE: {
-         String info = mbrHandler.putMessage(mbreq, address);
-         rhExpositor.describeInfoResponse(info);
-         result = rspBuilder.buildInfoResponse(info);
+         MsgBoardResponse<String> response =
+           mbrHandler.putMessage(mbreq, address);
+         rhExpositor.describeInfoResponse(response);
+         result = rspBuilder.buildInfoResponse(response);
        } break;
 
        case OBTAIN_TICKET: {
@@ -129,9 +130,10 @@ public class RequestHandlerImpl implements RequestHandler
        } break;
 
        case RETURN_TICKET: {
-         String info = mbrHandler.returnTicket(mbreq, address);
-         rhExpositor.describeInfoResponse(info);
-         result = rspBuilder.buildInfoResponse(info);
+         MsgBoardResponse<String> response =
+           mbrHandler.returnTicket(mbreq, address);
+         rhExpositor.describeInfoResponse(response);
+         result = rspBuilder.buildInfoResponse(response);
        } break;
 
        case REPLACE_TICKET: {
