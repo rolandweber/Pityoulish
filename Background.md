@@ -16,6 +16,44 @@ I'm teaching Distributed Systems from October through December each year. You ca
 
 ## History and Lessons Learned
 
+### 2018
+
+Feedback:
+[Tutorial #69](https://github.com/rolandweber/pityoulish/issues/69),
+[Sockets #70](https://github.com/rolandweber/pityoulish/issues/70),
+[Java RMI #78](https://github.com/rolandweber/pityoulish/issues/78)
+
+I discussed the general Message Board protocol one week in advance of the
+first classroom session. That seems to be a good approach.
+The rewritten Tutorial instructions also worked. Students reported about
+15 minutes for the coding, with varying efforts for setting up their IDE.
+But there were still some IDE problems during the classroom sessions.
+For 2019, I've changed the setup section of the Tutorial.
+Using the command line for compiling classes and building the JAR
+becomes the default, an IDE can still be used for editing if desired.
+
+Both classroom sessions were structured as two debugging parts,
+with some theory before and a break after each part.
+After the second break, I kept the server running while talking about
+simple, unrelated, easy-listening topics. This gives the interested students
+time to continue working on the exercise during breaks and until the end.
+I'll keep this schedule.
+
+I am no longer pursuing the idea of _finishing_ the exercises
+during the classroom session. The faster students finish and can then
+help other students, or work on the extra challenges in the exercises.
+The slower students will not catch up with the faster ones. But it
+isn't necessary to finish an exercise in order to grasp what I want to convey.
+One of the students reported in the second part of the Java RMI session
+that he had finally understood the point of the first part.
+That's good enough :-)
+
+We've had an additional plenum discussion about designing a REST API
+for the Message Board, see [issue #6](https://github.com/rolandweber/pityoulish/issues/6#issuecomment-429380717).
+I don't know when or whether I will find time to implement this as
+a third classroom exercise, but the discussion was interesting in itself.
+
+
 ### 2017
 
 Feedback:
