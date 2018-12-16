@@ -1,7 +1,7 @@
 # Pityoulish
 A collection of programming or debugging exercises to support a course on _Distributed Systems_.
-The focus is on classroom debugging exercises that can be completed in less than two hours.
-(_not there yet_)
+The focus is on classroom debugging exercises that can be delivered in about two hours, though not every student will complete them in this timeframe.
+
 
 The Pityoulish exercises revolve around a common topic:
 A server implements a Message Board which holds a limited number of messages.
