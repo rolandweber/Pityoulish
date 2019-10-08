@@ -181,9 +181,16 @@ p.abstract {
 
 @media screen {
   p.abstract {
-    margin: 0 17% 1em;
+    margin: 0 8% 1em;
   }
 } /* @media screen */
+
+@media only screen and (min-width:26em) {
+  p.abstract {
+    margin-left: 17%;
+    margin-right: 17%;
+  }
+} /* @media screen not tiny */
 
 @media print {
   p.abstract {
@@ -258,12 +265,17 @@ div.box-right
  border-radius: 12px;
 }
 
+@media only screen and (min-width:44em) {
+  div.box-right {
+    width: 35%;
+    min-width: 26em;
+  }
+}
+
 @media screen {
   div.box-right {
     background-color: #f1f3e6;
     border-color: #4d6251;
-    width: 35%;
-    min-width: 26em;
   }
 
   div.box-right a {
@@ -355,11 +367,18 @@ div.side-note .content {
 /* non-floating boxes ======================================== */
 
 div.box-center {
-  margin: 0.8em 8em;
+  margin: 0.8em 2em;
   padding: 0.2em 1em;
   border: 1px solid;
   border-radius: 5px;
 }
+
+@media only screen and (min-width:44em) {
+  div.box-center {
+    margin-left: 8em;
+    margin-right: 8em;
+  }
+} /* @media screen not tiny */
 
 div.box-center .header {
   display: block;
@@ -413,6 +432,18 @@ div.code {
   margin-top: -1em; /* get rid of the first newline */
   margin-bottom: 1em;
 }
+
+@media only screen and (max-width:44em) {
+  .terminal div.output {
+    overflow: scroll visible;
+  }
+  div.code {
+    overflow: scroll visible;
+  }
+  pre.pdu {
+    overflow: scroll visible;
+  }
+} /* @media screen narrow */
 
 .terminal .emph, .code .emph {
   font-style: normal;
