@@ -440,6 +440,9 @@ div.code {
   div.code {
     overflow: scroll visible;
   }
+  pre.pdu {
+    overflow: scroll visible;
+  }
 } /* @media screen narrow */
 
 .terminal .emph, .code .emph {
