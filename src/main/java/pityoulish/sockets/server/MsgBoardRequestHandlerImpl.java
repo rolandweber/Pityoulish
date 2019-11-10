@@ -121,7 +121,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
      }
 
     try {
-      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
+      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address, null);
       if (tick.punch())
        {
          msgBoard.putMessage(tick.getUsername(), mbreq.getText());
@@ -178,7 +178,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
      }
 
     try {
-      Ticket tick = ticketMgr.obtainTicket(mbreq.getOriginator(), address);
+      Ticket tick = ticketMgr.obtainTicket(mbreq.getOriginator(),
+                                           address, null);
 
       return new MsgBoardResponseImpl.Ticket(tick.getToken());
 
@@ -215,7 +216,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
      }
 
     try {
-      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
+      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address, null);
       ticketMgr.returnTicket(tick);
 
     } catch (TicketException tx) {
@@ -253,10 +254,10 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
      }
 
     try {
-      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address);
+      Ticket tick = ticketMgr.lookupTicket(mbreq.getTicket(), address, null);
       ticketMgr.returnTicket(tick);
 
-      tick = ticketMgr.obtainTicket(tick.getUsername(), address);
+      tick = ticketMgr.obtainTicket(tick.getUsername(), address, null);
 
       return new MsgBoardResponseImpl.Ticket(tick.getToken());
 

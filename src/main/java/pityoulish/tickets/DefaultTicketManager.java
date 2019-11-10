@@ -32,8 +32,10 @@ public class DefaultTicketManager implements TicketManager
   protected final TSanityChecker<String> sanityChecker;
 
   protected Map<String,TicketImpl>      ticketsByUsername;
-  protected Map<InetAddress,TicketImpl> ticketsByAddress;
   protected Map<String,TicketImpl>      ticketsByToken;
+  // the following are for simulated sanity checks...
+  protected Map<InetAddress,TicketImpl> ticketsByAddress;
+  protected Map<String,TicketImpl>      ticketsByHost;
 
   //@@@ no housekeeping implemented, expired tickets should get purged
 
@@ -43,8 +45,10 @@ public class DefaultTicketManager implements TicketManager
     sanityChecker = newSanityChecker(new StringProblemFactory());
 
     ticketsByUsername = new HashMap<String,TicketImpl>();
-    ticketsByAddress  = new HashMap<InetAddress,TicketImpl>();
     ticketsByToken    = new HashMap<String,TicketImpl>();
+
+    ticketsByAddress  = new HashMap<InetAddress,TicketImpl>();
+    ticketsByHost     = new HashMap<String,TicketImpl>();
   }
 
 
@@ -55,7 +59,8 @@ public class DefaultTicketManager implements TicketManager
 
 
   public synchronized Ticket obtainTicket(String username,
-                                          InetAddress address)
+                                          InetAddress address,
+                                          String host)
     throws TicketException
   {
     String problem = sanityChecker.checkUsername(username);
@@ -85,17 +90,31 @@ public class DefaultTicketManager implements TicketManager
                         (Catalog.ADDRESS_ALREADY_HAS_TICKET_1.format(address))
                         );
      }
+
+    if (host != null)
+     {
+       // see comment on (address != null) above, same applies to hostname
+       tick = ticketsByHost.get(host);
+       if ((tick != null) && !tick.isExpired(now))
+          throw Log.log(logger, "obtainTicket", new TicketException
+                        (Catalog.HOST_ALREADY_HAS_TICKET_1.format(host))
+                        );
+     }
+
     //@@@ trigger housekeeping if an expired ticket was found?
 
     final String token = computeToken(username);
-    final int  actions = 3;                     //@@@ randomize? 2..5
     final long  expiry = now + TIME_TO_LIVE_MS; //@@@ randomize?
-    tick = new TicketImpl(this, username, address, token, expiry, actions);
-
+    final int  actions = 3;                     //@@@ randomize? 2..5
+    tick = new TicketImpl(this, username, address, host, token,
+                          expiry, actions);
     ticketsByUsername.put(username, tick);
+    ticketsByToken.put(token, tick);
+
     if (address != null)
        ticketsByAddress.put(address, tick);
-    ticketsByToken.put(token, tick);
+    if (host != null)
+       ticketsByHost.put(host, tick);
 
     return tick;
 
@@ -103,7 +122,8 @@ public class DefaultTicketManager implements TicketManager
 
 
   public synchronized Ticket lookupTicket(String token,
-                                          InetAddress address)
+                                          InetAddress address,
+                                          String host)
     throws TicketException
   {
     String problem = sanityChecker.checkToken(token);
@@ -115,7 +135,7 @@ public class DefaultTicketManager implements TicketManager
        throw Log.log(logger, "lookupTicket", new TicketException
                      (Catalog.TICKET_NOT_FOUND_1.format(token)));
 
-    tick.validate(this, null, address, token);
+    tick.validate(this, null, address, host, token);
 
     return tick;
 
@@ -134,12 +154,15 @@ public class DefaultTicketManager implements TicketManager
     TicketImpl timp = (TicketImpl) tick;
 
     // make sure that it is a ticket from here
-    timp.validate(this, null, null, timp.getToken());
+    timp.validate(this, null, null, null, timp.getToken());
 
     ticketsByUsername.remove(timp.getUsername());
+    ticketsByToken.remove(timp.getToken());
+
     if (timp.getAddress() != null)
        ticketsByAddress.remove(timp.getAddress());
-    ticketsByToken.remove(timp.getToken());
+    if (timp.getHost() != null)
+       ticketsByHost.remove(timp.getHost());
   }
 
 

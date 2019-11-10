@@ -42,12 +42,14 @@ public interface TicketManager
    * @param username    the name of the user for which to obtain a new ticket
    * @param address     the address from which the ticket is requested,
    *                    or <code>null</code>
+   * @param host        the host from which the ticket is requested,
+   *                    or <code>null</code>
    *
    * @return    the new ticket for the user, never <code>null</code>
    *
    * @throws TicketException    if the ticket cannot be granted
    */
-  public Ticket obtainTicket(String username, InetAddress address)
+  public Ticket obtainTicket(String username, InetAddress address, String host)
     throws TicketException
     ;
 
@@ -66,6 +68,8 @@ public interface TicketManager
    * @param token       the token for the ticket to look up
    * @param address     the address from which the token is provided,
    *                    or <code>null</code>
+   * @param host        the host from which the token is provided,
+   *                    or <code>null</code>
    *
    * @return    the valid ticket that matches the token,
    *            never <code>null</code>
@@ -73,7 +77,7 @@ public interface TicketManager
    * @throws TicketException    if there is no valid ticket for the token,
    *                            or access to that ticket is denied
    */
-  public Ticket lookupTicket(String token, InetAddress address)
+  public Ticket lookupTicket(String token, InetAddress address, String host)
     throws TicketException
     ;
 

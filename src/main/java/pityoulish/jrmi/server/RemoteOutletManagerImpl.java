@@ -88,7 +88,7 @@ public class RemoteOutletManagerImpl extends RemoteObject
     Ticket tick = null;
     try {
       // Ticket and TicketManager are thread safe
-      tick = ticketMgr.lookupTicket(tictok, null);
+      tick = ticketMgr.lookupTicket(tictok, null, Util.getClientHost());
       if (!tick.punch())
          throw Catalog.log(logger, "publishOutlet", Catalog.TICKET_USED_UP_1
                            .asApiX(tick.getToken()));
@@ -149,7 +149,7 @@ public class RemoteOutletManagerImpl extends RemoteObject
 
     try {
       // Ticket and TicketManager are thread safe
-      Ticket tick = ticketMgr.lookupTicket(tictok, null);
+      Ticket tick = ticketMgr.lookupTicket(tictok, null, Util.getClientHost());
       if (tick.punch())
        {
          final String username = tick.getUsername();
