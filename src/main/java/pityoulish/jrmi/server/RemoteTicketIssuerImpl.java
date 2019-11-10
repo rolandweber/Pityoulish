@@ -63,7 +63,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
        throw Catalog.log(logger, "obtainTicket", apix);
 
     try {
-      Ticket tick = ticketMgr.obtainTicket(username, null);
+      Ticket tick = ticketMgr.obtainTicket(username, null,
+                                           Util.getClientHost());
 
       System.out.println(Catalog.REPORT_OBTAIN_TICKET_2.format
                          (username, tick.getToken()));
@@ -87,7 +88,7 @@ public class RemoteTicketIssuerImpl extends RemoteObject
        throw Catalog.log(logger, "returnTicket", apix);
 
     try {
-      Ticket tick = ticketMgr.lookupTicket(tictok, null);
+      Ticket tick = ticketMgr.lookupTicket(tictok, null, Util.getClientHost());
       ticketMgr.returnTicket(tick);
 
       System.out.println(Catalog.REPORT_RETURN_TICKET_1.format
@@ -110,10 +111,11 @@ public class RemoteTicketIssuerImpl extends RemoteObject
        throw Catalog.log(logger, "replaceTicket", apix);
 
     try {
-      Ticket tick = ticketMgr.lookupTicket(tictok, null);
+      Ticket tick = ticketMgr.lookupTicket(tictok, null, Util.getClientHost());
       ticketMgr.returnTicket(tick);
 
-      tick = ticketMgr.obtainTicket(tick.getUsername(), null);
+      tick = ticketMgr.obtainTicket(tick.getUsername(), null,
+                                    Util.getClientHost());
 
       System.out.println(Catalog.REPORT_REPLACE_TICKET_2.format
                          (tick.getUsername(), tick.getToken()));

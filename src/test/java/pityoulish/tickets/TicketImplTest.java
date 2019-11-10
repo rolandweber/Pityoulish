@@ -22,6 +22,7 @@ public class TicketImplTest
   protected static TicketImpl newTicketImpl(TicketManager creator,
                                             String       username,
                                             InetAddress   address,
+                                            String           host,
                                             String          token,
                                             long           expiry,
                                             int           actions)
@@ -30,13 +31,13 @@ public class TicketImplTest
        creator = new DefaultTicketManager();
     if (username == null)
        username = "j1user";
-    // InetAddress is optional
+    // InetAddress and host are optional
     if (token == null)
        token = "token/"+username;
     // expiry is primitive
     // actions is primitive
 
-    return new TicketImpl(creator, username, address,
+    return new TicketImpl(creator, username, address, host,
                           token, expiry, actions);
   }
                                             
@@ -48,11 +49,12 @@ public class TicketImplTest
     final TicketManager creator = new DefaultTicketManager();
     final String       username = "j1user";
     final InetAddress   address = InetAddress.getByName("127.0.0.1");
+    final String           host = "remotehost";
     final String          token = "token/"+username;
     final long           expiry = 1234567890L;
     final int           actions = 8;
 
-    TicketImpl ti = new TicketImpl(creator, username, address,
+    TicketImpl ti = new TicketImpl(creator, username, address, host,
                                    token, expiry, actions);
     // if there's no exception, we're good
 
@@ -60,6 +62,7 @@ public class TicketImplTest
     assertEquals("wrong creator", creator, ti.issuedBy);
     assertEquals("wrong username", username, ti.getUsername());
     assertEquals("wrong address", address, ti.getAddress());
+    assertEquals("wrong host", host, ti.getHost());
     assertEquals("wrong token", token, ti.getToken());
     assertEquals("wrong expiry", expiry, ti.expiryTime);
     assertEquals("wrong #actions", actions, ti.actionsRemaining);
@@ -72,11 +75,12 @@ public class TicketImplTest
     final TicketManager creator = new DefaultTicketManager();
     final String       username = "j1user";
     final InetAddress   address = null;
+    final String           host = null;
     final String          token = "token/"+username;
     final long           expiry = 1234567890L;
     final int           actions = 0;
 
-    Ticket t = new TicketImpl(creator, username, address,
+    Ticket t = new TicketImpl(creator, username, address, host,
                               token, expiry, actions);
     // if there's no exception, we're good
 
@@ -90,12 +94,13 @@ public class TicketImplTest
     final TicketManager creator = new DefaultTicketManager();
     final String       username = "j1user";
     final InetAddress   address = InetAddress.getByName("127.0.0.1");
+    final String           host = "remotehost";
     final String          token = "token/"+username;
     final long           expiry = 1234567890L;
     final int           actions = 8;
 
     try {
-      Ticket t = new TicketImpl(null, username, address,
+      Ticket t = new TicketImpl(null, username, address, host,
                                 token, expiry, actions);
       fail("missing TicketManager not detected, ticket="+t);
     } catch (RuntimeException expected) {
@@ -103,7 +108,7 @@ public class TicketImplTest
     }
 
     try {
-      Ticket t = new TicketImpl(creator, null, address,
+      Ticket t = new TicketImpl(creator, null, address, host,
                                 token, expiry, actions);
       fail("missing username not detected, ticket="+t);
     } catch (RuntimeException expected) {
@@ -111,7 +116,7 @@ public class TicketImplTest
     }
 
     try {
-      Ticket t = new TicketImpl(creator, username, address,
+      Ticket t = new TicketImpl(creator, username, address, host,
                                 null, expiry, actions);
       fail("missing token not detected, ticket="+t);
     } catch (RuntimeException expected) {
@@ -125,7 +130,8 @@ public class TicketImplTest
   //throws Exception
   {
     final long   expiry = 1234567890L;
-    final TicketImpl ti = newTicketImpl(null, null, null, null, expiry, 8);
+    final TicketImpl ti = newTicketImpl(null, null, null, null, null,
+                                        expiry, 8);
 
     boolean expired = ti.isExpired(expiry);
 
@@ -137,7 +143,8 @@ public class TicketImplTest
   //throws Exception
   {
     final long   expiry = 1234567890L;
-    final TicketImpl ti = newTicketImpl(null, null, null, null, expiry, 8);
+    final TicketImpl ti = newTicketImpl(null, null, null, null, null,
+                                        expiry, 8);
 
     boolean expired = ti.isExpired(expiry-1L);
 
@@ -149,7 +156,8 @@ public class TicketImplTest
   //throws Exception
   {
     final long   expiry = System.currentTimeMillis();
-    final TicketImpl ti = newTicketImpl(null, null, null, null, expiry, 8);
+    final TicketImpl ti = newTicketImpl(null, null, null, null, null,
+                                        expiry, 8);
 
     boolean expired = ti.isExpired();
 
@@ -160,7 +168,8 @@ public class TicketImplTest
   @Test public void punch()
     throws Exception
   {
-    final TicketImpl ti = newTicketImpl(null, null, null, null, 0L, 2);
+    final TicketImpl ti = newTicketImpl(null, null, null, null, null,
+                                        0L, 2);
 
     boolean action1 = ti.punch();
     boolean action2 = ti.punch();
@@ -180,6 +189,7 @@ public class TicketImplTest
     final TicketManager creator = new DefaultTicketManager();
     final String       username = "j1user";
     final InetAddress   address = InetAddress.getByName("127.0.0.1");
+    final String           host = "remotehost";
     final String          token = "token/"+username;
     final long           expiry = System.currentTimeMillis()+8000L;
     final int           actions = 8;
@@ -187,27 +197,34 @@ public class TicketImplTest
     // There's a race condition here: if running this test takes
     // longer than 8 secs, the ticket expires and validation fails.
 
-    TicketImpl ti = new TicketImpl(creator, username, address,
+    TicketImpl ti = new TicketImpl(creator, username, address, host,
                                    token, expiry, actions);
     try {
-      ti.validate(creator, username, address, token);
+      ti.validate(creator, username, address, host, token);
     } catch (TicketException tx) {
       tx.printStackTrace();
       fail("full data should validate");
     }
 
     try {
-      ti.validate(creator, null, address, token);
+      ti.validate(creator, null, address, host, token);
     } catch (TicketException tx) {
       tx.printStackTrace();
       fail("absent username should validate");
     }
 
     try {
-      ti.validate(creator, username, null, token);
+      ti.validate(creator, username, null, host, token);
     } catch (TicketException tx) {
       tx.printStackTrace();
       fail("absent address should validate");
+    }
+
+    try {
+      ti.validate(creator, username, address, null, token);
+    } catch (TicketException tx) {
+      tx.printStackTrace();
+      fail("absent host should validate");
     }
   }
 
@@ -218,6 +235,7 @@ public class TicketImplTest
     final TicketManager creator = new DefaultTicketManager();
     final String       username = "j1user";
     final InetAddress   address = InetAddress.getByName("127.0.0.1");
+    final String           host = "remotehost";
     final String          token = "token/"+username;
     final long           expiry = System.currentTimeMillis()+8000L;
     final int           actions = 8;
@@ -225,12 +243,12 @@ public class TicketImplTest
     // There's a race condition here: if this test runs longer than 8 secs,
     // the ticket expires and validation fails for the wrong reason.
 
-    TicketImpl ti = new TicketImpl(creator, username, address,
+    TicketImpl ti = new TicketImpl(creator, username, address, host,
                                    token, expiry, actions);
 
     try {
       final TicketManager creator2 = new DefaultTicketManager();
-      ti.validate(creator2, username, address, token);
+      ti.validate(creator2, username, address, host, token);
       fail("wrong creator should not validate");
     } catch (TicketException expected) {
       // expected
@@ -238,7 +256,7 @@ public class TicketImplTest
 
     try {
       final String username2 = "j2user";
-      ti.validate(creator, username2, address, token);
+      ti.validate(creator, username2, address, host, token);
       fail("wrong username should not validate");
     } catch (TicketException expected) {
       // expected
@@ -246,15 +264,23 @@ public class TicketImplTest
 
     try {
       final InetAddress address2 = InetAddress.getByName("127.0.0.2");
-      ti.validate(creator, username, address2, token);
+      ti.validate(creator, username, address2, host, token);
       fail("wrong address should not validate");
     } catch (TicketException expected) {
       // expected
     }
 
     try {
+      final String host2 = "wronghost";
+      ti.validate(creator, username, address, host2, token);
+      fail("wrong host should not validate");
+    } catch (TicketException expected) {
+      // expected
+    }
+
+    try {
       final String token2 = "token2/"+username;
-      ti.validate(creator, username, address, token2);
+      ti.validate(creator, username, address, host, token2);
       fail("wrong token should not validate");
     } catch (TicketException expected) {
       // expected
@@ -262,7 +288,7 @@ public class TicketImplTest
 
     // assert that the ticket has not yet expired
     try {
-      ti.validate(creator, username, address, token);
+      ti.validate(creator, username, address, host, token);
     } catch (TicketException expected) {
       fail("ticket expired while testing");
     }

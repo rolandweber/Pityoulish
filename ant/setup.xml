@@ -4,7 +4,8 @@
   terms of the Creative Commons CC0 1.0 Universal license.
   https://creativecommons.org/publicdomain/zero/1.0/
 -->
-<project name="setup" basedir="..">
+<project name="setup" basedir=".."
+         xmlns:if="ant:if" xmlns:unless="ant:unless">
 <!-- ${basedir} is the root directory for input files (source).
      ${projectdir} is the root directory for all generated files.
      To treat ${basedir} as read-only, point ${projectdir} somewhere else.
@@ -62,10 +63,23 @@
 </presetdef>
 
 
-<presetdef name="jdoc.pty">
+<condition property="use-javadoc-stylesheet">
+  <equals arg1="${ant.java.version}" arg2="1.8" />
+</condition>
+
+<presetdef name="jdoc.pty" if:set="use-javadoc-stylesheet">
   <javadoc failonerror="true"
            access="protected"
            stylesheetfile="src/main/prose/pityoulish-jdocs.css"
+           nohelp="true"
+           encoding="ISO-8859-1"
+           >
+  </javadoc>
+</presetdef>
+
+<presetdef name="jdoc.pty" unless:set="use-javadoc-stylesheet">
+  <javadoc failonerror="true"
+           access="protected"
            nohelp="true"
            encoding="ISO-8859-1"
            >

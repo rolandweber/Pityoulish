@@ -105,7 +105,7 @@ public class RemoteMessageBoardImpl extends RemoteObject
 
     try {
       // Ticket and TicketManager are thread safe, MessageBoard is not
-      Ticket tick = ticketMgr.lookupTicket(tictok, null);
+      Ticket tick = ticketMgr.lookupTicket(tictok, null, Util.getClientHost());
       if (tick.punch())
        {
          synchronized (msgBoard) {

@@ -22,6 +22,9 @@ public class TicketImpl implements Ticket
   /** The address for which this ticket was issued. */
   protected final InetAddress issuedToAddress;
 
+  /** The host for which this ticket was issued. */
+  protected final String issuedToHost;
+
   /** The token that represents this ticket. */
   protected final String ticketToken;
 
@@ -41,20 +44,21 @@ public class TicketImpl implements Ticket
    * @param creator     the manager creating this ticket
    * @param username    the username
    * @param address     the client address, or <code>null</code>
+   * @param host        the client host, or <code>null</code>
    * @param token       the token representing this ticket
    * @param expiry      the time at which this ticket expires. To be compared
    *    with {@link System#currentTimeMillis System.currentTimeMillis()}
    * @param actions     the number of actions to allow with this ticket
    */
   protected TicketImpl(TicketManager creator, String username,
-                       InetAddress address, String token,
-                       long expiry, int actions)
+                       InetAddress address, String host,
+                       String token, long expiry, int actions)
   {
     if (creator == null)
        throw new NullPointerException("TicketManager");
     if (username == null)
        throw new NullPointerException("username");
-    // address might be null
+    // address and host might be null
     if (token == null)
        throw new NullPointerException("token");
 
@@ -66,6 +70,7 @@ public class TicketImpl implements Ticket
     issuedBy = creator;
     issuedToUsername = username;
     issuedToAddress = address;
+    issuedToHost = host;
     ticketToken = token;
     expiryTime = expiry;
 
@@ -87,7 +92,7 @@ public class TicketImpl implements Ticket
    *    if this ticket is not valid in the context of the arguments
    */
   public final void validate(TicketManager creator, String username,
-                             InetAddress address, String token)
+                             InetAddress address, String host, String token)
     throws TicketException
   {
     if (creator == null)
@@ -95,16 +100,23 @@ public class TicketImpl implements Ticket
     if (token == null)
        throw new NullPointerException("token");
 
+    // required attribute matches
     if (issuedBy != creator)
        throw new TicketException(Catalog.WRONG_TICKET_MANAGER.lookup());
     if (!ticketToken.equals(token))
        throw new TicketException(Catalog.WRONG_TOKEN.lookup());
+
+    // optional attribute matches
     if ((username != null) && !issuedToUsername.equals(username))
        throw new TicketException(Catalog.WRONG_USERNAME.lookup());
     if ((address != null) && (issuedToAddress != null) &&
         !issuedToAddress.equals(address))
        throw new TicketException(Catalog.WRONG_NETWORK_ADDRESS.lookup());
+    if ((host != null) && (issuedToHost != null) &&
+        !issuedToHost.equals(host))
+       throw new TicketException(Catalog.WRONG_NETWORK_HOST.lookup());
 
+    // validity checks
     if (isExpired())
        throw new TicketException(Catalog.TICKET_EXPIRED.lookup());
 
@@ -146,6 +158,11 @@ public class TicketImpl implements Ticket
   public final InetAddress getAddress()
   {
     return issuedToAddress;
+  }
+
+  public final String getHost()
+  {
+    return issuedToHost;
   }
 
   public final String getToken()

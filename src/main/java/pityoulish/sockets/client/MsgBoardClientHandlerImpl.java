@@ -176,6 +176,14 @@ public class MsgBoardClientHandlerImpl extends MsgBoardClientHandlerBase
        pos += count;
      }
 
+    if ((data[0] == 'H') &&
+        (data[1] == 'T') &&
+        (data[2] == 'T') &&
+        (data[3] == 'P') ) {
+      // happens often enough to merit a dedicated check and error message
+      throw new Exception(Catalog.RECEIVE_HTTP_INSTEAD_OF_TLV_0.format());
+    }
+
     // Responses are in TLV format, see ASN.1 BER
     // byte 1: type of the response
     // byte 2: length of length, value 0x82 indicating 2 bytes for the length
