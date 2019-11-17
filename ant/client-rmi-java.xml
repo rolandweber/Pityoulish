@@ -6,7 +6,7 @@
 -->
 <project name="client-rmi-java" default="client-rmi-java" basedir="..">
 <description>
-Exercise: Message Board Client and Direct Message Outlet with Java RMI
+Exercise: Message Board Client with Java RMI
 </description>
 
 <import file="common.xml" />
@@ -16,7 +16,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
 
 <!-- prefix of the target filenames -->
 <property name="client-rmi-java.name"  value="mbclient-jrmi" />
-<property name="outlet-rmi-java.name"  value="dmoutlet-jrmi" />
 <property name="client-rmi-java.prose"
           location="${dir.target}/${client-rmi-java.name}" />
 
@@ -28,10 +27,13 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
 
 <target name="xjr-clean">
   <delete quiet="true">
-    <fileset dir="${client-rmi-java.tmp}" />
-    <fileset dir="${dir.target}">
+    <fileset dir="${client-rmi-java.tmp}" erroronmissingdir="false" />
+    <fileset dir="${client-rmi-java.prose}" erroronmissingdir="false" />
+    <fileset dir="${dir.target}" erroronmissingdir="false">
       <include name="${client-rmi-java.name}*" />
     </fileset>
+    <dirset dir="${client-rmi-java.tmp}" erroronmissingdir="false" />
+    <dirset dir="${client-rmi-java.prose}" erroronmissingdir="false" />
   </delete>
 </target>
 
@@ -74,41 +76,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
     </fileset>
   </jar.pty>
 
-
-  <!-- same pattern for sources and classes, pitted and filled -->
-  <patternset id="outlet-rmi-java.into.jar">
-    <include name="pityoulish/jrmi/api/*" />
-    <include name="pityoulish/jrmi/outlet/*" />
-    <include name="pityoulish/cmdline/*" />
-    <include name="pityoulish/i18n/*" />
-    <include name="pityoulish/mbclient/*" />
-    <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
-  </patternset>
-
-  <jar.pty destfile="${dir.target}/${outlet-rmi-java.name}-faulty.jar">
-    <manifest>
-      <attribute name="Main-Class" value="pityoulish.jrmi.outlet.Main" />
-    </manifest>
-    <fileset dir="${src.pitted}">
-      <patternset refid="outlet-rmi-java.into.jar" />
-    </fileset>
-    <fileset dir="${classes.pitted}">
-      <patternset refid="outlet-rmi-java.into.jar" />
-    </fileset>
-  </jar.pty>
-
-  <jar.pty destfile="${dir.target}/${outlet-rmi-java.name}-good.jar">
-    <manifest>
-      <attribute name="Main-Class" value="pityoulish.jrmi.outlet.Main" />
-    </manifest>
-    <fileset dir="${src.filled}">
-      <patternset refid="outlet-rmi-java.into.jar" />
-    </fileset>
-    <fileset dir="${classes.filled}">
-      <patternset refid="outlet-rmi-java.into.jar" />
-    </fileset>
-  </jar.pty>
-
 </target>
 
 
@@ -125,7 +92,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
     <packageset dir="${src.pitted}">
       <include name="pityoulish/jrmi/api" />
       <include name="pityoulish/jrmi/client" />
-      <include name="pityoulish/jrmi/outlet" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
       <include name="pityoulish/mbclient" />
@@ -136,9 +102,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
     <group title="Message Board Client">
       <package name="pityoulish.jrmi.client" />
       <package name="pityoulish.mbclient" />
-    </group>
-    <group title="Direct Messages">
-      <package name="pityoulish.jrmi.outlet" />
     </group>
     <group title="Support">
       <package name="pityoulish.cmdline" />
@@ -159,7 +122,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
       <include name="xjr-*" />
       <include name="test-fix-repeat.html" />
       <include name="message-board.html" />
-      <include name="direct-messages.html" />
     </fileset>
   </copy>
   <move file="${client-rmi-java.prose}/xjr-index.html"
@@ -177,7 +139,6 @@ Exercise: Message Board Client and Direct Message Outlet with Java RMI
   -->
   <copy todir="${client-rmi-java.prose}">
     <file file="${dir.target}/${client-rmi-java.name}-faulty.jar" />
-    <file file="${dir.target}/${outlet-rmi-java.name}-faulty.jar" />
     <fileset dir="${client-rmi-java.tmp}" includes="jdoc/**" />
   </copy>
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This work is released into the Public Domain under the
+  terms of the Creative Commons CC0 1.0 Universal license.
+  https://creativecommons.org/publicdomain/zero/1.0/
+-->
+<project name="outlet-rmi-java" default="outlet-rmi-java" basedir="..">
+<description>
+Exercise: Direct Message Outlet with Java RMI
+</description>
+
+<import file="common.xml" />
+
+<target name="outlet-rmi-java" depends="ojr-all"
+        description="Exercise: Direct Messages with Java RMI (ojr)" />
+
+<!-- prefix of the target filenames -->
+<property name="outlet-rmi-java.name"  value="dmoutlet-jrmi" />
+<property name="outlet-rmi-java.prose"
+          location="${dir.target}/${outlet-rmi-java.name}" />
+
+<property name="outlet-rmi-java.tmp"
+          location="${dir.tmp}/outlet-rmi-java" />
+<property name="outlet-rmi-java.jdoc"
+          location="${outlet-rmi-java.tmp}/jdoc" />
+
+
+<target name="ojr-clean">
+  <delete quiet="true">
+    <fileset dir="${outlet-rmi-java.tmp}" erroronmissingdir="false" />
+    <fileset dir="${outlet-rmi-java.prose}" erroronmissingdir="false" />
+    <fileset dir="${dir.target}" erroronmissingdir="false">
+      <include name="${outlet-rmi-java.name}*" />
+    </fileset>
+    <dirset dir="${outlet-rmi-java.tmp}" erroronmissingdir="false" />
+    <dirset dir="${outlet-rmi-java.prose}" erroronmissingdir="false" />
+  </delete>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ojr-jar" depends="_tstamps,compile-pitfill">
+
+  <!-- same pattern for sources and classes, pitted and filled -->
+  <patternset id="outlet-rmi-java.into.jar">
+    <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/outlet/*" />
+    <include name="pityoulish/cmdline/*" />
+    <include name="pityoulish/i18n/*" />
+    <include name="pityoulish/mbclient/*" /><!-- @@@ should get rid of -->
+    <include name="pityoulish/outtake/Missing*" /><!-- not package.html -->
+  </patternset>
+
+  <jar.pty destfile="${dir.target}/${outlet-rmi-java.name}-faulty.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.outlet.Main" />
+    </manifest>
+    <fileset dir="${src.pitted}">
+      <patternset refid="outlet-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.pitted}">
+      <patternset refid="outlet-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+  <jar.pty destfile="${dir.target}/${outlet-rmi-java.name}-good.jar">
+    <manifest>
+      <attribute name="Main-Class" value="pityoulish.jrmi.outlet.Main" />
+    </manifest>
+    <fileset dir="${src.filled}">
+      <patternset refid="outlet-rmi-java.into.jar" />
+    </fileset>
+    <fileset dir="${classes.filled}">
+      <patternset refid="outlet-rmi-java.into.jar" />
+    </fileset>
+  </jar.pty>
+
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ojr-jdoc" depends="preprocess">
+
+  <delete dir="${outlet-rmi-java.tmp}/jdoc" quiet="true" />
+  <mkdir  dir="${outlet-rmi-java.tmp}/jdoc" />
+
+  <jdoc.pty destdir="${outlet-rmi-java.tmp}/jdoc"
+            windowtitle="Exercise: Direct Messages with Java RMI"
+            >
+    <packageset dir="${src.pitted}">
+      <include name="pityoulish/jrmi/api" />
+      <include name="pityoulish/jrmi/outlet" />
+      <include name="pityoulish/cmdline" />
+      <include name="pityoulish/i18n" />
+      <include name="pityoulish/mbclient" /><!-- @@@ should get rid of -->
+    </packageset>
+    <group title="Remote API">
+      <package name="pityoulish.jrmi.api" />
+    </group>
+    <group title="Direct Messages">
+      <package name="pityoulish.jrmi.outlet" />
+    </group>
+    <group title="Support">
+      <package name="pityoulish.cmdline" />
+      <package name="pityoulish.i18n" />
+    </group>
+  </jdoc.pty>
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ojr-prose">
+
+  <delete dir="${outlet-rmi-java.prose}" />
+  <copy todir="${outlet-rmi-java.prose}">
+    <fileset refid="prose.common.files" />
+    <fileset dir="src/main/prose">
+      <include name="ojr-*" />
+      <include name="test-fix-repeat.html" />
+      <include name="direct-messages.html" />
+    </fileset>
+  </copy>
+  <move file="${outlet-rmi-java.prose}/ojr-index.html"
+        tofile="${outlet-rmi-java.prose}/index.html" />
+</target>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<target name="ojr-all" depends="_tstamps,ojr-jar,ojr-jdoc,ojr-prose">
+
+  <!-- Prepare the directory structure of the archive in the filesystem.
+       <zip> could assemble the files from different locations, but then
+       the developer would have to unzip in order to check the contents.
+  -->
+  <copy todir="${outlet-rmi-java.prose}">
+    <file file="${dir.target}/${outlet-rmi-java.name}-faulty.jar" />
+    <fileset dir="${outlet-rmi-java.tmp}" includes="jdoc/**" />
+  </copy>
+
+  <property name="outlet-rmi-java.zip.prefix"
+            value="${outlet-rmi-java.name}" />
+
+  <zip destfile="${dir.target}/${outlet-rmi-java.zip.prefix}.zip">
+    <zipfileset dir="${dir.target}/${outlet-rmi-java.name}"
+                prefix="${outlet-rmi-java.zip.prefix}" />
+    <zipfileset dir="${build.stamp.dir}" includes="${build.stamp.name}"
+                prefix="${outlet-rmi-java.zip.prefix}" />
+  </zip>
+</target>
+
+
+</project>

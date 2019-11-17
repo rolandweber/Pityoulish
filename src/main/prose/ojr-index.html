@@ -9,39 +9,37 @@ https://creativecommons.org/publicdomain/zero/1.0/
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width">
 <link rel="stylesheet" type="text/css" href="pityoulish.css" />
-<title>Exercise: Message Board Client with Java RMI </title>
+<title>Exercise: Direct Messages with Java RMI </title>
 </head>
 <body>
 <h1 id="exercise" class="title">
-  <span>Exercise: Message Board Client with Java RMI</span>
+  <span>Exercise: Direct Messages with Java RMI</span>
 </h1>
 <p class="abstract">
-During this exercise, you will enjoy the convenience
-of remote method invocations.
+During this exercise, you will have a close encounter with the intricacies
+of the callee side of remote method invocations.
 </p>
 
 <div class="larger">
 <p>
 Your task is to <a href="test-fix-repeat.html">Test and Fix</a>
-a Java program, a
-<a href="message-board.html"
-   title="high-level description of Message Board functionality"
-   >Message Board</a> client
-using Java Remote Method Invocation.
-This allows for a direct comparison with the Message Board client
-using sockets from a previous exercise.
+a Java program that sends and receives
+<a href="direct-messages.html"
+   title="high-level description of Direct Message functionality"
+   >Direct Messages</a>.
+This exposes the callee side of remote invocations.
 </p>
 
 <p>
 A recipe for solving this task has been conveyed beforehand in a Tutorial.
-It was applied in a previous exercise with sockets in Java.
+It was applied in a previous exercise about the Message Board with Java RMI.
 If you missed both, you're probably screwed now.
 Unless you have experience with programming and debugging.
 </p>
 
 <ol>
 <li><a href="#setup">Setup</a> before you begin</li>
-<li><a href="#mbclient">Message Board Client</a></li>
+<li><a href="#dmoutlet">Direct Message Outlet</a></li>
 <li><a href="#code">Code Overview</a></li>
 <li><a href="#learned">Lessons Learned</a> when done</li>
 </ol>
@@ -93,18 +91,18 @@ along with the following:
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h2 id="mbclient">
-  <span>Message Board Client</span>
-  <a href="#mbclient" class="here-link">&para;</a>
+<h2 id="dmoutlet">
+  <span>Direct Message Outlet</span>
+  <a href="#dmoutlet" class="here-link">&para;</a>
 </h2>
 
 
 <div class="box-right">
 <dl>
-<dt><a href="mbclient-jrmi-faulty.jar"
-       ><code>mbclient-jrmi-faulty.jar</code></a></dt>
+<dt><a href="dmoutlet-jrmi-faulty.jar"
+       ><code>dmoutlet-jrmi-faulty.jar</code></a></dt>
 <dd>The program to test and fix. Usage instructions:
-  <div><code>&nbsp;&nbsp;java -jar mbclient-jrmi-faulty.jar</code></div>
+  <div><code>&nbsp;&nbsp;java -jar dmoutlet-jrmi-faulty.jar</code></div>
   Sources are in the jar,
   <a href="jdoc/index.html" target="_blank">docs</a> here.
 </dd>
@@ -112,88 +110,81 @@ along with the following:
 </div><!-- box-right -->
 
 <p>
-Download the client program, <a href="mbclient-jrmi-faulty.jar"
-                        ><code>mbclient-jrmi-faulty.jar</code></a>,
+Download the outlet program, <a href="dmoutlet-jrmi-faulty.jar"
+                        ><code>dmoutlet-jrmi-faulty.jar</code></a>,
 and give it a decent filename.
 </p>
 
 <p>
-Run the client without arguments to obtain the usage instructions.
+Run the program without arguments to obtain the usage instructions.
 Read and understand those.
-Each command corresponds with an operation of the
-<a href="message-board.html"
-   title="high-level description of Message Board functionality"
-   >Message Board</a>.
-This client supports exactly the same commands as the client with sockets.
+The commands correspond with operations for
+<a href="direct-messages.html"
+   title="high-level description of Direct Message functionality"
+   >Direct Messages</a>.
+</p>
+<p class="larger">
+To obtain tickets, use the Message Board client from above.
 </p>
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="client-sequence">
+<h3 id="outlet-sequence">
   <span>Test Sequence</span>
-  <a href="#client-sequence" class="here-link">&para;</a>
+  <a href="#outlet-sequence" class="here-link">&para;</a>
 </h3>
 
 <p>
-You can re-use the test sequence from the previous exercise
-about the Message Board Client with sockets.
-For example:
+The outlet program supports two modes of operation.
+On one hand, it can open an outlet and wait for direct messages.
+On the other hand, it can make a remote call to an outlet or outlet manager.
+For cooperation with your fellow students, please open an outlet
+as soon as possible and keep it open while you work on the remote calls.
+Last but not least, cleanup is required when closing an outlet.
+For example, use the following test sequence:
 </p>
 <ol>
 <li>
-List messages from the board, without marker.
+Open an outlet, with a timespan of several minutes.
+When that works, run the program in a dedicated terminal and
+keep the outlet open for the remainder of the programming session,
+or at least until you get to the cleanup part. Check the terminal
+once in a while for direct messages from other students or the instructor.
 </li>
 <li>
-Obtain a ticket.
+List the usernames for published outlets.
+Expect to see your own, maybe that of the instructor, and
+those of other students that managed to open an outlet.
 </li>
 <li>
-Put some messages on the board.
+Send direct messages to the published outlets:
+a single recipient, a list of recipients, or * for everyone.
+Expect to deal with errors, because outlets may close
+without removing their entry from the directory.
 </li>
 <li>
-List messages again, with and without marker.
-Use different markers.
+Unpublish your own outlet, before or after stopping
+the program running in a dedicated terminal.
 </li>
 <li>
-Return a ticket.
-Use it again afterwards, to verify that it is no longer valid.
+Open an outlet, for a few seconds only.
+Make sure that the program closes the outlet and exits cleanly.
+Note the difference between closing the outlet and unpublishing it.
 </li>
 <li>
-Replace a ticket, before and after exhausting all operations.
+Can you open more than one outlet at a time?
 </li>
 </ol>
 
 <p>
-There are three problems to find and fix.
+There are four problems to fix in the code.
+There are numerous problems in the application architecture,
+but those are not the topic of this exercise.
 Before hacking the code, get an
 <a href="#code"
    title="Code Overview (below)"
    >overview</a>.
 </p>
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="client-challenge">
-  <span>Extra Challenge</span>
-  <a href="#client-challenge" class="here-link">&para;</a>
-</h3>
-
-<p>
-If you completed the test sequence with time to spare,
-write a more convenient client for posting messages.
-You're welcome to re-use code from the exercise, of course.
-Your new client should execute these steps in one go:
-</p>
-<ol>
-<li>
-Obtain a token.
-</li>
-<li>
-Post a message.
-</li>
-<li>
-Return the token.
-</li>
-</ol>
 
 
 
@@ -206,7 +197,8 @@ Return the token.
 <p>
 The <a href="jdoc/index.html" target="_blank">JavaDocs</a>
 for this exercise are split into three groups.
-The Remote API and Message Board Client are the topic of this exercise.
+The Remote API has some overlap with the Message Board exercise.
+Direct Messages are all about this exercise.
 The last group comprises support packages which are already known from
 the Tutorial. The other packages are briefly described here.
 </p>
@@ -219,7 +211,7 @@ the Tutorial. The other packages are briefly described here.
 
 <p>
 The Remote API in <code>pityoulish.jrmi.api</code> defines the glue
-which keeps clients and server<!--, outlets and senders--> together.
+which keeps <!--clients and server, -->outlets and senders together.
 There are four interfaces for remotely callable objects,
 they extend <code>java.rmi.Remote</code>.
 Three of them are named <code>Remote*</code>, their objects will be
@@ -242,26 +234,39 @@ to clearly distinguish Java RMI problems from application problems.
 
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<h3 id="code-MessageBoard">
-  <span>Message Board Client</span>
-  <a href="#code-MessageBoard" class="here-link">&para;</a>
+<h3 id="code-DirectMessages">
+  <span>Direct Messages</span>
+  <a href="#code-DirectMessages" class="here-link">&para;</a>
 </h3>
 
 <p>
-Package <code>pityoulish.jrmi.client</code>
-contains the client for the Message Board.
-From the Remote API, it relies on
-<code>RemoteMessageBoard</code>, <code>RemoteTicketIssuer</code>,
-and the data representation of
-<code>MessageList</code> and <code>MessageItem</code>.
-Package <code>pityoulish.mbclient</code> is familiar from a previous exercise.
-Commands are delegated to a <code>MsgBoardClientHandler</code>,
-backend arguments recorded by a <code>HostPortBackendHandler</code>.
-The <code>.client</code> package extends the backend handler with
-some lookup methods.
-A <code>DataFormatter</code> is responsible for printing data
-obtained from the server.
-Each of the interfaces has a single implementation class.
+Package <code>pityoulish.jrmi.outlet</code>
+contains the logic for sending and receiving Direct Messages.
+It relies on two interfaces of the Remote API.
+<code>RemoteOutletManager</code> is provided by the server.
+<code>DirectMessageOutlet</code> is both implemented and called
+by this package.
+<code>Main</code>, <code>MsgOutletCommandDispatcher</code>,
+and <code>RegistryBackendHandler</code>
+are similar to the Message Board client above.
+</p>
+
+<p>
+The commands supported by the program are delegated to
+<code>MsgOutletHandler</code>.
+The handler uses <code>LocalOutletFactory</code> to open and close
+a local <code>DirectMessageOutlet</code>.
+All three interfaces have a single implementation class.
+The outlet implementation simply checks arguments and
+prints method invocations to the console.
+</p>
+
+
+<p style="background-color: red;"><!-- @@@ should be changed... -->
+Logically, Direct Messages require the same ticket-related operations as
+the Message Board client. To avoid code duplication, those commands which
+call the <code>RemoteTicketIssuer</code> are not implemented here again.
+Instead, use the Message Board client to obtain tickets.
 </p>
 
 
