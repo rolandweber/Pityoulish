@@ -16,6 +16,36 @@ I'm teaching Distributed Systems from October through December each year. You ca
 
 ## History and Lessons Learned
 
+### 2019
+
+Feedback:
+[Tutorial #84](https://github.com/rolandweber/pityoulish/issues/84),
+[Sockets #87](https://github.com/rolandweber/pityoulish/issues/87),
+[Java RMI #90](https://github.com/rolandweber/pityoulish/issues/90)
+
+The Tutorial is working quite well by now.
+To familiarize the students with the Message Board protocol, we discussed
+the design of an HTTP API for it. That generated interest and contributions,
+I'm planning to repeat this in the years to come. In particular while I don't
+have [an HTTP exercise](https://github.com/rolandweber/pityoulish/issues/6).
+
+The Sockets exercise and the first part of the Java RMI exercise went
+reasonably well. The second part of the Java RMI exercise turned out to be
+an unmitigated desaster. Not a single student managed to solve any of the
+planted bugs, without direct instructions from me what to do. The feedback
+was that nobody could see the bigger picture beyond the code challenge.
+
+I'm not sure if this year's class was extra challenged because they had
+little development background, or if there is a more fundamental problem
+with that exercise. On the other hand, I want to cut back the time spent
+on Java RMI and remote calls anyway. So I decided to skip the second part
+of the Java RMI exercise in future years. The first part matches with the
+functionality of the Sockets exercise, I'll keep that around for a while.
+The idea is to replace it with
+[a gRPC exercise](https://github.com/rolandweber/pityoulish/issues/36)
+at some point in time.
+
+
 ### 2018
 
 Feedback:
