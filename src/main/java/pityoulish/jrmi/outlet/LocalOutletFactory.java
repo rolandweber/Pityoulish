@@ -5,7 +5,7 @@
  */
 package pityoulish.jrmi.outlet;
 
-import pityoulish.jrmi.api.DirectMessageOutlet;
+import pityoulish.jrmi.api.dm.DirectMessageOutlet;
 
 
 /**

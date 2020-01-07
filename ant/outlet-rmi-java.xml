@@ -45,6 +45,7 @@ Exercise: Direct Message Outlet with Java RMI
   <!-- same pattern for sources and classes, pitted and filled -->
   <patternset id="outlet-rmi-java.into.jar">
     <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/api/dm/*" />
     <include name="pityoulish/jrmi/outlet/*" />
     <include name="pityoulish/cmdline/*" />
     <include name="pityoulish/i18n/*" />
@@ -91,6 +92,7 @@ Exercise: Direct Message Outlet with Java RMI
             >
     <packageset dir="${src.pitted}">
       <include name="pityoulish/jrmi/api" />
+      <include name="pityoulish/jrmi/api/dm" />
       <include name="pityoulish/jrmi/outlet" />
       <include name="pityoulish/cmdline" />
       <include name="pityoulish/i18n" />
@@ -98,6 +100,7 @@ Exercise: Direct Message Outlet with Java RMI
     </packageset>
     <group title="Remote API">
       <package name="pityoulish.jrmi.api" />
+      <package name="pityoulish.jrmi.api.dm" />
     </group>
     <group title="Direct Messages">
       <package name="pityoulish.jrmi.outlet" />

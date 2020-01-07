@@ -45,6 +45,7 @@ Instructions: Message Board with Java RMI
   <patternset id="server-rmi-java.into.jar">
     <include name="pityoulish/jrmi/server/*" />
     <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/api/dm/*" />
     <include name="pityoulish/msgboard/*" />
     <include name="pityoulish/tickets/*" />
     <include name="pityoulish/mbserver/*" />

@@ -10,7 +10,7 @@ package pityoulish.jrmi.outlet;
 import java.rmi.server.UnicastRemoteObject;
 // PYL:end
 
-import pityoulish.jrmi.api.DirectMessageOutlet;
+import pityoulish.jrmi.api.dm.DirectMessageOutlet;
 // PYL:keep
 import pityoulish.outtake.Missing;
 // PYL:cut

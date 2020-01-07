@@ -3,20 +3,27 @@
  * terms of the Creative Commons CC0 1.0 Universal license.
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
-package pityoulish.jrmi.api;
+package pityoulish.jrmi.api.dm;
 
 import java.util.List;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import pityoulish.jrmi.api.APIException;
+
 
 /**
  * Remote interface for publishing {@link DirectMessageOutlet} instances.
- * Tickets must be obtained from the {@link RemoteTicketIssuer}.
+ * Tickets must be obtained from the
+ * {@link pityoulish.jrmi.api.RemoteTicketIssuer}.
  */
 public interface RemoteOutletManager extends Remote
 {
+  /** The default name of this manager in the RMI registry. */
+  public final static String REGISTRY_NAME = "RemoteOutletManager";
+
+
   /**
    * Publishes an outlet for direct messages.
    *
