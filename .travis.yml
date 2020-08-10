@@ -8,7 +8,7 @@ branches:
   except:
   - /^prose-.*$/
 
-dist: xenial
+dist: bionic
 addons:
   apt:
     update: true
