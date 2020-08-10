@@ -41,8 +41,8 @@ Unless you have experience with programming and debugging.
 
 <ol>
 <li><a href="#setup">Setup</a> before you begin</li>
-<li><a href="#mbclient">Message Board Client</a></li>
-<li><a href="#code">Code Overview</a></li>
+<li><a href="#mbclient">Message Board Client</a> to exercise with</li>
+<li><a href="#code">Code Overview</a> to find your way</li>
 <li><a href="#learned">Lessons Learned</a> when done</li>
 </ol>
 
@@ -206,9 +206,10 @@ Return the token.
 <p>
 The <a href="jdoc/index.html" target="_blank">JavaDocs</a>
 for this exercise are split into three groups.
-The Remote API and Message Board Client are the topic of this exercise.
+The Remote API and Message Board Client are the topic of this exercise,
+they are briefly described here.
 The last group comprises support packages which are already known from
-the Tutorial. The other packages are briefly described here.
+the Tutorial.
 </p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -220,13 +221,12 @@ the Tutorial. The other packages are briefly described here.
 <p>
 The Remote API in <code>pityoulish.jrmi.api</code> defines the glue
 which keeps clients and server<!--, outlets and senders--> together.
-There are four interfaces for remotely callable objects,
-they extend <code>java.rmi.Remote</code>.
-Three of them are named <code>Remote*</code>, their objects will be
-running on the server and can be looked up in the RMI registry.
+There are two interfaces for remotely callable objects,
+the names start with <code>Remote*</code>.
+These interfaces extend <code>java.rmi.Remote</code>.
+Objects implementing these interfaces will reside on the server
+and can be looked up in the RMI registry.
 The lookup names are defined by an enum, <code>RegistryNames</code>.
-The fourth interface is <code>DirectMessageOutlet</code>,
-its objects will be running on the machines of all the participants.
 </p>
 
 <p>
@@ -250,10 +250,7 @@ to clearly distinguish Java RMI problems from application problems.
 <p>
 Package <code>pityoulish.jrmi.client</code>
 contains the client for the Message Board.
-From the Remote API, it relies on
-<code>RemoteMessageBoard</code>, <code>RemoteTicketIssuer</code>,
-and the data representation of
-<code>MessageList</code> and <code>MessageItem</code>.
+It relies on the interfaces and classes of the Remote API.
 Package <code>pityoulish.mbclient</code> is familiar from a previous exercise.
 Commands are delegated to a <code>MsgBoardClientHandler</code>,
 backend arguments recorded by a <code>HostPortBackendHandler</code>.
@@ -272,7 +269,7 @@ Each of the interfaces has a single implementation class.
 </h2>
 
 <p>
-Did you get through both test sequences in time?
+Did you get through the full test sequence in time?
 If not, where or how did you lose time?
 </p>
 
