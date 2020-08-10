@@ -8,7 +8,7 @@ package pityoulish.jrmi.outlet;
 import java.rmi.server.RemoteObject;
 import java.util.regex.Pattern;
 
-import pityoulish.jrmi.api.DirectMessageOutlet;
+import pityoulish.jrmi.api.dm.DirectMessageOutlet;
 
 
 /**

@@ -21,9 +21,9 @@ import pityoulish.tickets.TicketException;
 import pityoulish.tickets.TicketManager;
 import pityoulish.tickets.TSanityChecker;
 
-import pityoulish.jrmi.api.DirectMessageOutlet;
-import pityoulish.jrmi.api.RemoteOutletManager;
 import pityoulish.jrmi.api.APIException;
+import pityoulish.jrmi.api.dm.DirectMessageOutlet;
+import pityoulish.jrmi.api.dm.RemoteOutletManager;
 
 
 /**

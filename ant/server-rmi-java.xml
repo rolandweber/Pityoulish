@@ -27,10 +27,13 @@ Instructions: Message Board with Java RMI
 
 <target name="ijr-clean">
   <delete quiet="true">
-    <fileset dir="${server-rmi-java.tmp}" />
-    <fileset dir="${dir.target}">
+    <fileset dir="${server-rmi-java.tmp}" erroronmissingdir="false" />
+    <fileset dir="${server-rmi-java.prose}" erroronmissingdir="false" />
+    <fileset dir="${dir.target}" erroronmissingdir="false">
       <include name="${server-rmi-java.name}*" />
     </fileset>
+    <dirset dir="${server-rmi-java.tmp}" erroronmissingdir="false" />
+    <dirset dir="${server-rmi-java.prose}" erroronmissingdir="false" />
   </delete>
 </target>
 
@@ -42,6 +45,7 @@ Instructions: Message Board with Java RMI
   <patternset id="server-rmi-java.into.jar">
     <include name="pityoulish/jrmi/server/*" />
     <include name="pityoulish/jrmi/api/*" />
+    <include name="pityoulish/jrmi/api/dm/*" />
     <include name="pityoulish/msgboard/*" />
     <include name="pityoulish/tickets/*" />
     <include name="pityoulish/mbserver/*" />

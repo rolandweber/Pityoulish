@@ -11,8 +11,7 @@ import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 
 import pityoulish.mbclient.HostPortBackendHandlerImpl;
-import pityoulish.jrmi.api.RegistryNames;
-import pityoulish.jrmi.api.RemoteOutletManager;
+import pityoulish.jrmi.api.dm.RemoteOutletManager;
 import pityoulish.outtake.Missing;
 
 
@@ -56,7 +55,7 @@ public class RegistryBackendHandlerImpl extends HostPortBackendHandlerImpl
     throws Exception
   {
     return (RemoteOutletManager)
-      ensureRegistry().lookup(RegistryNames.OUTLET_MANAGER.lookupName);
+      ensureRegistry().lookup(RemoteOutletManager.REGISTRY_NAME);
   }
 
 }

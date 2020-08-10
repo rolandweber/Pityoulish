@@ -17,6 +17,7 @@ support a course on "Distributed Systems"
 <import file="ant/server-sockets-java.xml" />
 <import file="ant/follow-sockets-java.xml" />
 <import file="ant/client-rmi-java.xml" />
+<import file="ant/outlet-rmi-java.xml" />
 <import file="ant/server-rmi-java.xml" />
 <import file="ant/follow-rmi-java.xml" />
 

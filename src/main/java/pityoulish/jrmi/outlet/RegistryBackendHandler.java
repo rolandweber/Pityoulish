@@ -8,7 +8,7 @@ package pityoulish.jrmi.outlet;
 import java.io.IOException;
 
 import pityoulish.mbclient.HostPortBackendHandler;
-import pityoulish.jrmi.api.RemoteOutletManager;
+import pityoulish.jrmi.api.dm.RemoteOutletManager;
 
 
 

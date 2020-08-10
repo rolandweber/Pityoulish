@@ -19,6 +19,7 @@ import java.rmi.server.UnicastRemoteObject;
 import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.jrmi.api.RegistryNames;
+import pityoulish.jrmi.api.dm.RemoteOutletManager;
 import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
 import pityoulish.tickets.TicketManager;
@@ -89,7 +90,7 @@ public final class Main
     Registry mainreg = createDefaultRegistry(port);
     mainreg.bind(RegistryNames.MESSAGE_BOARD.lookupName, rmbi);
     mainreg.bind(RegistryNames.TICKET_ISSUER.lookupName, rtii);
-    mainreg.bind(RegistryNames.OUTLET_MANAGER.lookupName, romi);
+    mainreg.bind(RemoteOutletManager.REGISTRY_NAME, romi);
 
 
     // If we just return here, the Java program keeps running. There are

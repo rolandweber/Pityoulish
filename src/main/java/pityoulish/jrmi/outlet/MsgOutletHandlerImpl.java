@@ -8,8 +8,8 @@ package pityoulish.jrmi.outlet;
 import java.util.List;
 import java.util.Arrays;
 
-import pityoulish.jrmi.api.RemoteOutletManager;
-import pityoulish.jrmi.api.DirectMessageOutlet;
+import pityoulish.jrmi.api.dm.RemoteOutletManager;
+import pityoulish.jrmi.api.dm.DirectMessageOutlet;
 // PYL:keep
 import pityoulish.outtake.Missing;
 // PYL:cut
