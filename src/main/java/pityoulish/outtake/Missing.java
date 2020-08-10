@@ -43,6 +43,9 @@ public final class Missing extends RuntimeException
    * that throws it is taken out for an exercise.
    *
    * @param what        the class of the exception that might be thrown
+   * @param <X>         the class of the exception that might be thrown
+   *
+   * @throws <X> never, just pretends to
    */
   public static <X extends Exception> void pretend(Class<X> what)
     throws X

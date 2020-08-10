@@ -24,6 +24,7 @@ public interface TicketManager
    * The returned sanity checker is thread safe if the problem factory is.
    *
    * @param pf   the problem factory to be used by the sanity checker
+   * @param <P>  the class of problems to be reported
    *
    * @return a sanity checker for this ticket manager
    *         which uses the argument factory to report problems

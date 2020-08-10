@@ -54,6 +54,8 @@ public final class LogConfig
    *
    * @param cls   the class near which to search for bundled properties,
    *              or <code>null</code>
+   *
+   * @throws Exception   in case of a problem
    */
   public static void configure(Class cls)
     throws Exception //@@@ really?
