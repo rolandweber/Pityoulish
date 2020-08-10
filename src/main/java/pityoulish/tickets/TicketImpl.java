@@ -86,6 +86,7 @@ public class TicketImpl implements Ticket
    * @param creator     the ticket manager, mandatory
    * @param username    the username, or <code>null</code> to ignore
    * @param address     the address, or <code>null</code> to ignore
+   * @param host        the client host, or <code>null</code> to ignore
    * @param token       the token, mandatory
    *
    * @throws TicketException

@@ -128,6 +128,7 @@ public enum Catalog implements TextEntry
     * @param l     where to log
     * @param ctx   context information for the exception
     * @param x     the exception to log
+    * @param <X>   the type of exception to log
     *
     * @return the <code>x</code> argument
     */

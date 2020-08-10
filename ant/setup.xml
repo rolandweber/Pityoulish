@@ -69,6 +69,7 @@
 
 <presetdef name="jdoc.pty" if:set="use-javadoc-stylesheet">
   <javadoc failonerror="true"
+           failonwarning="true"
            access="protected"
            stylesheetfile="src/main/prose/pityoulish-jdocs.css"
            nohelp="true"
@@ -79,6 +80,7 @@
 
 <presetdef name="jdoc.pty" unless:set="use-javadoc-stylesheet">
   <javadoc failonerror="true"
+           failonwarning="true"
            access="protected"
            nohelp="true"
            encoding="ISO-8859-1"
