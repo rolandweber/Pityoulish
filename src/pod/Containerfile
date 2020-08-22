@@ -1,0 +1,26 @@
+FROM adoptopenjdk:11-jre-openj9
+
+# use a tini init process, for proper signal handling
+RUN curl -sS -o /sbin/tini -L \
+         https://github.com/krallin/tini/releases/download/v0.19.0/tini \
+ && SHA256SUM=93dcc18adc78c65a028a84799ecf8ad40c936fdfc5f2a57b1acda5a8117fa82c \
+ && echo "$SHA256SUM  /sbin/tini" >/tmp/sha256.txt \
+ && sha256sum -cw /tmp/sha256.txt \
+ && chmod a=rx /sbin/tini \
+ && rm /tmp/sha256.txt
+
+ENTRYPOINT ["/sbin/tini", "--", "/bin/bash"]
+
+# need compiled classes as well as source properties files
+ENV CLASSPATH=/opt/pityoulish/classes
+COPY tmp/classes/main $CLASSPATH
+COPY src/main/java $CLASSPATH
+
+
+RUN echo >/opt/pityoulish/run.sh "\
+#!/bin/bash\n\
+java pityoulish.sockets.server.Main\n\
+#java pityoulish.jrmi.server.Main\n\
+" && chmod a=x /opt/pityoulish/run.sh
+
+CMD ["/opt/pityoulish/run.sh"]
