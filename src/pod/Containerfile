@@ -1,3 +1,7 @@
+# This work is released into the Public Domain under the
+# terms of the Creative Commons CC0 1.0 Universal license.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
 FROM adoptopenjdk:11-jre-openj9
 
 # use a tini init process, for proper signal handling
@@ -16,11 +20,5 @@ ENV CLASSPATH=/opt/pityoulish/classes
 COPY tmp/classes/main $CLASSPATH
 COPY src/main/java $CLASSPATH
 
-
-RUN echo >/opt/pityoulish/run.sh "\
-#!/bin/bash\n\
-java pityoulish.sockets.server.Main\n\
-#java pityoulish.jrmi.server.Main\n\
-" && chmod a=x /opt/pityoulish/run.sh
-
-CMD ["/opt/pityoulish/run.sh"]
+CMD ["-c", \
+     "java -Djava.rmi.server.hostname=127.0.0.1 pityoulish.pod.server.Main"]
