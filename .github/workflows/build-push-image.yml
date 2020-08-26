@@ -1,6 +1,10 @@
 name: Build Server Image
 
-on: workflow_dispatch  # manually triggered
+on:
+  workflow_dispatch:  # manually triggered
+  push:
+    branches:
+    - action-prose
 
 jobs:
   do_all_steps:
