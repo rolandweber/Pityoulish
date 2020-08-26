@@ -22,6 +22,7 @@ import pityoulish.jrmi.server.RemoteMessageBoardImpl;
 import pityoulish.jrmi.server.RemoteTicketIssuerImpl;
 import pityoulish.msgboard.MixedMessageBoard;
 import pityoulish.msgboard.MixedMessageBoardImpl;
+import pityoulish.msgboard.MixedMessageBoardSync;
 import pityoulish.sockets.server.SocketHandler;
 import pityoulish.tickets.TicketManager;
 import pityoulish.tickets.DefaultTicketManager;
@@ -58,9 +59,10 @@ public final class Main
     LogConfig.configure(Main.class);
     LOGGER.log(Level.INFO, "starting Message Board server");
 
-    MixedMessageBoard       mmb  = new MixedMessageBoardImpl(capacity);
-    TicketManager           tim  = new DefaultTicketManager();
-    //@@@ ToDo issue #102: mmb and tim are not thread-safe!
+    // use a thread-safe wrapper around the unsafe message board impl
+    MixedMessageBoard mmb  =
+      new MixedMessageBoardSync(new MixedMessageBoardImpl(capacity));
+    TicketManager tim  = new DefaultTicketManager();
 
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
