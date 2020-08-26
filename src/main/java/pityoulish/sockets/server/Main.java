@@ -5,18 +5,8 @@
  */
 package pityoulish.sockets.server;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import java.net.Socket;
-import java.net.ServerSocket;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
@@ -64,20 +54,12 @@ public final class Main
     LOGGER.log(Level.INFO, "starting Message Board server");
 
     MixedMessageBoard      mmb  = new MixedMessageBoardImpl(capacity);
-    TicketManager          tm   = new DefaultTicketManager();
-    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mmb, tm);
-
-    RequestParser   reqp = new TLVRequestParserImpl();
-    ResponseBuilder rspb = new TLVResponseBuilderImpl();
-
-    Expositor       ex = new ConsoleExpositorImpl();
-    RequestHandler  rh = new RequestHandlerImpl(reqp, mbrh, rspb, ex);
+    TicketManager          tim  = new DefaultTicketManager();
 
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
 
-    SocketHandler shandler = new SimplisticSocketHandler(rh);
-   
+    SocketHandler shandler = createTLVSocketHandler(mmb, tim);
     shandler.startup(port, 0); // adjusting the backlog is pointless
 
     System.out.println(shandler);
@@ -85,6 +67,31 @@ public final class Main
 
     Thread.sleep(3600000); // milliseconds
     shandler.shutdown();
+  }
+
+
+  /**
+   * Create a socket handler for the binary TLV protocol.
+   *
+   * @param mmb   the message board to serve from
+   * @param tim   the ticket manager to serve from
+   *
+   * @return the socket handler
+   */
+  public static SocketHandler createTLVSocketHandler(MixedMessageBoard mmb,
+                                                     TicketManager tim)
+  {
+    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mmb, tim);
+
+    RequestParser   reqp = new TLVRequestParserImpl();
+    ResponseBuilder rspb = new TLVResponseBuilderImpl();
+
+    Expositor       ex = new ConsoleExpositorImpl();
+    RequestHandler  rh = new RequestHandlerImpl(reqp, mbrh, rspb, ex);
+
+    SocketHandler shandler = new SimplisticSocketHandler(rh);
+
+    return shandler;
   }
 
 }
