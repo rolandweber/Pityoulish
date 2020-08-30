@@ -34,3 +34,4 @@ github-image-tag: GIT_BRANCH := $(notdir $(GITHUB_REF))
 github-image-tag:
 	$(eval GITHUB_IMAGE_TAG := docker.pkg.github.com/$(GITHUB_REPOSITORY)/$(IMAGE_TAG):$(GIT_BRANCH)-$(GITHUB_RUN_NUMBER))
 	@echo "github image tag is $(GITHUB_IMAGE_TAG)"
+
