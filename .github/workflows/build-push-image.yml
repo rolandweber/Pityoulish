@@ -2,6 +2,7 @@ name: Build and Push Server Image
 
 on:
   workflow_dispatch:  # manually triggered
+    inputs: # none
   push:
     branches:
     - action-prose
