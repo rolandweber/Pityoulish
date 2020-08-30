@@ -2,9 +2,7 @@ name: Build and Push Server Image
 
 on:
   workflow_dispatch:  # manually triggered
-  push:
-    branches:
-    - action-prose
+    inputs: # none
 
 jobs:
   do_all_steps:
