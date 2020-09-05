@@ -9,22 +9,16 @@ on:
         required:    true
 
 jobs:
-  do_all_steps:
+  promote:
     runs-on: ubuntu-20.04
+    env:
+      GHCR_IMAGE: docker://ghcr.io/rolandweber/pityoulish/server
+      ICR_IMAGE:  docker://us.icr.io/pityoulish/server
+
     steps:
 
-    - name: Echo input
-      run: echo image tag '${{ github.event.inputs.image_tag }}'
+    - name: Promote image
+      run: skopeo copy --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}" "$ICR_IMAGE:${{ github.event.inputs.image_tag }}"
 
-    - name: Promote and retag image
-      env:
-           GHCR_IMAGE: docker://ghcr.io/rolandweber/pityoulish/server
-           ICR_IMAGE:  docker://us.icr.io/pityoulish/server
-      run: skopeo login us.icr.io --username iamapikey --password \
-                        "${{ secrets.IBM_CLOUD_API_KEY }}" \
-        && skopeo copy \
-                  "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}' \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
-        && skopeo copy \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
-                  "$ICR_IMAGE::latest"
+    - name: Retag image as latest
+      run: skopeo copy --src-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} "$ICR_IMAGE:${{ github.event.inputs.image_tag }}" "$ICR_IMAGE:latest"
