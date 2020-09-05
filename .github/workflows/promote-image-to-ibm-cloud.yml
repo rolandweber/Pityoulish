@@ -1,0 +1,30 @@
+name: Promote Server Image to IBM Cloud
+
+on:
+  workflow_dispatch:  # manually triggered
+    inputs:
+      image_tag:
+        description: Tag of the image to promote, for example "main-8".
+        default:     main-
+        required:    true
+
+jobs:
+  do_all_steps:
+    runs-on: ubuntu-20.04
+    steps:
+
+    - name: Echo input
+      run: echo image tag '${{ github.event.inputs.image_tag }}'
+
+    - name: Promote and retag image
+      env:
+           GHCR_IMAGE: docker://ghcr.io/rolandweber/pityoulish/server
+           ICR_IMAGE:  docker://us.icr.io/pityoulish/server
+      run: skopeo login us.icr.io --username iamapikey --password \
+                        "${{ secrets.IBM_CLOUD_API_KEY }}" \
+        && skopeo copy \
+                  "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}' \
+                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
+        && skopeo copy \
+                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
+                  "$ICR_IMAGE::latest"
