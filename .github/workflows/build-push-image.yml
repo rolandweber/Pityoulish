@@ -25,4 +25,4 @@ jobs:
 
     - name: Push image
       run: make -C src/pod/ push-github \
-           GITHUB_CREDENTIALS="${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}"
+           GITHUB_CREDENTIALS="${{ github.actor }}:${{ secrets.GHCR_PAT }}"

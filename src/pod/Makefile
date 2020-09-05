@@ -32,5 +32,5 @@ github-image-tag: GIT_BRANCH := $(notdir $(GITHUB_REF))
 # define a tag for the container image on GitHub
 # needs to be done with $(eval) so the variable is available to other targets
 github-image-tag:
-	$(eval GITHUB_IMAGE_TAG := docker.pkg.github.com/$(GITHUB_REPOSITORY)/$(IMAGE_TAG):$(GIT_BRANCH)-$(GITHUB_RUN_NUMBER))
+	$(eval GITHUB_IMAGE_TAG := ghcr.io/$(GITHUB_REPOSITORY)/$(IMAGE_TAG):$(GIT_BRANCH)-$(GITHUB_RUN_NUMBER))
 	@echo "github image tag is $(GITHUB_IMAGE_TAG)"
