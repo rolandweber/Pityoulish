@@ -18,14 +18,7 @@ jobs:
     steps:
 
     - name: Promote image
-      run: skopeo copy \
-                  --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} \
-                  "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}" \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}"
+      run: skopeo copy --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}" "$ICR_IMAGE:${{ github.event.inputs.image_tag }}"
 
     - name: Retag image as latest
-      run: skopeo copy \
-                  --src-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} \
-                  --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}" \
-                  "$ICR_IMAGE::latest"
+      run: skopeo copy --src-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }} "$ICR_IMAGE:${{ github.event.inputs.image_tag }}" "$ICR_IMAGE::latest"
