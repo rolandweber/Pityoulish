@@ -18,8 +18,8 @@ jobs:
     steps:
 
     - name: Login to IBM Cloud Container Registry
-      run: skopeo login -u iamapikey -p "${{ secrets.IBM_CLOUD_API_KEY }}" \
-                  us.icr.io
+      run: |
+        skopeo login -u iamapikey -p ${{ secrets.IBM_CLOUD_API_KEY }} us.icr.io
 
     - name: Promote image
       run: skopeo copy \
