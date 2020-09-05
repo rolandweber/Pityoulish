@@ -7,7 +7,7 @@
 /jdoc
 
 # Local files
-/local
+/_scratch
 /ant.local
 /*.log
 /*.log.lck
