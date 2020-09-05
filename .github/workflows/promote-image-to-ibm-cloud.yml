@@ -19,13 +19,13 @@ jobs:
 
     - name: Promote image
       run: skopeo copy \
-                  "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}' \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
+                  "$GHCR_IMAGE:${{ github.event.inputs.image_tag }}" \
+                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}" \
                   --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }}
 
     - name: Retag image as latest
       run: skopeo copy \
-                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}' \
+                  "$ICR_IMAGE:${{ github.event.inputs.image_tag }}" \
                   "$ICR_IMAGE::latest" \
                   --src-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }}
                   --dest-creds iamapikey:${{ secrets.IBM_CLOUD_API_KEY }}
