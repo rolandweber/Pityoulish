@@ -120,7 +120,7 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   protected void listAvailableMessages()
     throws Exception
   {
-    final int BATCH_SIZE = 127;
+    final int BATCH_SIZE = 125; // magic number, reduces logging on server
 
     boolean more = true;
     while (more)

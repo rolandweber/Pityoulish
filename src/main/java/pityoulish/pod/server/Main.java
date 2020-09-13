@@ -131,7 +131,7 @@ public final class Main
     // initialize binary protocol external interface
 
     SocketHandler shandler =
-      pityoulish.sockets.server.Main.createTLVSocketHandler(mmb, tim);
+      pityoulish.sockets.server.Main.createTLVSocketHandler(mmb, tim, false);
     shandler.startup(sockets_port, 0); // adjusting the backlog is pointless
 
     //@@@ NLS light?

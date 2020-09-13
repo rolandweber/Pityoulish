@@ -59,7 +59,7 @@ public final class Main
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
 
-    SocketHandler shandler = createTLVSocketHandler(mmb, tim);
+    SocketHandler shandler = createTLVSocketHandler(mmb, tim, true);
     shandler.startup(port, 0); // adjusting the backlog is pointless
 
     System.out.println(shandler);
@@ -75,11 +75,15 @@ public final class Main
    *
    * @param mmb   the message board to serve from
    * @param tim   the ticket manager to serve from
+   * @param verbose
+   *        <code>true</code> to print info about incoming connections,
+   *        <code>false</code> to omit them
    *
    * @return the socket handler
    */
   public static SocketHandler createTLVSocketHandler(MixedMessageBoard mmb,
-                                                     TicketManager tim)
+                                                     TicketManager tim,
+                                                     boolean verbose)
   {
     MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mmb, tim);
 
@@ -89,7 +93,7 @@ public final class Main
     Expositor       ex = new ConsoleExpositorImpl();
     RequestHandler  rh = new RequestHandlerImpl(reqp, mbrh, rspb, ex);
 
-    SocketHandler shandler = new SimplisticSocketHandler(rh);
+    SocketHandler shandler = new SimplisticSocketHandler(rh, verbose);
 
     return shandler;
   }
