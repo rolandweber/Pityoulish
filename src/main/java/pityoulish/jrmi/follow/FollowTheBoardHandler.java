@@ -122,7 +122,7 @@ public class FollowTheBoardHandler extends SingleCommandHandlerBase
   {
     RemoteMessageBoard rmb = regBackend.getRemoteMessageBoard();
 
-    final int batchsize = RemoteMessageBoard.MAX_LIMIT;
+    final int batchsize = 125; // magic number to reduce server logging
 
     boolean more = true;
     while (more)

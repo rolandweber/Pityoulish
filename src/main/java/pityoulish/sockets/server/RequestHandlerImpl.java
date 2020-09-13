@@ -104,7 +104,12 @@ public class RequestHandlerImpl implements RequestHandler
   protected ByteBuffer dispatch(MsgBoardRequest mbreq, InetAddress address)
     throws ProtocolException
    {
-     rhExpositor.describeRequest(mbreq, address);
+     boolean silent =
+       (mbreq.getReqType() == MsgBoardRequest.ReqType.LIST_MESSAGES) &&
+       (mbreq.getLimit() == Integer.valueOf(125));
+
+     if (!silent)
+        rhExpositor.describeRequest(mbreq, address);
 
      ByteBuffer result = null;
      switch (mbreq.getReqType())
@@ -112,7 +117,8 @@ public class RequestHandlerImpl implements RequestHandler
        case LIST_MESSAGES: {
          MsgBoardResponse<MessageBatch> response =
            mbrHandler.listMessages(mbreq, address);
-         rhExpositor.describeMessageBatch(response);
+         if (!silent)
+            rhExpositor.describeMessageBatch(response);
          result = rspBuilder.buildMessageBatch(response);
        } break;
 

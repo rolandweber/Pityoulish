@@ -32,19 +32,26 @@ public class SimplisticSocketHandler extends SocketHandlerBase
   /** The thread executing this handler. */
   protected volatile Thread handlerThread;
 
+  /** Whether to print info about incoming connections. */
+  protected final boolean printConnectionInfo;
+
+
   public final static int  MAX_REQUEST_SIZE = 1024; // bytes
   public final static int  RCV_SO_TIMEOUT   =  666; // milliseconds
   public final static long RCV_DEADLINE     = 2222; // milliseconds
+
 
 
   /**
    * Creates a new single-threaded handler for incoming requests.
    *
    * @param reqh        the underlying request handler
+   * @param verbose     whether to print info about incoming connections
    */
-  public SimplisticSocketHandler(RequestHandler reqh)
+  public SimplisticSocketHandler(RequestHandler reqh, boolean verbose)
   {
     super(reqh);
+    printConnectionInfo = verbose;
   }
 
 
@@ -142,11 +149,14 @@ public class SimplisticSocketHandler extends SocketHandlerBase
       System.out.println(ignore);
     }
 
-    StringBuilder sb = new StringBuilder(120);
-    sb.append(handlerName)
-      .append(": ")
-      .append(Catalog.RECEIVE_FROM_1.format(sock.getRemoteSocketAddress()));
-    System.out.println(sb);
+    if (printConnectionInfo)
+     {
+       StringBuilder sb = new StringBuilder(120);
+       sb.append(handlerName)
+         .append(": ")
+         .append(Catalog.RECEIVE_FROM_1.format(sock.getRemoteSocketAddress()));
+       System.out.println(sb);
+     }
 
     // the following calls close the socket on error, so let exceptions pass
     ByteBuffer request  = readRequest(sock);

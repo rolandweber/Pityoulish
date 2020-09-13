@@ -82,8 +82,10 @@ public class RemoteMessageBoardImpl extends RemoteObject
       mb = msgBoard.listMessages(limit, marker);
     }
 
-    System.out.println(Catalog.REPORT_LIST_MESSAGES_2.format
-                       (mb.getMessages().size(), mb.getMarker()));
+    boolean silent = (limit == 125); // magic used by Follow-the-Board clients
+    if (!silent)
+       System.out.println(Catalog.REPORT_LIST_MESSAGES_2.format
+                          (mb.getMessages().size(), mb.getMarker()));
 
     // MessageBatch and other interfaces and classes from pityoulish.msgboard
     // are internal server classes. The data must be converted into classes

@@ -17,7 +17,6 @@ import java.rmi.server.UnicastRemoteObject;
 import pityoulish.logutil.Log;
 import pityoulish.logutil.LogConfig;
 import pityoulish.jrmi.api.RegistryNames;
-import pityoulish.jrmi.server.Catalog; //@@@ define dedicated Catalog here
 import pityoulish.jrmi.server.RemoteMessageBoardImpl;
 import pityoulish.jrmi.server.RemoteTicketIssuerImpl;
 import pityoulish.msgboard.MixedMessageBoard;
@@ -131,7 +130,7 @@ public final class Main
     // initialize binary protocol external interface
 
     SocketHandler shandler =
-      pityoulish.sockets.server.Main.createTLVSocketHandler(mmb, tim);
+      pityoulish.sockets.server.Main.createTLVSocketHandler(mmb, tim, false);
     shandler.startup(sockets_port, 0); // adjusting the backlog is pointless
 
     //@@@ NLS light?
@@ -182,7 +181,7 @@ public final class Main
 
     } catch (Exception x) {
       LOGGER.log(Level.CONFIG, envvar, x);
-      throw x;
+      throw new Exception(envvar+": "+x.getMessage(), x);
     }
   }
 
@@ -203,9 +202,9 @@ public final class Main
   {
     int number = Integer.parseInt(input);
     if (number < min)
-       throw new Exception("number too low"); //@@@ NLS light
+       throw new Exception(Catalog.ARG_NUMBER_TOO_LOW_0.format());
     if (number > max)
-       throw new Exception("number too high"); //@@@ NLS light
+       throw new Exception(Catalog.ARG_NUMBER_TOO_HIGH_0.format());
     return number;
   }
 
