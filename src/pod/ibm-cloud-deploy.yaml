@@ -1,0 +1,92 @@
+# This work is released into the Public Domain under the
+# terms of the Creative Commons CC0 1.0 Universal license.
+# https://creativecommons.org/publicdomain/zero/1.0/
+
+
+# based on an IBM Cloud template
+# https://cloud.ibm.com/docs/containers?topic=containers-nodeport#nodeport_config
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pityoulish-sockets
+  labels:
+    exercise: Sockets
+spec:
+  selector:
+    app: pityoulish-server
+  type: NodePort
+  ports:
+   # the port for the Sockets exercise can be re-mapped
+   - port: 2888
+     nodePort: 32088
+     name: tlv-protocol
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pityoulish-jrmi
+  labels:
+    exercise: JavaRMI
+spec:
+  selector:
+    app: pityoulish-server
+  type: NodePort
+  ports:
+   # ports for Java RMI must be the same as inside the container
+   # otherwise, the stubs created there will point to wrong ports
+   - port: 31188
+     nodePort: 31188
+     name: jrmi-registry
+   - port: 31881
+     nodePort: 31881
+     name: jrmi-objects
+
+---
+
+# based on an IBM Cloud template
+# https://cloud.ibm.com/docs/containers?topic=containers-plan_deploy#deploy_objects
+# compare with "podman generate kube" for a container started with "make run"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pityoulish-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pityoulish-server
+  template:
+    metadata:
+      labels:
+        app: pityoulish-server
+    spec:
+      containers:
+      - name: pityoulish-server
+        image: us.icr.io/pityoulish/server:latest
+        imagePullPolicy: Always
+
+        ports:
+        # Sockets port can be remapped
+        - containerPort: 2888
+          protocol: TCP
+
+        # Java RMI ports must be the same as the nodePorts above
+        - containerPort: 31188
+          protocol: TCP
+        - containerPort: 31881
+          protocol: TCP
+
+        env:
+        - name: PITYOULISH_JRMI_HOSTNAME
+          # worker node IP address: kubectl describe nodes | grep ExternalIP
+          value: "184.172.253.242"
+        - name: PITYOULISH_JRMI_REGISTRY_PORT
+          value: "31188"
+        - name: PITYOULISH_JRMI_OBJECTS_PORT
+          value: "31881"
+        - name: PITYOULISH_SOCKETS_PORT
+          value: "2888"
