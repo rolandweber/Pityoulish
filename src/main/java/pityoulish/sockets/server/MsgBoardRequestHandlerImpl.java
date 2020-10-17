@@ -32,6 +32,8 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
   protected final TicketManager ticketMgr;
 
+  protected boolean checkClientIP;
+
   protected final MSanityChecker<String> mboardSanityChecker;
 
   protected final TSanityChecker<String> ticketSanityChecker;
@@ -42,8 +44,13 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
    *
    * @param umb  the underlying message board
    * @param tm   the underlying ticket manager
+   * @param ipcheck
+   *        <code>true</code> to check for unique client IP addresses
+   *        when granting tickets,
+   *        <code>false</code> to grant tickets regardless of client IP
    */
-  public MsgBoardRequestHandlerImpl(UserMessageBoard umb, TicketManager tm)
+  public MsgBoardRequestHandlerImpl(UserMessageBoard umb, TicketManager tm,
+                                    boolean ipcheck)
   {
     if (umb == null)
        throw new NullPointerException("UserMessageBoard");
@@ -52,6 +59,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
     msgBoard  = umb;
     ticketMgr = tm;
+    checkClientIP = ipcheck;
 
     StringProblemFactory spf = new StringProblemFactory();
     mboardSanityChecker = umb.newSanityChecker(spf);
@@ -160,8 +168,17 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
     if (mbreq.getOriginator() == null)
        throw new NullPointerException("MsgBoardRequest.getOriginator()");
     // other values in mbreq will be ignored
-    if (address == null)
-       throw new NullPointerException("InetAddress");
+
+    if (checkClientIP)
+     {
+       // must have an address to check
+       if (address == null)
+          throw new NullPointerException("InetAddress");
+     }
+    else
+     {
+       address = null; // ignore the address
+     }
 
     // The originator or username must pass multiple sanity checks.
     // The ticket manager checks are stricter. Check with the message board
@@ -170,7 +187,6 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
       mboardSanityChecker.checkOriginator(mbreq.getOriginator());
     if (problem == null)
        problem = ticketSanityChecker.checkUsername(mbreq.getOriginator());
-    //@@@ sanity check for address? Mustn't be null.
     if (problem != null)
      {
        logger.log(Level.WARNING, problem);

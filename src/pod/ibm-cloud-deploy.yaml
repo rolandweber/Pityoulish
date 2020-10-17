@@ -83,7 +83,7 @@ spec:
         env:
         - name: PITYOULISH_JRMI_HOSTNAME
           # worker node IP address: kubectl describe nodes | grep ExternalIP
-          value: "184.172.253.242"
+          value: "173.193.82.16"
         - name: PITYOULISH_JRMI_REGISTRY_PORT
           value: "31188"
         - name: PITYOULISH_JRMI_OBJECTS_PORT

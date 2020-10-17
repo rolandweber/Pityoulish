@@ -35,7 +35,8 @@ public class RequestHandlerImplTest
     RequestHandler handler = new RequestHandlerImpl
       (new TLVRequestParserImpl(),
        new MsgBoardRequestHandlerImpl(new MixedMessageBoardImpl(8),
-                                      new DefaultTicketManager()),
+                                      new DefaultTicketManager(),
+                                      false),
        new TLVResponseBuilderImpl(),
        new ConsoleExpositorImpl()
        );

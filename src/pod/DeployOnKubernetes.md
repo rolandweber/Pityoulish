@@ -24,27 +24,25 @@ Note that you might get charged for network traffic, even though the cluster is 
 1. Push the server image to the IBM Cloud container registry. (optional)  \
    It is possible to host the image elsewhere, but I don't know whether pulling the image causes billable network traffic.
 
-2. Look up the external IP address of your worker node.
-   If your local `kubectl` is configured for your Kubernetes cluster:
-
-   ```bash
-   kubectl describe node | grep ExternalIP
-   ```
-
-   To configure your local `kubectl` for your Kubernetes cluster, install the [IBM Cloud CLI](https://cloud.ibm.com/docs/containers?topic=containers-cs_cli_install) with the "Kubernetes Service" plugin.
+2. Configure your local `kubectl` for your Kubernetes cluster.
+   To do this, install the [IBM Cloud CLI](https://cloud.ibm.com/docs/containers?topic=containers-cs_cli_install) with the "Kubernetes Service" plugin.
    After logging in with the CLI, lookup the cluster name and retrieve the cluster configuration:
    ```bash
    ibmcloud ks clusters
    ibmcloud ks cluster config -c <cluster-name>
    ```
-   If the output of the second command instructs you to set an environment variable or selected a cluster configuration, do it.
+   If the output of the second command instructs you to set an environment variable or to select a cluster configuration, do it.
 
+3. Look up the external IP address of your worker node.
+   ```bash
+   kubectl describe node | grep ExternalIP
+   ```
 
-3. Edit [ibm-cloud-deploy.yaml](./ibm-cloud-deploy.yaml) as follows:
+4. Edit [ibm-cloud-deploy.yaml](./ibm-cloud-deploy.yaml) as follows:
 
-   - In the `image:` line, specify the location of your server image.
+   - In the line `image:`, specify your server image.
 
-   - After the `name: PITYOULISH_JRMI_HOSTNAME` line, set the value to the external IP address of your worker node.
+   - After the line `name: PITYOULISH_JRMI_HOSTNAME`, set the value to the external IP address of your worker node.
 
    The external ports configured in the yaml file are:
 
@@ -56,13 +54,13 @@ Note that you might get charged for network traffic, even though the cluster is 
      To use a different port, change all four occurrences to the same value.
    - In the Java RMI exercise, you may use the same port for the registry and the exported objects. To do that, specify only one port for the service "pityoulish-jrmi".
 
-4. Before an exercise, run the server in your cluster:
+5. Before an exercise, run the server in your cluster:
 
    ```bash
    kubectl create -f ibm-cloud-deploy.yaml
    ```
 
-5. After an exercise, stop the server in your cluster:
+6. After an exercise, stop the server in your cluster:
 
    ```bash
    kubectl delete -f ibm-cloud-deploy.yaml
