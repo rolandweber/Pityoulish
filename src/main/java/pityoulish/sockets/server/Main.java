@@ -59,7 +59,7 @@ public final class Main
     mmb.putSystemMessage(null, Catalog.SYSMSG_OPEN.lookup());
     mmb.putSystemMessage(null, Catalog.SYSMSG_CAPACITY_1.format(capacity));
 
-    SocketHandler shandler = createTLVSocketHandler(mmb, tim, true);
+    SocketHandler shandler = createTLVSocketHandler(mmb, tim, true, true);
     shandler.startup(port, 0); // adjusting the backlog is pointless
 
     System.out.println(shandler);
@@ -78,14 +78,20 @@ public final class Main
    * @param verbose
    *        <code>true</code> to print info about incoming connections,
    *        <code>false</code> to omit them
+   * @param ipcheck
+   *        <code>true</code> to check for unique client IP addresses
+   *        when granting tickets,
+   *        <code>false</code> to grant tickets regardless of client IP
    *
    * @return the socket handler
    */
   public static SocketHandler createTLVSocketHandler(MixedMessageBoard mmb,
                                                      TicketManager tim,
-                                                     boolean verbose)
+                                                     boolean verbose,
+                                                     boolean ipcheck)
   {
-    MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl(mmb, tim);
+    MsgBoardRequestHandler mbrh =
+      new MsgBoardRequestHandlerImpl(mmb, tim, ipcheck);
 
     RequestParser   reqp = new TLVRequestParserImpl();
     ResponseBuilder rspb = new TLVResponseBuilderImpl();
