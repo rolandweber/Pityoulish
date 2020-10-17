@@ -34,7 +34,7 @@ public class MsgBoardRequestHandlerImplTest
 
     //@@@ use JMockit for prereq objects, instead of creating default impls
     MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl
-      (new MixedMessageBoardImpl(8), new DefaultTicketManager());
+      (new MixedMessageBoardImpl(8), new DefaultTicketManager(), false);
 
 
     MsgBoardResponse<MessageBatch> rsp = mbrh.listMessages(mbreq, ADDRESS);
@@ -58,7 +58,7 @@ public class MsgBoardRequestHandlerImplTest
   {
     //@@@ use JMockit for prereq objects, instead of creating default impls
     MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl
-      (new MixedMessageBoardImpl(8), new DefaultTicketManager());
+      (new MixedMessageBoardImpl(8), new DefaultTicketManager(), false);
 
 
     try {
@@ -94,7 +94,7 @@ public class MsgBoardRequestHandlerImplTest
   {
     //@@@ use JMockit for prereq objects, instead of creating default impls
     MsgBoardRequestHandler mbrh = new MsgBoardRequestHandlerImpl
-      (new MixedMessageBoardImpl(8), new DefaultTicketManager());
+      (new MixedMessageBoardImpl(8), new DefaultTicketManager(), false);
 
     MsgBoardRequest mbreq = new MsgBoardRequestImpl
       (ReqType.LIST_MESSAGES, 8, "_marker_", null, null, null);
