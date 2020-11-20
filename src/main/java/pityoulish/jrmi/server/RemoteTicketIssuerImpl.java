@@ -64,7 +64,7 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
     try {
       Ticket tick = ticketMgr.obtainTicket(username, null,
-                                           Util.getClientHost());
+                                           null /*Util.getClientHost()*/);
 
       System.out.println(Catalog.REPORT_OBTAIN_TICKET_2.format
                          (username, tick.getToken()));
