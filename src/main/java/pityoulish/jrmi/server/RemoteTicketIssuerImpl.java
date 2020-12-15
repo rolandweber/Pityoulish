@@ -31,6 +31,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
 
   protected final TicketManager ticketMgr;
 
+  protected final boolean checkClientIP;
+
   protected final TSanityChecker<APIException> ticketSanityChecker;
 
 
@@ -38,13 +40,18 @@ public class RemoteTicketIssuerImpl extends RemoteObject
    * Creates a new remote ticket issuer.
    *
    * @param tm   the underlying ticket manager
+   * @param ipcheck
+   *        <code>true</code> to check for unique client IP addresses
+   *        when granting tickets,
+   *        <code>false</code> to grant tickets regardless of client IP
    */
-  public RemoteTicketIssuerImpl(TicketManager tm)
+  public RemoteTicketIssuerImpl(TicketManager tm, boolean ipcheck)
   {
     if (tm == null)
        throw new NullPointerException("TicketManager");
 
     ticketMgr = tm;
+    checkClientIP = ipcheck;
 
     APIProblemFactory apf = new APIProblemFactory();
     ticketSanityChecker = tm.newSanityChecker(apf);
@@ -63,8 +70,8 @@ public class RemoteTicketIssuerImpl extends RemoteObject
        throw Catalog.log(logger, "obtainTicket", apix);
 
     try {
-      Ticket tick = ticketMgr.obtainTicket(username, null,
-                                           Util.getClientHost());
+      String client = checkClientIP ? Util.getClientHost() : null;
+      Ticket tick = ticketMgr.obtainTicket(username, null, client);
 
       System.out.println(Catalog.REPORT_OBTAIN_TICKET_2.format
                          (username, tick.getToken()));
