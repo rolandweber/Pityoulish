@@ -112,7 +112,7 @@ public final class Main
     // initialize Java RMI external interface
 
     RemoteMessageBoardImpl  rmbi = new RemoteMessageBoardImpl(mmb, tim);
-    RemoteTicketIssuerImpl  rtii = new RemoteTicketIssuerImpl(tim);
+    RemoteTicketIssuerImpl  rtii = new RemoteTicketIssuerImpl(tim, false);
 
     Remote rmbistub = UnicastRemoteObject.exportObject(rmbi, jrmi_objects_port);
     Remote rtiistub = UnicastRemoteObject.exportObject(rtii, jrmi_objects_port);

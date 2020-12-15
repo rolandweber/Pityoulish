@@ -68,7 +68,7 @@ public final class Main
     TicketManager           tim  = new DefaultTicketManager();
 
     RemoteMessageBoardImpl  rmbi = new RemoteMessageBoardImpl(mmb, tim);
-    RemoteTicketIssuerImpl  rtii = new RemoteTicketIssuerImpl(tim);
+    RemoteTicketIssuerImpl  rtii = new RemoteTicketIssuerImpl(tim, true);
     RemoteOutletManagerImpl romi = new RemoteOutletManagerImpl(tim);
 
     // These objects will most likely listen on another port than the registry.

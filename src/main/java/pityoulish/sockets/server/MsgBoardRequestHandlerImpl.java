@@ -32,7 +32,7 @@ public class MsgBoardRequestHandlerImpl implements MsgBoardRequestHandler
 
   protected final TicketManager ticketMgr;
 
-  protected boolean checkClientIP;
+  protected final boolean checkClientIP;
 
   protected final MSanityChecker<String> mboardSanityChecker;
 
