@@ -50,10 +50,8 @@ The current set of exercises comprises:
 As an instructor, I expect you to build the exercises and server components yourself.
 See the [Development Readme](Development.md) for details.
 
-I'm considering various [enhancements](https://github.com/pityoulish/origins/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) and additional exercises, both in class and at home.
-You're welcome to contribute, see just below :-)
-My primary focus is to make the existing exercises work better in class though.
 You can read some more about the [background](Background.md) of this project and my [lessons learned](Background.md#history-and-lessons-learned). I'll update those at the end of each term, so you can follow my progress.
+As of [December 2020](Background.md#2020), I'm considering to start all over with an enhanced protocol, and server-side code structured as 12 factor apps. All planned enhancements are suspended. They may be re-targetted for the new codebase.
 
 
 ### ...Contributors
