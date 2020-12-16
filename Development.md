@@ -41,7 +41,7 @@ When building exercises, the Java sources are pre-processed with Ant, to punch i
 The actual coding and unit-testing during development is done without pre-processing though. It should work smoothly with an IDE.
 
 To get started...
-1. Clone the [Pityoulish](https://github.com/rolandweber/pityoulish/) GitHub project.
+1. Clone the [Pityoulish](https://github.com/pityoulish/origins/) GitHub project.
 2. Make sure Ant has access to the ant-contrib tasks.
 3. Copy [`ant.local.template`](ant.local.template) to `ant.local`.
    Edit the latter and specify the paths to the extra JAR files.

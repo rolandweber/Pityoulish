@@ -10,7 +10,7 @@ The first programming exercise was done at home and tried out in the classroom. 
 As it turned out, the in-class programming exercise was too complex for most of the students. But I learned a lot about the problems they were facing. Too much information to digest in the exercise description. A lack of proficiency in Java programming. Too much code with an unknown structure to wade through.
 These problems, I believe, can be addressed. By an improved collection of programming exercises. With better instructions. Better descriptions of the available code. Better delivery from my side. Gradual skill build-up, with self-paced preparation at home and supervised problem-solving in class. And supplemental programming tasks for those who are interested.
 
-This project, Pityoulish, is the new home of my programming exercises. I had a bunch of code to start with, but didn't want to just dump that here. Instead, I'm building an all-new set of programming exercises, while re-using parts of the old code where appropriate. As of December 2016, there is a Tutorial, and two classroom exercises replacing the old ones. I still got a long way to go regarding the delivery though. And plenty of [enhancements](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) in mind for the exercises.
+This project, Pityoulish, is the new home of my programming exercises. I had a bunch of code to start with, but didn't want to just dump that here. Instead, I'm building an all-new set of programming exercises, while re-using parts of the old code where appropriate. As of December 2016, there is a Tutorial, and two classroom exercises replacing the old ones. I still got a long way to go regarding the delivery though. And plenty of [enhancements](https://github.com/pityoulish/origins/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) in mind for the exercises.
 
 I'm teaching Distributed Systems from October through December each year. You can expect slow progress until summer, and last-minute panic in September. The flurry winds down as I wrap up for the end of the year.
 
@@ -19,11 +19,11 @@ I'm teaching Distributed Systems from October through December each year. You ca
 ### 2020
 
 Feedback:
-[Tutorial #115](https://github.com/rolandweber/pityoulish/issues/115),
-[Sockets #116](https://github.com/rolandweber/pityoulish/issues/116),
-[Java RMI #121](https://github.com/rolandweber/pityoulish/issues/121)
+[Tutorial #115](https://github.com/pityoulish/origins/issues/115),
+[Sockets #116](https://github.com/pityoulish/origins/issues/116),
+[Java RMI #121](https://github.com/pityoulish/origins/issues/121)
 
-This year, the Corona virus forced the classes online. I ran the server code [on Kubernetes](https://github.com/rolandweber/pityoulish/issues/106) in the cloud, with [minor problems](https://github.com/rolandweber/pityoulish/issues/117).
+This year, the Corona virus forced the classes online. I ran the server code [on Kubernetes](https://github.com/pityoulish/origins/issues/106) in the cloud, with [minor problems](https://github.com/pityoulish/origins/issues/117).
 Instead of checking in the classroom how students progressed, I gave them some time for self-paced debugging, then demonstrated how to fix the next problem. This worked reasonably well. I suppose not all participants actually worked on the exercises, but that is to be expected &mdash; and their choice.
 
 The [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) and [12+ Factor Apps](https://content.pivotal.io/ebooks/beyond-the-12-factor-app) were first-class topics in the course this year. Unfortunately, the Message Board is not a good example for either.
@@ -38,15 +38,15 @@ Those are long-term goals, of course. I won't be able to replace the Message Boa
 ### 2019
 
 Feedback:
-[Tutorial #84](https://github.com/rolandweber/pityoulish/issues/84),
-[Sockets #87](https://github.com/rolandweber/pityoulish/issues/87),
-[Java RMI #90](https://github.com/rolandweber/pityoulish/issues/90)
+[Tutorial #84](https://github.com/pityoulish/origins/issues/84),
+[Sockets #87](https://github.com/pityoulish/origins/issues/87),
+[Java RMI #90](https://github.com/pityoulish/origins/issues/90)
 
 The Tutorial is working quite well by now.
 To familiarize the students with the Message Board protocol, we discussed
 the design of an HTTP API for it. That generated interest and contributions,
 I'm planning to repeat this in the years to come. In particular while I don't
-have [an HTTP exercise](https://github.com/rolandweber/pityoulish/issues/6).
+have [an HTTP exercise](https://github.com/pityoulish/origins/issues/6).
 
 The Sockets exercise and the first part of the Java RMI exercise went
 reasonably well. The second part of the Java RMI exercise turned out to be
@@ -61,16 +61,16 @@ on Java RMI and remote calls anyway. So I decided to skip the second part
 of the Java RMI exercise in future years. The first part matches with the
 functionality of the Sockets exercise, I'll keep that around for a while.
 The idea is to replace it with
-[a gRPC exercise](https://github.com/rolandweber/pityoulish/issues/36)
+[a gRPC exercise](https://github.com/pityoulish/origins/issues/36)
 at some point in time.
 
 
 ### 2018
 
 Feedback:
-[Tutorial #69](https://github.com/rolandweber/pityoulish/issues/69),
-[Sockets #70](https://github.com/rolandweber/pityoulish/issues/70),
-[Java RMI #78](https://github.com/rolandweber/pityoulish/issues/78)
+[Tutorial #69](https://github.com/pityoulish/origins/issues/69),
+[Sockets #70](https://github.com/pityoulish/origins/issues/70),
+[Java RMI #78](https://github.com/pityoulish/origins/issues/78)
 
 I discussed the general Message Board protocol one week in advance of the
 first classroom session. That seems to be a good approach.
@@ -98,7 +98,7 @@ that he had finally understood the point of the first part.
 That's good enough :-)
 
 We've had an additional plenum discussion about designing a REST API
-for the Message Board, see [issue #6](https://github.com/rolandweber/pityoulish/issues/6#issuecomment-429380717).
+for the Message Board, see [issue #6](https://github.com/pityoulish/origins/issues/6#issuecomment-429380717).
 I don't know when or whether I will find time to implement this as
 a third classroom exercise, but the discussion was interesting in itself.
 
@@ -106,9 +106,9 @@ a third classroom exercise, but the discussion was interesting in itself.
 ### 2017
 
 Feedback:
-[Tutorial #56](https://github.com/rolandweber/pityoulish/issues/56),
-[Sockets #57](https://github.com/rolandweber/pityoulish/issues/57),
-[Java RMI #60](https://github.com/rolandweber/pityoulish/issues/60)
+[Tutorial #56](https://github.com/pityoulish/origins/issues/56),
+[Sockets #57](https://github.com/pityoulish/origins/issues/57),
+[Java RMI #60](https://github.com/pityoulish/origins/issues/60)
 
 Using the classroom exercises as topic introductions worked. The additional guidance from interleaving explanations and coding also proved helpful. I still have to work on the details, how much to present in advance and inbetween the coding phases.
 Several students asked about the marker in the high-level API at the end of the second (!) classroom session.
@@ -128,9 +128,9 @@ Between the Tutorial assignment and the first classroom exercise, I'm planning a
 ### 2016
 
 Feedback:
-[Tutorial #37](https://github.com/rolandweber/pityoulish/issues/37),
-[Sockets #38](https://github.com/rolandweber/pityoulish/issues/38),
-[Java RMI #48](https://github.com/rolandweber/pityoulish/issues/48)
+[Tutorial #37](https://github.com/pityoulish/origins/issues/37),
+[Sockets #38](https://github.com/pityoulish/origins/issues/38),
+[Java RMI #48](https://github.com/pityoulish/origins/issues/48)
 
 The tutorial worked as intended. Both classroom exercises went way over time. I relied on the written exercise instructions and background. Still too much information to digest. Some students don't even notice the method to copy from when it's right on their screen, just a few lines above the gap to fill in. Some notable feedback:
 * A bit of hands-on is good.
@@ -149,7 +149,7 @@ First exercise, sockets+TLV: Home programming. Feedback from a few students: too
 Second exercise, Java RMI: In-class. Groups of two, everybody tried, most failed. Many were unfamiliar with Java programming. Some didn't know how to interpret stack traces. Others couldn't get their IDE to generate an executable JAR. Some loaded the server JAR into the same IDE project as the client JAR, totally messing up the client-server boundary. Consequently, one group instantiated their own server-side objects instead of calling my server. Feedback: Still way too much information to digest during the exercise.
 
 For 2016,
-I created the [Pityoulish](https://github.com/rolandweber/pityoulish) project and wrote the Tutorial. It will help students to set up their development environment and learn the basic steps for debugging at home, before the first classroom exercise.
+I created the [Pityoulish](https://github.com/pityoulish/origins) project and wrote the Tutorial. It will help students to set up their development environment and learn the basic steps for debugging at home, before the first classroom exercise.
 
 ### before 2015
 Program at home, try out in class. Some students tried the first exercise (sockets+TLV), many failed. Those that succeeded spent way more time than I had anticipated or intended. Few even tried the second exercise (RMI).

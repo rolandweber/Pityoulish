@@ -108,7 +108,7 @@
             location="${build.stamp.dir}/${build.stamp.name}" />
   <mkdir dir="${build.stamp.dir}" />
   <echo file="${build.stamp.file}"
-        message="${build.time}  https://github.com/rolandweber/pityoulish" />
+        message="${build.time}  https://github.com/pityoulish/origins" />
 </target>
 
 

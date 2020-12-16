@@ -129,7 +129,7 @@ to detect when a JSON message rather than a TLV message is complete.
 The separation of the protocol layers could be improved by refactoring.
 The logic to determine when an incoming message is complete could be
 moved into the response parser helper, with some effort
-(<a href="https://github.com/rolandweber/pityoulish/issues/13">issue #13</a>).
+(<a href="https://github.com/pityoulish/origins/issues/13">issue #13</a>).
 Then the message layer could be replaced without changing the application
 or transport layer at all.
 The reason for not implementing it this way in the first place

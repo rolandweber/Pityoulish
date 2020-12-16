@@ -24,7 +24,7 @@ push-github: retag-github
 	podman push --creds "$(GITHUB_CREDENTIALS)" $(GITHUB_IMAGE_TAG)
 
 # provide defaults when running outside of a GitHub workflow
-github-image-tag: GITHUB_REPOSITORY ?= rolandweber/pityoulish
+github-image-tag: GITHUB_REPOSITORY ?= pityoulish/origins
 github-image-tag: GITHUB_RUN_NUMBER ?= $(shell date -u +%Y%m%d-%H%M)
 github-image-tag: GITHUB_REF ?= refs/heads/$(shell git rev-parse --abbrev-ref HEAD || echo nobranch)
 github-image-tag: GIT_BRANCH := $(notdir $(GITHUB_REF))

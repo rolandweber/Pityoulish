@@ -50,7 +50,7 @@ The current set of exercises comprises:
 As an instructor, I expect you to build the exercises and server components yourself.
 See the [Development Readme](Development.md) for details.
 
-I'm considering various [enhancements](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) and additional exercises, both in class and at home.
+I'm considering various [enhancements](https://github.com/pityoulish/origins/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) and additional exercises, both in class and at home.
 You're welcome to contribute, see just below :-)
 My primary focus is to make the existing exercises work better in class though.
 You can read some more about the [background](Background.md) of this project and my [lessons learned](Background.md#history-and-lessons-learned). I'll update those at the end of each term, so you can follow my progress.
@@ -58,7 +58,7 @@ You can read some more about the [background](Background.md) of this project and
 
 ### ...Contributors
 There are many ways in which you might contribute to Pityoulish: proof-reading exercises, commenting on or opening new issues, translating program output or exercises into different languages, coding, and more. 
-If you're interested, have a look at issues labeled ["help wanted"](https://github.com/rolandweber/pityoulish/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). A second label indicates the expected effort:
+If you're interested, have a look at issues labeled ["help wanted"](https://github.com/pityoulish/origins/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22). A second label indicates the expected effort:
 * **effort low**: It would take me less than an hour to implement, because I know the code inside out. You might take longer if you still need to get familiar with the codebase.
 * **effort medium**: It would take me more than an hour to implement, but could be done in a single session on a long afternoon or evening.
 * **effort high**: It would take me more than one programming session to implement. It's probably so complex that I'd like to sleep over the solution at least once before closing the issue.
