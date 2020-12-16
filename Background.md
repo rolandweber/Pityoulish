@@ -16,6 +16,25 @@ I'm teaching Distributed Systems from October through December each year. You ca
 
 ## History and Lessons Learned
 
+### 2020
+
+Feedback:
+[Tutorial #115](https://github.com/rolandweber/pityoulish/issues/115),
+[Sockets #116](https://github.com/rolandweber/pityoulish/issues/116),
+[Java RMI #121](https://github.com/rolandweber/pityoulish/issues/121)
+
+This year, the Corona virus forced the classes online. I ran the server code [on Kubernetes](https://github.com/rolandweber/pityoulish/issues/106) in the cloud, with [minor problems](https://github.com/rolandweber/pityoulish/issues/117).
+Instead of checking in the classroom how students progressed, I gave them some time for self-paced debugging, then demonstrated how to fix the next problem. This worked reasonably well. I suppose not all participants actually worked on the exercises, but that is to be expected &mdash; and their choice.
+
+The [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) and [12+ Factor Apps](https://content.pivotal.io/ebooks/beyond-the-12-factor-app) were first-class topics in the course this year. Unfortunately, the Message Board is not a good example for either.
+There are only two addressable resources for the Richardson Maturity Model, namely the message board and the ticket issuer. Neither messages nor tickets are designed to the addressed individually. All server code is crammed into a single source repository and container image, which must run as a single process. That's the exact opposite of 12+ factors.
+
+For the future, I intend to start all over. Define an application protocol which enables all levels of the Richardson Maturity Model. Implement server-side logic and different client-facing protocols as separate apps. Keep the source code for each app in a separate repository. Use asynchronous messaging between the apps on the server side, as recommended by the [Reactive Manifesto](https://www.reactivemanifesto.org/). Make the apps stateless, use a database service where necessary. And run everything on my own Kubernetes cluster, built from a few Raspberry Pis.
+
+Those are long-term goals, of course. I won't be able to replace the Message Board exercises by next year. But [pityoulish](https://github.com/pityoulish) is a GitHub organization now, as a home for what's coming. All enhancement issues for the Message Board are closed. Enhancements will be implemented with the new codebase, or not at all.
+
+
+
 ### 2019
 
 Feedback:
