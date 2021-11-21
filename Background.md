@@ -16,6 +16,14 @@ I'm teaching Distributed Systems from October through December each year. You ca
 
 ## History and Lessons Learned
 
+### 2021
+
+This year, I've had an idea for a different application, with more potential for discussing server-side architecture, various integrations to be considered, and the option of re-creating the debugging exercises as well.
+I relaunched my lecture on Distributed Systems around this idea. With my students, I discussed architecture options for the new application. It is unclear when (or if) I will get around to implementing something. There wouldn't have been time for debugging exercises anyway.
+
+The Pityoulish project is now officially retired.
+
+
 ### 2020
 
 Feedback:

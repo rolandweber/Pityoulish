@@ -1,4 +1,8 @@
 # Pityoulish
+
+_This project was retired in 2021. You can read up on [the history here](Background.md#history-and-lessons-learned)._
+
+
 A collection of programming or debugging exercises to support a course on _Distributed Systems_.
 The focus is on classroom debugging exercises that can be delivered in about two hours, though not every student will complete them in this timeframe.
 
